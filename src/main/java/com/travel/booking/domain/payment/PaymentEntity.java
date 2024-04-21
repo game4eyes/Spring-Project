@@ -1,5 +1,6 @@
 package com.travel.booking.domain.payment;
 
+import com.travel.booking.domain.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,5 +18,9 @@ public class PaymentEntity {
     private String type;    // 결제 방법 (enum 사용할까 고민중)
     private String paydata; // 결재 내용
     private LocalDateTime paytime; // 결제일시
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID")
+    private UserEntity user;
 
 }
