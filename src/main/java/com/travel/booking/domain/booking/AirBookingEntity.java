@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Table(name = "AIRBOOK")
 public class AirBookingEntity {
 
     @Id
@@ -28,6 +29,10 @@ public class AirBookingEntity {
 
     private String depAirport;      // 출발 공항이름
     private String arrAirport;      // 도착 공항이름
+
+    @Enumerated(EnumType.STRING)
+    private AirlineSeat seat;       // 좌석구분
+
 
     ///// 밑에는 로직 쓸거임
 }
