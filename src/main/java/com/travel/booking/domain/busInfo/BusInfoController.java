@@ -2,6 +2,7 @@ package com.travel.booking.domain.busInfo;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +16,10 @@ public class BusInfoController {
 
     @GetMapping("/terminal")
     public List<TerminalListDTO> getBusTerminalListInfo(){
-        return busInfoService.getTerminalListDTO();
+        return busInfoService.getTerminalList();
+    }
+    @GetMapping("/arrTmn/{id}")
+    public List<TerminalListDTO> getBusArrTmnListInfo(@PathVariable("id")String id){
+        return busInfoService.getArrivalTerminal(id);
     }
 }
