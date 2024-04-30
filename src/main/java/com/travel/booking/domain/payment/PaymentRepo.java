@@ -1,18 +1,21 @@
 package com.travel.booking.domain.payment;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.jpa.repository.JpaRepository;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface PaymentRepo extends JpaRepository<PaymentEntity, Long> {
+@RequiredArgsConstructor
+public class PaymentRepo {
 
-    Optional<PaymentEntity> findBOrderId(String orderId);
+    @Autowired
+    private final EntityManager em;
 
-    Optional<PaymentEntity> findByPaymentKeyAndUser_Email(String paymentKey, String email);
+    public void save(PaymentEntity payment) {
+        em.persist(payment);
+    }
 
-    Slice<PaymentEntity> findAllByUser_Email(String email, Pageable pageable);
+
+
 }

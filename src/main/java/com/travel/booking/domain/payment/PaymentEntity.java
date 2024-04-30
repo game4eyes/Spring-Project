@@ -3,6 +3,7 @@ package com.travel.booking.domain.payment;
 import com.travel.booking.domain.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.domain.Auditable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -58,6 +59,10 @@ public class PaymentEntity {
     @Column
     private String cancelReason;
 
+    @Column(nullable = false, updatable = false)
+    @CreatedDate
+    private LocalDateTime createdAt;
+
     public PaymentResDTO toPaymentResDto() { // DB에 저장하게 될 결제 관련 정보들
         return PaymentResDTO.builder()
                 .payType(payType.getDescription())
@@ -66,7 +71,7 @@ public class PaymentEntity {
                 .orderId(orderId)
                 .customerEmail(user.getEmail())
                 .customerName(user.getUsername())
-                .createdAt(String.valueOf( ))
+                .createdAt(String.valueOf(getCreatedAt()))
                 .cancelYN(cancelYN)
                 .failReason(failReason)
                 .build();
