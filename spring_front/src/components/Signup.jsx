@@ -12,9 +12,31 @@ const Signup = () => {
   const [paymentMethod, setPaymentMethod] = useState('card_1');
   const [errors, setErrors] = useState({});
 
-  const handleSignup = () => {
-    // 가입 처리 로직을 구현해야 합니다.
-    console.log('회원가입 로직 처리');
+  const handleSignup = async () => {
+    const userData = {
+      id,
+      username,
+      password,
+      email,
+      phonenum,
+      address,
+      gender
+    };
+  
+    try {
+      const response = await axios.post('/api/signup', userData);
+      if (response.status === 200) {
+        alert('회원가입이 완료되었습니다.');
+        // 로그인 페이지로 리디렉션
+        window.location.href = '/login';
+      }
+    } catch (error) {
+      if (error.response) {
+        setErrors({ form: error.response.data.message });
+      } else {
+        setErrors({ form: '회원가입 중 오류가 발생했습니다. 다시 시도해주세요.' });
+      }
+    }
   };
 
   const handleSubmit = (e) => {
