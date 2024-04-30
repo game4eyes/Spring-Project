@@ -13,16 +13,16 @@ spring:
     url: jdbc:mysql://localhost:3306/jpa
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: your_password
+    password: khs04140
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
         show_sql: true
-    database-platform: org.hibernate.dialect.MySQL83Dialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
 
 logging:
   level:
@@ -30,3 +30,10 @@ logging:
       hibernate:
         SQL: debug
         type: trace
+
+payment:
+  toss:
+    test_client_api_key: test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb
+    test_secrete_api_key: test_sk_ma60RZblrqoMxPQzAEkx3wzYWBn1
+    success_url: "http://localhost:90090/api/v1/payments/toss/success"
+    fail_url: "http://localhost:9090/api/v1/payments/toss/fail"

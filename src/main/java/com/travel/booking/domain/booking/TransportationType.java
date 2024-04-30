@@ -1,5 +1,5 @@
 package com.travel.booking.domain.booking;
 
-public enum Type {
+public enum TransportationType {
     TRAIN, AIRLINE, BUS;
 }
