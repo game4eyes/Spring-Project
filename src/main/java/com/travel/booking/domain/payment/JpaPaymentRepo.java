@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface JpaPaymentRepo extends JpaRepository<PaymentEntity, Long> {
 
-    Optional<PaymentEntity> findBOrderId(String orderId);
+    Optional<PaymentEntity> findByOrderId(String orderId);
 
     Optional<PaymentEntity> findByPaymentKeyAndUser_Email(String paymentKey, String email);
 
