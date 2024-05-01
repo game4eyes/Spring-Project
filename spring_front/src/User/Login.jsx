@@ -1,6 +1,11 @@
 // src/Login.jsx
 
 import React, { useState } from 'react';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import Header from '../components/Header';
+import Ad from '../components/Ad';
+import Footer from '../components/Footer';
+import Article from '../components/Article';
 // import './Login.css';
 
 const Login = () => {
@@ -16,7 +21,10 @@ const Login = () => {
 
   // JSX 반환
   return (
+   
     <div className="login-container">
+       <Header></Header>
+       <Article title ="로그인" body ="로그인 창"/>
       <h2>로그인</h2>
       <form onSubmit={handleLogin}>
         <div className="form-group">
@@ -49,10 +57,14 @@ const Login = () => {
         <button type="submit">로그인</button>
       </form>
       <div className="additional-links">
-        <a href="#">회원가입</a>
+       <Link to={"/Signup"}>회원가입</Link>
         <span> | </span>
-        <a href="#">아이디/비밀번호 찾기</a>
+        <Link to={"/FindUserId"}>아이디 찾기</Link> 
+        <span> | </span>
+        <Link to={"/ResetPassword"}>비밀번호 찾기</Link>
       </div>
+      <Ad/>
+    <Footer/>
     </div>
   );
 };
