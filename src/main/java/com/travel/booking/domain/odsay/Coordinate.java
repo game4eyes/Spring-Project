@@ -4,7 +4,7 @@ public enum Coordinate {
     TOPLATITUDE(38.9),
     BOTTOMLATITUDE(33.0),
     LEFTLONGITUDE(124.5),
-    RIGHTLONGITUDE(123.0);
+    RIGHTLONGITUDE(132.0);
 
     private double vector;
 
