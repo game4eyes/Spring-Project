@@ -72,13 +72,11 @@ public class BasicInfoServiceServiceImpl implements BasicInfoService {
                 Long stationID = (Long) stationJson.get("stationID");
                 double x = (double) stationJson.get("x");
                 double y = (double) stationJson.get("y");
-                String arsID = (String) stationJson.get("arsID");
                 StationDTO stationDTO = new StationDTO();
                 stationDTO.setStationName(stationName);
                 stationDTO.setStationID(stationID);
                 stationDTO.setX(x);
                 stationDTO.setY(y);
-                stationDTO.setArsID(arsID);
                 stationDtoList.add(stationDTO);
             }
             return stationDtoList;
