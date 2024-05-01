@@ -1,4 +1,4 @@
-package com.travel.booking.domain.odsay.city;
+package com.travel.booking.domain.odsay.city.DTO;
 
 import lombok.Getter;
 import lombok.Setter;
