@@ -14,6 +14,4 @@ public class StationDTO {
     // 위도
     private double y;
 
-    // 정류장 고유 번호
-    private String arsID;
 }
