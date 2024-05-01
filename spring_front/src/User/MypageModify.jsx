@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const MyPage = () => {
+const MyPageModify = () => {
   const [email, setEmail] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -66,6 +66,8 @@ const MyPage = () => {
 
   return (
     <div className="mypage-container">
+        <Header></Header>
+        <Article title ="마이페이지 수정" body ="회원정보 수정"/>
       <h2>마이페이지</h2>
       <form onSubmit={handleUpdateProfile}>
         <div className="form-group">
@@ -95,4 +97,4 @@ const MyPage = () => {
   );
 };
 
-export default MyPage;
+export default MyPageModify;
