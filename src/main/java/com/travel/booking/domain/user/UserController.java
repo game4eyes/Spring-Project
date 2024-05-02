@@ -37,6 +37,7 @@ public class UserController {
         );
 
         return ResponseEntity.ok(registeredUser);
+        // test
     }
 
 }
