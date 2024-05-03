@@ -13,8 +13,8 @@ import java.util.List;
 @RequestMapping("/api/station")
 public class StationInfoController {
     private final StationInfoService stationInfoService;
-    @GetMapping("/{cityCode}")
-    public List<StationDTO> stationInfo(@PathVariable String cityCode) {
-        return stationInfoService.getStationList(cityCode);
+    @GetMapping("/{stationClass}")
+    public List<StationDTO> stationInfo(@PathVariable String stationClass) {
+        return stationInfoService.getStationList(stationClass);
     }
 }
