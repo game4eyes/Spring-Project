@@ -3,6 +3,7 @@ import axios from "axios";
 // 경로를 작성
 export const API_SERVER_HOST = 'http://localhost:9090';
 const prefix = `${API_SERVER_HOST}/user/`;
+const userJoiin = `${API_SERVER_HOST}/session-login/`;
 
 // 비동기 통신
 // /api/todo/{tno}

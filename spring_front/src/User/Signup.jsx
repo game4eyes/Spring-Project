@@ -29,7 +29,7 @@ const Signup = () => {
     };
   
     try {
-      const response = await axios.post('/api/signup', userData);
+      const response = await axios.post('/session-login/signup', userData);
       if (response.status === 200) {
         alert('회원가입이 완료되었습니다.');
         // 로그인 페이지로 리디렉션

@@ -11,10 +11,10 @@ spring:
     cache: false
   datasource:
 
-    url: jdbc:mysql://ec2-54-180-123-82.ap-northeast-2.compute.amazonaws.com:3306/springweb
+    url: jdbc:mysql://localhost:3306/jpa
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: admin
-    password: admin
+    username: root
+    password: khs04140
 
   jpa:
     hibernate:
