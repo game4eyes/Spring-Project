@@ -50,7 +50,7 @@ const RootRouter = createBrowserRouter([
   //계정 (user)
 
   {
-         path    : 'user',
+         path    : 'user',        // '/user'
         // element : <Suspense fallback={Loading}>0<Login/></Suspense>,
         children: UserRouter()
   },
@@ -94,7 +94,7 @@ const RootRouter = createBrowserRouter([
 
   
 {
-path    : 'ticketbook',
+path    : 'ticketbook',       // '/ticketbook'
 //element : <Suspense fallback={Loading}>0<Bus/></Suspense>,
 //element 주석하니까 페이지 이동됨
 children: TicketBookRouter()
@@ -117,7 +117,7 @@ children: TicketBookRouter()
 //티켓  (ticket)
 
 {
-  path    : 'ticket',
+  path    : 'ticket',         //  /ticket
   //element : <Suspense fallback={Loading}>0<Ticket_Detail/></Suspense>,
   children: TicketRouter()
   },
@@ -171,13 +171,13 @@ children: TicketBookRouter()
 
 
 {
-  path    : 'ad',
+  path    : 'ad',     //  /ad
   children : AdRouter()
 },
 
 
 {
-  path    : 'search',
+  path    : 'search',     //  /search
   children : SearchRouter()
 },
 
