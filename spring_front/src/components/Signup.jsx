@@ -6,7 +6,7 @@ const Signup = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
-  const [address, setAddress] = useState('');
+  // const [address, setAddress] = useState('');
   const [birth, setBirth] = useState('');
   const [email, setEmail] = useState('');
   const [phonenum, setPhonenum] = useState('');
@@ -20,7 +20,7 @@ const Signup = () => {
       password,
       email,
       phonenum,
-      address,
+      // address,
       gender
     };
   
@@ -113,7 +113,7 @@ const Signup = () => {
           />
           {errors.password2 && <div className="error">{errors.password2}</div>}
         </div>
-        <div className="form-group">
+        {/* <div className="form-group">
           <label htmlFor="address">주소</label>
           <input
             type="text"
@@ -122,7 +122,7 @@ const Signup = () => {
             onChange={(e) => setAddress(e.target.value)}
             placeholder="주소를 입력하세요"
           />
-        </div>
+        </div> */}
         <div className="form-group">
           <label htmlFor="birth">생년월일</label>
           <input
