@@ -2,22 +2,22 @@ package com.travel.booking.domain.odsay.bus.DTO;
 
 
 public enum BusType {
-    일반(1),
-    운동(2),
-    프리미엄(3),
-    샤워_일반(4),
-    샤워_운동(5),
-    샤워_프리미엄(6),
-    주말_프리미엄(7),
-    주말샤워_프리미엄(8);
+    일반(1L),
+    우등(2L),
+    프리미엄(3L),
+    심야일반(4L),
+    심야우등(5L),
+    심야프리미엄(6L),
+    주말프리미엄(7L),
+    주말심야프리미엄(8L);
 
-    private final int typeCode;
+    private final Long typeCode;
 
-    BusType(int typeCode) {
+    BusType(Long typeCode) {
         this.typeCode = typeCode;
     }
 
-    public static String getType(int code) {
+    public static String getType(Long code) {
         for (BusType type : BusType.values()) {
             if (type.typeCode == code) {
                 return type.name();
