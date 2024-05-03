@@ -10,10 +10,10 @@ spring:
   thymeleaf:
     cache: false
   datasource:
-    url: jdbc:mysql://localhost:3306/jpa
+    url: jdbc:mysql://ec2-54-180-123-82.ap-northeast-2.compute.amazonaws.com:3306/springweb
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: khs04140
+    username: admin
+    password: admin
 
   jpa:
     hibernate:
@@ -22,7 +22,7 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
 
 logging:
   level:

@@ -1,6 +1,6 @@
 package com.travel.booking.domain.booking;
 
-import com.travel.booking.domain.user.UserEntity;
+import com.travel.booking.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,10 +1,9 @@
 package com.travel.booking.domain.payment;
 
-import com.travel.booking.domain.user.UserEntity;
+import com.travel.booking.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.domain.Auditable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
