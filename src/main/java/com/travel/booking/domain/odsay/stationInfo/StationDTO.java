@@ -1,13 +1,13 @@
-package com.travel.booking.domain.odsay.city.DTO;
+package com.travel.booking.domain.odsay.stationInfo;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
 public class StationDTO {
-    // 고속철 id
+    // 역 id
     private Long stationID;
-    // 고속철 이름
+    // 역 이름
     private String stationName;
     // 경도
     private double x;
