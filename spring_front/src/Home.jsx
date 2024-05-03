@@ -251,8 +251,11 @@ function Home() {
      <br /> 
 
 
-
-
+    {/* 테스트용 마이페이지 */}
+    <div>
+    <Link to = {"/user/mypage"}>마이페이지</Link>   
+    </div>
+  
 
 
     <Footer/>

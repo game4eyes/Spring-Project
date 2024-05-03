@@ -3,6 +3,7 @@ import Bus from '../Ticket/Ticket_Book/Bus';
 import Train from '../Ticket/Ticket_Book/Train';
 import Airport from '../Ticket/Ticket_Book/Airport';
 import { Suspense } from 'react';
+import TicketBookingPage from '../Ticket/Ticket_Book/TicketBookingPage';
 
 
 
@@ -31,6 +32,10 @@ element : <Suspense fallback={Loading}>{<Train/>}</Suspense>
 path    : 'airport',  //  /ticketbook/airport
 element : <Suspense fallback={Loading}>{<Airport/>}</Suspense>
 },
+// {
+//   path    : 'ticket_ticketbookingpage',
+//   element : <Suspense fallback={Loading}><TicketBookingPage/></Suspense>       @@@@@@@@@@@@@@@@@@@@ useNavihgate 쓸 수 있을 때 여기로 이동시키자
+//   },
     
   ]
 
