@@ -14,9 +14,9 @@
     "kakao-maps-sdk": "^1.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-
-    "react-kakao-maps-sdk": "^1.1.26"
-
+    "react-kakao-maps-sdk": "^1.1.26",
+    "react-router-dom": "^6.23.0",
+    "router-dom": "^2.2.11"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

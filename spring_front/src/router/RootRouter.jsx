@@ -26,6 +26,7 @@ import TicketRouter from './TicketRouter';
 import NavBarRouter from './NavBarRouter';
 import UserRouter from './UserRouter';
 import AdRouter from './AdRouter';
+import SearchRouter from './SearchRouter';
 
 
 const Loading = <div className={'bg-purple-500'}>Loading</div>;
@@ -174,6 +175,11 @@ children: TicketBookRouter()
   children : AdRouter()
 },
 
+
+{
+  path    : 'search',
+  children : SearchRouter()
+},
 
 ]);
 
