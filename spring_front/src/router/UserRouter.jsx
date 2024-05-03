@@ -1,6 +1,6 @@
 //import { Routes, Route } from 'react-router-dom';
 import Login from '../User/Login';
-import Signup from '../User/Signup';
+import Join from '../User/Join';
 import MyPage from '../User/Mypage';
 import ResetPassword from '../User/ResetPassword';
 import { Suspense } from 'react';
@@ -20,19 +20,19 @@ const UserRouter = () => {
   return [
 
   {
-    path    : 'login',     //   '/user/login'
+    path    : 'login',     //   '/session/login'
     element : <Suspense fallback={Loading}><Login/></Suspense>,
   },
   {
-    path    : 'signup',         //   '/user/signup'
-    element : <Suspense fallback={Loading}><Signup/></Suspense>
+    path    : 'join',         //   '/session/join'
+    element : <Suspense fallback={Loading}><Join/></Suspense>
 },
 {
-    path    : 'mypage',          //   '/user/mypage'
+    path    : 'mypage',          //   '/session/mypage'
     element : <Suspense fallback={Loading}><MyPage/></Suspense>
 },
 {
-    path    : 'finduserid',     //   '/user/finduserid'
+    path    : 'finduserid',     //   '/session/finduserid'
     element : <FindUserId/>
     //children: todoRouter()
 },
@@ -53,7 +53,7 @@ element : <ResetPassword/>
 
     // <Routes>
     //   <Route path="/user/Login" element={<Login />} />
-    //   <Route path="/user/Signup" element={<Signup />} />
+    //   <Route path="/user/Join" element={<Join />} />
     //   <Route path="/user/MyPage" element={<MyPage />} />
     //   <Route path="/user/FindUserId" element={<FindUserId />} />
     //   <Route path="/user/ResetPassword" element={<ResetPassword />} />

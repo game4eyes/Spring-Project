@@ -48,11 +48,11 @@ const LoginBox = ({ onLogin }) => {
         <div className="login-actions">
           <button type="submit">로그인</button>
           <div className="links">
-            <Link to="/user/finduserid">아이디 찾기</Link>
+            <Link to="/session/finduserid">아이디 찾기</Link>
             <span> | </span>
-            <Link to="/user/resetpassword">비밀번호 찾기</Link>
+            <Link to="/session/resetpassword">비밀번호 찾기</Link>
             <span> | </span>
-            <Link to="/user/signup">회원가입</Link>
+            <Link to="/session/join">회원가입</Link>
           </div>
         </div>
       </form>

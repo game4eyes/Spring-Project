@@ -2,7 +2,7 @@ import React, { Suspense, lazy } from 'react';
 //import { BrowserRouter, Route, Routes, createBrowserRouter } from 'react-router-dom';
 //import Home from '../Home';
 import Login from '../User/Login';
-import Signup from '../User/Signup';
+import Join from '../User/Join';
 import FindUserId from '../User/FindUserId';
 import MyPage from '../User/Mypage';
 
@@ -50,7 +50,7 @@ const RootRouter = createBrowserRouter([
   //계정 (user)
 
   {
-         path    : 'user',        // '/user'
+         path    : 'session',
         // element : <Suspense fallback={Loading}>0<Login/></Suspense>,
         children: UserRouter()
   },
@@ -61,8 +61,8 @@ const RootRouter = createBrowserRouter([
 //     element : <Login/>
 //   },
 //   {
-//     path    : '/Signup',
-//     element : <Suspense fallback={Loading}><Signup/></Suspense>
+//     path    : '/Join',
+//     element : <Suspense fallback={Loading}><Join/></Suspense>
 // },
 // {
 //     path    : '/MyPage',
