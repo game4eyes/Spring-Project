@@ -22,7 +22,7 @@ import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/session-login") // 고유한 경로로 수정
+@RequestMapping("/session") // 고유한 경로로 수정
 public class SessionLoginController {
 
     private final UserService userService;
