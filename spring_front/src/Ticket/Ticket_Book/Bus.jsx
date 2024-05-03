@@ -120,7 +120,7 @@ const Bus = () => {
          
             {/* Render BusSeat only when a bus is selected */}
             {selectedBus && <BusSeat />}
-            <button type="submit">예약하기</button>
+            <button type="submit">예매하기</button>
         </form>
          <Ad/>
          <Footer />
