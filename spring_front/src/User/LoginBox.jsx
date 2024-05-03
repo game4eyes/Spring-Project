@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const LoginBox = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
+  const [userid, setUserid] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (onLogin) {
-      onLogin(username, password);
+      onLogin(userid, password);
     }
   };
 
@@ -21,8 +21,8 @@ const LoginBox = ({ onLogin }) => {
           <input
             type="text"
             id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={userid}
+            onChange={(e) => setUserid(e.target.value)}
             placeholder="아이디 입력"
           />
         </div>
