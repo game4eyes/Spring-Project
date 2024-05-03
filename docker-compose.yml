@@ -1,0 +1,14 @@
+version: '3.6'
+services:
+  mysql:
+    container_name: springweb
+    image: mysql:5.7.31
+    volumes:
+      - /Dev/docker/springweb/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: springweb
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - 3306:3306

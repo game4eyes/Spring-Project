@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import Ticket_Detail from '../Ticket/Ticket_Detail';
 import Ticket_Modify from '../Ticket/Ticket_Modify';
 import Ticket_Cancel from '../Ticket/Ticket_Cancel';
+import TicketBookingPage from '../Ticket/Ticket_Book/TicketBookingPage';
 
 
 {/*티켓 정보 조회,수정,취소 라우터*/}
@@ -33,6 +34,7 @@ element : <Suspense fallback={Loading}><Ticket_Modify/></Suspense>
 path    : 'ticket_cancel',
 element : <Suspense fallback={Loading}><Ticket_Cancel/></Suspense>
 },
+
     // <Routes>
     //   <Route path="/Ticket_Detail" element={<TicketDetail />} />
     //   <Route path="/Ticket_Modify" element={<TicketModify />} />

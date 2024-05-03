@@ -95,7 +95,7 @@ const Bus = () => {
                         value={departure}
                         onChange={handleDepartureChange}
                         placeholder="출발지를 입력하세요"
-                        
+                        id="start"
                     />
                 </label>
                 <br />
@@ -107,6 +107,7 @@ const Bus = () => {
                         value={destination}
                         onChange={handleDestinationChange}
                         placeholder="도착지를 입력하세요"
+                        id="finish"
                     />
                 </label>
                 <br />
@@ -128,6 +129,7 @@ const Bus = () => {
                             value={returnDate}
                             onChange={handleReturnDateChange}
                             min={departureDate}
+                           
                         />
                     </label>
                 )}
@@ -144,15 +146,21 @@ const Bus = () => {
                     </label>
                 )}
                 <br />
-                <label>
-                    버스등급:
-                    <select value={selectedBus} onChange={handleBusSelect}>
-                        <option value="">전체</option>
-                        <option value="Bus1">프리미엄</option>
-                        <option value="Bus2">우등</option>
-                        <option value="Bus3">일반</option>
-                    </select>
-                </label>
+                버스등급:
+                <select value={selectedBus} onChange={handleBusSelect}>
+                    <option value="">전체</option>
+                    <option value="Bus1">일반</option>
+                    <option value="Bus2">시외고속</option>
+                    <option value="Bus3">심야고속</option>
+                    <option value="Bus4">시외우등</option>
+                    <option value="Bus5">심야우등</option>
+                    <option value="Bus6">프리미엄우등</option>
+                    <option value="Bus7">프리미엄심야우등</option>
+                    <option value="Bus8">프리미엄우등(주말)</option>
+                    <option value="Bus9">프리미엄심야우등(주말)</option>
+
+                    {/* Add more options as needed */}
+                </select>
                 <br />
                 {/* <PopupExample/> */}
                 {selectedBus && <BusSeat />}

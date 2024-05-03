@@ -2,7 +2,7 @@ package com.travel.booking.domain.odsay.city;
 
 import com.travel.booking.domain.odsay.ApiDefault;
 import com.travel.booking.domain.odsay.OdsayConfig;
-import com.travel.booking.domain.odsay.bus.BusTerminalDTO;
+//import com.travel.booking.domain.odsay.bus.BusTerminalDTO;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

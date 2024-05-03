@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-const SearchBus = () => {
+const SearchBus = ({ onSearchResult }) => {
     const [departure, setDeparture] = useState('');
     const [destination, setDestination] = useState('');
+    const [busType, setBusType] = useState('');
     const [result, setResult] = useState('');
     const [selectedTerminal, setSelectedTerminal] = useState('');
-    const [busType, setBusType] = useState('');
 
     const handleDepartureChange = (e) => {
         setDeparture(e.target.value);
@@ -23,7 +23,9 @@ const SearchBus = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setResult(`출발지: ${departure}, 도착지: ${destination}, 버스 유형: ${busType}`);
+        const searchResult = `출발지: ${departure}, 도착지: ${destination}, 버스 유형: ${busType}`;
+        setResult(searchResult);
+        onSearchResult(searchResult); // 검색 결과를 부모 컴포넌트에 전달
     };
 
     const handleClose = () => {
@@ -31,6 +33,7 @@ const SearchBus = () => {
         setDestination('');
         setResult('');
         setBusType('');
+        window.close();
     };
 
     const handleToggleTerminal = (terminalName) => {
@@ -38,6 +41,12 @@ const SearchBus = () => {
             setSelectedTerminal('');
         } else {
             setSelectedTerminal(terminalName);
+            // 하위 터미널 클릭시 해당 터미널 이름으로 출발지나 도착지 설정
+            if (departure === '') {
+                setDeparture(terminalName);
+            } else if (destination === '') {
+                setDestination(terminalName);
+            }
         }
     };
 
@@ -122,22 +131,35 @@ const SearchBus = () => {
             )}
             {(busType !== '' && busType !== '유형 선택') && (
                 <div>
+                    <div className='startTerminal'>
                     <h2>한국 터미널 리스트</h2>
                     {filteredTerminals_departure.map((terminal, index) => (
                         <div key={index}>
                             <h3 onClick={() => handleToggleTerminal(terminal.name)}>{terminal.name}</h3>
-                            {selectedTerminal === terminal.name && (
-                                <ul>
-                                    {terminal.subterminals
-                                        .filter((subterminal) => subterminal.includes(departure))
-                                        .map((filteredSubterminal_departure, subIndex) => (
-                                            <li key={subIndex}>{filteredSubterminal_departure}</li>
-                                        ))}
-                                </ul>
-                            )}
+                            <ul className={selectedTerminal === terminal.name ? "hidden" : "show"}>
+                                {terminal.subterminals
+                                    .filter((subterminal) => subterminal.includes(departure))
+                                    .map((filteredSubterminal_departure, subIndex) => (
+                                        <li key={subIndex}>
+                                           <a href="#" onClick={() => { 
+    setDeparture(filteredSubterminal_departure);
+    // Assuming "opener" is accessible here, set the value in the parent window
+    opener.document.getElementById("start").value = filteredSubterminal_departure;
+}}>
+    {filteredSubterminal_departure}
+</a>
+
+                                           
+                                        </li>
+                                      
+                                    ))}
+                            </ul>
                         </div>
                     ))}
+                    </div>
+                    <br/> <br/>
                     <div>
+                    <div className='EndTerminal'>
                         <h2>도착지 터미널 리스트</h2>
                         {filteredTerminals_destination.map((terminal, index) => (
                             <div key={index}>
@@ -147,12 +169,23 @@ const SearchBus = () => {
                                         {terminal.subterminals
                                             .filter((subterminal) => subterminal.includes(destination))
                                             .map((filteredSubterminal_destination, subIndex) => (
-                                                <li key={subIndex}>{filteredSubterminal_destination}</li>
+                                                <li key={subIndex}>
+                                                <a href="#" onClick={() => { 
+            setDestination(filteredSubterminal_destination);
+          // Assuming "opener" is accessible here, set the value in the parent window
+         opener.document.getElementById("finish").value = filteredSubterminal_destination;
+     }}>
+         {filteredSubterminal_destination}
+     </a>
+     
+                                                
+                                             </li>
                                             ))}
                                     </ul>
                                 )}
                             </div>
                         ))}
+                    </div>
                     </div>
                 </div>
             )}
