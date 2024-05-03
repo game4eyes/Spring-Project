@@ -4,8 +4,10 @@ import com.travel.booking.domain.user.UserEntity;
 import com.travel.booking.domain.user.UserService;
 import com.travel.booking.exception.CustomException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class PaymentService {
 
     public PaymentEntity requestPayment(PaymentEntity payment, String userEmail){
