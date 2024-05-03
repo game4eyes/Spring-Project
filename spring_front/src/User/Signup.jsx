@@ -1,25 +1,47 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import Header from '../components/Header';
 import Ad from '../components/Ad';
 import Footer from '../components/Footer';
 import Article from '../components/Article';
 
 const Signup = () => {
-  
+  const [id, setId] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
-  const [address, setAddress] = useState('');
+  // const [address, setAddress] = useState('');
   const [birth, setBirth] = useState('');
   const [email, setEmail] = useState('');
   const [phonenum, setPhonenum] = useState('');
   const [gender, setGender] = useState('male');
-  const [paymentMethod, setPaymentMethod] = useState('card_1');
   const [errors, setErrors] = useState({});
 
-  const handleSignup = () => {
-    // 가입 처리 로직을 구현해야 합니다.
-    console.log('회원가입 로직 처리');
+  const handleSignup = async () => {
+    const userData = {
+      id,
+      username,
+      password,
+      email,
+      phonenum,
+      // address,
+      gender
+    };
+  
+    try {
+      const response = await axios.post('/api/signup', userData);
+      if (response.status === 200) {
+        alert('회원가입이 완료되었습니다.');
+        // 로그인 페이지로 리디렉션
+        window.location.href = '/login';
+      }
+    } catch (error) {
+      if (error.response) {
+        setErrors({ form: error.response.data.message });
+      } else {
+        setErrors({ form: '회원가입 중 오류가 발생했습니다. 다시 시도해주세요.' });
+      }
+    }
   };
 
   const handleSubmit = (e) => {
@@ -97,7 +119,7 @@ const Signup = () => {
           />
           {errors.password2 && <div className="error">{errors.password2}</div>}
         </div>
-        <div className="form-group">
+        {/* <div className="form-group">
           <label htmlFor="address">주소</label>
           <input
             type="text"
@@ -106,7 +128,7 @@ const Signup = () => {
             onChange={(e) => setAddress(e.target.value)}
             placeholder="주소를 입력하세요"
           />
-        </div>
+        </div> */}
         <div className="form-group">
           <label htmlFor="birth">생년월일</label>
           <input
@@ -147,19 +169,6 @@ const Signup = () => {
           >
             <option value="male">남자</option>
             <option value="female">여자</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="paymentMethod">결제 수단</label>
-          <select
-            id="paymentMethod"
-            value={paymentMethod}
-            onChange={(e) => setPaymentMethod(e.target.value)}
-          >
-            <option value="card_1">결제수단 1</option>
-            <option value="card_2">결제수단 2</option>
-            <option value="card_3">결제수단 3</option>
-            <option value="card_4">결제수단 4</option>
           </select>
         </div>
         <div className="form-group">
