@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const Signup = () => {
+  const [id, setId] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
@@ -9,7 +11,6 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [phonenum, setPhonenum] = useState('');
   const [gender, setGender] = useState('male');
-  const [paymentMethod, setPaymentMethod] = useState('card_1');
   const [errors, setErrors] = useState({});
 
   const handleSignup = async () => {
@@ -162,19 +163,6 @@ const Signup = () => {
           >
             <option value="male">남자</option>
             <option value="female">여자</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label htmlFor="paymentMethod">결제 수단</label>
-          <select
-            id="paymentMethod"
-            value={paymentMethod}
-            onChange={(e) => setPaymentMethod(e.target.value)}
-          >
-            <option value="card_1">결제수단 1</option>
-            <option value="card_2">결제수단 2</option>
-            <option value="card_3">결제수단 3</option>
-            <option value="card_4">결제수단 4</option>
           </select>
         </div>
         <div className="form-group">
