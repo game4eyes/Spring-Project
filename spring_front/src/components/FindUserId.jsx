@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const FindUserId = () => {
+const FindUsername = () => {
   const [email, setEmail] = useState('');
 
   const handleFindUsername = (e) => {
@@ -28,4 +28,4 @@ const FindUserId = () => {
   );
 };
 
-export default FindUserId;
+export default FindUsername;
