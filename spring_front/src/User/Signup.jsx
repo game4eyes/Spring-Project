@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Header from '../components/Header';
+import Ad from '../components/Ad';
+import Footer from '../components/Footer';
+import Article from '../components/Article';
 
 const Signup = () => {
   const [id, setId] = useState('');
@@ -75,6 +79,8 @@ const Signup = () => {
 
   return (
     <div className="signup-container">
+      <Header></Header>
+      <Article title ="회원가입" body ="회원가입 창"/>
       <h2>회원가입</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -169,6 +175,8 @@ const Signup = () => {
           <input type="submit" value="가입" />
         </div>
       </form>
+      <Ad/>
+    <Footer/>
     </div>
   );
 };
