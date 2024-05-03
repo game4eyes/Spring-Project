@@ -5,7 +5,7 @@ import Ad from '../components/Ad';
 import Footer from '../components/Footer';
 import Article from '../components/Article';
 
-const Signup = () => {
+const Join = () => {
   const [id, setId] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -17,7 +17,7 @@ const Signup = () => {
   const [gender, setGender] = useState('male');
   const [errors, setErrors] = useState({});
 
-  const handleSignup = async () => {
+  const handleJoin = async () => {
     const userData = {
       id,
       username,
@@ -29,7 +29,7 @@ const Signup = () => {
     };
   
     try {
-      const response = await axios.post('/session-login/signup', userData);
+      const response = await axios.post('/api/Join', userData);
       if (response.status === 200) {
         alert('회원가입이 완료되었습니다.');
         // 로그인 페이지로 리디렉션
@@ -48,7 +48,7 @@ const Signup = () => {
     e.preventDefault();
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length === 0) {
-      handleSignup();     // 가입처리 로직 기억하기
+      handleJoin();     // 가입처리 로직 기억하기
       alert('회원가입이 완료되었습니다.');
     } else {
       setErrors(validationErrors);
@@ -78,7 +78,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="signup-container">
+    <div className="Join-container">
       <Header></Header>
       <Article title ="회원가입" body ="회원가입 창"/>
       <h2>회원가입</h2>
@@ -181,4 +181,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Join;
