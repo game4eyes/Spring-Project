@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class PaymentRepo {
 
-    @Autowired
     private final EntityManager em;
 
     public void save(PaymentEntity payment) {
