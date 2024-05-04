@@ -59,7 +59,7 @@ const Join = () => {
 
   const validateForm = () => {
     const errors = {};
-    if (!username.trim()) {
+    if (!loginId.trim()) {
       errors.loginId = '아이디를 입력하세요.';
     } else if (loginId.trim().length < 7) {
       errors.loginId = '아이디는 7자리 이상이어야 합니다.';
