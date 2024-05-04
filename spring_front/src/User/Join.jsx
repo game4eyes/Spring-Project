@@ -7,7 +7,7 @@ import Footer from '../components/Footer';
 import Article from '../components/Article';
 
 const Join = () => {
-  const [loginId, setloginId] = useState('');
+  const [loginId, setLoginId] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
@@ -91,11 +91,11 @@ const Join = () => {
             type="text"
             id="loginId"
             value={loginId}
-            onChange={(e) => setloginId(e.target.value)}
+            onChange={(e) => setLoginId(e.target.value)}
             placeholder="아이디를 입력하세요"
             required
           />
-          {errors.username && <div className="error">{errors.username}</div>}
+          {errors.loginId && <div className="error">{errors.loginId}</div>}
         </div>
         <div className="form-group">
           <label htmlFor="username">이름</label>
@@ -186,7 +186,7 @@ const Join = () => {
           </select>
         </div>
         <div className="form-group" onSubmit={handleSubmit}>
-          <input type="submit" value="가입" />
+          <input type="submit" value="가입"/>
         </div>
       </form>
       <Ad/>
