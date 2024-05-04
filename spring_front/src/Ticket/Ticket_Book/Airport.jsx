@@ -15,6 +15,8 @@ const Airport = () => {
     const [time, setTime] = useState('');
     const [passengerCount, setPassengerCount] = useState('');
     const [disability, setDisability] = useState(false);
+    const [legroom, setLegroom] = useState(false);
+    const [window, setWindow] = useState(false);
 
     // 출발지 변경 시 호출될 함수
     const handleDepartureChange = (e) => {
@@ -89,13 +91,31 @@ const Airport = () => {
                 <input type="date" onChange={handleDateChange} />
             </label>
             <br />
-            <div>
+        <div>
           <input
             type="checkbox"
             checked={disability}
             onChange={() => setDisability(!disability)}
           />
           <label>장애가 있습니다.</label>
+        </div>
+        <br/>
+        <div>
+          <input
+            type="checkbox"
+            checked={legroom}
+            onChange={() => setLegroom(!legroom)}
+          />
+          <label>Legroom</label>
+        </div>
+        <br/>
+        <div>
+          <input
+            type="checkbox"
+            checked={window}
+            onChange={() => setWindow(!window)}
+          />
+          <label>Window Seat</label>
         </div>
             {/* <label>
                 시간:
