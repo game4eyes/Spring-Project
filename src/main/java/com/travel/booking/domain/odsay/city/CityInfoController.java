@@ -1,23 +1,22 @@
 package com.travel.booking.domain.odsay.city;
 
 
-import com.travel.booking.domain.odsay.stationInfo.StationDTO;
+import com.travel.booking.domain.odsay.city.DTO.CityDTO;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/city")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:5173")
 public class CityInfoController {
     private final CityInfoServiceServiceImpl service;
 
     @GetMapping
-    public List<CityDTO> getCityInfo()  {
-        return service.getCityList();
+    public List<CityDTO> getCityInfo(@RequestParam String cityRegion)  {
+        return service.getCityList(cityRegion);
     }
 }

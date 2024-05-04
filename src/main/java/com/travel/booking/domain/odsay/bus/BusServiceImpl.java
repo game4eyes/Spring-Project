@@ -2,10 +2,7 @@ package com.travel.booking.domain.odsay.bus;
 
 import com.travel.booking.domain.odsay.ApiDefault;
 import com.travel.booking.domain.odsay.OdsayConfig;
-import com.travel.booking.domain.odsay.bus.DTO.BusOperationInfoDTO;
-import com.travel.booking.domain.odsay.bus.DTO.BusTerminalDTO;
-import com.travel.booking.domain.odsay.bus.DTO.BusType;
-import com.travel.booking.domain.odsay.bus.DTO.ScheduleDTO;
+import com.travel.booking.domain.odsay.bus.DTO.*;
 import com.travel.booking.domain.odsay.stationInfo.StationDTO;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -25,36 +22,32 @@ public class BusServiceImpl implements BusService{
     private final OdsayConfig odsayConfig;
     // 도시 내 버스터미널 리스트(시외 및 고속 버스 터미널 정류장 정보 획득)
     @Override
-    public List<BusTerminalDTO> getNearBusTerminalList(String cityCode) {
-        List<BusTerminalDTO> busTerminalDTOList = new ArrayList<>();
-        StringBuilder urlBuilder = new ApiDefault(odsayConfig).getURLBuilder("/expressBusTerminals",0,odsayConfig.getKey());
-        urlBuilder.append("&CID="+cityCode);
-        String result = new ApiDefault(odsayConfig).getResult(urlBuilder);
+    public TerminalTypeDTO getNearBusTerminalList(String cityCode) {
+        TerminalTypeDTO terminalTypeDTOS = new TerminalTypeDTO();
+        StringBuilder urlBuilder1 = new ApiDefault(odsayConfig).getURLBuilder("/expressBusTerminals",0,odsayConfig.getKey());
+        urlBuilder1.append("&CID="+cityCode);
+        StringBuilder urlBuilder2 = new ApiDefault(odsayConfig).getURLBuilder("/intercityBusTerminals",0,odsayConfig.getKey());
+        urlBuilder2.append("&CID="+cityCode);
+        String expressResult = new ApiDefault(odsayConfig).getResult(urlBuilder1);
+        String interCityResult = new ApiDefault(odsayConfig).getResult(urlBuilder2);
+        JSONParser parser = new JSONParser();
         try {
-            JSONParser parser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) parser.parse(result);
-            JSONArray resultJson = (JSONArray) jsonObject.get("result");
-            for (int i = 0; i < resultJson.size(); i++) {
-                JSONObject busTerminalJson = (JSONObject) resultJson.get(i);
-                System.out.println(busTerminalJson);
-                BusTerminalDTO busTerminalDTO = new BusTerminalDTO();
-                double x = (double) busTerminalJson.get("x");
-                double y = (double) busTerminalJson.get("y");
-                String stationName = (String) busTerminalJson.get("stationName");
-                Long stationID = (Long) busTerminalJson.get("stationID");
-                busTerminalDTO.setStationName(stationName);
-                busTerminalDTO.setStationID(stationID);
-                busTerminalDTO.setX(x);
-                busTerminalDTO.setY(y);
-                busTerminalDTO.setStationClass(0);
-                busTerminalDTOList.add(busTerminalDTO);
-            }
-            System.out.println(busTerminalDTOList);
+            JSONObject jsonObject1 = (JSONObject) parser.parse(expressResult);
+            JSONObject jsonObject2 = (JSONObject) parser.parse(interCityResult);
+
+            System.out.println(jsonObject1);
+
+            JSONArray resultJson1 = (JSONArray) jsonObject1.get("result");
+            JSONArray resultJson2 = (JSONArray) jsonObject2.get("result");
+
+            List<BusTerminalDTO> expressBusTerminalDTOS = getBusTerminalDTOS(resultJson1);
+            List<BusTerminalDTO> interCityBusTerminalDTOS = getBusTerminalDTOS(resultJson2);
+            terminalTypeDTOS.setExpressTerminalDTO(expressBusTerminalDTOS);
+            terminalTypeDTOS.setInterCityTerminalDTO(interCityBusTerminalDTOS);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-
-        return busTerminalDTOList;
+        return terminalTypeDTOS;
     }
 
     @Override
@@ -195,5 +188,23 @@ public class BusServiceImpl implements BusService{
             throw new RuntimeException(e);
         }
         return busOperationInfoDTO;
+    }
+
+    public List<BusTerminalDTO> getBusTerminalDTOS(JSONArray expressResultObject) {
+        List<BusTerminalDTO> experssBusTerminalDTOS = new ArrayList<>();
+        for (int i = 0; i < expressResultObject.size(); i++) {
+            BusTerminalDTO busTerminalDTO = new BusTerminalDTO();
+            JSONObject busObject = (JSONObject) expressResultObject.get(i);
+            Long stationID = (Long) busObject.get("stationID");
+            String stationName = (String) busObject.get("stationName");
+            double x = (Double) busObject.get("x");
+            double y = (Double) busObject.get("y");
+            busTerminalDTO.setStationID(stationID);
+            busTerminalDTO.setStationName(stationName);
+            busTerminalDTO.setX(x);
+            busTerminalDTO.setY(y);
+            experssBusTerminalDTOS.add(busTerminalDTO);
+        }
+        return experssBusTerminalDTOS;
     }
 }
