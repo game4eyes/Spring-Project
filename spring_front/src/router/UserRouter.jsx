@@ -20,19 +20,19 @@ const UserRouter = () => {
   return [
 
   {
-    path    : 'login',     //   '/session/login'
+    path    : 'login',     //   '/api/login'
     element : <Suspense fallback={Loading}><Login/></Suspense>,
   },
   {
-    path    : 'join',         //   '/session/join'
+    path    : 'join',         //   '/api/join'
     element : <Suspense fallback={Loading}><Join/></Suspense>
 },
 {
-    path    : 'mypage',          //   '/session/mypage'
+    path    : 'mypage',          //   '/api/mypage'
     element : <Suspense fallback={Loading}><MyPage/></Suspense>
 },
 {
-    path    : 'finduserid',     //   '/session/finduserid'
+    path    : 'finduserid',     //   '/api/finduserid'
     element : <FindUserId/>
     //children: todoRouter()
 },

@@ -28,7 +28,17 @@ public class UserService {
     // 회원가입
     // 비밀번호 암호화해서 저장
     public void join(JoinReq req){
-        userRepository.save(req.toEntity(encoder.encode(req.getPassword())));
+        if (checkLoginIdDuplicate(req.getLoginId())) {
+            throw new RuntimeException("로그인 아이디가 중복됩니다."); // 중복 체크 오류 처리
+        }
+
+        // 비밀번호 암호화
+        String encodedPassword = encoder.encode(req.getPassword());
+        System.out.println(req.getPassword());
+        // `UserEntity`로 변환하여 저장
+        UserEntity userEntity = req.toEntity(encodedPassword);
+
+        userRepository.save(userEntity); // 데이터베이스 저장
     }
 
 
