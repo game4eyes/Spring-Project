@@ -22,12 +22,13 @@ import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/session") // 고유한 경로로 수정
+@RequestMapping("/api/user") // 고유한 경로로 수정
 public class SessionLoginController {
 
     private final UserService userService;
 
     @PostMapping("/join") // 경로 지정
+    @ResponseBody
     public String join(@Valid @ModelAttribute JoinReq req, BindingResult bindingResult) {
 
         // id 중복체크
@@ -49,6 +50,7 @@ public class SessionLoginController {
     }
 
     @PostMapping("/login")
+    @ResponseBody
     public String login(@ModelAttribute LoginReq loginRequest, BindingResult bindingResult,
                         HttpServletRequest httpServletRequest) {
         UserEntity user = userService.login(loginRequest);
