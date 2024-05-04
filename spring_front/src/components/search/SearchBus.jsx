@@ -36,6 +36,21 @@ const SearchBus = ({ onSearchResult }) => {
         window.close();
     };
 
+    const saveSearchBusForm =() =>{
+        opener.document.getElementById("start").value = document.getElementById("departure").value ;
+        opener.document.getElementById("finish").value = document.getElementById("destination").value;
+
+        if(opener.document.getElementById("start").value ===opener.document.getElementById("finish").value){
+            alert('출발지와 도착지가 같습니다!')
+            document.getElementById("destination").focus();
+            return;
+        }
+       
+        window.close();
+
+     
+    }
+
     const handleToggleTerminal = (terminalName) => {
         if (selectedTerminal === terminalName) {
             setSelectedTerminal('');
@@ -106,6 +121,7 @@ const SearchBus = ({ onSearchResult }) => {
                                 value={departure}
                                 onChange={handleDepartureChange}
                                 placeholder="출발지를 검색하세요"
+                                id = "departure"
                             />
                         </label>
                     </div>
@@ -117,10 +133,11 @@ const SearchBus = ({ onSearchResult }) => {
                                 value={destination}
                                 onChange={handleDestinationChange}
                                 placeholder="도착지를 검색하세요"
+                                id = "destination"
                             />
                         </label>
                     </div>
-                    <button type="submit">폼 제출</button>
+                    <button type="submit" onClick={saveSearchBusForm}>폼 제출</button>
                     <button onClick={handleClose}>나가기</button>
                 </form>
             )}
@@ -144,7 +161,7 @@ const SearchBus = ({ onSearchResult }) => {
                                            <a href="#" onClick={() => { 
     setDeparture(filteredSubterminal_departure);
     // Assuming "opener" is accessible here, set the value in the parent window
-    opener.document.getElementById("start").value = filteredSubterminal_departure;
+   // opener.document.getElementById("start").value = filteredSubterminal_departure;
 }}>
     {filteredSubterminal_departure}
 </a>
@@ -173,7 +190,7 @@ const SearchBus = ({ onSearchResult }) => {
                                                 <a href="#" onClick={() => { 
             setDestination(filteredSubterminal_destination);
           // Assuming "opener" is accessible here, set the value in the parent window
-         opener.document.getElementById("finish").value = filteredSubterminal_destination;
+      //   opener.document.getElementById("finish").value = filteredSubterminal_destination;
      }}>
          {filteredSubterminal_destination}
      </a>

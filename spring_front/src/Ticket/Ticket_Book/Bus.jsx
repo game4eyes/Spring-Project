@@ -4,7 +4,8 @@ import BusSeat from '../../components/BusSeat';
 import Article from '../../components/Article';
 import Footer from '../../components/Footer';
 import Ad from '../../components/Ad';
-
+import '@/css/BusSeat.css';
+import BusList from '../../components/search/list/BusList';
 
 
 
@@ -146,6 +147,7 @@ const Bus = () => {
                     </label>
                 )}
                 <br />
+              
                 버스등급:
                 <select value={selectedBus} onChange={handleBusSelect}>
                     <option value="">전체</option>
@@ -166,14 +168,21 @@ const Bus = () => {
                 {selectedBus && <BusSeat />}
                 <button type="submit">조회하기</button>
             </form>
+           <div>
+
+           <BusList/>
+           <br/>
+           </div>
             {isDepartureModalOpen && (
                 <div className="modal">
                     <div className="modal-content">
                         <span className="close" onClick={closeDepartureModal}>&times;</span>
                         {/* Render your ResultModal component here */}
                     </div>
+                   
                 </div>
             )}
+          
             <Ad />
             <Footer />
         </div>

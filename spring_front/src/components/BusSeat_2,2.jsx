@@ -21,7 +21,7 @@ return (
       backgroundRepeat: 'no-repeat'
     }}
   >
-    AB {seatNumber}
+    Seat {seatNumber}
   </button>
 );
 
@@ -43,13 +43,9 @@ function BusSeat() {
       }
     }
   };
-
-  // 버스 (2,2) 완성
-
   const renderSeatButtons = () => {
     const seatButtons = [];
-    let count=0;      //의자를 역순으로 카운트할 때 세는 변수
-    for (let i = 45; i <= 49; i++) {    //의자에 대한 변수 
+    for (let i = 1; i <= 48; i++) {
       seatButtons.push(
         <SeatButton
           key={i}
@@ -58,88 +54,18 @@ function BusSeat() {
           onSelect={handleToggleSeat}
         />
       );
-      if (i ===49) {
-        seatButtons.push(<br key={`br${i}`} />); // Add a line break after every fourth seat
-      } 
-      }
-    for (let i = 44; i >=1; i--) {
-      count++;
-      seatButtons.push(
-        <SeatButton
-          key={i}
-          seatNumber={i}
-          isSelected={selectedSeats.includes(i)}
-          onSelect={handleToggleSeat}
-          alphabet='a'
-        />
-      );
-      
+      // Check if i is a multiple of 4
 
-      if (count % 4 === 0 ) {
-       
+
+      if (i % 4 === 0) {
         seatButtons.push(<br key={`br${i}`} />); // Add a line break after every fourth seat
       } 
-      else if (count % 2 === 0) {
+      else if (i % 2 === 0) {
         seatButtons.push(<span key={`span${i}`}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>); // Add space between seats
       }
     }
- 
     return seatButtons;
   };
-
-
-//  // 버스 (2,1) 완료
-  
-  // const renderSeatButtons = () => {
-  //   const seatButtons = [];
-  //   let count=0;      //의자를 역순으로 카운트할 때 세는 변수
-  //   let t=1;     
-  //   for (let i = 45; i <= 48; i++) {    //의자에 대한 변수 
-  //     seatButtons.push(
-  //       <SeatButton
-  //         key={i}
-  //         seatNumber={i}
-  //         isSelected={selectedSeats.includes(i)}
-  //         onSelect={handleToggleSeat}
-  //       />
-  //     );
-  //     if (i ===48) {
-  //       seatButtons.push(<br key={`br${i}`} />); // Add a line break after every fourth seat
-  //     } 
-  //     }
-
-
-  //   for (let i = 45; i >=1; i--) {
-  //       count++;
-  
-  //     if (count ===(3*(t)-1 )) {
-  //       seatButtons.push(<span key={`span${i}`}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>); // Add space between seats
-  //    }
-    
-  //     seatButtons.push(
-  //       <SeatButton
-  //         key={i}
-  //         seatNumber={i}
-  //         isSelected={selectedSeats.includes(i)}
-  //         onSelect={handleToggleSeat}
-  //       />
-  //     );
-      
-
-      
-  //    if (count % 3 === 0 ) {
-  //       seatButtons.push(<br key={`br${i}`} />); // Add a line break after every fourth seat
-  //       t++;
-  //     } 
-
-   
-        
-  //   }
- 
-  //   return seatButtons;
-  // };
-
-
   
   
 
