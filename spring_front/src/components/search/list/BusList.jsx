@@ -1,58 +1,81 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+//import BusSeat from '../../BusSeat';
 
 const BusList = () => {
+
+    const seatselect = () =>{
+
+        window.open('http://localhost:5173/search/busseat', '_blank', 'width=600,height=400');
+    }
+
     return (
         <div>
-             {/* <h2>한국 터미널 리스트 조회 결과</h2>
-            <ul>
-                <li>
-                    <Link to="/terminals/seoul">서울</Link>
-                    <ul>
-                        <li>
-                            <Link to="/terminals/seoul/express">서울 익스프레스 터미널</Link>
-                        </li>
-                        <li>
-                            <Link to="/terminals/seoul/bus">서울 버스 터미널</Link>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <Link to="/terminals/incheon">인천</Link>
-                    <ul>
-                        <li>
-                            <Link to="/terminals/incheon/international">인천 국제공항 터미널</Link>
-                        </li>
-                        <li>
-                            <Link to="/terminals/incheon/ferry">인천 페리 터미널</Link>
-                        </li>
-                    </ul>
-                </li> */}
-                {/* 다른 지역의 터미널을 추가할 수 있습니다. */}
-                {/* <li>
-                    <Link to="/terminals/daegu">대구</Link>
-                    <ul>
-                        <li>
-                            <Link to="/terminals/daegu/bus">대구 버스 터미널</Link>
-                        </li>
-                        <li>
-                            <Link to="/terminals/daegu/train">대구 기차역</Link>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <Link to="/terminals/busan">부산</Link>
-                    <ul>
-                        <li>
-                            <Link to="/terminals/busan/airport">부산 국제공항 터미널</Link>
-                        </li>
-                        <li>
-                            <Link to="/terminals/busan/ferry">부산 페리 터미널</Link>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <br/>  */}
+            <div>
+                <h2>터미널 조회 결과</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>{/* 게시물 갯수 or 게시판 번호 */}
+                            {/* <th>출발 터미널 코드 (DB,hidden)</th>
+                            <th>도착 터미널 코드 (DB,hidden)</th> */}
+                            <th>출발 터미널</th>
+                            <th>도착 터미널</th>
+                            <th>버스 유형</th>
+                            <th>출발 시간</th>
+                            <th>도착 시간</th>
+                            <th>가격</th>
+                            <th>총 좌석</th>
+                            <th>예매가능</th>
+                            <th>정보</th>
+                            <th>좌석선택</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            {/* <td>AAAAAA (DB,hidden)</td>
+                            <td>BBBBBB (DB,hidden)</td> */}
+                            <td>동서울 (DB)</td>
+                            <td>홍천 (DB)</td>
+                            <td>09:00 (DB)</td>
+                            <td>10:00 (DB)</td>
+                            <th>30000원 (DB)</th>
+                            <td>50(DB)</td>
+                            <td>13(DB)</td>
+                            <td><button>상세보기</button></td>
+                            <td><button onClick={seatselect}>좌석선택</button></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            {/* <th>AAAAAA (DB,hidden)</th>
+                            <th>BBBBBB (DB,hidden)</th> */}
+                            <td>동서울 (DB)</td>
+                            <td>홍천 (DB)</td>
+                            <td>09:00 (DB)</td>
+                            <td>10:00 (DB)</td>
+                            <th>30000원 (DB)</th>
+                            <td>34(DB)</td>
+                            <td>11(DB)</td>
+                            <td><button>상세보기</button></td>
+                            <td><button onClick={seatselect}>좌석선택</button></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            {/* <th>AAAAAA (DB,hidden)</th>
+                            <th>BBBBBB (DB,hidden)</th> */}
+                            <td>동서울 (DB)</td>
+                            <td>홍천 (DB)</td>
+                            <td>09:00 (DB)</td>
+                            <td>10:00 (DB)</td>
+                            <th>30000원 (DB)</th>
+                            <td>44(DB)</td>
+                            <td>1(DB)</td>
+                            <td><button >상세보기</button></td>
+                            <td><button onClick={seatselect}>좌석선택</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

@@ -23,7 +23,7 @@ const SearchBus = ({ onSearchResult }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const searchResult = `출발지: ${departure}, 도착지: ${destination}, 버스 유형: ${busType}`;
+        // const searchResult = `출발지: ${departure}, 도착지: ${destination}, 버스 유형: ${busType}`;
         setResult(searchResult);
         onSearchResult(searchResult); // 검색 결과를 부모 컴포넌트에 전달
     };
@@ -39,8 +39,19 @@ const SearchBus = ({ onSearchResult }) => {
     const saveSearchBusForm =() =>{
         opener.document.getElementById("start").value = document.getElementById("departure").value ;
         opener.document.getElementById("finish").value = document.getElementById("destination").value;
+      
+        if(opener.document.getElementById("start").value ==="" || opener.document.getElementById("finish").value===""){
+            alert('출발지와 도착지를 입력해주세요!');
+            if(document.getElementById("departure").value===""){
+            document.getElementById("departure").focus();
+            }
+            if(document.getElementById("destination").value===""){
+                document.getElementById("destination").focus();
+                }
+            return;
+        }
 
-        if(opener.document.getElementById("start").value ===opener.document.getElementById("finish").value){
+        else if(opener.document.getElementById("start").value ===opener.document.getElementById("finish").value){
             alert('출발지와 도착지가 같습니다!')
             document.getElementById("destination").focus();
             return;
@@ -50,6 +61,23 @@ const SearchBus = ({ onSearchResult }) => {
 
      
     }
+
+
+    const change_Departure_Destination = (e) => {
+      let tmp ="";
+        tmp = document.getElementById("departure").value;
+        document.getElementById("departure").value = document.getElementById("destination").value;
+        document.getElementById("destination").value= tmp ;
+        handleSubmit(e);
+        if(document.getElementById("destination").value  ==="" ||document.getElementById("departure").value  ==="" ){
+            alert('출발지와 도착지를 입력해주세요!')
+            document.getElementById("destination").focus();
+            return;
+        }
+
+    };
+
+
 
     const handleToggleTerminal = (terminalName) => {
         if (selectedTerminal === terminalName) {
@@ -137,6 +165,7 @@ const SearchBus = ({ onSearchResult }) => {
                             />
                         </label>
                     </div>
+                    <button onClick={change_Departure_Destination}>출발지 ↔ 도착지</button>
                     <button type="submit" onClick={saveSearchBusForm}>폼 제출</button>
                     <button onClick={handleClose}>나가기</button>
                 </form>

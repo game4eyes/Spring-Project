@@ -1,85 +1,65 @@
 import React, { useState } from 'react';
 import Header from '../../components/Header';
-import BusSeat from '../../components/BusSeat';
 import Article from '../../components/Article';
 import Footer from '../../components/Footer';
 import Ad from '../../components/Ad';
 import '@/css/BusSeat.css';
 import BusList from '../../components/search/list/BusList';
+import { getCityInfo } from '../../api/todoApi';
 
+const initState = {
+    departure: '',
+    destination: '',
+    departureDate: '',
+    returnDate: '',
+    passengerCount: '',
+    isRoundTrip: false,
+    selectedBus: null,
+    isDepartureModalOpen: false 
+};
 
+const Bus = () => {     
 
-    
-const Bus = () => {
-    const [departure, setDeparture] = useState('');
-    const [destination, setDestination] = useState('');
-    const [departureDate, setDepartureDate] = useState('');
-    const [returnDate, setReturnDate] = useState('');
-    const [passengerCount, setPassengerCount] = useState('');
-    const [isRoundTrip, setIsRoundTrip] = useState(false);
-    const [selectedBus, setSelectedBus] = useState(null); // State to track selected bus
+    const [busticket, setBusticket] = useState(initState);
 
-    const [isDepartureModalOpen, setIsDepartureModalOpen] = useState(false);
-    const [isDestinationModalOpen, setIsDestinationModalOpen] = useState(false);
+    const cityInfoClickEvent = () => {
+        console.log("dk");
+        getCityInfo();
+    }
 
-
-   
-        const openNewWindow = () => {
-            // 새로운 윈도우를 엽니다.
-            window.open('http://localhost:5173/search/searchbus', '_blank', 'width=600,height=400');
-        };
-
-    
-    const handleDepartureChange = (e) => {
-        setDeparture(e.target.value);
-    };
-
-    const handleDestinationChange = (e) => {
-        setDestination(e.target.value);
-    };
-
-    const handleDepartureDateChange = (e) => {
-        setDepartureDate(e.target.value);
-    };
-
-    const handleReturnDateChange = (e) => {
-        setReturnDate(e.target.value);
-    };
-
-    const handlePassengerCountChange = (e) => {
-        setPassengerCount(e.target.value);
-    };
-
-    const handleToggleRoundTrip = () => {
-        setIsRoundTrip(!isRoundTrip);
-        if (!isRoundTrip) {
-            setReturnDate('');
-        }
-    };
-
-    const handleBusSelect = (e) => {
-        setSelectedBus(e.target.value);
+    const handleChange = (key, value) => {
+        setBusticket(prevState => ({
+            ...prevState,
+            [key]: value
+        }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log({
-            departure,
-            destination,
-            departureDate,
-            returnDate,
-            passengerCount,
-            isRoundTrip,
-            selectedBus // Include selected bus in the console log
-        });
+        console.log(busticket);
+        setBusticket(prevState => ({
+            ...prevState,
+            isDepartureModalOpen: true
+        }));
     };
 
-    const openDepartureModal = () => {
-        setIsDepartureModalOpen(true);
+    const openPopup = () => {
+        window.open('http://localhost:5173/search/searchbus', '_blank', 'width=600,height=400');
     };
 
-    const closeDepartureModal = () => {
-        setIsDepartureModalOpen(false);
+    const change_Departure_Destination = () => {
+        openPopup();
+
+        let tmp = busticket.departure;
+        setBusticket(prevState => ({
+            ...prevState,
+            departure: busticket.destination,
+            destination: tmp
+        }));
+
+        if (busticket.destination === "" || busticket.departure === "") {
+            alert('출발지와 도착지를 입력해주세요!')
+        }
     };
 
     return (
@@ -87,69 +67,71 @@ const Bus = () => {
             <form onSubmit={handleSubmit}>
                 <Header />
                 <Article title="버스 승차권 예매" body="정보 입력" />
+                <button onClick={cityInfoClickEvent}>클릭</button>
                 <h3>버스 예약</h3>
                 {/* 출발지 검색창 */}
-                <label onClick={openNewWindow}> 
+                <label> 
                     출발지:
                     <input
                         type="text"
-                        value={departure}
-                        onChange={handleDepartureChange}
+                        value={busticket.departure}
+                        onChange={(e) => handleChange('departure', e.target.value)}
                         placeholder="출발지를 입력하세요"
+                        onClick={openPopup}
                         id="start"
                     />
                 </label>
                 <br />
                 {/* 도착지 검색창 */}
-                <label onClick={openNewWindow}>
+                <label>
                     도착지:
                     <input
                         type="text"
-                        value={destination}
-                        onChange={handleDestinationChange}
+                        value={busticket.destination}
+                        onChange={(e) => handleChange('destination', e.target.value)}
                         placeholder="도착지를 입력하세요"
                         id="finish"
+                        onClick={openPopup}
                     />
                 </label>
                 <br />
+                <button type="button" onClick={change_Departure_Destination}>출발지↔도착지</button>
                 <label>
                     가는 날:
-                    <input type="date" value={departureDate} onChange={handleDepartureDateChange} />
+                    <input type="date" value={busticket.departureDate} onChange={(e) => handleChange('departureDate', e.target.value)} />
                 </label>
                 <br />
                 <label>
-                    <input type="checkbox" checked={isRoundTrip} onChange={handleToggleRoundTrip} />
+                    <input type="checkbox" checked={busticket.isRoundTrip} onChange={() => handleChange('isRoundTrip', !busticket.isRoundTrip)} />
                     왕복 여행
                 </label>
                 <br />
-                {isRoundTrip && (
+                {busticket.isRoundTrip && (
                     <label>
                         오는 날:
                         <input
                             type="date"
-                            value={returnDate}
-                            onChange={handleReturnDateChange}
-                            min={departureDate}
-                           
+                            value={busticket.returnDate}
+                            onChange={(e) => handleChange('returnDate', e.target.value)}
+                            min={busticket.departureDate}
                         />
                     </label>
                 )}
-                {!isRoundTrip && (
+                {!busticket.isRoundTrip && (
                     <label>
                         오는 날:
                         <input
                             type="date"
-                            value={returnDate}
-                            onChange={handleReturnDateChange}
-                            min={departureDate}
+                            value={busticket.returnDate}
+                            onChange={(e) => handleChange('returnDate', e.target.value)}
+                            min={busticket.departureDate}
                             disabled
                         />
                     </label>
                 )}
                 <br />
-              
                 버스등급:
-                <select value={selectedBus} onChange={handleBusSelect}>
+                <select value={busticket.selectedBus} onChange={(e) => handleChange('selectedBus', e.target.value)}>
                     <option value="">전체</option>
                     <option value="Bus1">일반</option>
                     <option value="Bus2">시외고속</option>
@@ -160,29 +142,11 @@ const Bus = () => {
                     <option value="Bus7">프리미엄심야우등</option>
                     <option value="Bus8">프리미엄우등(주말)</option>
                     <option value="Bus9">프리미엄심야우등(주말)</option>
-
-                    {/* Add more options as needed */}
                 </select>
                 <br />
-                {/* <PopupExample/> */}
-                {selectedBus && <BusSeat />}
                 <button type="submit">조회하기</button>
             </form>
-           <div>
-
-           <BusList/>
-           <br/>
-           </div>
-            {isDepartureModalOpen && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <span className="close" onClick={closeDepartureModal}>&times;</span>
-                        {/* Render your ResultModal component here */}
-                    </div>
-                   
-                </div>
-            )}
-          
+            {busticket.isDepartureModalOpen && <BusList />}
             <Ad />
             <Footer />
         </div>

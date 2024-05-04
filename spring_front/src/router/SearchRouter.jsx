@@ -5,6 +5,8 @@ import Ticket_Detail from '../Ticket/Ticket_Detail';
 import Ticket_Modify from '../Ticket/Ticket_Modify';
 import Ticket_Cancel from '../Ticket/Ticket_Cancel';
 import SearchBus from '../components/search/SearchBus';
+import BusList from '../components/search/list/BusList';
+import BusSeat from '../components/BusSeat';
 
 
 {/*티켓 교통 정보 검색 라우터*/}
@@ -34,6 +36,13 @@ element : <Suspense fallback={Loading}><Ticket_Modify/></Suspense>
 path    : 'searchairport',    // //search/searchairport
 element : <Suspense fallback={Loading}><Ticket_Cancel/></Suspense>
 },
+
+{
+  path    : 'busseat',    // /search/busseat
+  element : <Suspense fallback={Loading}><BusSeat/></Suspense>
+  },
+
+
     // <Routes>
     //   <Route path="/Ticket_Detail" element={<TicketDetail />} />
     //   <Route path="/Ticket_Modify" element={<TicketModify />} />
