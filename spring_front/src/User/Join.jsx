@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { userJoin } from '../api/todoApi';
 import axios from 'axios';
 import Header from '../components/Header';
 import Ad from '../components/Ad';
@@ -19,7 +20,7 @@ const Join = () => {
 
   const handleJoin = async () => {
     const userData = {
-      id,
+      loginId,
       username,
       password,
       email,
@@ -29,7 +30,7 @@ const Join = () => {
     };
   
     try {
-      const response = await axios.post('/api/Join', userData);
+      const response = await axios.post('/api/user/Join', userData); // 오류터져있음
       if (response.status === 200) {
         alert('회원가입이 완료되었습니다.');
         // 로그인 페이지로 리디렉션
@@ -48,7 +49,7 @@ const Join = () => {
     e.preventDefault();
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length === 0) {
-      handleJoin();     // 가입처리 로직 기억하기
+      handleJoin();     // 가입처리 로직 기억하기   // 오류터져있음 수정필요
       alert('회원가입이 완료되었습니다.');
     } else {
       setErrors(validationErrors);
@@ -84,13 +85,25 @@ const Join = () => {
       <h2>회원가입</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="username">아이디</label>
+          <label htmlFor="loginId">아이디</label>
+          <input
+            type="text"
+            id="loginId"
+            value={username}
+            onChange={(e) => setLoginId(e.target.value)}
+            placeholder="아이디를 입력하세요"
+            required
+          />
+          {errors.username && <div className="error">{errors.username}</div>}
+        </div>
+        <div className="form-group">
+          <label htmlFor="username">이름</label>
           <input
             type="text"
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="아이디를 입력하세요"
+            placeholder="이름을 입력하세요"
             required
           />
           {errors.username && <div className="error">{errors.username}</div>}
@@ -171,7 +184,7 @@ const Join = () => {
             <option value="female">여자</option>
           </select>
         </div>
-        <div className="form-group">
+        <div className="form-group" onSubmit={handleSubmit}>
           <input type="submit" value="가입" />
         </div>
       </form>

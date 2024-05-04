@@ -14,12 +14,11 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
-
     @Column(name = "USER_ID")
+    private Long id;
+
     private String loginId;
 
-    @Column(name = "USERNAME")
     private String username;
 
     private String password;
@@ -27,8 +26,6 @@ public class UserEntity {
     private int phonenum;
     private String gender;
 
-//    @Embedded
-//    private Address address;
 
     @Enumerated(EnumType.STRING)
     private Role role;
