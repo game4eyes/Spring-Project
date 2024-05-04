@@ -6,6 +6,7 @@ import Ad from '../../components/Ad';
 import '@/css/BusSeat.css';
 import BusList from '../../components/search/list/BusList';
 import { getCityInfo } from '../../api/todoApi';
+import Charge from '../../components/Charge';
 
 const initState = {
     departure: '',
@@ -145,6 +146,7 @@ const Bus = () => {
                 </select>
                 <br />
                 <button type="submit">조회하기</button>
+            <Charge id={1}/>
             </form>
             {busticket.isDepartureModalOpen && <BusList />}
             <Ad />
