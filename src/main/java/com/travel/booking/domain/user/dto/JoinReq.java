@@ -2,6 +2,7 @@ package com.travel.booking.domain.user.dto;
 
 import com.travel.booking.domain.user.Role;
 import com.travel.booking.domain.user.entity.UserEntity;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,8 +16,10 @@ public class JoinReq {
     private String password;
 
     private String passwordCheck;
+
     private String username;
     private String email;
+    private String birth;
     private int phonenum;
     private String gender;
 

@@ -50,7 +50,7 @@ const RootRouter = createBrowserRouter([
   //계정 (user)
 
   {
-         path    : 'session',
+         path    : 'api',
         // element : <Suspense fallback={Loading}>0<Login/></Suspense>,
         children: UserRouter()
   },

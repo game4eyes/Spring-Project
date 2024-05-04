@@ -253,7 +253,7 @@ function Home() {
 
     {/* 테스트용 마이페이지 */}
     <div>
-    <Link to = {"/session/mypage"}>마이페이지</Link>   
+    <Link to = {"/api/mypage"}>마이페이지</Link>   
     </div>
   
 
