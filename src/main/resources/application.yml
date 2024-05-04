@@ -10,10 +10,10 @@ spring:
   thymeleaf:
     cache: false
   datasource:
-    url: jdbc:mysql://localhost:3306/jpa
+    url: jdbc:mysql://localhost:3306/springweb
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: khs04140
+    username: admin
+    password: admin
   jpa:
     hibernate:
       ddl-auto: update
