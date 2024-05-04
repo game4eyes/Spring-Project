@@ -1,4 +1,4 @@
-const ChargeContent = () => {
+export const ChargeContent = () => {
 
     const Content = [
         { id:1, title: "버스", body: `
@@ -50,4 +50,7 @@ const ChargeContent = () => {
        `}
     ]
 
+    return Content;
+    
 }
+

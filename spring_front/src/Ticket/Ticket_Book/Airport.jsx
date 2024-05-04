@@ -4,6 +4,7 @@ import Header from '../../components/Header';
 import Article from '../../components/Article';
 import Ad from '../../components/Ad';
 import Footer from '../../components/Footer';
+import Charge from '../../components/Charge';
 
 
 
@@ -144,6 +145,8 @@ const Airport = () => {
             <br /> */}
 
             <button type="submit">예매하기</button>
+        
+        <Charge id={3}/>
         </form>
         <Ad/>
         <Footer />
