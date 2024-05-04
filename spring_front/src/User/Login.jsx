@@ -15,8 +15,8 @@ const LoginPage = () => {
   const [quickPassword, setQuickPassword] = useState('');
 
   // 로그인 처리@@@@@@@@
-  const handleLogin = (userid, password) => {
-    userid, password.preventDefault();
+  const handleLogin = (loginId, password) => {
+    loginId, password.preventDefault();
 
   };
 
