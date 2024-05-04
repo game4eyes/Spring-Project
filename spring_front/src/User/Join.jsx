@@ -7,7 +7,7 @@ import Footer from '../components/Footer';
 import Article from '../components/Article';
 
 const Join = () => {
-  const [id, setId] = useState('');
+  const [loginId, setLoginId] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
@@ -59,11 +59,11 @@ const Join = () => {
   const validateForm = () => {
     const errors = {};
     if (!username.trim()) {
-      errors.username = '아이디를 입력하세요.';
-    } else if (username.trim().length < 7) {
-      errors.username = '아이디는 7자리 이상이어야 합니다.';
-    } else if (/\s/.test(username.trim())) { // 공백 포함 여부 검사
-      errors.username = '아이디에 공백을 포함할 수 없습니다.';
+      errors.loginId = '아이디를 입력하세요.';
+    } else if (loginId.trim().length < 7) {
+      errors.loginId = '아이디는 7자리 이상이어야 합니다.';
+    } else if (/\s/.test(loginId.trim())) { // 공백 포함 여부 검사
+      errors.loginId = '아이디에 공백을 포함할 수 없습니다.';
     }
     if (!password) {
       errors.password = '비밀번호를 입력하세요.';
@@ -89,12 +89,12 @@ const Join = () => {
           <input
             type="text"
             id="loginId"
-            value={username}
+            value={loginId}
             onChange={(e) => setLoginId(e.target.value)}
             placeholder="아이디를 입력하세요"
             required
           />
-          {errors.username && <div className="error">{errors.username}</div>}
+          {errors.loginId && <div className="error">{errors.loginId}</div>}
         </div>
         <div className="form-group">
           <label htmlFor="username">이름</label>
@@ -185,7 +185,7 @@ const Join = () => {
           </select>
         </div>
         <div className="form-group" onSubmit={handleSubmit}>
-          <input type="submit" value="가입" />
+          <input type="submit" value="가입"/>
         </div>
       </form>
       <Ad/>
