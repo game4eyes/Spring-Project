@@ -1,8 +1,12 @@
 import axios from "axios";
 
 // 서버 호스트 설정
-export const API_SERVER_HOST = 'http://localhost:9090'; // 서버 주소
-
+export const API_SERVER_HOST = 'http://ec2-43-201-38-69.ap-northeast-2.compute.amazonaws.com:9090'; // 서버 주소
+const apiPrefix = `${API_SERVER_HOST}/api`
+// 버스
+const busPrefix = `${apiPrefix}/bus`;
+// 도시
+const cityPrefix =`${apiPrefix}/city`;
 // 사용자 관련 엔드포인트
 const userPrefix = `${API_SERVER_HOST}/api/user`;
 
@@ -52,3 +56,14 @@ export const getSessionList = async () => {
     const res = await axios.get(`${userPrefix}/session-list`); // 세션 리스트 엔드포인트
     return res.data;
 };
+
+export const getCityInfo = async () => {
+    const res = await  axios.get(`${cityPrefix}`);
+    return res.data;
+}
+
+export const getNearByCity = async () => {
+    const res = await axios.get(`${busPrefix}/1000`);
+    console.log(res.data);
+    return res.data;
+}
