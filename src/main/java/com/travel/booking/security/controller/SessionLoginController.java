@@ -51,7 +51,7 @@ public class SessionLoginController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute LoginReq loginRequest, BindingResult bindingResult,
+    public String login(@RequestBody LoginReq loginRequest, BindingResult bindingResult,
                         HttpServletRequest httpServletRequest) {
         UserEntity user = userService.login(loginRequest);
 
@@ -66,12 +66,12 @@ public class SessionLoginController {
         // 세션 생성 및 관리
         httpServletRequest.getSession().invalidate(); // 기존 세션 파기
         HttpSession session = httpServletRequest.getSession(true); // 새로운 세션 생성
-        session.setAttribute("userId", user.getId()); // 세션에 사용자 ID 저장
+        session.setAttribute("loginId", user.getLoginId()); // 세션에 사용자 ID 저장
         session.setMaxInactiveInterval(1800); // 세션 유효 시간 30분
 
         sessionList.put(session.getId(), session); // 세션을 리스트에 추가
 
-        return "redirect:/session-login"; // 성공 시 리디렉션
+        return "redirect:/"; // 성공 시 리디렉션
     }
 
     @GetMapping("/logout") // 로그아웃 처리
