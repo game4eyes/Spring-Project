@@ -26,6 +26,7 @@ import TicketRouter from './TicketRouter';
 import NavBarRouter from './NavBarRouter';
 import UserRouter from './UserRouter';
 import AdRouter from './AdRouter';
+import SearchRouter from './SearchRouter';
 
 
 const Loading = <div className={'bg-purple-500'}>Loading</div>;
@@ -93,7 +94,7 @@ const RootRouter = createBrowserRouter([
 
   
 {
-path    : 'ticketbook',
+path    : 'ticketbook',       // '/ticketbook'
 //element : <Suspense fallback={Loading}>0<Bus/></Suspense>,
 //element 주석하니까 페이지 이동됨
 children: TicketBookRouter()
@@ -116,7 +117,7 @@ children: TicketBookRouter()
 //티켓  (ticket)
 
 {
-  path    : 'ticket',
+  path    : 'ticket',         //  /ticket
   //element : <Suspense fallback={Loading}>0<Ticket_Detail/></Suspense>,
   children: TicketRouter()
   },
@@ -170,10 +171,15 @@ children: TicketBookRouter()
 
 
 {
-  path    : 'ad',
+  path    : 'ad',     //  /ad
   children : AdRouter()
 },
 
+
+{
+  path    : 'search',     //  /search
+  children : SearchRouter()
+},
 
 ]);
 
