@@ -6,6 +6,7 @@ import Footer from '../../components/Footer';
 import Ad from '../../components/Ad';
 import '@/css/BusSeat.css';
 import BusList from '../../components/search/list/BusList';
+import Charge from '../../components/Charge';
 
 
 
@@ -167,6 +168,7 @@ const Bus = () => {
                 {/* <PopupExample/> */}
                 {selectedBus && <BusSeat />}
                 <button type="submit">조회하기</button>
+            <Charge id={1}/>
             </form>
            <div>
 

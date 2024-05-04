@@ -3,6 +3,7 @@ import Header from '../../components/Header';
 import Article from '../../components/Article';
 import Ad from '../../components/Ad';
 import Footer from '../../components/Footer';
+import Charge from '../../components/Charge';
 //import SearchInput_Train from './components/SearchInput_Train';
 
 
@@ -204,6 +205,8 @@ const Train = () => {
             </label> */}
             <br />
             <button type="submit">예매하기</button>
+            <Charge id={2}/>
+
         </form>
          <Ad/>
          <Footer />
