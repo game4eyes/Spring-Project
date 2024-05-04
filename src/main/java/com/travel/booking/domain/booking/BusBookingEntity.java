@@ -1,5 +1,6 @@
 package com.travel.booking.domain.booking;
 
+import com.travel.booking.domain.odsay.bus.DTO.BusType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,6 @@ public class BusBookingEntity {
     private String arrBusStation;   // 도착 버스역
 
     @Enumerated(EnumType.STRING)
-    private BusGrade grade;         // 버스 등급
+    private BusType grade;         // 버스 등급
 
 }
