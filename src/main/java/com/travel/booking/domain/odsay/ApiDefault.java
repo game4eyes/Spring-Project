@@ -1,6 +1,8 @@
 package com.travel.booking.domain.odsay;
 
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
@@ -53,6 +55,17 @@ public class ApiDefault {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public JSONObject getResultJSON(String result) {
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject jsonObject = (JSONObject) parser.parse(result);
+            return (JSONObject) jsonObject.get("result");
+        } catch (ParseException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
