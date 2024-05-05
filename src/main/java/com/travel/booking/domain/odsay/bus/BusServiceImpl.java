@@ -78,12 +78,7 @@ public class BusServiceImpl implements BusService{
                     busTerminalDTO.setStationName((String) busTerminalJson.get("stationName"));
                     JSONArray jsonArray = (JSONArray) busTerminalJson.get("destinationTerminals");
                     for (int j = 0; j < jsonArray.size(); j++) {
-                        JSONObject destinationTerminalJson = (JSONObject) jsonArray.get(j);
-                        StationDTO stationDTO = new StationDTO();
-                        stationDTO.setStationID((Long) destinationTerminalJson.get("stationID"));
-                        stationDTO.setStationName((String) destinationTerminalJson.get("stationName"));
-                        stationDTO.setX((Double) destinationTerminalJson.get("x"));
-                        stationDTO.setY((Double) destinationTerminalJson.get("y"));
+                        StationDTO stationDTO = getStationDTO(jsonArray, j);
                         stationDTOList.add(stationDTO);
                     }
                     busTerminalDTO.setStationDTO(stationDTOList);
@@ -94,6 +89,16 @@ public class BusServiceImpl implements BusService{
             throw new RuntimeException(e);
         }
         return busTerminalDTOList;
+    }
+
+    private StationDTO getStationDTO(JSONArray jsonArray, int j) {
+        JSONObject destinationTerminalJson = (JSONObject) jsonArray.get(j);
+        StationDTO stationDTO = new StationDTO();
+        stationDTO.setStationID((Long) destinationTerminalJson.get("stationID"));
+        stationDTO.setStationName((String) destinationTerminalJson.get("stationName"));
+        stationDTO.setX((Double) destinationTerminalJson.get("x"));
+        stationDTO.setY((Double) destinationTerminalJson.get("y"));
+        return stationDTO;
     }
 
     @Override
