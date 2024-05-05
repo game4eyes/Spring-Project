@@ -51,16 +51,16 @@ function Header() {
             <Link to={"/Mypage"}>마이페이지</Link> |
             <Link to="/" onClick={handleLogout}>로그아웃</Link>
             <button type="button" className="btn btn-success" style={{ marginRight: '10px', marginBottom: '15px'}}>
-              <Link to="/session/mypage" style={{ color: 'white', textDecoration: 'none' }}>예약정보</Link>
+              <Link to="/api/user/mypage" style={{ color: 'white', textDecoration: 'none' }}>예약정보</Link>
             </button>
           </div>
         ) : (
             <div className="Login_Signup" align="right"> 
             <button type="button" className="btn btn-danger" style={{ marginRight: '10px', marginBottom: '15px'}}>
-              <Link to="/session/login" style={{ color: 'white', textDecoration: 'none' }}>로그인</Link>
+              <Link to="/api/user/login" style={{ color: 'white', textDecoration: 'none' }}>로그인</Link>
             </button>      
             <button type="button" className="btn btn-primary" style={{ marginRight: '10px', marginBottom: '15px'}}>
-              <Link to="/session/join" style={{ color: 'white', textDecoration: 'none' }}>회원가입</Link>
+              <Link to="/api/user/join" style={{ color: 'white', textDecoration: 'none' }}>회원가입</Link>
             </button> 
 
 
@@ -69,7 +69,7 @@ function Header() {
             </button>
 
             <button type="button" className="btn btn-success" style={{ marginRight: '10px', marginBottom: '15px'}}>
-              <Link to="/session/mypage" style={{ color: 'white', textDecoration: 'none' }}>마이페이지(테스트)</Link>
+              <Link to="/api/user/mypage" style={{ color: 'white', textDecoration: 'none' }}>마이페이지(테스트)</Link>
             </button> 
           </div>
           

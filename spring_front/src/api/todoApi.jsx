@@ -10,6 +10,13 @@ const cityPrefix =`${apiPrefix}/city`;
 // 사용자 관련 엔드포인트
 const userPrefix = `${API_SERVER_HOST}/api/user`;
 
+const axoisConfig = {
+    headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+    }
+}
+
 // // 비동기 통신 예제
 // // 특정 엔드포인트에 대한 GET 요청 예제
 // export const getOne = async (id) => {
@@ -28,7 +35,7 @@ const userPrefix = `${API_SERVER_HOST}/api/user`;
 
 // 회원가입 요청
 export const userJoin = async (userData) => {
-    const res = await axios.post(`${userPrefix}/join`, userData); // 회원가입 엔드포인트
+    const res = await axios.post(`${userPrefix}/join`, userData, axoisConfig); // 회원가입 엔드포인트
     return res.data;
 };
 

@@ -7,10 +7,10 @@ import Footer from '../components/Footer';
 import Article from '../components/Article';
 
 const Join = () => {
-  const [id, setId] = useState('');
+  const [loginId, setLoginId] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [password2, setPassword2] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
   // const [address, setAddress] = useState('');
   const [birth, setBirth] = useState('');
   const [email, setEmail] = useState('');
@@ -18,30 +18,31 @@ const Join = () => {
   const [gender, setGender] = useState('male');
   const [errors, setErrors] = useState({});
 
+  const userData = {
+    loginId,
+    username,
+    password,
+    passwordCheck,
+    email,
+    birth,
+    phonenum,
+    gender
+  };
+
   const handleJoin = async () => {
-    const userData = {
-      loginId,
-      username,
-      password,
-      email,
-      phonenum,
-      // address,
-      gender
-    };
-  
+    
     try {
-      const response = await axios.post('/api/user/Join', userData); // 오류터져있음
-      if (response.status === 200) {
-        alert('회원가입이 완료되었습니다.');
-        // 로그인 페이지로 리디렉션
-        window.location.href = '/login';
-      }
+      console.log(userData);
+      await userJoin(userData); // 서버로 요청 보내기
+      alert('회원가입이 완료되었습니다.');
+      navigate('/login'); // 리디렉션
     } catch (error) {
-      if (error.response) {
-        setErrors({ form: error.response.data.message });
-      } else {
-        setErrors({ form: '회원가입 중 오류가 발생했습니다. 다시 시도해주세요.' });
+      let errorMessage = '회원가입 중 오류가 발생했습니다. 다시 시도해주세요.';
+      if (error.response && error.response.status === 400) {
+        errorMessage = error.response.data.message || errorMessage; // 명확한 오류 메시지
       }
+      setErrors({ form: errorMessage }); // 오류 메시지 설정
+      console.error(errorMessage); // 오류 로그
     }
   };
 
@@ -58,18 +59,18 @@ const Join = () => {
 
   const validateForm = () => {
     const errors = {};
-    if (!username.trim()) {
-      errors.username = '아이디를 입력하세요.';
-    } else if (username.trim().length < 7) {
-      errors.username = '아이디는 7자리 이상이어야 합니다.';
-    } else if (/\s/.test(username.trim())) { // 공백 포함 여부 검사
-      errors.username = '아이디에 공백을 포함할 수 없습니다.';
+    if (!loginId.trim()) {
+      errors.loginId = '아이디를 입력하세요.';
+    } else if (loginId.trim().length < 7) {
+      errors.loginId = '아이디는 7자리 이상이어야 합니다.';
+    } else if (/\s/.test(loginId.trim())) { // 공백 포함 여부 검사
+      errors.loginId = '아이디에 공백을 포함할 수 없습니다.';
     }
     if (!password) {
       errors.password = '비밀번호를 입력하세요.';
     }
-    if (password !== password2) {
-      errors.password2 = '비밀번호가 일치하지 않습니다.';
+    if (password !== passwordCheck) {
+      errors.passwordCheck = '비밀번호가 일치하지 않습니다.';
     }
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
@@ -89,12 +90,12 @@ const Join = () => {
           <input
             type="text"
             id="loginId"
-            value={username}
+            value={loginId}
             onChange={(e) => setLoginId(e.target.value)}
             placeholder="아이디를 입력하세요"
             required
           />
-          {errors.username && <div className="error">{errors.username}</div>}
+          {errors.loginId && <div className="error">{errors.loginId}</div>}
         </div>
         <div className="form-group">
           <label htmlFor="username">이름</label>
@@ -121,16 +122,16 @@ const Join = () => {
           {errors.password && <div className="error">{errors.password}</div>}
         </div>
         <div className="form-group">
-          <label htmlFor="password2">비밀번호 확인</label>
+          <label htmlFor="passwordCheck">비밀번호 확인</label>
           <input
             type="password"
-            id="password2"
-            value={password2}
-            onChange={(e) => setPassword2(e.target.value)}
+            id="passwordCheck"
+            value={passwordCheck}
+            onChange={(e) => setPasswordCheck(e.target.value)}
             placeholder="비밀번호를 다시 입력하세요"
             required
           />
-          {errors.password2 && <div className="error">{errors.password2}</div>}
+          {errors.passwordCheck && <div className="error">{errors.passwordCheck}</div>}
         </div>
         {/* <div className="form-group">
           <label htmlFor="address">주소</label>
@@ -185,7 +186,7 @@ const Join = () => {
           </select>
         </div>
         <div className="form-group" onSubmit={handleSubmit}>
-          <input type="submit" value="가입" />
+          <input type="submit" value="가입"/>
         </div>
       </form>
       <Ad/>

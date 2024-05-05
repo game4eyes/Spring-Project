@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,7 +21,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-@Controller
+@RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequiredArgsConstructor
 @RequestMapping("/api/user") // 고유한 경로로 수정
 public class SessionLoginController {
@@ -29,28 +31,26 @@ public class SessionLoginController {
 
     @PostMapping("/join") // 경로 지정
     @ResponseBody
-    public String join(@Valid @ModelAttribute JoinReq req, BindingResult bindingResult) {
-
-        // id 중복체크
-        if (userService.checkLoginIdDuplicate(req.getLoginId())) {
-            bindingResult.addError(new FieldError("joinReq", "loginId", "로그인 아이디가 중복됩니다"));
+    public ResponseEntity<?> join(@Valid @RequestBody JoinReq req, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) { // 유효성 검사 실패
+            return ResponseEntity.badRequest().body(bindingResult.getFieldError().getDefaultMessage());
         }
 
-        // password와 password check가 같은지 확인
-        if (!req.getPassword().equals(req.getPasswordCheck())) {
-            bindingResult.addError(new FieldError("joinReq", "password", "비밀번호가 일치하지 않습니다"));
+        if (req.getPassword() == null || req.getPasswordCheck() == null) { // Null 체크
+            System.out.println(req.getPassword());
+            return ResponseEntity.badRequest().body("비밀번호는 필수입니다.");
         }
 
-        if (bindingResult.hasErrors()) {
-            return "join"; // 유효성 검사에 실패한 경우
+        if (!req.getPassword().equals(req.getPasswordCheck())) { // 비밀번호 일치 여부
+            return ResponseEntity.badRequest().body("비밀번호가 일치하지 않습니다.");
         }
 
-        userService.join(req); // 가입 처리
-        return "redirect:/login"; // 성공 시 리디렉션
+        userService.join(req); // 회원가입 처리
+        return ResponseEntity.ok("회원가입이 완료되었습니다.");
+
     }
 
     @PostMapping("/login")
-    @ResponseBody
     public String login(@ModelAttribute LoginReq loginRequest, BindingResult bindingResult,
                         HttpServletRequest httpServletRequest) {
         UserEntity user = userService.login(loginRequest);

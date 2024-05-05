@@ -6,6 +6,7 @@ import ResetPassword from '../User/ResetPassword';
 import { Suspense } from 'react';
 import FindUserId from '../User/FindUserId';
 import MyPageModify from '../User/MypageModify';
+import UserRouter from './UserRouter';
 
 
 
@@ -16,39 +17,13 @@ const Loading = <div className={'bg-purple-500'}>Loading</div>;
 
 
 {/*계정 라우터  (부모 URI :/user )   */ }
-const UserRouter = () => {
+const ApiRouter = () => {
   return [
 
-  {
-    path    : 'login',     //   '/api/user/login'
-    element : <Suspense fallback={Loading}><Login/></Suspense>,
-  },
-  {
-    path    : 'join',         //   '/api/user/join'
-    element : <Suspense fallback={Loading}><Join/></Suspense>
-},
-{
-    path    : 'mypage',          //   '/api/user/mypage'
-    element : <Suspense fallback={Loading}><MyPage/></Suspense>
-},
-{
-    path    : 'finduserid',     //   '/api/user/finduserid'
-    element : <FindUserId/>
-    //children: todoRouter()
-},
-
-{
-  path    : 'mypagemodify',
-  element : <Suspense fallback={Loading}><MyPageModify/></Suspense>
-},
-// {
-//   path    : 'FindUserId',
-//   element : <FindUserId/>
-// },
-
-{
-path    : 'resetpassword',
-element : <ResetPassword/>
+    {
+      path    : 'user',
+     // element : <Suspense fallback={Loading}>0<Login/></Suspense>,
+     children: UserRouter()
 },
 
     // <Routes>
@@ -61,4 +36,4 @@ element : <ResetPassword/>
   ]
 };
 
-export default UserRouter;
+export default ApiRouter;
