@@ -30,7 +30,6 @@ public class SessionLoginController {
     private final UserService userService;
 
     @PostMapping("/join") // 경로 지정
-    @ResponseBody
     public ResponseEntity<?> join(@Valid @RequestBody JoinReq req, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) { // 유효성 검사 실패
             return ResponseEntity.badRequest().body(bindingResult.getFieldError().getDefaultMessage());
@@ -51,27 +50,34 @@ public class SessionLoginController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginReq loginRequest, BindingResult bindingResult,
-                        HttpServletRequest httpServletRequest) {
+    @ResponseBody // JSON 응답을 반환하려면 @ResponseBody 사용
+    public ResponseEntity<?> login(@RequestBody LoginReq loginRequest, BindingResult bindingResult,
+                                    HttpServletRequest httpServletRequest) {
+        // 비어있는 값 검증
+        if (loginRequest.getLoginId() == null || loginRequest.getPassword() == null) {
+            return ResponseEntity.badRequest().body("로그인 아이디와 비밀번호는 필수입니다.");
+        }
+
+        // 사용자 로그인 시도
         UserEntity user = userService.login(loginRequest);
 
         if (user == null) { // 로그인 실패 시
-            bindingResult.reject("loginFail", "로그인 아이디 또는 비밀번호가 틀렸습니다.");
+            return ResponseEntity.status(401).body("로그인 아이디 또는 비밀번호가 틀렸습니다.");
         }
 
-        if (bindingResult.hasErrors()) { // 오류가 있으면 로그인 페이지로
-            return "login";
+        if (bindingResult.hasErrors()) { // 유효성 검증 실패
+            return ResponseEntity.badRequest().body("로그인에 실패했습니다.");
         }
 
-        // 세션 생성 및 관리
-        httpServletRequest.getSession().invalidate(); // 기존 세션 파기
+        // 세션 생성 및 사용자 정보 저장
         HttpSession session = httpServletRequest.getSession(true); // 새로운 세션 생성
-        session.setAttribute("loginId", user.getLoginId()); // 세션에 사용자 ID 저장
+        session.setAttribute("loginId", user.getLoginId()); // 세션에 로그인 ID 저장
         session.setMaxInactiveInterval(1800); // 세션 유효 시간 30분
 
-        sessionList.put(session.getId(), session); // 세션을 리스트에 추가
+        sessionList.put(session.getId(), session); // 세션 리스트에 추가
 
-        return "redirect:/"; // 성공 시 리디렉션
+        // 로그인 성공 시 응답
+        return ResponseEntity.ok("로그인에 성공했습니다.");
     }
 
     @GetMapping("/logout") // 로그아웃 처리

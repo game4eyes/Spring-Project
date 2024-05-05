@@ -15,9 +15,9 @@ const LoginPage = () => {
   const [quickPassword, setQuickPassword] = useState('');
 
   // 로그인 처리
-  const handleLogin = (e) => {
-    e.preventDefault(); // 이벤트 기본 동작 방지
-    console.log('로그인 로직 실행'); // 실제 로그인 로직 추가
+  const handleLogin = (loginId, password) => {
+    loginId, password.preventDefault();
+
   };
 
   // 비회원 예매 확인 처리
