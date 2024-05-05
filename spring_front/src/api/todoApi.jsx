@@ -41,7 +41,7 @@ export const userJoin = async (userData) => {
 
 // 로그인 요청
 export const userLogin = async (loginData) => {
-    const res = await axios.post(`${userPrefix}/login`, loginData); // 로그인 엔드포인트
+    const res = await axios.post(`${userPrefix}/login`, loginData, axoisConfig); // 로그인 엔드포인트
     return res.data;
 };
 
