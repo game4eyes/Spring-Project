@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 //import { BrowserRouter, Route, Routes, createBrowserRouter } from 'react-router-dom';
 //import Home from '../Home';
-import Login from '../User/Login';
+import Login from '../User/LoginPage';
 import Join from '../User/Join';
 import FindUserId from '../User/FindUserId';
 import MyPage from '../User/Mypage';
@@ -24,9 +24,10 @@ import { Outlet, createBrowserRouter } from 'react-router-dom';
 import TicketBookRouter from './TicketBookRouter';
 import TicketRouter from './TicketRouter';
 import NavBarRouter from './NavBarRouter';
-import UserRouter from './UserRouter';
+import UserRouter from './ApiRouter';
 import AdRouter from './AdRouter';
 import SearchRouter from './SearchRouter';
+import ApiRouter from './ApiRouter';
 
 
 const Loading = <div className={'bg-purple-500'}>Loading</div>;
@@ -52,7 +53,7 @@ const RootRouter = createBrowserRouter([
   {
          path    : 'api',
         // element : <Suspense fallback={Loading}>0<Login/></Suspense>,
-        children: UserRouter()
+        children: ApiRouter()
   },
 
 

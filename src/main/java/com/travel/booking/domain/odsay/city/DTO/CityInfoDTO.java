@@ -1,11 +1,10 @@
-package com.travel.booking.domain.odsay.city;
+package com.travel.booking.domain.odsay.city.DTO;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class CityDTO {
+public class CityInfoDTO {
     private String cityCode;
     private String cityName;
-    private String cityRegion;
 }

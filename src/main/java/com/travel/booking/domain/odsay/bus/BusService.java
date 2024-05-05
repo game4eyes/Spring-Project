@@ -2,13 +2,13 @@ package com.travel.booking.domain.odsay.bus;
 
 import com.travel.booking.domain.odsay.bus.DTO.BusOperationInfoDTO;
 import com.travel.booking.domain.odsay.bus.DTO.BusTerminalDTO;
-import org.springframework.data.repository.query.Param;
+import com.travel.booking.domain.odsay.bus.DTO.TerminalTypeDTO;
 
 import java.util.List;
 
 public interface BusService {
     // 도시코드 내 고속 & 시외 버스 터미널 정보
-    List<BusTerminalDTO> getNearBusTerminalList(String cityCode);
+    TerminalTypeDTO getNearBusTerminalList(String cityCode);
     // terminalName의 값이 하나라도 들어가는 터미널의 정보를 나열
     // 출발지 및 도착지 정보 획득 가능
     // 지도에 마커로 표시할 것

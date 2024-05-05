@@ -16,7 +16,7 @@ spring:
     password: khs04140
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
