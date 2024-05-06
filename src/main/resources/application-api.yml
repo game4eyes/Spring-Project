@@ -1,0 +1,19 @@
+odsay:
+  api:
+    key: udafz+jiIJ+7WzOz3HK/rKfN/N+Tsq/4gZCW5gKPH2s
+    etcKey: 2iXbd+A1QNuct1FsWAQ0ehHGJ/bRKmU5v4UKzx4PaNM
+    requestURI: "https://api.odsay.com/v1/api"
+
+payment:
+  toss:
+    test_client_api_key: test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb
+    test_secrete_api_key: test_sk_ma60RZblrqoMxPQzAEkx3wzYWBn1
+    success_url: "http://localhost:9090/api/v1/payments/toss/success"
+    fail_url: "http://localhost:9090/api/v1/payments/toss/fail"
+
+kakao:
+  map:
+    native: 0f3ea04d1a7d8c3e977b062dac71d300
+    restapi : bc3ed4119b377676b5f84d581f34fa07
+    javascript : 0be4790fe94a8156b6b1e6e2825b1c23
+    admin: 235baf7f7e4f9f7bc112e28a49236bd6
