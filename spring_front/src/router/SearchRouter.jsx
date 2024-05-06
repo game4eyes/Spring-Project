@@ -42,6 +42,18 @@ element : <Suspense fallback={Loading}><Ticket_Cancel/></Suspense>
   element : <Suspense fallback={Loading}><BusSeat/></Suspense>
   },
 
+  {
+    path    : 'searchbus/intercity',    // /search/searchbus/intercity (시외)
+    element : <Suspense fallback={Loading}><SearchBus/></Suspense>     
+    },
+
+    {
+      path    : 'searchbus/express',    // /search/searchbus/express (고속)
+      element : <Suspense fallback={Loading}><SearchBus/></Suspense>     
+      },
+  
+
+
 
     // <Routes>
     //   <Route path="/Ticket_Detail" element={<TicketDetail />} />

@@ -1,7 +1,7 @@
 // use navigate 쓸 수 있을 때 각 Airport, Bus, Train에 연결시키기
 
 import React, { useState } from 'react';
-import LoginBox from '../../User/LoginBox'; // 로그인 박스 컴포넌트
+//import LoginBox from '../../User/LoginBox'; // 로그인 박스 컴포넌트
 
 const TicketBookingPage = () => {
   const [email, setEmail] = useState('');
