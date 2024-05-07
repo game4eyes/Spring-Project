@@ -49,6 +49,8 @@ function BusSeat() {
   const renderSeatButtons = () => {
     const seatButtons = [];
     let count=0;      //의자를 역순으로 카운트할 때 세는 변수
+
+    
     for (let i = 45; i <= 49; i++) {    //의자에 대한 변수 
       seatButtons.push(
         <SeatButton
@@ -146,24 +148,34 @@ function BusSeat() {
   const handleSubmit = (event) => {
     event.preventDefault();
      alert(`예약 완료: ${selectedSeats.join(', ') || '선택된 좌석이 없습니다'}`);
+     window.close();
   
   };
 
   return (
     <div>
-        <br/>
+      <br />
       {/* 좌석 선택 */}
       <form onSubmit={handleSubmit}>
         <p>선택 좌석: {selectedSeats.join(', ') || 'None'}</p>
+   
         <div>
-          {renderSeatButtons()}
+          <div>
+        <h5 style={{ textAlign: "left" }}>뒤</h5>
         </div>
+          {/* Render your seat buttons here */}
+          {renderSeatButtons()}
+          <h5 style={{ textAlign: "left" }}>앞</h5>
+        <h5 style={{ textAlign: "left" }}>운전자</h5>
+        </div>
+     
         <button type="submit">선택완료</button>
       </form>
       {/* Submit button outside of the form */}
       {/* <button form="seatForm" type="submit">예약</button> */}
     </div>
   );
+  
 }
 
 export default BusSeat;
