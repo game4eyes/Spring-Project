@@ -19,12 +19,37 @@ const SearchBus = ({ onSearchResult }) => {
 
     const handleBusTypeChange = (e) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
         setBusType(e.target.value);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const searchResult = `출발지: ${departure}, 도착지: ${destination}, 버스 유형: ${busType}`;
+=======
+        const selectedValue = e.target.value;
+        setBusType(selectedValue);
+        
+        // Redirect based on bus type
+        // if (selectedValue === '고속') { 
+        //     setBusType('고속');
+        //     window.location.href = 'http://localhost:5173/search/searchbus/express';
+           
+        // } else if (selectedValue === '시외') {
+        //     setBusType('시외');
+        //     window.location.href = 'http://localhost:5173/search/searchbus/intercity';
+            
+        // } else if (selectedValue === '유형 선택') {
+        //     window.location.href = 'http://localhost:5173/search/searchbus';
+        //     setBusType('유형 선택');
+        // }
+    };
+    
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // const searchResult = `출발지: ${departure}, 도착지: ${destination}, 버스 유형: ${busType}`;
+>>>>>>> parent of 87bf299 (05.06 ver)
 =======
         const selectedValue = e.target.value;
         setBusType(selectedValue);
@@ -65,6 +90,7 @@ const SearchBus = ({ onSearchResult }) => {
         opener.document.getElementById("start").value = document.getElementById("departure").value ;
         opener.document.getElementById("finish").value = document.getElementById("destination").value;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         if(opener.document.getElementById("start").value ===opener.document.getElementById("finish").value){
             alert('출발지와 도착지가 같습니다!')
@@ -77,6 +103,8 @@ const SearchBus = ({ onSearchResult }) => {
      
     }
 =======
+=======
+>>>>>>> parent of 87bf299 (05.06 ver)
       
         if(opener.document.getElementById("start").value ==="" || opener.document.getElementById("finish").value===""){
             alert('출발지와 도착지를 입력해주세요!');
@@ -116,6 +144,9 @@ const SearchBus = ({ onSearchResult }) => {
     };
 
 
+<<<<<<< HEAD
+>>>>>>> parent of 87bf299 (05.06 ver)
+=======
 >>>>>>> parent of 87bf299 (05.06 ver)
 
     const handleToggleTerminal = (terminalName) => {
@@ -205,6 +236,10 @@ const SearchBus = ({ onSearchResult }) => {
                         </label>
                     </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+                    <button onClick={change_Departure_Destination}>출발지 ↔ 도착지</button>
+>>>>>>> parent of 87bf299 (05.06 ver)
 =======
                     <button onClick={change_Departure_Destination}>출발지 ↔ 도착지</button>
 >>>>>>> parent of 87bf299 (05.06 ver)

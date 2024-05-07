@@ -64,6 +64,30 @@ const Bus = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(busticket);
+        setBusticket(prevState => ({
+            ...prevState,
+            isDepartureModalOpen: true
+        }));
+    };
+
+    const openPopup = () => {
+        window.open('http://localhost:5173/search/searchbus', '_blank', 'width=600,height=400');
+    };
+
+    const change_Departure_Destination = () => {
+        openPopup();
+
+        let tmp = busticket.departure;
+        setBusticket(prevState => ({
+            ...prevState,
+            departure: busticket.destination,
+            destination: tmp
+        }));
+
+        if (busticket.destination === "" || busticket.departure === "") {
+            alert('출발지와 도착지를 입력해주세요!')
+        }
         console.log({
             departure,
             destination,
