@@ -79,8 +79,10 @@ const Bus = () => {
         setIsDepartureModalOpen(true);
     };
 
+
     const closeDepartureModal = () => {
         setIsDepartureModalOpen(false);
+
     };
 
     return (

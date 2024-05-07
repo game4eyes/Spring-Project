@@ -18,12 +18,37 @@ const SearchBus = ({ onSearchResult }) => {
     };
 
     const handleBusTypeChange = (e) => {
+<<<<<<< HEAD
         setBusType(e.target.value);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const searchResult = `출발지: ${departure}, 도착지: ${destination}, 버스 유형: ${busType}`;
+=======
+        const selectedValue = e.target.value;
+        setBusType(selectedValue);
+        
+        // Redirect based on bus type
+        // if (selectedValue === '고속') { 
+        //     setBusType('고속');
+        //     window.location.href = 'http://localhost:5173/search/searchbus/express';
+           
+        // } else if (selectedValue === '시외') {
+        //     setBusType('시외');
+        //     window.location.href = 'http://localhost:5173/search/searchbus/intercity';
+            
+        // } else if (selectedValue === '유형 선택') {
+        //     window.location.href = 'http://localhost:5173/search/searchbus';
+        //     setBusType('유형 선택');
+        // }
+    };
+    
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // const searchResult = `출발지: ${departure}, 도착지: ${destination}, 버스 유형: ${busType}`;
+>>>>>>> parent of 87bf299 (05.06 ver)
         setResult(searchResult);
         onSearchResult(searchResult); // 검색 결과를 부모 컴포넌트에 전달
     };
@@ -39,6 +64,7 @@ const SearchBus = ({ onSearchResult }) => {
     const saveSearchBusForm =() =>{
         opener.document.getElementById("start").value = document.getElementById("departure").value ;
         opener.document.getElementById("finish").value = document.getElementById("destination").value;
+<<<<<<< HEAD
 
         if(opener.document.getElementById("start").value ===opener.document.getElementById("finish").value){
             alert('출발지와 도착지가 같습니다!')
@@ -50,6 +76,47 @@ const SearchBus = ({ onSearchResult }) => {
 
      
     }
+=======
+      
+        if(opener.document.getElementById("start").value ==="" || opener.document.getElementById("finish").value===""){
+            alert('출발지와 도착지를 입력해주세요!');
+            if(document.getElementById("departure").value===""){
+            document.getElementById("departure").focus();
+            }
+            if(document.getElementById("destination").value===""){
+                document.getElementById("destination").focus();
+                }
+            return;
+        }
+
+        else if(opener.document.getElementById("start").value ===opener.document.getElementById("finish").value){
+            alert('출발지와 도착지가 같습니다!')
+            document.getElementById("destination").focus();
+            return;
+        }
+       
+        window.close();
+
+     
+    }
+
+
+    const change_Departure_Destination = (e) => {
+      let tmp ="";
+        tmp = document.getElementById("departure").value;
+        document.getElementById("departure").value = document.getElementById("destination").value;
+        document.getElementById("destination").value= tmp ;
+        handleSubmit(e);
+        if(document.getElementById("destination").value  ==="" ||document.getElementById("departure").value  ==="" ){
+            alert('출발지와 도착지를 입력해주세요!')
+            document.getElementById("destination").focus();
+            return;
+        }
+
+    };
+
+
+>>>>>>> parent of 87bf299 (05.06 ver)
 
     const handleToggleTerminal = (terminalName) => {
         if (selectedTerminal === terminalName) {
@@ -137,6 +204,10 @@ const SearchBus = ({ onSearchResult }) => {
                             />
                         </label>
                     </div>
+<<<<<<< HEAD
+=======
+                    <button onClick={change_Departure_Destination}>출발지 ↔ 도착지</button>
+>>>>>>> parent of 87bf299 (05.06 ver)
                     <button type="submit" onClick={saveSearchBusForm}>폼 제출</button>
                     <button onClick={handleClose}>나가기</button>
                 </form>
@@ -211,3 +282,6 @@ const SearchBus = ({ onSearchResult }) => {
 };
 
 export default SearchBus;
+
+
+
