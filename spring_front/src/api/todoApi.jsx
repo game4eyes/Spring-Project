@@ -1,13 +1,17 @@
 import axios from "axios";
 
 // 서버 호스트 설정
+<<<<<<< HEAD
 export const API_SERVER_HOST = 'http://localhost:9090'; // 서버 주소
+=======
+export const API_SERVER_HOST = 'http://ec2-13-209-15-201.ap-northeast-2.compute.amazonaws.com:9090'; // 서버 주소
+>>>>>>> 62787dec499928993bea996280830e4f23056bff
 const apiPrefix = `${API_SERVER_HOST}/api`
 // 버스
 const busPrefix = `${apiPrefix}/bus`;
 // 도시
 const cityPrefix =`${apiPrefix}/city`;
-// 사용자 관련 엔드포인트
+// 사용자 관련 엔드포인트S
 const userPrefix = `${API_SERVER_HOST}/api/user`;
 
 const axoisConfig = {
@@ -59,11 +63,11 @@ export const getSessionList = async () => {
 
 export const getCityInfo = async () => {
     const res = await  axios.get(`${cityPrefix}`);
+    console.log(res);
     return res.data;
 }
 
 export const getNearByCity = async () => {
     const res = await axios.get(`${busPrefix}/1000`);
-    console.log(res.data);
     return res.data;
 }

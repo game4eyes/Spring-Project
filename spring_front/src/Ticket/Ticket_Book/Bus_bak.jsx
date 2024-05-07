@@ -48,20 +48,38 @@ const Bus = () => {
         window.open('http://localhost:5173/search/searchbus', '_blank', 'width=600,height=400');
     };
 
-    const change_Departure_Destination = () => {
-        openPopup();
 
-        let tmp = busticket.departure;
+
+    // const change_Departure_Destination = (e) => {
+    //     let tmp = "";
+    //     tmp = document.getElementById("start").value;
+    //     document.getElementById("start").value = document.getElementById("finish").value;
+    //     document.getElementById("finish").value = tmp;
+    //     handleSubmit(e);
+    //     if (document.getElementById("start").value === "" || document.getElementById("finish").value === "") {
+    //         alert('출발지와 도착지를 입력해주세요!')
+    //         document.getElementById("finish").focus();
+    //         return;
+    //     }
+
+    // };
+
+
+
+    const change_Departure_Destination = () => {
+        // 출발지와 도착지 값을 서로 교환
         setBusticket(prevState => ({
             ...prevState,
             departure: busticket.destination,
-            destination: tmp
+            destination: busticket.departure
         }));
-
-        if (busticket.destination === "" || busticket.departure === "") {
-            alert('출발지와 도착지를 입력해주세요!')
+        
+        if (document.getElementById("start").value === "" || document.getElementById("finish").value === "") {
+            alert('출발지와 도착지를 입력해주세요!');
+            document.getElementById("finish").focus();
         }
     };
+    
 
     return (
         <div className="bus_book">
