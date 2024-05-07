@@ -5,6 +5,7 @@ import Ad from '../components/Ad';
 import Footer from '../components/Footer';
 import Article from '../components/Article';
 import LoginBox from './LoginBox';
+import { userLogin } from '../api/todoApi';
 
 const LoginPage = () => {
 
@@ -14,9 +15,25 @@ const LoginPage = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [quickPassword, setQuickPassword] = useState('');
 
+  const loginData = {
+    loginId,
+    password
+  }
+
   // 로그인 처리
-  const handleLogin = (loginId, password) => {
-    loginId, password.preventDefault();
+  const handleLogin = async () => {
+
+     try {
+      await userLogin(loginData);
+      alert('로그인 되었습니다!')
+     }catch (error) {
+      let errorMessage = '로그인 중 오류가 발생했습니다. 다시 시도해주세요.';
+      if (error.response && error.response.status === 400) {
+        errorMessage = error.response.data.message || errorMessage; // 명확한 오류 메시지
+      }
+      setErrors({ form: errorMessage }); // 오류 메시지 설정
+      console.error(errorMessage); // 오류 로그
+    }
 
   };
 
