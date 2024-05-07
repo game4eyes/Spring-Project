@@ -5,6 +5,8 @@ import Ticket_Detail from '../Ticket/Ticket_Detail';
 import Ticket_Modify from '../Ticket/Ticket_Modify';
 import Ticket_Cancel from '../Ticket/Ticket_Cancel';
 import SearchBus from '../components/search/SearchBus';
+import BusList from '../components/search/list/BusList';
+import BusSeat from '../components/BusSeat';
 
 
 {/*티켓 교통 정보 검색 라우터*/}
@@ -34,6 +36,25 @@ element : <Suspense fallback={Loading}><Ticket_Modify/></Suspense>
 path    : 'searchairport',    // //search/searchairport
 element : <Suspense fallback={Loading}><Ticket_Cancel/></Suspense>
 },
+
+{
+  path    : 'busseat',    // /search/busseat
+  element : <Suspense fallback={Loading}><BusSeat/></Suspense>
+  },
+
+  {
+    path    : 'searchbus/intercity',    // /search/searchbus/intercity (시외)
+    element : <Suspense fallback={Loading}><SearchBus/></Suspense>     
+    },
+
+    {
+      path    : 'searchbus/express',    // /search/searchbus/express (고속)
+      element : <Suspense fallback={Loading}><SearchBus/></Suspense>     
+      },
+  
+
+
+
     // <Routes>
     //   <Route path="/Ticket_Detail" element={<TicketDetail />} />
     //   <Route path="/Ticket_Modify" element={<TicketModify />} />

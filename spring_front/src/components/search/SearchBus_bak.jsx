@@ -4,7 +4,6 @@ const SearchBus = ({ onSearchResult }) => {
     const [departure, setDeparture] = useState('');
     const [destination, setDestination] = useState('');
     const [busType, setBusType] = useState('');
-    const [busType, setBusType] = useState('');
     const [result, setResult] = useState('');
     const [selectedTerminal, setSelectedTerminal] = useState('');
 
@@ -43,14 +42,12 @@ const SearchBus = ({ onSearchResult }) => {
         // const searchResult = `출발지: ${departure}, 도착지: ${destination}, 버스 유형: ${busType}`;
         setResult(searchResult);
         onSearchResult(searchResult); // 검색 결과를 부모 컴포넌트에 전달
-        onSearchResult(searchResult); // 검색 결과를 부모 컴포넌트에 전달
     };
 
     const handleClose = () => {
         setDeparture('');
         setDestination('');
         setResult('');
-        setBusType('');
         setBusType('');
         window.close();
     };
@@ -122,13 +119,6 @@ const SearchBus = ({ onSearchResult }) => {
                 '김포 국제공항',
                 '서울 항구 터미널',
                 '서울 항만'
-            subterminals: [
-                '서울 익스프레스 터미널',
-                '서울 버스 터미널',
-                '서울 기차역',
-                '김포 국제공항',
-                '서울 항구 터미널',
-                '서울 항만'
             ]
         },
         {
@@ -139,12 +129,6 @@ const SearchBus = ({ onSearchResult }) => {
                 '시외버스 터미널',
                 '인천 지하철역',
                 '기차역'
-            subterminals: [
-                '인천 국제공항 터미널',
-                '항구 터미널',
-                '시외버스 터미널',
-                '인천 지하철역',
-                '기차역'
             ]
         },
         // 다른 지역의 터미널 정보 추가
@@ -153,22 +137,12 @@ const SearchBus = ({ onSearchResult }) => {
     const filteredTerminals_departure = terminals.filter((terminal) => {
         return terminal.subterminals.some((subterminal) => subterminal.includes(departure));
     });
-        // 다른 지역의 터미널 정보 추가
-    ];
 
-    const filteredTerminals_departure = terminals.filter((terminal) => {
-        return terminal.subterminals.some((subterminal) => subterminal.includes(departure));
-    });
-
-    const filteredTerminals_destination = terminals.filter((terminal) => {
-        return terminal.subterminals.some((subterminal) => subterminal.includes(destination));
-    });
     const filteredTerminals_destination = terminals.filter((terminal) => {
         return terminal.subterminals.some((subterminal) => subterminal.includes(destination));
     });
 
     return (
-        <div>
         <div>
             <h2>출발지 도착지 검색</h2>
             <div>
@@ -222,23 +196,7 @@ const SearchBus = ({ onSearchResult }) => {
                     <div className='startTerminal'>
                     <h2>한국 터미널 리스트</h2>
                     {filteredTerminals_departure.map((terminal, index) => (
-                    {filteredTerminals_departure.map((terminal, index) => (
                         <div key={index}>
-                            <h3 onClick={() => handleToggleTerminal(terminal.name)}>{terminal.name}</h3>
-                            <ul className={selectedTerminal === terminal.name ? "hidden" : "show"}>
-                                {terminal.subterminals
-                                    .filter((subterminal) => subterminal.includes(departure))
-                                    .map((filteredSubterminal_departure, subIndex) => (
-                                        <li key={subIndex}>
-                                           <a href="#" onClick={() => { 
-    setDeparture(filteredSubterminal_departure);
-    // Assuming "opener" is accessible here, set the value in the parent window
-   // opener.document.getElementById("start").value = filteredSubterminal_departure;
-}}>
-    {filteredSubterminal_departure}
-</a>
-
-                                           
                             <h3 onClick={() => handleToggleTerminal(terminal.name)}>{terminal.name}</h3>
                             <ul className={selectedTerminal === terminal.name ? "hidden" : "show"}>
                                 {terminal.subterminals
@@ -256,9 +214,7 @@ const SearchBus = ({ onSearchResult }) => {
                                            
                                         </li>
                                       
-                                      
                                     ))}
-                            </ul>
                             </ul>
                         </div>
                     ))}
@@ -293,39 +249,7 @@ const SearchBus = ({ onSearchResult }) => {
                         ))}
                     </div>
                     </div>
-                    </div>
-                    <br/> <br/>
-                    <div>
-                    <div className='EndTerminal'>
-                        <h2>도착지 터미널 리스트</h2>
-                        {filteredTerminals_destination.map((terminal, index) => (
-                            <div key={index}>
-                                <h3 onClick={() => handleToggleTerminal(terminal.name)}>{terminal.name}</h3>
-                                {selectedTerminal === terminal.name && (
-                                    <ul>
-                                        {terminal.subterminals
-                                            .filter((subterminal) => subterminal.includes(destination))
-                                            .map((filteredSubterminal_destination, subIndex) => (
-                                                <li key={subIndex}>
-                                                <a href="#" onClick={() => { 
-            setDestination(filteredSubterminal_destination);
-          // Assuming "opener" is accessible here, set the value in the parent window
-      //   opener.document.getElementById("finish").value = filteredSubterminal_destination;
-     }}>
-         {filteredSubterminal_destination}
-     </a>
-     
-                                                
-                                             </li>
-                                            ))}
-                                    </ul>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                    </div>
                 </div>
-            )}
             )}
         </div>
     );
