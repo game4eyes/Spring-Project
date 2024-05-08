@@ -27,4 +27,13 @@ public class ResultDTO {
         this.station = station;
         this.count = count;
     }
+
+    public ResultDTO(ResultDTO resultDTO, List<StationDTO> filteredstationDTO) {
+        this.startStationID = resultDTO.getStartStationID();
+        this.startStationName = resultDTO.getStartStationName();
+        this.endStationID = resultDTO.getEndStationID();
+        this.endStationName = resultDTO.getEndStationName();
+        this.station = filteredstationDTO;
+        this.count = resultDTO.getCount();
+    }
 }

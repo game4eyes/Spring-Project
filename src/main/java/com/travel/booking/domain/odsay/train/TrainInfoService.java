@@ -8,12 +8,14 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public interface TrainInfoService {
-    ResultDTO getTrainInfo(String startStationID, String endStationID);
+    ResultDTO getFilterTrainInfo(String startStationID, String endStationID, Long hour, char dayz);
 
-    default ResultDTO getRsult(JSONObject object) {
+    default ResultDTO getResult(JSONObject object) {
         Long startStationID = (Long) object.get("startStationID");
         String startStationName = (String) object.get("startStationName");
         Long endStationID = (Long) object.get("endStationID");
@@ -54,6 +56,23 @@ public interface TrainInfoService {
         String weekend = (String) object.get("weekend");
         String holiday = (String) object.get("holiday");
         return new FareDetailDTO(weekday,weekend,holiday);
+    }
+
+    default ResultDTO getFilteredResult(ResultDTO resultDTO, Long hour, char dayz) {
+        List<StationDTO> stationDTO = resultDTO.getStation();
+        List<StationDTO> result = new ArrayList<>();
+        for (StationDTO station : stationDTO) {
+            // 시간 파싱 로직 개선 필요 (예: "08:00"에서 "08"만 추출)
+            Long depTime = Long.parseLong(station.getDepartureTime().split(":")[0]);
+            if (depTime >= hour) {
+                String runDays = station.getRunDay();
+                if (runDays.equals("매일") || runDays.contains(String.valueOf(dayz))) {
+                    result.add(station);
+                }
+            }
+        }
+
+        return new ResultDTO(resultDTO, result);
     }
 
 }
