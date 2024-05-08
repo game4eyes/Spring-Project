@@ -5,14 +5,31 @@ import Ad from '../components/Ad';
 import Footer from '../components/Footer';
 
 const LoginPage = () => {
-  const [userid, setUserid] = useState('');
+  const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [errors, setErrors] = useState({});
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    console.log("Login attempted with:", userid, password);
-    // 로그인 처리 API 호출 로직을 여기에 추가하세요.
+  const loginData = {
+    loginId,
+    password
+  };
+
+  const handleLogin = async () => {
+    e.preventDefault(); 
+    console.log(loginData);
+    try {
+      await userLogin(loginData);
+      alert('로그인 되었습니다!');
+      navigator("/home")
+    } catch (errors) {
+      let errorMessage = '로그인 중 오류가 발생했습니다. 다시 시도해주세요.';
+      if (errors.response && errors.response.status === 400) {
+        errorMessage = errors.response.data.message || errorMessage;
+      }
+      setErrors({ form: errorMessage }); // 오류 메시지 설정
+      console.error(errorMessage); // 오류 로그
+    }
   };
 
   return (
@@ -20,14 +37,14 @@ const LoginPage = () => {
       <Header />
       <div className="login-container">
         <h2>로그인</h2>
-        <form onSubmit={handleLogin}>
+        <form >
           <div className="form-group">
-            <label htmlFor="username">아이디</label>
+            <label htmlFor="loginId">아이디</label>
             <input
               type="text"
-              id="username"
-              value={userid}
-              onChange={(e) => setUserid(e.target.value)}
+              id="loginId"
+              value={loginId} // 수정됨
+              onChange={(e) => setLoginId(e.target.value)}
               placeholder="아이디 입력"
               required
             />
@@ -52,7 +69,7 @@ const LoginPage = () => {
             />
             <label htmlFor="remember-me">아이디 저장</label>
           </div>
-          <div className="login-actions">
+          <div className="login-actions" onSubmit={handleLogin}>
             <button type="submit">로그인</button>
             <div className="links">
               <Link to="/api/finduserid">아이디 찾기</Link>
