@@ -3,11 +3,10 @@ import React, { useState } from 'react';
 const SearchBus = ({ onSearchResult }) => {
     const [departure, setDeparture] = useState('');
     const [destination, setDestination] = useState('');
-<<<<<<< Updated upstream
+
     const [busType, setBusType] = useState('');
     const [busType, setBusType] = useState('');
-=======
->>>>>>> Stashed changes
+
     const [result, setResult] = useState('');
     const [selectedTerminal, setSelectedTerminal] = useState('');
     const [selectedCity, setSelectedCity] = useState('');
@@ -26,23 +25,20 @@ const SearchBus = ({ onSearchResult }) => {
         e.preventDefault();
         const searchResult = `출발지: ${departure}, 도착지: ${destination}`;
         setResult(searchResult);
-<<<<<<< Updated upstream
+
         onSearchResult(searchResult); // 검색 결과를 부모 컴포넌트에 전달
         onSearchResult(searchResult); // 검색 결과를 부모 컴포넌트에 전달
-=======
-        onSearchResult(searchResult);
->>>>>>> Stashed changes
+
     };
 
     const handleClose = () => {
         setDeparture('');
         setDestination('');
         setResult('');
-<<<<<<< Updated upstream
+
         setBusType('');
         setBusType('');
-=======
->>>>>>> Stashed changes
+ges
         window.close();
     };
 
@@ -69,7 +65,7 @@ const SearchBus = ({ onSearchResult }) => {
     const terminals = [
         {
             name: '서울',
-<<<<<<< Updated upstream
+
             subterminals: [
                 '서울 익스프레스 터미널',
                 '서울 버스 터미널',
@@ -84,35 +80,12 @@ const SearchBus = ({ onSearchResult }) => {
                 '김포 국제공항',
                 '서울 항구 터미널',
                 '서울 항만'
-=======
-            cities: [
-                {
-                    citycode: 'SEO1',
-                    subterminals: [
-                        '서울 익스프레스 터미널',
-                        '서울 버스 터미널'
-                    ]
-                },
-                {
-                    citycode: 'SEO2',
-                    subterminals: [
-                        '서울 기차역',
-                        '김포 국제공항'
-                    ]
-                },
-                {
-                    citycode: 'SEO3',
-                    subterminals: [
-                        '서울 항구 터미널',
-                        '서울 항만'
-                    ]
-                }
->>>>>>> Stashed changes
+
             ]
         },
         {
             name: '인천',
-<<<<<<< Updated upstream
+
             subterminals: [
                 '인천 국제공항 터미널',
                 '항구 터미널',
@@ -125,23 +98,7 @@ const SearchBus = ({ onSearchResult }) => {
                 '시외버스 터미널',
                 '인천 지하철역',
                 '기차역'
-=======
-            cities: [
-                {
-                    citycode: 'INC1',
-                    subterminals: [
-                        '인천 국제공항 터미널',
-                        '항구 터미널'
-                    ]
-                },
-                {
-                    citycode: 'INC2',
-                    subterminals: [
-                        '시외버스 터미널',
-                        '인천 지하철역'
-                    ]
-                }
->>>>>>> Stashed changes
+
             ]
         },
         {
@@ -204,7 +161,7 @@ const SearchBus = ({ onSearchResult }) => {
     ];
     
 
-<<<<<<< Updated upstream
+
     const filteredTerminals_departure = terminals.filter((terminal) => {
         return terminal.subterminals.some((subterminal) => subterminal.includes(departure));
     });
@@ -225,12 +182,7 @@ const SearchBus = ({ onSearchResult }) => {
     return (
         <div>
         <div>
-=======
-    const filteredTerminalsDeparture = terminals.filter((terminal) => terminal.name === selectedTerminal);
 
-    return (
-        <div className = "searchdeparture">
->>>>>>> Stashed changes
             <h2>출발지 도착지 검색</h2>
             <form onSubmit={handleSubmit}>
                 <div>
@@ -245,7 +197,7 @@ const SearchBus = ({ onSearchResult }) => {
                     </label>
                 </div>
                 <div>
-<<<<<<< Updated upstream
+
                     <div className='startTerminal'>
                     <h2>한국 터미널 리스트</h2>
                     {filteredTerminals_departure.map((terminal, index) => (
@@ -354,59 +306,7 @@ const SearchBus = ({ onSearchResult }) => {
                 </div>
             )}
             )}
-=======
-                    <label>
-                        도착 터미널:
-                        <input
-                            type="text"
-                            value={destination}
-                            onChange={handleDestinationChange}
-                            placeholder="도착지를 검색하세요"
-                        />
-                    </label>
-                </div>
-                <button onClick={changeDepartureDestination}>출발지 ↔ 도착지</button>
-                <button type="submit">폼 제출</button>
-                <button onClick={handleClose}>나가기</button>
-            </form>
 
-            {result && <div><p>{result}</p></div>}
-
-            <div>
-                <div className='startTerminal'>
-                    <h2>한국 터미널 리스트</h2>
-                    {terminals.map((terminal, index) => (
-                        <div key={index}>
-                            <h3 onClick={() => handleToggleName(terminal.name)}>
-                                <a href="#">{terminal.name}</a>
-                            </h3>
-                            {selectedTerminal === terminal.name && (
-                                <ul>
-                                    {terminal.cities.map((city, cityIndex) => (
-                                        <li key={cityIndex}>
-                                            <h4 onClick={() => handleToggleCity(city.citycode)}>
-                                                <a href="#">{city.citycode}</a>
-                                            </h4>
-                                            {selectedCity === city.citycode && (
-                                                <ul>
-                                                    {city.subterminals.map((subterminal, subIndex) => (
-                                                        <li key={subIndex}>
-                                                            <span onClick={() => handleSubterminalClick(subterminal)}>
-                                                                <a href="#">{subterminal}</a>
-                                                            </span>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            )}
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
-                        </div>
-                    ))}
-                </div>
-            </div>
->>>>>>> Stashed changes
         </div>
     );
 };
