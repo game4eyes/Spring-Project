@@ -54,7 +54,8 @@ public class UserService {
         UserEntity user = optionalUser.get();
 
         // 찾아온 User의 password와 입력된 패스워드가 다르면 null return
-        if(!user.getPassword().equals(req.getPassword())){
+        // 암호화된 비밀번호와 입력된 비밀번호를 비교
+        if (!encoder.matches(req.getPassword(), user.getPassword())) { // 올바른 비교 방식
             return null;
         }
 

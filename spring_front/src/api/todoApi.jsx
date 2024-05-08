@@ -1,7 +1,10 @@
 import axios from "axios";
 
 // 서버 호스트 설정
-export const API_SERVER_HOST = 'http://ec2-13-209-15-201.ap-northeast-2.compute.amazonaws.com:9090'; // 서버 주소
+
+
+export const API_SERVER_HOST = 'http://localhost:9090'; // 서버 주소
+
 const apiPrefix = `${API_SERVER_HOST}/api`
 // 버스
 const busPrefix = `${apiPrefix}/bus`;
