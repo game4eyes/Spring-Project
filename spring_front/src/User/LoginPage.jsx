@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import axios from 'axios';  // axios 라이브러리 임포트
+import { BrowserRouter as Router, Link, useNavigate } from 'react-router-dom';  // useNavigate 추가
 import Header from '../components/Header';
 import Ad from '../components/Ad';
 import Footer from '../components/Footer';
@@ -8,11 +9,21 @@ const LoginPage = () => {
   const [userid, setUserid] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();  // 네비게이션 함수 사용
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     console.log("Login attempted with:", userid, password);
-    // 로그인 처리 API 호출 로직을 여기에 추가하세요.
+    try {
+      // 로그인 처리 API 호출
+      const response = await axios.post('/api/login', { userid, password });
+      console.log('Login successful:', response.data);
+      // 로그인 성공 후 리디렉션
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Login failed:', error);
+      alert('로그인 실패: ' + error.message);
+    }
   };
 
   return (
