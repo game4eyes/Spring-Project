@@ -20,7 +20,7 @@ public class JoinReq {
     private String username;
     private String email;
     private String birth;
-    private int phonenum;
+    private String phonenum;
     private String gender;
 
     public UserEntity toEntity(String encodedPassword){ // 비밀번호 암호화 로직

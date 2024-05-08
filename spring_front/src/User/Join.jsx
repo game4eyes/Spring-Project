@@ -38,8 +38,12 @@ const Join = () => {
       navigate('/login'); // 리디렉션
     } catch (error) {
       let errorMessage = '회원가입 중 오류가 발생했습니다. 다시 시도해주세요.';
-      if (error.response && error.response.status === 400) {
-        errorMessage = error.response.data.message || errorMessage; // 명확한 오류 메시지
+      if (error.response) {
+        if (error.response.status === 400) {
+          errorMessage = error.response.data.message || errorMessage; // 명확한 오류 메시지
+        } else {
+          errorMessage = `오류 코드: ${error.response.status}`;
+        }
       }
       setErrors({ form: errorMessage }); // 오류 메시지 설정
       console.error(errorMessage); // 오류 로그
@@ -185,7 +189,7 @@ const Join = () => {
             <option value="female">여자</option>
           </select>
         </div>
-        <div className="form-group" onSubmit={handleSubmit}>
+        <div className="form-group">
           <input type="submit" value="가입"/>
         </div>
       </form>
