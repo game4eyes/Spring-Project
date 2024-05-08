@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import axios from 'axios';  // axios 라이브러리 임포트
+import { BrowserRouter as Router, Link, useNavigate } from 'react-router-dom';  // useNavigate 추가
 import Header from '../components/Header';
 import Ad from '../components/Ad';
 import Footer from '../components/Footer';
@@ -29,6 +30,7 @@ const LoginPage = () => {
       }
       setErrors({ form: errorMessage }); // 오류 메시지 설정
       console.error(errorMessage); // 오류 로그
+
     }
   };
 
