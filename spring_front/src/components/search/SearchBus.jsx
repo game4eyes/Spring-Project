@@ -21,12 +21,10 @@ const SearchBus = ({ departure, destination, onSearchResult }) => {
 
     const handleDepartureChange = (e) => {
         setDeparture(e.target.value);
-        setResult('');
     };
 
     const handleDestinationChange = (e) => {
         setDestination(e.target.value);
-        setResult('');
     };
 
     const changeDepartureDestination = (e) => {

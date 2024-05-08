@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import Ticket_Detail from '../Ticket/Ticket_Detail';
 import Ticket_Modify from '../Ticket/Ticket_Modify';
 import Ticket_Cancel from '../Ticket/Ticket_Cancel';
-import TicketBookingPage from '../Ticket/Ticket_Book/TicketBookingPage';
+// import TicketBookingPage from '../Ticket/Ticket_Book/TicketBookingPage';
 
 
 {/*티켓 정보 조회,수정,취소 라우터*/}

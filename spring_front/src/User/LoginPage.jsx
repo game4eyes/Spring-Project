@@ -1,18 +1,41 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import axios from 'axios'; 
+import { BrowserRouter as Router, Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Ad from '../components/Ad';
 import Footer from '../components/Footer';
+import { userLogin } from '../api/todoApi';
 
+// useNavigate를 사용하기 위해 `navigate` 변수 선언
 const LoginPage = () => {
-  const [userid, setUserid] = useState('');
+  const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate(); // 올바르게 초기화된 navigate 객체
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    console.log("Login attempted with:", userid, password);
-    // 로그인 처리 API 호출 로직을 여기에 추가하세요.
+  const loginData = {
+    loginId,
+    password,
+  };
+
+  const handleLogin = async (e) => { // e 파라미터를 추가
+    e.preventDefault(); // 이벤트 기본 동작 방지
+
+    console.log(loginData);
+
+    try {
+      await userLogin(loginData); // 가정된 로그인 엔드포인트
+      alert('로그인 되었습니다!');
+      navigate('/home'); // 페이지 이동
+    } catch (error) {
+      let errorMessage = '로그인 중 오류가 발생했습니다. 다시 시도해주세요.';
+      if (error.response && error.response.status === 400) {
+        errorMessage = error.response.data.message || errorMessage;
+      }
+      setErrors({ form: errorMessage }); // 오류 메시지 설정
+      console.error(errorMessage); // 오류 로그
+    }
   };
 
   return (
@@ -20,14 +43,14 @@ const LoginPage = () => {
       <Header />
       <div className="login-container">
         <h2>로그인</h2>
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleLogin}> {/* 수정 */}
           <div className="form-group">
-            <label htmlFor="username">아이디</label>
+            <label htmlFor="loginId">아이디</label>
             <input
               type="text"
-              id="username"
-              value={userid}
-              onChange={(e) => setUserid(e.target.value)}
+              id="loginId"
+              value={loginId}
+              onChange={(e) => setLoginId(e.target.value)}
               placeholder="아이디 입력"
               required
             />

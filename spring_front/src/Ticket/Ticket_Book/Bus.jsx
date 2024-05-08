@@ -96,6 +96,24 @@ const Bus = () => {
 
 
 
+
+
+    // const change_Departure_Destination = (e) => {
+    //     let tmp = "";
+    //     tmp = document.getElementById("start").value;
+    //     document.getElementById("start").value = document.getElementById("finish").value;
+    //     document.getElementById("finish").value = tmp;
+    //     handleSubmit(e);
+    //     if (document.getElementById("start").value === "" || document.getElementById("finish").value === "") {
+    //         alert('출발지와 도착지를 입력해주세요!')
+    //         document.getElementById("finish").focus();
+    //         return;
+    //     }
+
+    // };
+
+
+
     const change_Departure_Destination = () => {
         
 

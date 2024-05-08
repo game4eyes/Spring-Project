@@ -17,6 +17,7 @@ import BusImage from './components/img/Transportation_img/bus_image.png';
 import TrainImage from './components/img/Transportation_img/train_image.png';
 import AirportImage from './components/img/Transportation_img/airport_image.png';
 import Article from '@components/Article';
+import KakaoMapComponent from './components/KakaoMapComponent';
 
 
 
@@ -245,6 +246,8 @@ function Home() {
 
      <div>  
      <h3>기능 (테스트)</h3> <br /><br />
+     <KakaoMapComponent />
+
       <Link to = {"/BusSeat"}>버스 좌석</Link>
      </div>
      <br /> 
@@ -252,6 +255,7 @@ function Home() {
 
 
     {/* 테스트용 마이페이지 */}
+
     <div>
     <Link to = {"/api/user/mypage"}>마이페이지</Link>   
     </div>
