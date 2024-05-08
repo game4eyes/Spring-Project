@@ -3,7 +3,7 @@ import Bus from '../Ticket/Ticket_Book/Bus';
 import Train from '../Ticket/Ticket_Book/Train';
 import Airport from '../Ticket/Ticket_Book/Airport';
 import { Suspense } from 'react';
-import TicketBookingPage from '../Ticket/Ticket_Book/TicketBookingPage';
+// import TicketBookingPage from '../Ticket/Ticket_Book/TicketBookingPage';
 
 
 

@@ -24,7 +24,7 @@ public class UserEntity {
     private String password;
     private String email;
     private String birth;
-    private int phonenum;
+    private String phonenum;
     private String gender;
 
 

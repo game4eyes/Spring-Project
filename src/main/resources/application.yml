@@ -12,10 +12,11 @@ spring:
   thymeleaf:
     cache: false
   datasource:
-    url: jdbc:mysql://localhost:3306/booking
+    url: jdbc:mysql://localhost:3306/jpa
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: booking
-    password: booking
+    username: root
+    password: khs04140
+
   jpa:
     hibernate:
       ddl-auto: create
