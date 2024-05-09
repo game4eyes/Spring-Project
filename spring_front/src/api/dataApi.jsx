@@ -73,7 +73,7 @@ export const getStationInfo = async (stationClass) => {
 }
 
 export const getTrainInfo = async (startStationID,endStationID,hour,dayz) => {
-    const res = await (`${stationPrefix}/${startStationID}/${endStationID}`,hour,dayz);
+    const res = await (`${trainPrefix}/${startStationID}/${endStationID}`,hour,dayz);
     // hour은 24시 를 기준으로 받아옴 1자리 수는 앞에 0을 붙여준다
     // dayz는 월,화,수,목,금,토,일 만 넘길 수 있도록 하면된다.
     return res.data;

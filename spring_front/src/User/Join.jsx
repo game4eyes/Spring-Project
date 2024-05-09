@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { userJoin } from '../api/todoApi';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Ad from '../components/Ad';
 import Footer from '../components/Footer';
@@ -11,12 +11,14 @@ const Join = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
-  // const [address, setAddress] = useState('');
   const [birth, setBirth] = useState('');
   const [email, setEmail] = useState('');
   const [phonenum, setPhonenum] = useState('');
   const [gender, setGender] = useState('male');
   const [errors, setErrors] = useState({});
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+
+  const navigate = useNavigate();
 
   const userData = {
     loginId,
@@ -30,7 +32,6 @@ const Join = () => {
   };
 
   const handleJoin = async () => {
-    
     try {
       console.log(userData);
       await userJoin(userData); // 서버로 요청 보내기
@@ -54,8 +55,11 @@ const Join = () => {
     e.preventDefault();
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length === 0) {
-      handleJoin();     // 가입처리 로직 기억하기   // 오류터져있음 수정필요
-      alert('회원가입이 완료되었습니다.');
+      if (!agreedToTerms) {
+        alert('회원가입을 위해 개인정보 수집 및 이용에 동의해 주세요.');
+      } else {
+        handleJoin(); // 가입 처리 로직
+      }
     } else {
       setErrors(validationErrors);
     }
@@ -83,10 +87,19 @@ const Join = () => {
     return errors;
   };
 
+  const privacyPolicy = `
+[개인정보 수집 및 이용 동의서 예시]
+- 수집하는 개인정보 항목: 아이디, 비밀번호, 이름, 이메일, 전화번호 등
+- 개인정보 수집 목적: 회원가입 및 관리, 서비스 이용 통계 및 분석 등
+- 보유 및 이용 기간: 회원 탈퇴 시까지
+
+자세한 내용은 아래 개인정보 수집 및 이용 동의서를 참고해주세요.
+  `;
+
   return (
     <div className="Join-container">
-      <Header></Header>
-      <Article title ="회원가입" body ="회원가입 창"/>
+      <Header />
+      <Article title="회원가입" body="회원가입 창" />
       <h2>회원가입</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -137,16 +150,6 @@ const Join = () => {
           />
           {errors.passwordCheck && <div className="error">{errors.passwordCheck}</div>}
         </div>
-        {/* <div className="form-group">
-          <label htmlFor="address">주소</label>
-          <input
-            type="text"
-            id="address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="주소를 입력하세요"
-          />
-        </div> */}
         <div className="form-group">
           <label htmlFor="birth">생년월일</label>
           <input
@@ -190,11 +193,28 @@ const Join = () => {
           </select>
         </div>
         <div className="form-group">
-          <input type="submit" value="가입"/>
+          <textarea
+            id="privacyPolicy"
+            rows="8"
+            readOnly
+            value={privacyPolicy}
+            style={{ width: '100%', resize: 'none', overflowY: 'scroll', marginBottom: '10px' }}
+          />
+          <input
+            type="checkbox"
+            id="terms"
+            checked={agreedToTerms}
+            onChange={(e) => setAgreedToTerms(e.target.checked)}
+          />
+          <label htmlFor="terms">개인정보 수집 및 이용에 동의합니다</label>
         </div>
+        <div className="form-group">
+          <input type="submit" value="가입" />
+        </div>
+        {errors.form && <div className="error">{errors.form}</div>}
       </form>
-      <Ad/>
-    <Footer/>
+      <Ad />
+      <Footer />
     </div>
   );
 };

@@ -5,7 +5,7 @@ import Footer from '../../components/Footer';
 import Ad from '../../components/Ad';
 import '@/css/BusSeat.css';
 import BusList from '../../components/search/list/BusList';
-import { getCityInfo } from '../../api/todoApi';
+// import { getCityInfo } from '../../api/todoApi';
 import Charge from '../../components/Charge';
 
 const initState = {
