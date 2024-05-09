@@ -255,7 +255,7 @@ const SearchBus = ({ onSearchResult }) => {
     );
 };
 
-export default SearchBus;
+export default SearchBus_bak;
 
 
 

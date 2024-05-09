@@ -7,6 +7,7 @@ import '@/css/BusSeat.css';
 import BusList from '../../components/search/list/BusList';
 import { getCityInfo } from '../../api/todoApi';
 import Charge from '../../components/Charge';
+import SearchBus from '../../components/search/SearchBus';
 
 const initState = {
     departure: '',
@@ -44,9 +45,56 @@ const Bus = () => {
         }));
     };
 
+    // const openPopup = () => {
+    //     window.open('http://localhost:5173/search/searchbus', '_blank', 'width=600,height=400');
+    // };
+
+
+    // const openPopup = () => {
+    //     const popupWindow = window.open('', '_blank', 'width=600,height=400');
+    //     if (popupWindow) {
+    //         popupWindow.document.write('<div id="popup-root"></div>');
+    //         popupWindow.document.title = 'Popup Window';
+    //         popupWindow.document.close();
+    //         ReactDOM.render(
+    //             <SearchBus
+    //                 departure={busticket.departure}
+    //                 destination={busticket.destination}
+    //             />,
+    //             popupWindow.document.getElementById('popup-root')
+    //         );
+    //     } else {
+    //         alert('팝업이 차단되었습니다. 팝업 차단을 해제해 주세요.');
+    //     }
+    // };
+
+
     const openPopup = () => {
-        window.open('http://localhost:5173/search/searchbus', '_blank', 'width=600,height=400');
+        const params = new URLSearchParams({
+            departure: busticket.departure,
+            destination: busticket.destination
+        });
+        window.open(`http://localhost:5173/search/searchbus?${params}`, '_blank', 'width=600,height=400');
     };
+    
+    
+
+
+    // const change_Departure_Destination = (e) => {
+    //     let tmp = "";
+    //     tmp = document.getElementById("start").value;
+    //     document.getElementById("start").value = document.getElementById("finish").value;
+    //     document.getElementById("finish").value = tmp;
+    //     handleSubmit(e);
+    //     if (document.getElementById("start").value === "" || document.getElementById("finish").value === "") {
+    //         alert('출발지와 도착지를 입력해주세요!')
+    //         document.getElementById("finish").focus();
+    //         return;
+    //     }
+
+    // };
+
+
 
 
 
