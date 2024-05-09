@@ -216,7 +216,7 @@ function Home() {
     <br /> 
      
     <div>
-    <Ad />
+    <Ad /> 
     </div>
     
 
