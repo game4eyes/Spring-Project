@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import Ad from '../components/Ad';
 import Footer from '../components/Footer';
 import Article from '../components/Article';
+import axios from 'axios';
 
 const Join = () => {
   const [loginId, setLoginId] = useState('');
