@@ -13,8 +13,11 @@ const stationPrefix = `${apiPrefix}/station`
 const busPrefix = `${apiPrefix}/bus`;
 // 기차
 const trainPrefix = `${apiPrefix}/train`
+// 항공
+const airPrefix = `${apiPrefix}/air`
 
 // 각 도 별 도시 정보 출력
+// 도시정보
 export const getCityInfo = async (cityRegion) => {
     const res = await  axios.get(`${cityPrefix}`,cityRegion);
     // cityRegion = 서울, 경기도 와 같은 대단위 도시 명만 전송
@@ -22,6 +25,7 @@ export const getCityInfo = async (cityRegion) => {
     return res.data;
 }
 // 도시 코드를 넘겨 주면 그 도시에 있는 터미널의 정보를 줌
+// 도시 정보코드를 가지고 도시내의 고속 / 시외 버스 터미널의 정보를 가져옴 (id, 이름, x, y)
 export const getNearByCity = async (cityCode) => {
     const res = await axios.get(`${busPrefix}/${cityCode}`);
     // cityCode = 1000 (서울)
@@ -47,17 +51,21 @@ export const getNearByCity = async (cityCode) => {
     return res.data;
 }
 // terminalName 가 포함된
+// 터미널 명이 포함된 고속 터미널 명 id x,y 좌표를 가져옴
 export const getExpress = async (terminalName) => {
     const res = await (`${busPrefix}/express`, terminalName);
     return res.data;
 }
 
 // 위 같은 파람을 받아옴
+// 위와 동일 하나 시외버스 터미널 을 가져옴
 export const getIntercity = async (terminalName) => {
     const res = await (`${busPrefix}/intercity`, terminalName);
     return res.data;
 }
 // 출발지 id, 도착지 id 값을 가지고 값 가져옴
+// 버스 터미널의 출발지 및 도착지 id가 있어야함
+// startStationId의 값이 고속 버스 터미널의 아이디면 도착지의 id 또한 같아야함
 export const getOperationInfo = async (startStationID, endStationID) => {
     const res = await (`${busPrefix}/operation/info`,startStationID, endStationID);
     return res.data;
@@ -71,10 +79,15 @@ export const getStationInfo = async (stationClass) => {
     // 6 : 시외버스터미널
     return res.data;
 }
-
+// 기차 정보
 export const getTrainInfo = async (startStationID,endStationID,hour,dayz) => {
     const res = await (`${trainPrefix}/${startStationID}/${endStationID}`,hour,dayz);
     // hour은 24시 를 기준으로 받아옴 1자리 수는 앞에 0을 붙여준다
     // dayz는 월,화,수,목,금,토,일 만 넘길 수 있도록 하면된다.
+    return res.data;
+}
+// 항공 정보
+export const getAirInfo = async (startStationID,endStationID,hour,dayz) => {
+    const res = await (`${airPrefix}/${startStationID}/${endStationID}`,hour,dayz);
     return res.data;
 }

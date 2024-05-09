@@ -28,6 +28,7 @@ import UserRouter from './ApiRouter';
 import AdRouter from './AdRouter';
 import SearchRouter from './SearchRouter';
 import ApiRouter from './ApiRouter';
+import PayRouter from './PayRouter';
 
 
 const Loading = <div className={'bg-purple-500'}>Loading</div>;
@@ -180,6 +181,12 @@ children: TicketBookRouter()
 {
   path    : 'search',     //  /search
   children : SearchRouter()
+},
+
+
+{
+  path    : 'pay',     //  /pay
+  children : PayRouter()
 },
 
 ]);
