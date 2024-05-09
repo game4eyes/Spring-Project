@@ -13,6 +13,8 @@ const stationPrefix = `${apiPrefix}/station`
 const busPrefix = `${apiPrefix}/bus`;
 // 기차
 const trainPrefix = `${apiPrefix}/train`
+// 항공
+const airPrefix = `${apiPrefix}/air`
 
 // 각 도 별 도시 정보 출력
 // 도시정보
@@ -77,10 +79,15 @@ export const getStationInfo = async (stationClass) => {
     // 6 : 시외버스터미널
     return res.data;
 }
-
+// 기차 정보
 export const getTrainInfo = async (startStationID,endStationID,hour,dayz) => {
     const res = await (`${stationPrefix}/${startStationID}/${endStationID}`,hour,dayz);
     // hour은 24시 를 기준으로 받아옴 1자리 수는 앞에 0을 붙여준다
     // dayz는 월,화,수,목,금,토,일 만 넘길 수 있도록 하면된다.
+    return res.data;
+}
+// 항공 정보
+export const getAirInfo = async (startStationID,endStationID,hour,dayz) => {
+    const res = await (`${airPrefix}/${startStationID}/${endStationID}`,hour,dayz);
     return res.data;
 }
