@@ -7,6 +7,11 @@ const SearchBus = ({ departure, destination, onSearchResult }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchTerm2, setSearchTerm2] = useState('');
 
+
+
+
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const searchResult = `출발지: ${departure}, 도착지: ${destination}`;

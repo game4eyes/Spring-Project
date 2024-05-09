@@ -7,7 +7,7 @@ import { Suspense } from 'react';
 import FindUserId from '../User/FindUserId';
 import MyPageModify from '../User/MypageModify';
 import ResultPage from '../components/ResultPage';
-import Pay from '../pay/pay';
+import Pay from '../pay/Pay';
 
 
 

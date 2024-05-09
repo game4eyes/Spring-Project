@@ -5,7 +5,7 @@ import Footer from '../../components/Footer';
 import Ad from '../../components/Ad';
 import '@/css/BusSeat.css';
 import BusList from '../../components/search/list/BusList';
-import { getCityInfo } from '../../api/todoApi';
+//import { getCityInfo } from '../../api/todoApi';
 import Charge from '../../components/Charge';
 import SearchBus from '../../components/search/SearchBus';
 
@@ -212,6 +212,7 @@ const Bus = () => {
                 </select>
                 <br />
                 <button type="submit">조회하기</button>
+              
             <Charge id={1}/>
             </form>
             {busticket.isDepartureModalOpen && <BusList />}
