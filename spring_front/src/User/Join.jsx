@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { userJoin } from '../api/todoApi';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Ad from '../components/Ad';
 import Footer from '../components/Footer';
 import Article from '../components/Article';
-import axios from 'axios';
 
 const Join = () => {
   const [loginId, setLoginId] = useState('');
@@ -16,8 +15,13 @@ const Join = () => {
   const [email, setEmail] = useState('');
   const [phonenum, setPhonenum] = useState('');
   const [gender, setGender] = useState('male');
-  const [errors, setErrors] = useState({});
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+
+  const loginIdRef = useRef(null);
+  const usernameRef = useRef(null);
+  const passwordRef = useRef(null);
+  const passwordCheckRef = useRef(null);
+  const emailRef = useRef(null);
 
   const navigate = useNavigate();
 
@@ -37,7 +41,7 @@ const Join = () => {
       console.log(userData);
       await userJoin(userData); // 서버로 요청 보내기
       alert('회원가입이 완료되었습니다.');
-      navigate('/login'); // 리디렉션
+      navigate('/api/user/login'); // 리디렉션
     } catch (error) {
       let errorMessage = '회원가입 중 오류가 발생했습니다. 다시 시도해주세요.';
       if (error.response) {
@@ -47,45 +51,57 @@ const Join = () => {
           errorMessage = `오류 코드: ${error.response.status}`;
         }
       }
-      setErrors({ form: errorMessage }); // 오류 메시지 설정
+      alert(errorMessage);
       console.error(errorMessage); // 오류 로그
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length === 0) {
-      if (!agreedToTerms) {
-        alert('회원가입을 위해 개인정보 수집 및 이용에 동의해 주세요.');
-      } else {
-        handleJoin(); // 가입 처리 로직
-      }
-    } else {
-      setErrors(validationErrors);
+    const validationError = validateForm();
+    if (validationError) {
+      alert(validationError.message);
+      validationError.ref.current.focus();
+      return;
     }
+    if (!agreedToTerms) {
+      alert('회원가입을 위해 개인정보 수집 및 이용에 동의해 주세요.');
+      return;
+    }
+    handleJoin(); // 가입 처리 로직
   };
 
   const validateForm = () => {
-    const errors = {};
-    if (!loginId.trim()) {
-      errors.loginId = '아이디를 입력하세요.';
-    } else if (loginId.trim().length < 7) {
-      errors.loginId = '아이디는 7자리 이상이어야 합니다.';
-    } else if (/\s/.test(loginId.trim())) { // 공백 포함 여부 검사
-      errors.loginId = '아이디에 공백을 포함할 수 없습니다.';
-    }
-    if (!password) {
-      errors.password = '비밀번호를 입력하세요.';
-    }
-    if (password !== passwordCheck) {
-      errors.passwordCheck = '비밀번호가 일치하지 않습니다.';
-    }
+    const koreanRegex = /^[가-힣]+$/;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
-      errors.email = '올바른 이메일 주소를 입력하세요.';
+
+    if (!loginId.trim()) {
+      return { message: '아이디를 입력하세요.', ref: loginIdRef };
+    } else if (loginId.trim().length < 7) {
+      return { message: '아이디는 7자리 이상이어야 합니다.', ref: loginIdRef };
+    } else if (/\s/.test(loginId.trim())) { // 공백 포함 여부 검사
+      return { message: '아이디에 공백을 포함할 수 없습니다.', ref: loginIdRef };
     }
-    return errors;
+
+    if (!username.trim()) {
+      return { message: '이름을 입력하세요.', ref: usernameRef };
+    } else if (!koreanRegex.test(username.trim())) { // 이름에 한글만 허용
+      return { message: '이름은 한글만 입력할 수 있습니다.', ref: usernameRef };
+    }
+
+    if (!password) {
+      return { message: '비밀번호를 입력하세요.', ref: passwordRef };
+    }
+
+    if (password !== passwordCheck) {
+      return { message: '비밀번호가 일치하지 않습니다.', ref: passwordCheckRef };
+    }
+
+    if (!emailPattern.test(email)) {
+      return { message: '올바른 이메일 주소를 입력하세요.', ref: emailRef };
+    }
+
+    return null; // 모든 유효성 검사를 통과한 경우
   };
 
   const privacyPolicy = `
@@ -175,48 +191,48 @@ TT 서비스의 회원관리, 서비스 개발・제공 및 향상, 안전한 �
           <input
             type="text"
             id="loginId"
+            ref={loginIdRef}
             value={loginId}
             onChange={(e) => setLoginId(e.target.value)}
             placeholder="아이디를 입력하세요"
             required
           />
-          {errors.loginId && <div className="error">{errors.loginId}</div>}
         </div>
         <div className="form-group">
           <label htmlFor="username">이름</label>
           <input
             type="text"
             id="username"
+            ref={usernameRef}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="이름을 입력하세요"
             required
           />
-          {errors.username && <div className="error">{errors.username}</div>}
         </div>
         <div className="form-group">
           <label htmlFor="password">비밀번호</label>
           <input
             type="password"
             id="password"
+            ref={passwordRef}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="비밀번호를 입력하세요"
             required
           />
-          {errors.password && <div className="error">{errors.password}</div>}
         </div>
         <div className="form-group">
           <label htmlFor="passwordCheck">비밀번호 확인</label>
           <input
             type="password"
             id="passwordCheck"
+            ref={passwordCheckRef}
             value={passwordCheck}
             onChange={(e) => setPasswordCheck(e.target.value)}
             placeholder="비밀번호를 다시 입력하세요"
             required
           />
-          {errors.passwordCheck && <div className="error">{errors.passwordCheck}</div>}
         </div>
         <div className="form-group">
           <label htmlFor="birth">생년월일</label>
@@ -232,6 +248,7 @@ TT 서비스의 회원관리, 서비스 개발・제공 및 향상, 안전한 �
           <input
             type="email"
             id="email"
+            ref={emailRef}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="이메일을 입력하세요"
@@ -279,7 +296,6 @@ TT 서비스의 회원관리, 서비스 개발・제공 및 향상, 안전한 �
         <div className="form-group">
           <input type="submit" value="가입" />
         </div>
-        {errors.form && <div className="error">{errors.form}</div>}
       </form>
       <Ad />
       <Footer />
