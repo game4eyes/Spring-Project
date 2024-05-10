@@ -74,35 +74,43 @@ const Join = () => {
   const validateForm = () => {
     const koreanRegex = /^[가-힣]+$/;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
+    const userIdPattern = /^[a-zA-Z0-9]+$/;
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+  
     if (!loginId.trim()) {
       return { message: '아이디를 입력하세요.', ref: loginIdRef };
+    } else if (!userIdPattern.test(loginId.trim())) {
+      return { message: '아이디는 영문과 숫자로만 구성되어야 합니다.', ref: loginIdRef };
     } else if (loginId.trim().length < 7) {
       return { message: '아이디는 7자리 이상이어야 합니다.', ref: loginIdRef };
-    } else if (/\s/.test(loginId.trim())) { // 공백 포함 여부 검사
+    } else if (/\s/.test(loginId.trim())) {
       return { message: '아이디에 공백을 포함할 수 없습니다.', ref: loginIdRef };
     }
-
+  
     if (!username.trim()) {
       return { message: '이름을 입력하세요.', ref: usernameRef };
     } else if (!koreanRegex.test(username.trim())) { // 이름에 한글만 허용
       return { message: '이름은 한글만 입력할 수 있습니다.', ref: usernameRef };
     }
-
+  
     if (!password) {
       return { message: '비밀번호를 입력하세요.', ref: passwordRef };
-    }
-
+    } 
+    // else if (!passwordPattern.test(password)) {
+    //   return { message: '비밀번호는 최소 8자 이상, 대문자, 소문자, 숫자, 특수문자를 포함해야 합니다.', ref: passwordRef };
+    // }               @@@@@@@@@@@@@@@@@@@@@@@@나중에 회원가입 관련 테스트 다 끝나고 주석 풀어주기@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+  
     if (password !== passwordCheck) {
       return { message: '비밀번호가 일치하지 않습니다.', ref: passwordCheckRef };
     }
-
+  
     if (!emailPattern.test(email)) {
       return { message: '올바른 이메일 주소를 입력하세요.', ref: emailRef };
     }
-
+  
     return null; // 모든 유효성 검사를 통과한 경우
   };
+  
 
   const privacyPolicy = `
 [개인정보 수집 및 이용 동의서]
