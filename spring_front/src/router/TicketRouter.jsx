@@ -17,7 +17,7 @@ const Loading = <div className={'bg-purple-500'}>Loading</div>;
 const TicketRouter = () => {
   return [
   //   {
-  //     path    : '',   // todo/ 요청이오면 todo/list로 redirection
+  //     path    : '',   //           todo/ 요청이오면 todo/list로 redirection@@@@@@@@@@@
   //     element:<Navigate replace={true} to={'list'}></Navigate>,
   // },
 

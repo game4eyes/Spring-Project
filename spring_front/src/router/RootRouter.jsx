@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 //import { BrowserRouter, Route, Routes, createBrowserRouter } from 'react-router-dom';
 //import Home from '../Home';
-import Login from '../User/LoginPage';
+import Login from '../User/Login';
 import Join from '../User/Join';
 import FindUserId from '../User/FindUserId';
 import MyPage from '../User/Mypage';
@@ -28,6 +28,7 @@ import UserRouter from './ApiRouter';
 import AdRouter from './AdRouter';
 import SearchRouter from './SearchRouter';
 import ApiRouter from './ApiRouter';
+import PayRouter from './PayRouter';
 
 
 const Loading = <div className={'bg-purple-500'}>Loading</div>;
@@ -180,6 +181,12 @@ children: TicketBookRouter()
 {
   path    : 'search',     //  /search
   children : SearchRouter()
+},
+
+
+{
+  path    : 'pay',     //  /pay
+  children : PayRouter()
 },
 
 ]);
