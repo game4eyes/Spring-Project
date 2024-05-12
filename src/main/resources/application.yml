@@ -7,6 +7,8 @@ server:
       force: true
 
 spring:
+  profiles:
+    include: oauth
   config:
     import: classpath:application-api.yml
   thymeleaf:
@@ -14,8 +16,8 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/jpa
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: khs04140
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
 
   jpa:
     hibernate:
