@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useEffect, useState } from 'react';
+import { getCityInfo } from '../../api/dataApi';
 const SearchBus = ({ departure, destination, onSearchResult }) => {
     const [result, setResult] = useState('');
     const [selectedTerminal, setSelectedTerminal] = useState('');
@@ -8,7 +8,24 @@ const SearchBus = ({ departure, destination, onSearchResult }) => {
     const [searchTerm2, setSearchTerm2] = useState('');
 
 
+   
+        const [cityData, setCityData] = useState(null);
+      
+        useEffect(() => {
+          const fetchData = async () => {
+            try {
+              const data = await getCityInfo("1000"); // 예시로 "Seoul"을 넣어봅니다.
+              setCityData(data);
+              console.log(cityData);
+            } catch (error) {
+              console.error("Error fetching city data:", error);
+            }
+          };
+          fetchData();
+        }, []);
 
+  
+    
 
 
 
@@ -208,6 +225,9 @@ const SearchBus = ({ departure, destination, onSearchResult }) => {
     });
 
     return (
+
+        <div> 
+          
         <div className="searchdeparture">
             <h2>출발지 도착지 검색</h2>
             <form onSubmit={handleSubmit}>
@@ -244,6 +264,41 @@ const SearchBus = ({ departure, destination, onSearchResult }) => {
             </form>
 
             {result && <div><p>{result}</p></div>}
+
+
+
+
+            <div className="parsingTest">
+
+            <h1>파싱 테스트</h1>
+
+            {cityData && (
+        <div>
+          <h2>City: {cityData.stationID}</h2>
+          <p>Population: {cityData.population}</p>
+          <p>Landmark: {cityData.landmark}</p>
+        </div>
+      )}
+
+             </div>      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             <div>
                 <div className='startTerminal'>
@@ -312,6 +367,13 @@ const SearchBus = ({ departure, destination, onSearchResult }) => {
                     ))}
                 </div>
             </div>
+        </div>
+
+
+
+
+
+
         </div>
     );
 };

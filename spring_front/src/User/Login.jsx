@@ -19,6 +19,7 @@ const LoginPage = () => {
     password,
   };
 
+
   const handleLogin = async (e) => {
     e.preventDefault();
     console.log(loginData);
