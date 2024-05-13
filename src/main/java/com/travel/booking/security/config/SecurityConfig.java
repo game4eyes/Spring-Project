@@ -4,6 +4,7 @@ import com.travel.booking.security.auth.MyAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -36,8 +37,9 @@ public class SecurityConfig {
                         .logoutUrl("/security-login/logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
-                )
-                .exceptionHandling(exception -> exception
+                ).oauth2Login(
+                        Customizer.withDefaults()
+                ).exceptionHandling(exception -> exception
                         .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/security-login/login"))
                         .accessDeniedHandler(customAccessDeniedHandler())
                 );
