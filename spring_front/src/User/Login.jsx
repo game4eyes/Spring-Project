@@ -26,8 +26,8 @@ const LoginPage = () => {
 
     try {
       await userLogin(loginData);
-      alert('로그인 되었습니다!');
-      navigate('/home');
+      alert('환영합니다!');
+      navigate('/');
     } catch (error) {
       let errorMessage = '로그인 중 오류가 발생했습니다. 다시 시도해주세요.';
       if (error.response && error.response.status === 400) {
