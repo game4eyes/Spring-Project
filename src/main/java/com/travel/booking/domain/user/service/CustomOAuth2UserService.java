@@ -3,6 +3,7 @@ package com.travel.booking.domain.user.service;
 import com.travel.booking.domain.user.dto.OAuthAttributes;
 import com.travel.booking.domain.user.dto.SessionUser;
 import com.travel.booking.domain.user.entity.OauthUser;
+import com.travel.booking.domain.user.repository.OauthUserRepository;
 import com.travel.booking.domain.user.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ import java.util.Collections;
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    private final UserRepository userRepository;
+    private final OauthUserRepository repository;
     private final HttpSession httpSession;
 
     @Override
@@ -57,12 +58,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
     private OauthUser saveOrUpdate(OAuthAttributes attributes) {
-        OauthUser user = userRepository.findByEmail(attributes.getEmail())
+        OauthUser user = repository.findByEmail(attributes.getEmail())
                 // 구글 사용자 정보 업데이트(이미 가입된 사용자) => 업데이트
                 .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
                 // 가입되지 않은 사용자 => User 엔티티 생성
                 .orElse(attributes.toEntity());
 
-        return userRepository.save(user);
+        return repository.save(user);
     }
 }
