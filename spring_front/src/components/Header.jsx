@@ -15,6 +15,9 @@ const Header = () => {
     // 추가 로그아웃 로직 필요 시 여기에 작성
   };
 
+
+  
+
   const buttonStyle = { marginRight: '10px', marginBottom: '15px' };
 
   return (
