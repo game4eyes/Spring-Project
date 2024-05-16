@@ -1,4 +1,4 @@
-// use navigate 쓸 수 있을 때 각 Airport, Bus, Train에 연결시키기
+// use navigate 쓸 수 있을 때 각 Plane, Bus, Train에 연결시키기
 
 import React, { useState } from 'react';
 
@@ -24,7 +24,6 @@ const TicketBookingPage = () => {
 
   return (
     <div className="ticket-booking-page">
-      <LoginBox onLogin={(username, password) => console.log(username, password)}/>
       <div className="terms-section">
         <h2>이용약관 동의</h2>
         <h5>개인정보 보호를 위한 이용자 동의사항</h5>

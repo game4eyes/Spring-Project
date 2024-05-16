@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import Article from '../../components/Article';
 import Footer from '../../components/Footer';
 import Ad from '../../components/Ad';
 import '@/css/BusSeat.css';
-import BusList from '../../components/search/list/BusList';
-//import { getCityInfo } from '../../api/todoApi';
+import BusList from '../../Bus/Search/list/BusList';
+import { getCityInfo } from '../../api/todoApi';
 import Charge from '../../components/Charge';
-import SearchBus from '../../components/search/SearchBus';
+
 
 const initState = {
     departure: '',
@@ -26,8 +26,24 @@ const Bus = () => {
 
     const cityInfoClickEvent = () => {
         console.log("dk");
-        getCityInfo();
+        // getCityInfo();
     }
+
+    const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getCityInfo("경기도"); // "경기도"를 예시로 넣어봅니다.
+        setCities(data[0].cityInfoDTO);
+      } catch (error) {
+        console.error("Error fetching city data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+
 
     const handleChange = (key, value) => {
         setBusticket(prevState => ({
@@ -131,9 +147,22 @@ const Bus = () => {
 
     return (
         <div className="bus_book">
+
+
+
             <form onSubmit={handleSubmit}>
                 <Header />
                 <Article title="버스 승차권 예매" body="정보 입력" />
+
+<div>
+      <h2>City List</h2>
+      <ul>
+        {cities.map(city => (
+          <li key={city.cityCode}>{city.cityName}</li>
+        ))}
+      </ul>
+    </div>
+
                 <button onClick={cityInfoClickEvent}>클릭</button>
                 <h3>버스 예약</h3>
                 {/* 출발지 검색창 */}

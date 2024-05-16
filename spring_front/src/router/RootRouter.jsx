@@ -6,15 +6,15 @@ import Join from '../User/Join';
 import FindUserId from '../User/FindUserId';
 import MyPage from '../User/Mypage';
 
-import BusSeat from '../components/BusSeat';
+import BusSeat from '../Bus/Seat/BusSeat';
 
 import ResetPassword from '../User/ResetPassword';
 import Ticket_Detail from '../Ticket/Ticket_Detail';
 import Ticket_Modify from '../Ticket/Ticket_Modify';
 import Ticket_Cancel from '../Ticket/Ticket_Cancel';
-import Bus from '../Ticket/Ticket_Book/Bus';
-import Train from '../Ticket/Ticket_Book/Train';
-import Airport from '../Ticket/Ticket_Book/Airport';
+import Bus from '../Bus/Ticket//Bus';
+import Train from '../Train/Ticket//Train';
+import Plane from '../Plane/Ticket/Plane';
 import NavLink1 from '../components/API/NavLink/NavLink1';
 import NavLink2 from '../components/API/NavLink/NavLink2';
 import NavLink3 from '../components/API/NavLink/NavLink3';
@@ -111,8 +111,8 @@ children: TicketBookRouter()
 // element : <Suspense fallback={Loading}><Train/></Suspense>
 // },
 // {
-// path    : '/airport',
-// element : <Suspense fallback={Loading}><Airport/></Suspense>
+// path    : '/Plane',
+// element : <Suspense fallback={Loading}><Plane/></Suspense>
 // },
 
 

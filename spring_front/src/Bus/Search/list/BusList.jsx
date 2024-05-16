@@ -34,6 +34,31 @@ const BusList = () => {
 
     return (
         <div>
+
+
+            <div>
+                <h1>테스트페이지</h1>
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div>
                 <h2>터미널 조회 결과</h2>
                 <table>

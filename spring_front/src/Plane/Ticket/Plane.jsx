@@ -1,23 +1,41 @@
-import React, { useState } from 'react';
-import BusSeat from '../../components/BusSeat';
+import React, { useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import Article from '../../components/Article';
 import Ad from '../../components/Ad';
 import Footer from '../../components/Footer';
 import Charge from '../../components/Charge';
+import { getStationInfo } from '../../api/dataApi';
+
+const initState = {
+    dir : "출발지",
+    result : []
+}
+
+    
 
 
 
-
-const Airport = () => {
+const Plane = () => {
     const [departure, setDeparture] = useState('');
     const [destination, setDestination] = useState('');
     const [date, setDate] = useState('');
+    const [dayOfWeek, setDayOfWeek] = useState('');
     const [time, setTime] = useState('');
-    const [passengerCount, setPassengerCount] = useState('');
+    const [passengerCount, setPassengerCount] = useState('1');
+    const [seatType, setSeatType] = useState('standard');
     const [disability, setDisability] = useState(false);
     const [legroom, setLegroom] = useState(false);
     const [window, setWindow] = useState(false);
+
+    const initResult = []
+    const [result, setResult] = useState(initResult)
+    useEffect(() => {
+        getStationInfo(5).then(data => {
+            console.log(data);
+            setResult(data);
+        })
+    },[])
+
 
     // 출발지 변경 시 호출될 함수
     const handleDepartureChange = (e) => {
@@ -33,8 +51,17 @@ const Airport = () => {
 
     // 날짜 변경 시 호출될 함수
     const handleDateChange = (e) => {
-        console.log('날짜:', e.target.value);
-        setDate(e.target.value);
+        const newDate = e.target.value;
+        console.log('날짜:', newDate);
+        setDate(newDate);
+    
+        // Date 객체 생성
+        const dateObj = new Date(newDate);
+        const days = ['일', '월', '화', '수', '목', '금', '토'];
+        const dayName = days[dateObj.getDay()]; // 요일 이름 얻기
+    
+        console.log('요일:', dayName);
+        setDayOfWeek(dayName);
     };
 
     // 시간 변경 시 호출될 함수
@@ -55,13 +82,19 @@ const Airport = () => {
             departure,
             destination,
             date,
+            dayOfWeek,
             time,
-            passengerCount
+            passengerCount,
+            seatType,
+            disability,
+            legroom,
+            window
         });
     };
 
     return (
-        <div className="airport_book">
+        <div className="plane_book">
+            <button onClick={console.log(result)}>d</button>
         <form onSubmit={handleSubmit}>
             <Header/>
             <Article title ="공항 승차권 예매" body ="정보 입력"></Article>
@@ -92,6 +125,23 @@ const Airport = () => {
                 <input type="date" onChange={handleDateChange} />
             </label>
             <br />
+            <label>
+                인원:
+                <select value={passengerCount} onChange={handlePassengerCountChange}>
+                    {Array.from({ length: 10 }, (_, i) => i + 1).map(number => (
+                    <option key={number} value={number}>{number}명</option>
+                    ))}
+                </select>
+            </label>
+        <br />
+             <label>
+                좌석 유형:
+                <select value={seatType} onChange={(e) => setSeatType(e.target.value)}>
+                    <option value="standard">일반</option>
+                    <option value="premium">프리미엄</option>
+                </select>
+            </label>
+        <br />
         <div>
           <input
             type="checkbox"
@@ -154,5 +204,5 @@ const Airport = () => {
     );
 };
 
-export default Airport;
+export default Plane;
 
