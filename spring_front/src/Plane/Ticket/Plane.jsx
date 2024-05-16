@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import BusSeat from '../../components/BusSeat';
 import Header from '../../components/Header';
 import Article from '../../components/Article';
 import Ad from '../../components/Ad';
@@ -16,7 +15,7 @@ const initState = {
 
 
 
-const Airport = () => {
+const Plane = () => {
     const [departure, setDeparture] = useState('');
     const [destination, setDestination] = useState('');
     const [date, setDate] = useState('');
@@ -94,7 +93,7 @@ const Airport = () => {
     };
 
     return (
-        <div className="airport_book">
+        <div className="plane_book">
             <button onClick={console.log(result)}>d</button>
         <form onSubmit={handleSubmit}>
             <Header/>
@@ -205,5 +204,5 @@ const Airport = () => {
     );
 };
 
-export default Airport;
+export default Plane;
 

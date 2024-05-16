@@ -4,10 +4,10 @@ import Article from '../../components/Article';
 import Footer from '../../components/Footer';
 import Ad from '../../components/Ad';
 import '@/css/BusSeat.css';
-import BusList from '../../components/search/list/BusList';
-import { getCityInfo } from '../../api/dataApi';
+import BusList from '../../Bus/Search/list/BusList';
+import { getCityInfo } from '../../api/todoApi';
 import Charge from '../../components/Charge';
-import SearchBus from '../../components/search/SearchBus';
+
 
 const initState = {
     departure: '',
@@ -26,7 +26,7 @@ const Bus = () => {
 
     const cityInfoClickEvent = () => {
         console.log("dk");
-        getCityInfo("경기도");
+        // getCityInfo();
     }
 
     const [cities, setCities] = useState([]);
