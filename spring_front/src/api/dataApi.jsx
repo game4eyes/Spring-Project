@@ -29,7 +29,7 @@ export const getCityInfo = async (cityRegion) => {
 // 도시 코드를 넘겨 주면 그 도시에 있는 터미널의 정보를 줌
 // 도시 정보코드를 가지고 도시내의 고속 / 시외 버스 터미널의 정보를 가져옴 (id, 이름, x, y)
 export const getNearByCity = async (cityCode) => {
-    const res = await axios.get(`${busPrefix}/${cityCode}`);
+    const res = await axios.get(`${busPrefix}/near/${cityCode}`);
     // cityCode = 1000 (서울)
     // http://ec2-3-37-88-212.ap-northeast-2.compute.amazonaws.com:9090/api/bus/near/1000
     // 결과
@@ -86,7 +86,7 @@ export const getStationInfo = async (stationClass) => {
 }
 // 기차 정보
 export const getTrainInfo = async (startStationID,endStationID,hour,dayz) => {
-    const res = await axios.get(`${stationPrefix}/${startStationID}/${endStationID}`, {params : {
+    const res = await axios.get(`${trainPrefix}/${startStationID}/${endStationID}`, {params : {
             hour : hour,
             dayz : dayz
         }});
