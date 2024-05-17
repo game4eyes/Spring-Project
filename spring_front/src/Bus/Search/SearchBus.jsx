@@ -1,377 +1,113 @@
 import React, { useEffect, useState } from 'react';
-import { getCityInfo } from '../../api/dataApi';
-const SearchBus = ({ departure, destination, onSearchResult }) => {
-    const [result, setResult] = useState('');
-    const [selectedTerminal, setSelectedTerminal] = useState('');
-    const [selectedCity, setSelectedCity] = useState('');
-    const [searchTerm, setSearchTerm] = useState('');
-    const [searchTerm2, setSearchTerm2] = useState('');
+import { getCityInfo } from "@/api/dataApi.jsx";
+import CityName from "@/Bus/Search/list/CityName.jsx";
+import BusClass from "@/Bus/Search/list/BusClass.jsx";
+import StartStationList from "@/Bus/Search/list/StartStationList.jsx";
+import EndStationList from "@/Bus/Search/list/EndStationList.jsx";
+
+export const Region = [
+    "서울", "경기도", "인천", "강원도", "대전", "충청남도", "충청북도", "광주",
+    "전라북도", "전라남도", "대구", "울산", "부산", "경상북도", "경상남도", "제주도"
+];
 
 
-   
-        const [cityData, setCityData] = useState(null);
-      
-        useEffect(() => {
-          const fetchData = async () => {
-            try {
-              const data = await getCityInfo("1000"); // 예시로 "Seoul"을 넣어봅니다.
-              setCityData(data);
-              console.log(cityData);
-            } catch (error) {
-              console.error("Error fetching city data:", error);
+const SearchBus = () => {
+    const [allSelected, setAllSelected] = useState("");
+    const [cityInfo, setCityInfo] = useState(null);
+    const [region, setRegion] = useState(null);
+    const [selectedCity, setSelectedCity] = useState(null);
+    const [selectedBusClass, setSelectedBusClass] = useState(null);
+    const [result, setResult] = useState(null);
+    const [startStationID, setStartStationID] = useState()
+    const [endStationList, setEndStationList] = useState()
+    const [endStationID, setEndStationID] = useState()
+
+    useEffect(() => {
+        setAllSelected(region+cityInfo+selectedCity+selectedBusClass+result+startStationID+endStationList+endStationID)
+    }, [cityInfo, region, selectedCity, selectedBusClass, result,startStationID,endStationList,endStationID]);
+
+
+    // region에 저장하기 위한 메서드
+    const handleGetCityInfo = (cityRegion) => {
+        setRegion(cityRegion);
+    };
+    // 상세 지역 정보를 가지고 오기 위한 훅
+    useEffect(() => {
+        const fetchCityInfo = async () => {
+            if (region) {
+                const data = await getCityInfo(region);
+                setCityInfo(data[0]);
             }
-          };
-          fetchData();
-        }, []);
-
-  
-    
-
-
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const searchResult = `출발지: ${departure}, 도착지: ${destination}`;
-        setResult(searchResult);
-        onSearchResult(searchResult);
-    };
-
-    const handleClose = () => {
-        setResult('');
-        window.close();
-    };
-
-    const handleDepartureChange = (e) => {
-        setDeparture(e.target.value);
-    };
-
-    const handleDestinationChange = (e) => {
-        setDestination(e.target.value);
-    };
-
-    const changeDepartureDestination = (e) => {
-        e.preventDefault();
-        const temp = departure;
-        departure(destination);
-        destination(temp);
-    };
-
-    const handleToggleName = (name) => {
-        if (selectedTerminal === name) {
-            setSelectedTerminal('');
-        } else {
-            setSelectedTerminal(name);
-            setSelectedCity('');
-        }
-    };
-
-    const handleToggleCity = (citycode) => {
-        if (selectedCity === citycode) {
-            setSelectedCity('');
-        } else {
-            setSelectedCity(citycode);
-        }
-    };
-
-    const handleSubterminalClick = (subterminal, citycode) => {
-        setSearchTerm(subterminal);
-        setSelectedCity(citycode);
-        setDeparture('subterminal');
-      //  setDestination('');
-    };
-
-    const handleSubterminalClick2 = (subterminal, citycode) => {
-        setSearchTerm2(subterminal);
-        setSelectedCity(citycode);
-      //  setDeparture('');
-        setDestination('subterminal');
-    };
-
-
-    const terminals = [
-        {
-            name: '서울',
-            cities: [
-                {
-                    citycode: 'SEO1',
-                    subterminals: [
-                        '서울 익스프레스 터미널',
-                        '서울 버스 터미널'
-                    ]
-                },
-                {
-                    citycode: 'SEO2',
-                    subterminals: [
-                        '서울 기차역',
-                        '김포 국제공항'
-                    ]
-                },
-                {
-                    citycode: 'SEO3',
-                    subterminals: [
-                        '서울 항구 터미널',
-                        '서울 항만'
-                    ]
-                }
-            ]
-        },
-        {
-            name: '인천',
-            cities: [
-                {
-                    citycode: 'INC1',
-                    subterminals: [
-                        '인천 국제공항 터미널',
-                        '항구 터미널'
-                    ]
-                },
-                {
-                    citycode: 'INC2',
-                    subterminals: [
-                        '시외버스 터미널',
-                        '인천 지하철역'
-                    ]
-                }
-            ]
-        },
-        {
-            name: '대구',
-            cities: [
-                {
-                    citycode: 'DGU1',
-                    subterminals: [
-                        '대구 공항 터미널',
-                        '대구 시외버스 터미널'
-                    ]
-                },
-                {
-                    citycode: 'DGU2',
-                    subterminals: [
-                        '대구 중앙역',
-                        '대구 항구 터미널'
-                    ]
-                }
-            ]
-        },
-        {
-            name: '부산',
-            cities: [
-                {
-                    citycode: 'BSN1',
-                    subterminals: [
-                        '부산 국제여객터미널',
-                        '부산 시외버스 터미널'
-                    ]
-                },
-                {
-                    citycode: 'BSN2',
-                    subterminals: [
-                        '부산 역',
-                        '김해 국제공항'
-                    ]
-                }
-            ]
-        },
-        {
-            name: '광주',
-            cities: [
-                {
-                    citycode: 'KWJ1',
-                    subterminals: [
-                        '광주 항구 터미널',
-                        '광주 중앙 터미널'
-                    ]
-                },
-                {
-                    citycode: 'KWJ2',
-                    subterminals: [
-                        '광주 공항'
-                    ]
-                }
-            ]
-        }
-        // Add more objects for other cities as needed
-    ];
-
-       const saveSearchBusForm =() =>{
-        opener.document.getElementById("start").value = document.getElementById("departure").value ;
-        opener.document.getElementById("finish").value = document.getElementById("destination").value;
-      
-        if(opener.document.getElementById("start").value ==="" || opener.document.getElementById("finish").value===""){
-            alert('출발지와 도착지를 입력해주세요!');
-            if(document.getElementById("departure").value===""){
-            document.getElementById("departure").focus();
-            }
-            if(document.getElementById("destination").value===""){
-                document.getElementById("destination").focus();
-                }
-            return;
-        }
-      }
-    const filteredTerminals = terminals.filter((terminal) => {
-        return terminal.cities.some((city) => {
-            return city.subterminals.some((subterminal) => {
-                return subterminal.toLowerCase().includes(searchTerm.toLowerCase());
-            });
-        });
-    });
-
-    const filteredTerminalsDestination = terminals.filter((terminal) => {
-        return terminal.cities.some((city) => {
-            return city.subterminals.some((subterminal) => {
-                return subterminal.toLowerCase().includes(searchTerm2.toLowerCase());
-            });
-        });
-    });
+        };
+        fetchCityInfo();
+    }, [region]);
+    // 도시 코드 저장
+    const handleCityCode = (code) => {
+        setSelectedCity(code);
+    }
+    // 버스 종류 저장
+    const handleBusClass = (code) => {
+        setSelectedBusClass(code);
+    }
+    // 검색 결과를 부모에 저장 하기
+    const handleSearchResult = (result) => {
+        setResult(result)
+        console.log(result)
+    }
+    // 시작
+    const handleStartStationID = (id, list) => {
+        setStartStationID(id)
+        setEndStationList(list)
+    }
+    // 끝
+    const handleEndStationID = (id) => {
+        setEndStationID(id)
+    }
 
     return (
-
-        <div> 
-          
-        <div className="searchdeparture">
-            <h2>출발지 도착지 검색</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>
-                        출발 터미널:
-                        <input
-                            type="text"
-                            // value={departure}
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            placeholder="출발지를 검색하세요"
-                            id="departure"
-                        />
-                    </label>
-                </div>
-                <div>
-                    <div>
-                        <label>
-                            도착 터미널:
-                            <input
-                                type="text"
-                                value={searchTerm2}
-                                onChange={(e) => setSearchTerm2(e.target.value)}
-                                placeholder="도착지를 검색하세요"
-                                id="destination"
-                            />
-                        </label>
-                    </div>
-                    <button onClick={changeDepartureDestination}>출발지 ↔ 도착지</button>
-                    <button type="submit" onClick={saveSearchBusForm}>폼 제출</button>
-                    <button onClick={handleClose}>나가기</button>
-                </div>
-            </form>
-
-            {result && <div><p>{result}</p></div>}
-
-
-
-
-            <div className="parsingTest">
-
-            <h1>파싱 테스트</h1>
-
-            {cityData && (
         <div>
-          <h2>City: {cityData.stationID}</h2>
-          <p>Population: {cityData.population}</p>
-          <p>Landmark: {cityData.landmark}</p>
-        </div>
-      )}
-
-             </div>      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <div>
-                <div className='startTerminal'>
-                    <h2>출발지 터미널 리스트</h2>
-                    {filteredTerminals.map((terminal, index) => (
-                        <div key={index}>
-                            <h3 onClick={() => handleToggleName(terminal.name)}>
-                                <a href="#">{terminal.name}</a>
-                            </h3>
-                            {selectedTerminal === terminal.name && (
-                                <ul>
-                                    {terminal.cities.map((city, cityIndex) => (
-                                        <li key={cityIndex}>
-                                            <h4 onClick={() => handleToggleCity(city.citycode)}>
-                                                <a href="#">{city.citycode}</a>
-                                            </h4>
-                                            {selectedCity === city.citycode && (
-                                                <ul>
-                                                    {city.subterminals.map((subterminal, subIndex) => (
-                                                        <li key={subIndex}>
-                                                            <span onClick={() => handleSubterminalClick(subterminal, city.citycode)}>
-                                                                <a href="#" >{subterminal}</a>
-                                                            </span>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            )}
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
-                        </div>
-                    ))}
-                </div>
-
-                <div className='destinationTerminal'>
-                    <h2>도착지 터미널 리스트</h2>
-                    {filteredTerminalsDestination.map((terminal, index) => (
-                        <div key={index}>
-                            <h3 onClick={() => handleToggleName(terminal.name)}>
-                                <a href="#">{terminal.name}</a>
-                            </h3>
-                            {selectedTerminal === terminal.name && (
-                                <ul>
-                                    {terminal.cities.map((city, cityIndex) => (
-                                        <li key={cityIndex}>
-                                            <h4 onClick={() => handleToggleCity(city.citycode)}>
-                                                <a href="#">{city.citycode}</a>
-                                            </h4>
-                                            {selectedCity === city.citycode && (
-                                                <ul>
-                                                    {city.subterminals.map((subterminal, subIndex) => (
-                                                        <li key={subIndex}>
-                                                            <span onClick={() => handleSubterminalClick2(subterminal, city.citycode)}>
-                                                                <a href="#" >{subterminal}</a>
-                                                            </span>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            )}
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
-
-
-
-
+            <p>{allSelected}</p>
+            {Region.map((region, index) => (
+                <button key={index} onClick={() => handleGetCityInfo(region)}>
+                    {region}
+                </button>
+            ))}
+            {/* 도시정보가 있고 그 안의 내용이 있고 선택된 도시가 없으면 */}
+            {cityInfo && cityInfo.cityInfoDTO && !selectedCity && (
+                <>
+                    <h1>{region}의 상세 도시</h1>
+                    <div>
+                        {cityInfo.cityInfoDTO.map((city) => (
+                            <CityName key={city.cityCode} city={city} onChangeCityCode={handleCityCode} />
+                        ))}
+                    </div>
+                </>
+            )}
+            {/* 선택된 도시가 있고 션택된 버스 종류가 없을때 다음 컴포넌트를 실행 */}
+            {selectedCity && !selectedBusClass &&
+                <>
+                    <h1>버스 종류를 선택하세요</h1>
+                    <BusClass onStationClassChange={handleBusClass}/>
+                </>
+            }
+            {selectedCity && selectedBusClass && !startStationID &&
+                <StartStationList cityCode={selectedCity} busClass={selectedBusClass}
+                                  onChangeResult={handleSearchResult}
+                                  onChangeStartId={handleStartStationID}
+                />
+            }
+            {startStationID && !endStationID &&
+                <EndStationList endStationList={endStationList}
+                                onChangeEndId={handleEndStationID}
+                />
+            }
+            {startStationID && endStationID &&
+                (
+                    <div>
+                    <button>확인</button>
+                    </div>
+                )
+            }
 
 
         </div>
