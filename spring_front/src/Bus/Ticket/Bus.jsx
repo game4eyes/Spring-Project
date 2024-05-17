@@ -5,6 +5,7 @@ import Footer from '../../components/Footer';
 import Ad from '../../components/Ad';
 import '@/css/BusSeat.css';
 import BusList from '../../Bus/Search/list/BusList';
+// import { getCityInfo } from '../../api/todoApi';
 import Charge from '../../components/Charge';
 
 
