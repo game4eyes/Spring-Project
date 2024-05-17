@@ -2,13 +2,7 @@ import React, { useState } from 'react';
 //import BusSeat from '../../BusSeat';
 
 const BusList = () => {
-
-
-
-
             //결제 창
-        
-      
                 const [popupData, setPopupData] = useState(null); // 팝업 창에서 받은 데이터를 저장하는 상태
               
                 // 팝업 창에서 데이터를 받아오는 함수
@@ -35,30 +29,9 @@ const BusList = () => {
     return (
         <div>
 
-
             <div>
                 <h1>테스트페이지</h1>
-
-
-
                 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <div>
                 <h2>터미널 조회 결과</h2>
                 <table>
@@ -101,7 +74,6 @@ const BusList = () => {
                             <button type="submit"  onClick={payment} >결제</button>
                         </tr>
                         <tr>
-                        
                             <td>2</td>
                             {/* <th>AAAAAA (DB,hidden)</th>
                             <th>BBBBBB (DB,hidden)</th> */}
