@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { getTrainInfo } from '@/api/dataApi';
+import { useNavigate } from 'react-router-dom';
 import Pagination from '../../../common/page/Pagination';
+import '@/css/TrainList.css'; // CSS 파일 임포트
 
 const TrainList = ({ startStationID, endStationID, hour, dayz }) => {
     const [trainInfo, setTrainInfo] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(5); // 페이지 당 항목 수
+    const [itemsPerPage] = useState(5);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,28 +22,22 @@ const TrainList = ({ startStationID, endStationID, hour, dayz }) => {
         fetchData();
     }, [startStationID, endStationID, hour, dayz]);
 
-    // 페이지 변경 핸들러
-    const paginate = pageNumber => setCurrentPage(pageNumber);
-
-    // 현재 페이지의 항목 범위 계산
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = trainInfo.slice(indexOfFirstItem, indexOfLastItem);
 
+    const paginate = pageNumber => setCurrentPage(pageNumber);
 
-    const seatselect = () =>{
-
+    const seatselect = () => {
         window.open('http://localhost:5173/search/busseat', '_blank', 'width=600,height=400');
     }
 
-    const payment = () =>{
-
+    const payment = () => {
         window.open('http://localhost:5173/pay/pay', '_blank', 'width=600,height=400');
     }
 
-    
     return (
-        <div>
+        <div className="table-container">
             {trainInfo.length > 0 ? (
                 <table>
                     <thead>
@@ -73,8 +69,8 @@ const TrainList = ({ startStationID, endStationID, hour, dayz }) => {
                                     {train.fare.generalFare.weekend && <p>주말: {train.fare.generalFare.weekend}</p>}
                                     {train.fare.generalFare.holiday && <p>공휴일: {train.fare.generalFare.holiday}</p>}
                                 </td>
-                                <td><button onClick={seatselect}>좌석 선택</button></td>
-                                <td><button onClick={payment}>결제</button></td>
+                                <td><button className="button" onClick={seatselect}>좌석 선택</button></td>
+                                <td><button className="button" onClick={payment}>결제</button></td>
                             </tr>
                         ))}
                     </tbody>
@@ -82,7 +78,6 @@ const TrainList = ({ startStationID, endStationID, hour, dayz }) => {
             ) : (
                 <p>데이터를 불러오는 중입니다...</p>
             )}
-
             <Pagination itemsPerPage={itemsPerPage} totalItems={trainInfo.length} paginate={paginate} />
         </div>
     );

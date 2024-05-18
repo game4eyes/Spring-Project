@@ -125,6 +125,11 @@ const SearchTrainStation = ({ departure, destination, onSearchResult }) => {
 
 
     const windowclose = () => {
+        const inputId = urlParams.has('departure') ? 'departure' : 'destination';
+        const inputId_stationID = inputId+"_stationID";
+        if( window.opener.document.getElementById(inputId).value ==""){
+            opener.window.document.getElementById(inputId_stationID).value = "";
+        }
         window.close();
     };
 

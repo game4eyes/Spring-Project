@@ -1,25 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Header from '../../components/Header';
 import Article from '../../components/Article';
 import Footer from '../../components/Footer';
 import Ad from '../../components/Ad';
-import '@/css/BusSeat.css';
+//import '@/css/BusSeat.css';
 import BusList from '../../Bus/Search/list/BusList';
 import Charge from '../../components/Charge';
 
 
-const initState = {
-    departure: '',
-    destination: '',
-    departureDate: '',
-    returnDate: '',
-    passengerCount: '',
-    isRoundTrip: false,
-    selectedBus: null,
-    isDepartureModalOpen: false 
-};
 
-const Bus = () => {     
+const Bus = () => {
+
+
+    const initState = {
+        departure: '',
+        destination: '',
+        departureDate: '',
+        returnDate: '',
+        passengerCount: '',
+        isRoundTrip: false,
+        selectedBus: null,
+        isDepartureModalOpen: false,
+        startStationID: '',      //출발지코드
+        endStationID: '',        //도착지코드
+    };
+
 
     const [busticket, setBusticket] = useState(initState);
 
@@ -30,17 +35,21 @@ const Bus = () => {
 
     const [cities, setCities] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getCityInfo("경기도"); // "경기도"를 예시로 넣어봅니다.
-        setCities(data[0].cityInfoDTO);
-      } catch (error) {
-        console.error("Error fetching city data:", error);
-      }
-    };
-    fetchData();
-  }, []);
+
+    const inputRef = useRef(null);
+
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const data = await getCityInfo("경기도"); // "경기도"를 예시로 넣어봅니다.
+    //             setCities(data[0].cityInfoDTO);
+    //         } catch (error) {
+    //             console.error("Error fetching city data:", error);
+    //         }
+    //     };
+    //     fetchData();
+    // }, []);
 
 
 
@@ -51,14 +60,58 @@ const Bus = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(busticket);
+  // 예약 양식 제출 핸들러
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // TODO: 예약 정보 처리
+    console.log(busticket);
+    // isDepartureModalOpen 상태를 true로 변경하여 TrainList 컴포넌트를 렌더링합니다.
+    console.log(busticket);
+   // setStationCodeAndUpdate();
+    // setbusticket({ 
+    //     ...busticket, 
+    //     departure: document.getElementById('departure').value,
+    //     destination: document.getElementById('destination').value,
+    //     startStationID: document.getElementById('departure_stationID').value,
+    //     endStationID: document.getElementById('destination_stationID').value,
+    //     isDepartureModalOpen: true });
+    if (inputRef.current) {
+        inputRef.current.setAttribute('input_test', '입력이 아닌 받아오는 값으로 인한 change변경!');
+        console.log('입력이 아닌 받아오는 값으로 인한 change변경');
+         setBusticket({ 
+        ...busticket, 
+        departure: document.getElementById('departure').value,
+        destination: document.getElementById('destination').value,
+        startStationID: document.getElementById('departure_stationID').value,
+        endStationID: document.getElementById('destination_stationID').value,
+        isDepartureModalOpen: true });
+         }
+
+         console.log(busticket.startStationID);
+         console.log(busticket.endStationID);
+};
+
+
+
+
+
+    const handleStartStationIDChange = (e) => {
+        console.log('Updating startStationID to:', e.target.value);
         setBusticket(prevState => ({
             ...prevState,
-            isDepartureModalOpen: true
+            startStationID: e.target.value,
         }));
     };
+
+
+    const handleEndStationIDChange = (e) => {
+        console.log('Updating endStationID to:', e.target.value);
+        setBusticket(prevState => ({
+            ...prevState,
+            endStationID: e.target.value
+        }));
+    };
+
 
     // const openPopup = () => {
     //     window.open('http://localhost:5173/search/searchbus', '_blank', 'width=600,height=400');
@@ -84,15 +137,36 @@ const Bus = () => {
     // };
 
 
-    const openPopup = () => {
+    //주석 처리(24.05.18)
+    // const openPopup = () => {
+    //     const params = new URLSearchParams({
+    //         departure: busticket.departure,
+    //         destination: busticket.destination
+    //     });
+    //     window.open(`http://localhost:5173/search/searchbus?${params}`, '_blank', 'width=600,height=400');
+    // };
+
+
+
+
+    // 팝업 열기 이벤트 핸들러
+    const openPopup = (stationClass, departure_destination) => () => {
+        const departure = document.getElementById("departure").value;
+        const destination = document.getElementById("destination").value;
+
+        // URL 파라미터 설정
         const params = new URLSearchParams({
-            departure: busticket.departure,
-            destination: busticket.destination
+            departure: departure.toString(),
+            destination: destination.toString(),
+            // stationClass: stationClass.toString(),
         });
-        window.open(`http://localhost:5173/search/searchbus?${params}`, '_blank', 'width=600,height=400');
+
+        // 새로운 팝업 창 열기
+        const newPopup = window.open(`http://localhost:5173/search/searchbus?${params}`, '_blank', 'width=600,height=400');
+
+        // 부모 창의 setbusticketAndUpdate 함수 전달
+       // newPopup.setBusticketAndUpdate = setBusticketAndUpdate;
     };
-    
-    
 
 
     // const change_Departure_Destination = (e) => {
@@ -129,20 +203,20 @@ const Bus = () => {
 
 
 
-    const change_Departure_Destination = () => {
-        
+    //출발지,도착지 값 서로 바꾸기
+    const changeDepartureDestination = () => {
+        let tmp = "";
+        tmp = document.getElementById("departure").value;
+        document.getElementById("departure").value = document.getElementById("destination").value;
+        document.getElementById("destination").value = tmp;
 
-        let tmp = busticket.departure;
-        setBusticket(prevState => ({
-            ...prevState,
-            departure: busticket.destination,
-            destination: tmp
-        }));
+        let tmp2 = "";
+        tmp = document.getElementById("departure_stationID").value;
+        document.getElementById("departure_stationID").value = document.getElementById("destination_stationID").value;
+        document.getElementById("destination_stationID").value = tmp;
 
-        if (busticket.destination === "" || busticket.departure === "") {
-            alert('출발지와 도착지를 입력해주세요!')
-        }
-    };
+    }
+
 
     return (
         <div className="bus_book">
@@ -153,27 +227,27 @@ const Bus = () => {
                 <Header />
                 <Article title="버스 승차권 예매" body="정보 입력" />
 
-<div>
-      <h2>City List</h2>
-      <ul>
-        {cities.map(city => (
-          <li key={city.cityCode}>{city.cityName}</li>
-        ))}
-      </ul>
-    </div>
+                <div>
+                    <h2>City List</h2>
+                    <ul>
+                        {cities.map(city => (
+                            <li key={city.cityCode}>{city.cityName}</li>
+                        ))}
+                    </ul>
+                </div>
 
                 <button onClick={cityInfoClickEvent}>클릭</button>
                 <h3>버스 예약</h3>
                 {/* 출발지 검색창 */}
-                <label> 
+                <label>
                     출발지:
                     <input
                         type="text"
-                        value={busticket.departure}
+                        value={busticket.departure.value}
                         onChange={(e) => handleChange('departure', e.target.value)}
                         placeholder="출발지를 입력하세요"
-                        onClick={openPopup}
-                        id="start"
+                        onClick={openPopup()}
+                        id="departure"
                     />
                 </label>
                 <br />
@@ -182,15 +256,33 @@ const Bus = () => {
                     도착지:
                     <input
                         type="text"
-                        value={busticket.destination}
+                        value={busticket.destination.value}
                         onChange={(e) => handleChange('destination', e.target.value)}
                         placeholder="도착지를 입력하세요"
-                        id="finish"
-                        onClick={openPopup}
+                        id="destination"
+                        onClick={openPopup()}
                     />
                 </label>
                 <br />
-                <button type="button" onClick={change_Departure_Destination}>출발지↔도착지</button>
+                <button type="button" onClick={changeDepartureDestination}>출발지↔도착지</button>
+
+                {/* Hidden 값 */}
+                <input type="text"
+                    value={busticket.startStationID.value}
+                    onChange={handleStartStationIDChange}
+                    id="departure_stationID"
+                    ref={inputRef}
+
+                />
+
+                <input type="text"
+                    value={busticket.endStationID.value}
+                    onChange={handleEndStationIDChange}
+                    id="destination_stationID"
+                    ref={inputRef}
+                />
+
+
                 <label>
                     가는 날:
                     <input type="date" value={busticket.departureDate} onChange={(e) => handleChange('departureDate', e.target.value)} />
@@ -228,22 +320,26 @@ const Bus = () => {
                 버스등급:
                 <select value={busticket.selectedBus} onChange={(e) => handleChange('selectedBus', e.target.value)}>
                     <option value="">전체</option>
-                    <option value="Bus1">일반</option>
-                    <option value="Bus2">시외고속</option>
-                    <option value="Bus3">심야고속</option>
-                    <option value="Bus4">시외우등</option>
-                    <option value="Bus5">심야우등</option>
-                    <option value="Bus6">프리미엄우등</option>
-                    <option value="Bus7">프리미엄심야우등</option>
-                    <option value="Bus8">프리미엄우등(주말)</option>
-                    <option value="Bus9">프리미엄심야우등(주말)</option>
+                    <option value="1">일반</option>
+                    <option value="2">시외고속</option>
+                    <option value="3">심야고속</option>
+                    <option value="4">시외우등</option>
+                    <option value="5">심야우등</option>
+                    <option value="6">프리미엄우등</option>
+                    <option value="7">프리미엄심야우등</option>
+                    <option value="8">프리미엄우등(주말)</option>
                 </select>
                 <br />
                 <button type="submit">조회하기</button>
-              
-            <Charge id={1}/>
+
+                <Charge id={1} />
             </form>
-            {busticket.isDepartureModalOpen && <BusList />}
+            {busticket.isDepartureModalOpen &&
+                <BusList
+                startStationID={busticket.startStationID}                                    // <--이렇게 하면 안됨 (해결이 됐으나 비동기 통신 상 시점 이슈로 콘솔에 늦게 적용됨)
+                endStationID={busticket.endStationID}                                    //    <--이렇게 하면 안됨 (해결이 됐으나 비동기 통신 상 시점 이슈로 콘솔에 늦게 적용됨)
+/>
+            }
             <Ad />
             <Footer />
         </div>

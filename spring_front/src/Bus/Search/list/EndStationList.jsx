@@ -10,7 +10,7 @@ const EndStationList = ({endStationList,onChangeEndId}) => {
         <>
         {
             endStationList.map((info)=> (
-                <p onClick={()=>onChangeEndId(info.stationID)}>{info.stationName}</p>
+                <p onClick={()=>onChangeEndId(info.stationID,info.stationName)}>{info.stationName}</p>
             ))
         }
         </>

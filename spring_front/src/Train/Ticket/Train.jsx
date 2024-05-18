@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Header from '../../components/Header';
 import Article from '../../components/Article';
 import Ad from '../../components/Ad';
@@ -31,7 +31,9 @@ const Train = () => {
  
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10)); // 오늘 날짜로 초기화
 
-    
+    const inputRef = useRef(null);
+
+
    useEffect(() => {
     // 출발지와 도착지의 역 코드 설정
     const departure_ID = document.getElementById("departure_stationID").value;
@@ -52,10 +54,7 @@ const Train = () => {
 }, []);
 
 
-useEffect(() => {
-    console.log('Updated startStationID:', trainticket.startStationID);
-    console.log('Updated endStationID:', trainticket.endStationID);
-}, [trainticket.startStationID, trainticket.endStationID]);
+
     
     
       const handleHourChange = (e) => {
@@ -150,6 +149,7 @@ const openPopup = (stationClass,departure_destination) => () => {
         stationClass: stationClass.toString(), 
     });
 
+
     // 새로운 팝업 창 열기
     const newPopup = window.open(`http://localhost:5173/search/searchtrain?${params}`, '_blank', 'width=600,height=400');
 
@@ -164,11 +164,31 @@ const openPopup = (stationClass,departure_destination) => () => {
         // TODO: 예약 정보 처리
     
         // isDepartureModalOpen 상태를 true로 변경하여 TrainList 컴포넌트를 렌더링합니다.
-        setStationCodeAndUpdate();
-        setTrainticket({ ...trainticket, isDepartureModalOpen: true });
+        console.log(trainticket);
+       // setStationCodeAndUpdate();
+        // setTrainticket({ 
+        //     ...trainticket, 
+        //     departure: document.getElementById('departure').value,
+        //     destination: document.getElementById('destination').value,
+        //     startStationID: document.getElementById('departure_stationID').value,
+        //     endStationID: document.getElementById('destination_stationID').value,
+        //     isDepartureModalOpen: true });
+        if (inputRef.current) {
+            inputRef.current.setAttribute('input_test', '입력이 아닌 받아오는 값으로 인한 change변경!');
+            console.log('입력이 아닌 받아오는 값으로 인한 change변경');
+             setTrainticket({ 
+            ...trainticket, 
+            departure: document.getElementById('departure').value,
+            destination: document.getElementById('destination').value,
+            startStationID: document.getElementById('departure_stationID').value,
+            endStationID: document.getElementById('destination_stationID').value,
+            isDepartureModalOpen: true });
+             }
     };
 
 
+    
+//출발지,도착지 값 서로 바꾸기
     const changeDepartureDestination = ( ) => {
         let tmp ="";
         tmp=document.getElementById("departure").value;
@@ -265,18 +285,18 @@ useEffect(() => {
 
         {/* Hidden 값 */}
             <input type = "text"
-           value={trainticket.startStationID}
+           value={trainticket.startStationID.value}
            onChange={handleStartStationIDChange}
             id ="departure_stationID"
-          
+            ref={inputRef}
 
             />
 
             <input type = "text"
-            value={trainticket.endStationID}
+            value={trainticket.endStationID.value}
            onChange={handleEndStationIDChange}
             id ="destination_stationID"
-            
+            ref={inputRef}
             />
 
             {/* 출발일 선택란 */}
@@ -361,10 +381,13 @@ useEffect(() => {
                 
             {trainticket.isDepartureModalOpen && 
     <TrainList 
-         startStationID={trainticket.startStationID}                                    // <--이렇게 하면 안됨
-         endStationID={trainticket.endStationID}                                    //    <--이렇게 하면 안됨
-        //startStationID={document.getElementById("departure_stationID").value}         <--- 이렇게 하면 됨
-        //endStationID={document.getElementById("destination_stationID").value}          <--- 이렇게 하면 됨
+
+          startStationID={trainticket.startStationID}                                    // <--이렇게 하면 안됨 (해결이 됐으나 비동기 통신 상 시점 이슈로 콘솔에 늦게 적용됨)
+          endStationID={trainticket.endStationID}                                    //    <--이렇게 하면 안됨 (해결이 됐으나 비동기 통신 상 시점 이슈로 콘솔에 늦게 적용됨)
+        //startStationID={document.getElementById("departure_stationID").value}       //  <--- 이렇게 하면 됨
+      //  endStationID={document.getElementById("destination_stationID").value}       //  <--- 이렇게 하면 됨
+        //  startStationID={trainticket.startStationID=document.getElementById("departure_stationID").value}        (DOM에 직접 넣는 행위는 권장사항이 아님)
+  //  endStationID={trainticket.endStationID=document.getElementById("destination_stationID").value}                (DOM에 직접 넣는 행위는 권장사항이 아님)
         dayz={trainticket.dayz} 
         hour={trainticket.hour}  
     />
