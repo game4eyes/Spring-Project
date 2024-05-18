@@ -1,25 +1,28 @@
-package com.travel.booking.domain.payment;
+package com.travel.booking.domain.payment.entity;
 
+import com.travel.booking.domain.payment.PayType;
+import com.travel.booking.domain.payment.dto.PaymentResDto;
 import com.travel.booking.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Builder
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Table(indexes = {
         @Index(name = "idx_payment_member", columnList = "customer"),
         @Index(name = "idx_payment_paymentKey", columnList = "paymentKey" ),
 })
 @EntityListeners(AuditingEntityListener.class)
-public class PaymentEntity {
+public class Payment  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,41 +42,46 @@ public class PaymentEntity {
     @Column(nullable = false , name = "order_id")
     private String orderId;
 
-    private boolean paySuccessYN;
+    // 생성 시간을 나타내는 필드
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
+    private boolean paySuccessYN;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "USERNAME")
-    private UserEntity user;
-
+    private UserEntity customer;
     @Column
     private String paymentKey;
-
-
     @Column
     private String failReason;
 
     @Column
     private boolean cancelYN;
-
     @Column
     private String cancelReason;
 
-    @Column(nullable = false, updatable = false)
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    public PaymentResDTO toPaymentResDto() { // DB에 저장하게 될 결제 관련 정보들
-        return PaymentResDTO.builder()
+    @Column
+    public PaymentResDto toPaymentResDto() { // DB에 저장하게 될 결제 관련 정보들
+        return PaymentResDto.builder()
                 .payType(payType.getDescription())
                 .amount(amount)
                 .orderName(orderName)
                 .orderId(orderId)
-                .customerEmail(user.getEmail())
-                .customerName(user.getUsername())
+                .customerEmail(customer.getEmail())
+                .customerName(customer.getUsername())
                 .createdAt(String.valueOf(getCreatedAt()))
                 .cancelYN(cancelYN)
                 .failReason(failReason)
                 .build();
     }
+
+
+
+
+
+
+
+
 
 }

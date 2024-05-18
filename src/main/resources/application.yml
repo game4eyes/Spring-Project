@@ -16,8 +16,8 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/jpa
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
+    username: ${MYSQL_USERNAME:root} # 기본값으로 root를 사용하도록 설정
+    password: ${MYSQL_PASSWORD:khs04140} # 기본값으로 khs04140을 사용하도록 설정
 
   jpa:
     hibernate:
