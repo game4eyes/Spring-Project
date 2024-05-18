@@ -41,9 +41,9 @@ return (
           </a>
           <ul className="dropdown-menu">
            {/* <a className="dropdown-item" href="#">예매권</a> */}
-            <li><Link to={"/Bus/Ticket/bus"} className="dropdown-item">버스 (회원, 비회원)</Link></li>
-            <li><Link to={"/Train/Ticket/train"} className="dropdown-item">기차 (회원, 비회원)</Link></li>
-            <li><Link to={"/Plane/Ticket/plane"} className="dropdown-item">공항 (회원, 비회원)</Link></li>
+            <li><Link to={"/ticketbook/bus"} className="dropdown-item">버스 (회원, 비회원)</Link></li>
+            <li><Link to={"/ticketbook/train"} className="dropdown-item">기차 (회원, 비회원)</Link></li>
+            <li><Link to={"/ticketbook/plane"} className="dropdown-item">공항 (회원, 비회원)</Link></li>
           </ul>
         </li>
 

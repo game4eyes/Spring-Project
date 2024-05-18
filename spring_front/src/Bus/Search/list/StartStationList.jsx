@@ -17,7 +17,7 @@ const StartStationList = ({busClass,cityCode, onChangeResult, onChangeStartId}) 
         return (
             <>
                 {result.map((data)=> (
-                    <p onClick={() => (onChangeStartId(data.stationID,data.destinationTerminals))}>
+                    <p onClick={() => (onChangeStartId(data.stationID,data.destinationTerminals,data.stationName))}>
                         {data.stationName}</p>
                 ))}
             </>
