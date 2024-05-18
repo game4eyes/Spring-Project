@@ -32,10 +32,14 @@ const SearchBus = ({ onSearchResult }) => {
         setAllSelected(region + cityInfo + selectedCity + selectedBusClass + result + startStationID + endStationList + endStationID);
     }, [cityInfo, region, selectedCity, selectedBusClass, result, startStationID, endStationList, endStationID]);
 
+
+        // region에 저장하기 위한 메서드
+
     const handleGetCityInfo = (cityRegion) => {
         setRegion(cityRegion);
     };
 
+    // 상세 지역 정보를 가지고 오기 위한 훅
     useEffect(() => {
         const fetchCityInfo = async () => {
             if (region) {
@@ -46,32 +50,33 @@ const SearchBus = ({ onSearchResult }) => {
         fetchCityInfo();
     }, [region]);
 
+// 도시 코드 저장
     const handleCityCode = (code) => {
         setSelectedCity(code);
     };
-
+ // 버스 종류 저장
     const handleBusClass = (code) => {
         setSelectedBusClass(code);
     };
-
+  // 검색 결과를 부모에 저장 하기
     const handleSearchResult = (result) => {
         setResult(result);
         console.log(result);
     };
-
+        // url 수정
     const updateURLParameter = (key, value) => {
         const url = new URL(window.location);
         url.searchParams.set(key, value);
         window.history.pushState({}, '', url);
     };
-
+    // 시작
     const handleStartStationID = (id, list, departure) => {
         setStartStationID(id);
         setEndStationList(list);
         updateURLParameter('departure', id); // Update URL with the start station ID as departure
         setDeparture(departure);
     };
-
+        // 끝
     const handleEndStationID = (id,destination) => {
         setEndStationID(id);
         updateURLParameter('destination', id); // Update URL with the end station ID as destination
@@ -81,7 +86,7 @@ const SearchBus = ({ onSearchResult }) => {
 
 
     const confirm = () => {
-        const urlParams = new URLSearchParams(window.location.search);
+        const urlParams = new URLSearchParams(window.location.search); //URL 파라미터 추출 (공항,기차의 출발지,도착지,StationClass 추출하는데 필요합니다)
     
         // Fetch the departure and destination values from URL parameters
        // const departure = urlParams.get('departure');

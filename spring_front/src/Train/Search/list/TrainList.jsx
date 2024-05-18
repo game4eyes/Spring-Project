@@ -8,18 +8,29 @@ const TrainList = ({ startStationID, endStationID, hour, dayz }) => {
     const [trainInfo, setTrainInfo] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5);
+    const [loading, setLoading] = useState(true);
+    const [timeoutReached, setTimeoutReached] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const res = await getTrainInfo(startStationID, endStationID, hour, dayz);
                 setTrainInfo(res && res.station ? res.station : []);
+                setLoading(false);
             } catch (error) {
                 console.error('Error fetching train info:', error);
+                setLoading(false);
             }
         };
 
         fetchData();
+
+        const timeout = setTimeout(() => {
+            setTimeoutReached(true);
+            setLoading(false);
+        }, 5000); // 5초 후 타임아웃
+
+        return () => clearTimeout(timeout);
     }, [startStationID, endStationID, hour, dayz]);
 
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -34,6 +45,14 @@ const TrainList = ({ startStationID, endStationID, hour, dayz }) => {
 
     const payment = () => {
         window.open('http://localhost:5173/pay/pay', '_blank', 'width=600,height=400');
+    }
+
+    if (loading) {
+        return <p>데이터를 불러오는 중입니다...</p>;
+    }
+
+    if (timeoutReached && trainInfo.length === 0) {
+        return <p>조회값이 없습니다</p>;
     }
 
     return (
@@ -76,7 +95,7 @@ const TrainList = ({ startStationID, endStationID, hour, dayz }) => {
                     </tbody>
                 </table>
             ) : (
-                <p>데이터를 불러오는 중입니다...</p>
+            <p>조회값이 없습니다</p>
             )}
             <Pagination itemsPerPage={itemsPerPage} totalItems={trainInfo.length} paginate={paginate} />
         </div>
