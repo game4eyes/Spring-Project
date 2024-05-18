@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("http://localhost:5173")
-@RequestMapping("/api/bus")
+@RequestMapping("/odsay/api/bus")
 public class BusController {
     private final BusService busService;
 

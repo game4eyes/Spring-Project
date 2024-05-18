@@ -6,7 +6,7 @@ import axios from "axios";
 export const API_SERVER_HOST = 'http://ec2-3-37-88-212.ap-northeast-2.compute.amazonaws.com:9090'; // 서버 주소
 
 // 기본 주소 설정
-const apiPrefix = `${API_SERVER_HOST}/api`
+const apiPrefix = `${API_SERVER_HOST}/odsay/api`
 // 도시
 const cityPrefix =`${apiPrefix}/city`;
 // 터미널

@@ -7,8 +7,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:5173")
-@RequestMapping("/api/station")
+@RequestMapping("/odsay/api/station")
 public class StationInfoController {
     private final StationInfoService stationInfoService;
     @GetMapping("/{stationClass}")
