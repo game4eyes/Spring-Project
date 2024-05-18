@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getStationInfo } from '../../api/dataApi';
+import { useNavigate } from 'react-router-dom';
+//import {setTrainticketAndUpdate} from '../../Ticket/Ticket_Book/Train';
 
 const SearchTrainStation = ({ departure, destination, onSearchResult }) => {
     const [stations, setStations] = useState([]);
@@ -13,18 +15,23 @@ const SearchTrainStation = ({ departure, destination, onSearchResult }) => {
    const stationClassParam = urlParams.get('stationClass');
 
 
+   const navigate = useNavigate();
+
     const KoreanArrays = ["가","나","다","라","마","바","사","아","자","차","카","타","파","하"];
 
     useEffect(() => {
         // API에서 기차역 정보를 가져옵니다.
             const stationClass = checkStationClass();
-            fetchStationInfo(stationClass);
+            fetchStationInfo(stationClass);     //fetchStationInfo(3);
      
         
-        fetchStationInfo(checkStationClass);  //fetchStationInfo(3);
+     //   fetchStationInfo(checkStationClass);  
     }, []);
 
-    const checkStationClass = () => {
+
+
+    
+    const checkStationClass = () => {                                   
         // const urlParams = new URLSearchParams(window.location.search);
         // const stationClassParam = urlParams.get('stationClass');
     
@@ -37,10 +44,10 @@ const SearchTrainStation = ({ departure, destination, onSearchResult }) => {
    
 
 
-
     const fetchStationInfo = async (stationClass) => {
         try {
             const data = await getStationInfo(stationClass);
+           // console.log(data);
             setStations(data);
         } catch (error) {
             console.error('Error fetching station data:', error);
@@ -75,33 +82,116 @@ const SearchTrainStation = ({ departure, destination, onSearchResult }) => {
         }
     };
 
-    const handleStationClick = (stationName) => {
+    const handleStationClick = (stationName,stationID) => {
         setSearchTerm(stationName);
+
+        
+
+
+        // 현재 URL의 쿼리 파라미터를 가져옵니다.
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // departure와 destination 파라미터가 이미 있는지 확인합니다.
+        const hasDeparture = urlParams.has('departure');
+        const hasDestination = urlParams.has('destination');
+
+        // 쿼리 파라미터를 업데이트합니다.
+        if (hasDeparture) {
+            urlParams.set('departure', stationID);
+            //ID값 추가
+             opener.window.document.getElementById("departure_stationID").value = stationID;
+
+        } else if (hasDestination) {
+            urlParams.set('destination', stationID);
+            //ID값 추가
+              opener.window.document.getElementById("destination_stationID").value = stationID;
+        }
+
+        // 업데이트된 쿼리 파라미터를 포함한 새로운 URL을 생성합니다.
+       // const newUrl = `?${urlParams.toString()}&stationClass=3`;
+       const newUrl = `?${urlParams.toString()}`;
+
+
+
+       //
+            
+
+
+        // 새로운 URL로 이동합니다.
+        navigate(newUrl);
+
+        
     };
 
+
     const windowclose = () => {
+        const inputId = urlParams.has('departure') ? 'departure' : 'destination';
+        const inputId_stationID = inputId+"_stationID";
+        if( window.opener.document.getElementById(inputId).value ==""){
+            opener.window.document.getElementById(inputId_stationID).value = "";
+        }
         window.close();
     };
 
 
     
-
-        const confirm = (stationName) => {
-        // const urlParams = new URLSearchParams(window.location.search);
-        // const departureParam = urlParams.get('departure');
-        
+    const confirm = (stationName) => {
+        const urlParams = new URLSearchParams(window.location.search);
+        console.log(fetchStationInfo(3).stationName);
         // 부모 창의 입력란 ID를 결정합니다.
-        const inputId = departureParam === 'departure' ? 'departure' : 'destination';
-    
+        const inputId = urlParams.has('departure') ? 'departure' : 'destination';
+        const inputId_stationID = inputId+"_stationID";
+        console.log(inputId_stationID);
         // 선택한 역 이름을 해당 입력란에 설정합니다.
         window.opener.document.getElementById(inputId).value = stationName;
     
+        function compareStationNameWithSearchBoxValue(stationClassParam) {
+            // sortedData 배열의 각 역에 대해 반복합니다.
+            for (let station of sortedData) {
+                // 현재 역의 이름과 검색 상자의 값을 비교합니다.
+                if (station.stationName === document.getElementById('searchbox').value) {
+                    // 일치하는 경우 true를 반환하고 함수를 종료합니다.
+                    opener.window.document.getElementById(inputId_stationID).value = station.stationID;         //역 ID 반환
+                    
+                    return true;
+                }
+            }
+            // 일치하는 역을 찾지 못한 경우 false를 반환합니다.
+            return false;
+        }
+        
+    
+        if (window.opener.document.getElementById("departure").value === window.opener.document.getElementById("destination").value) {
+            alert('출발지와 도착지가 같습니다!');
+            window.opener.document.getElementById(inputId).value = "";
+            document.getElementById("searchbox").focus();
+            return;
+        }
+    
+        if (!compareStationNameWithSearchBoxValue(stationClassParam)) {
+            alert('입력값이 일치하지 않습니다');
+            window.opener.document.getElementById(inputId).value = "";
+            document.getElementById("searchbox").focus();
+            return;
+        }
+    
         // 팝업 창을 닫습니다.
+        else{
+            //window.opener.setTrainticketAndUpdate(stationName, inputId);
+            console.log(`Calling setTrainticketAndUpdate with ${stationName}, ${inputId}`);
         window.close();
+        }
     };
+    
+    
 
+
+   
 
     
+    
+
+
     return (
         <div>
             <div>
@@ -109,14 +199,14 @@ const SearchTrainStation = ({ departure, destination, onSearchResult }) => {
             {stationClassParam === '5'&&  <h2>비행기 정보</h2>} 
             </div>
             <div>
-                <input type="text" value={searchTerm} onChange={handleInputChange} />
+                <input type="text" value={searchTerm} id = "searchbox" onChange={handleInputChange} />
                 <button type="button" onClick={() => confirm(searchTerm)}>확인</button>
                 <button type="button" onClick={windowclose}>나가기</button>
             </div>
             <div>
                 {/* URL의 값에 따라 출발지 선택 또는 도착지 선택을 렌더링합니다. */}
-                {departureParam === 'departure'&& <h2>출발지 선택</h2>}
-                {destinationParam  === 'destination'&& <h2>도착지 선택</h2>}
+                {urlParams.has('departure')&& <h2>출발지 선택</h2>}
+                {urlParams.has('destination')&& <h2>도착지 선택</h2>}
             </div>
             <div>
                 <h2>지역 선택</h2>
@@ -129,8 +219,8 @@ const SearchTrainStation = ({ departure, destination, onSearchResult }) => {
                 <ul>
                     {/* sortedData에 따라 기차역 정보를 출력합니다. */}
                     {sortedData.map(station => (
-                        <li key={station.stationID} onClick={() => handleStationClick(station.stationName)}>
-                            <a href ="#">{station.stationName}</a>
+                        <li key={station.stationID} onClick={() => handleStationClick(station.stationName,station.stationID)}>
+                            <a href ={"#"}>{station.stationName}</a>
                         </li>
                     ))}
                 </ul>

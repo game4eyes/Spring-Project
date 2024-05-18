@@ -7,7 +7,7 @@ import Ticket_Cancel from '../Ticket/Ticket_Cancel';
 import SearchBus from '../Bus/Search/SearchBus';
 import BusList from '../Bus/Search/list/BusList';
 import BusSeat from '../Bus/Seat/BusSeat';
-
+import SearchTrainStation from '../Train/Search/SearchTrainStation';
 
 {/*티켓 교통 정보 검색 라우터*/}
 
@@ -29,7 +29,7 @@ element : <Suspense fallback={Loading}><SearchBus/></Suspense>
 },
 {
 path    : 'searchtrain',    // /search/searchtrain
-element : <Suspense fallback={Loading}><Ticket_Modify/></Suspense>
+element : <Suspense fallback={Loading}><SearchTrainStation/></Suspense>
 },
 
 {
