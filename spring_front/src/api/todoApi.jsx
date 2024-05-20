@@ -52,3 +52,16 @@ export const getSessionList = async () => {
     const res = await axios.get(`${userPrefix}/session-list`); // 세션 리스트 엔드포인트
     return res.data;
 };
+
+// 소셜 로그인 (구글)
+export const socialLogin = async () => {
+    const res = await axios.post(`${userPrefix}/social-google`,  axoisConfig); // 소셜 로그인 엔드포인트
+    return res.data;
+};
+
+// Toss 결제
+export const tossPayment = async (paymentData) => {
+    const res = await axios.post(`${userPrefix}/toss`, paymentData, axoisConfig); // Toss 결제 엔드포인트
+    return res.data;
+};
+

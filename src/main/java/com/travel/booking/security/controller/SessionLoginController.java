@@ -92,8 +92,6 @@ public class SessionLoginController {
         return "redirect:/home";
     }
 
-
-
     @GetMapping("/logout") // 로그아웃 처리
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false); // 기존 세션 얻기

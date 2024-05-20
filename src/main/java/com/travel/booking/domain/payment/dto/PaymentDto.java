@@ -17,12 +17,12 @@ public class PaymentDto {
     private PayType payType;
 
     @NotNull
-    private Long Amount;
+    private Long amount;
 
     @NotNull
     private String orderName;
 
-    private String yourSuccessUrl;
+    private String SuccessUrl;
     private String failUrl;
 
     public Payment toEntity() {
