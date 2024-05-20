@@ -6,11 +6,13 @@ import com.travel.booking.domain.user.entity.UserEntity;
 import com.travel.booking.domain.user.service.UserService;
 import com.travel.booking.exception.CustomLogicException;
 import com.travel.booking.exception.ErrorCode;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class PaymentService {
 
     private JpaPaymentRepository paymentRepository;

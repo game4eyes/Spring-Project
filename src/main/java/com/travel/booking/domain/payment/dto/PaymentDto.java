@@ -13,7 +13,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class PaymentDto {
 
-    @NotNull
     private PayType payType;
 
     @NotNull

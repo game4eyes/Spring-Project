@@ -47,7 +47,7 @@ public class Payment  {
 
     private boolean paySuccessYN;
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "USERNAME")
+    @JoinColumn(name = "CUSTOMER")
     private UserEntity customer;
     @Column
     private String paymentKey;

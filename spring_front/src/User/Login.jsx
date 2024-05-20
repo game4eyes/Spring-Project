@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import Ad from '../components/Ad';
 import Footer from '../components/Footer';
 import { userLogin } from '../api/todoApi';
+import { socialLogin } from '../api/todoApi'; 
 
 
 const LoginPage = () => {
@@ -19,13 +20,29 @@ const LoginPage = () => {
     password,
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      const data = await socialLogin(); // 소셜 로그인 함수 호출
+      // 여기서 data에는 로그인 결과가 들어있습니다.
+      // 필요에 따라 결과를 처리하거나 다른 동작을 수행할 수 있습니다.
+    } catch (error) {
+      console.error('소셜 로그인 중 오류가 발생했습니다.', error);
+      // 오류 발생 시 적절한 처리를 수행합니다.
+    }
+  };
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
     console.log(loginData);
 
     try {
-      await userLogin(loginData);
+      const response = await userLogin({ loginId, password });
+      const sessionId = response.data.sessionId; // 서버에서 세션 ID를 반환하는 key에 따라 수정
+      sessionStorage.setItem('sessionId', sessionId); // 세션 ID를 sessionStorage에 저장
+
+
+
       alert('환영합니다!');
       navigate('/');
     } catch (error) {
@@ -90,9 +107,9 @@ const LoginPage = () => {
         {/* 소셜 로그인 버튼 추가 */}
         <div className="social-login-buttons">
           <h3>또는 소셜 로그인 사용하기</h3>
-          <button className="social-button google-login" onClick={() => window.location.href = 'GOOGLE_AUTH_URI'}>
-            구글 로그인
-          </button>
+          <button className="social-button google-login" onClick={handleGoogleLogin}>
+  구글 로그인
+</button>
           <button className="social-button naver-login" onClick={() => window.location.href = 'NAVER_AUTH_URI'}>
             네이버 로그인
           </button>
