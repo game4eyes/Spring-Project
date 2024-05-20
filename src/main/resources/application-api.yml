@@ -7,7 +7,7 @@ odsay:
 payment:
   toss:
     test_client_api_key: test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb
-    test_secrete_api_key: test_sk_ma60RZblrqoMxPQzAEkx3wzYWBn1
+    test_secret_api_key: test_sk_ma60RZblrqoMxPQzAEkx3wzYWBn1
     success_url: "http://localhost:9090/api/v1/payments/toss/success"
     fail_url: "http://localhost:9090/api/v1/payments/toss/fail"
 

@@ -5,6 +5,7 @@ import com.travel.booking.domain.user.annotation.Login;
 import com.travel.booking.domain.user.dto.JoinReq;
 import com.travel.booking.domain.user.dto.LoginReq;
 import com.travel.booking.domain.user.dto.SessionUser;
+import com.travel.booking.domain.user.entity.OauthUser;
 import com.travel.booking.domain.user.entity.UserEntity;
 import com.travel.booking.domain.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -82,15 +83,14 @@ public class SessionLoginController {
         return ResponseEntity.ok("로그인에 성공했습니다.");
     }
 
-    @GetMapping("/social-login") // 소셜로그인
-    public String home(@Login SessionUser user, Model model) {
+    @GetMapping("/social-google") // 소셜로그인(구글)
+    public String google(@Login SessionUser user, Model model) {
         // 세션에 저장된 값이 있을 때만 model에 userName 등록
         if (user != null) {
             model.addAttribute("userName", user.getName());
         }
         return "redirect:/home";
     }
-
 
     @GetMapping("/logout") // 로그아웃 처리
     public String logout(HttpServletRequest request) {
