@@ -47,9 +47,6 @@ const Login = () => {
       const sessionId = response.data.sessionId; // 서버에서 세션 ID를 반환하는 key에 따라 수정
       sessionStorage.setItem('sessionId', sessionId); // 세션 ID를 sessionStorage에 저장
 
-
-
-
       alert('환영합니다!');
       //navigate('/'); // 로그인 성공 시 홈페이지로 이동
       navigate(redirectUrl);
