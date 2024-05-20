@@ -92,4 +92,14 @@ public class UserService {
 
         return optionalUser.get();
     }
+
+    public UserEntity FindByEmail(String email){
+        if(email == null) return null;
+
+        Optional<UserEntity> optionalUser = userRepository.findByEmail(email);
+        if(optionalUser.isEmpty()) return null;
+
+        return optionalUser.get();
+    }
+
 }

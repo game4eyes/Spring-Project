@@ -25,6 +25,7 @@ public class UserEntity {
 
     private String loginId;
 
+    @Column(name = "USERNAME")
     private String username;
 
     private String password;
