@@ -20,10 +20,17 @@ const Bus = () => {
         isDepartureModalOpen: false,
         startStationID: '', //출발지코드
         endStationID: '',   //도착지코드
+    
     };
 
     const [busticket, setBusticket] = useState(initState);
     const [result, setResult] = useState(null);
+
+
+
+
+
+
 
     useEffect(() => {
         if (busticket.startStationID && busticket.endStationID) {
@@ -34,9 +41,11 @@ const Bus = () => {
         }
     }, [busticket.startStationID, busticket.endStationID]);
 
-    useEffect(() => {
-        console.log(result);
-    }, [result]);
+    // useEffect(() => {
+    //     console.log(result);
+    // }, [result]);
+
+
 
 
 
@@ -57,7 +66,7 @@ const Bus = () => {
             if (result) {
                 compareResult(result);
             } else {
-            //    alert('검색 결과 값이 없습니다!'); 시점 이슈
+                //    alert('검색 결과 값이 없습니다!'); 시점 이슈
                 console.error('Result is null or undefined');
             }
 
@@ -79,7 +88,7 @@ const Bus = () => {
 
 
     const handleStartStationIDChange = (e) => {
-        console.log('Updating startStationID to:', e.target.value);
+       // console.log('Updating startStationID to:', e.target.value);
         setBusticket(prevState => ({
             ...prevState,
             startStationID: e.target.value,
@@ -87,12 +96,22 @@ const Bus = () => {
     };
 
     const handleEndStationIDChange = (e) => {
-        console.log('Updating endStationID to:', e.target.value);
+      //  console.log('Updating endStationID to:', e.target.value);
         setBusticket(prevState => ({
             ...prevState,
             endStationID: e.target.value
         }));
     };
+
+
+    const handleSeatResultChange = (e) => {
+        setBusticket(prevState => ({
+            ...prevState,
+            seats: e.target.value
+        }));
+        console.log(busticket.seat);
+    };
+
 
     const openPopup = (stationClass, departure_destination) => () => {
         const departure = document.getElementById("departure").value;
@@ -134,7 +153,7 @@ const Bus = () => {
                 }
             });
         } else {
-          
+
             console.error('Result is not an array:', result);
         }
     };
@@ -160,9 +179,9 @@ const Bus = () => {
                     />
 
                     {/* 히든값 */}
-                    <input type="hidden"
+                    <input type="text"
                         value={busticket.startStationID.value}
-                         onChange={handleStartStationIDChange}
+                        onChange={handleStartStationIDChange}
                         id="departure_stationID"
                         ref={inputRef}
                     />
@@ -179,9 +198,9 @@ const Bus = () => {
                         onClick={openPopup()}
                     />
                     {/* 히든값 */}
-                    <input type="hidden"
+                    <input type="text"
                         value={busticket.endStationID.value}
-                         onChange={handleEndStationIDChange}
+                        onChange={handleEndStationIDChange}
                         id="destination_stationID"
                         ref={inputRef}
                     />
@@ -241,12 +260,16 @@ const Bus = () => {
                     <option value="8">프리미엄우등(주말)</option>
                 </select>
                 <br />
+           {/* 선택 좌석: <input type="text" id="seatResult" value={busticket.seats.value} onChange={handleSeatResultChange} readOnly/> */}
+
+                <br />
                 <button type="submit">조회하기</button>
 
                 {busticket.isDepartureModalOpen &&
                     <BusList
                         startStationID={busticket.startStationID}
                         endStationID={busticket.endStationID}
+                        busticket={busticket}
                     />
                 }
                 <Charge id={1} />

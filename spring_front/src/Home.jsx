@@ -1,8 +1,8 @@
 /* eslint-disable */
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { useEffect } from 'react'
 //import { Link } from 'react-router-dom'; 
-import { BrowserRouter, Link } from "react-router-dom";
+import { BrowserRouter, Link, useLocation, useNavigate } from "react-router-dom";
 import './App.css'
 import Header from './components/Header'
 import '@/bootstrap_css/bootstrap.min.css';
@@ -18,7 +18,8 @@ import TrainImage from './components/img/Transportation_img/train_image.png';
 import AirportImage from './components/img/Transportation_img/airport_image.png';
 import Article from '@components/Article';
 import KakaoMapComponent from './components/KakaoMapComponent';
-
+import './css/Popup.css'
+import { AuthContext } from './User/AuthContext';
 
 
 
@@ -94,6 +95,159 @@ import KakaoMapComponent from './components/KakaoMapComponent';
 
 
 
+  
+  const Popup = ({ onClose, onOptionSelect }) => {
+    return (
+      <div className="popup">
+        <div className="popup-inner">
+          <h3>예매 유형 선택</h3>
+          <button onClick={() => onOptionSelect('회원')}>회원 예매</button>
+          <button onClick={() => onOptionSelect('비회원')}>비회원 예매</button>
+          <button onClick={onClose}>닫기</button>
+        </div>
+      </div>
+    );
+  };
+  
+ // export default Popup;
+  
+
+
+
+
+
+
+
+
+
+
+ function TransportationList_test(props) {
+  const { isLoggedIn, setRedirectUrl, setGuestRedirectUrl } = useContext(AuthContext);// AuthContext에서 setRedirectUrl, setGuestRedirectUrl 가져오기
+  const navigate = useNavigate();
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedTransportation, setSelectedTransportation] = useState(null);
+
+  const listStyle = {
+    display: 'flex',
+    flexDirection: 'row',  // x축 방향으로 나열
+    justifyContent: 'flex-start', // 이미지들을 왼쪽으로 정렬
+    alignItems: 'center', // 세로 중앙 정렬
+    listStyleType: 'none', // 순서 없는 목록 스타일 제거
+    padding: 0, // 목록의 패딩 제거
+  };
+
+  const listItemStyle = {
+    textAlign: 'center', // 가운데 정렬
+    marginLeft: '10px', // 왼쪽 여백 추가
+  };
+
+  const imgStyle = {
+    maxWidth: '100%',
+    width: '300px', // 이미지의 너비 설정
+    height: '200px', // 이미지의 높이 설정
+  };
+
+  const handleItemClick = (transportation) => {
+    setSelectedTransportation(transportation);
+    if (isLoggedIn) {
+      // 로그인된 상태일 때는 바로 redirectUrl로 이동
+      const url = `/ticketbook/${transportation.id}?type=회원`;
+      setRedirectUrl(url);
+      navigate(url); // 'url' 변수를 사용하여 이동
+    } else {
+      // 로그인되지 않은 상태일 때는 팝업 표시
+      setShowPopup(true);
+    }
+  };
+  
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+
+  const handleOptionSelect = (option) => {
+    setShowPopup(false);
+    //const url = `/ticketbook/${selectedTransportation.id}?type=${option}`;
+    const url = `/bookresult/${selectedTransportation.id}?type=${option}`;
+    if (option === '회원') {
+      setRedirectUrl(url);
+      navigate('/api/user/login');
+    } else {
+      setGuestRedirectUrl(url);
+      navigate('/api/user/guest-booking');
+    }
+  };
+
+  return (
+    <div>
+      <div style={listStyle}>
+        {props.transportation.map((t, index) => (
+          typeof t !== 'number' && (
+            <div key={t.id} style={{ ...listItemStyle, order: index % 2 === 0 ? 1 : -1 }}>
+              <div
+                onClick={() => handleItemClick(t)}
+                style={{ cursor: 'pointer' }} // Add this style for the pointer cursor
+                role="button" // Add this attribute to ensure it's interactive
+              >
+                <img src={t.imgSrc} alt={t.title} style={imgStyle} />
+                <p>{t.title}</p>
+              </div>
+            </div>
+          )
+        ))}
+      </div>
+      {showPopup && <Popup onClose={handleClosePopup} onOptionSelect={handleOptionSelect} />}
+    </div>
+  );
+}
+
+//export default TransportationList_test;
+
+
+
+
+ 
+
+  // function TransportationList_test(props) {
+  //   const listStyle = {
+  //     display: 'flex',
+  //     flexDirection: 'row',  // x축 방향으로 나열
+  //     justifyContent: 'flex-start', // 이미지들을 왼쪽으로 정렬
+  //     alignItems: 'center', // 세로 중앙 정렬
+  //     listStyleType: 'none', // 순서 없는 목록 스타일 제거
+  //     padding: 0, // 목록의 패딩 제거
+  //   };
+  
+  //   const listItemStyle = {
+  //     textAlign: 'center', // 가운데 정렬
+  //     marginLeft: '10px', // 왼쪽 여백 추가
+  //   };
+  
+  //   const imgStyle = {
+  //     maxWidth: '100%',
+  //     width: '300px', // 이미지의 너비 설정
+  //     height: '200px', // 이미지의 높이 설정
+  //   };
+  
+  //   return (
+  //     <div>
+  //       <div style={listStyle}>
+  //         {props.transportation.map((t, index) => (
+  //           typeof t !== 'number' && (
+  //             <div key={t.id} style={{ ...listItemStyle, order: index % 2 === 0 ? 1 : -1 }}>
+  //               <Link to={"/ticketbook/" + t.id}>
+  //                 <img src={t.imgSrc} alt={t.title} style={imgStyle} />
+  //               </Link>
+  //               <Link to={"/ticketbook/" + t.id}><p>{t.title}</p></Link>
+  //               {/* <p>{t.explain}</p> */}
+  //             </div>
+  //           )
+  //         ))}
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
+
 
 
   function TravelList(props) {
@@ -147,6 +301,22 @@ function Home() {
 
 
 
+  const [loginstate, setLoginstate] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const loginId = queryParams.get('loginId');
+    const password = queryParams.get('password');
+    const loginstate = queryParams.get('loginstate') === 'true';
+
+    if (loginId && password && loginstate) {
+      setLoginstate(true);
+      console.log(`User ${loginId} is logged in`);
+    }
+  }, [location.search]);
+
+
   const transportation = [
     {id : "bus", title: "버스" , explain : '버스 예약' , imgSrc: BusImage},
     {id : "train", title: "기차" , explain : '기차 예약', imgSrc: TrainImage},
@@ -180,7 +350,7 @@ function Home() {
     <>
     
   <div className= "Home">
-  <Header/>
+  <Header loginstate={loginstate}/>
   
    <Article title ="홈" body ="버스,기차,항공 예약 홈페이지입니다"></Article>
 
@@ -260,6 +430,13 @@ function Home() {
     <Link to = {"/api/user/mypage"}>마이페이지</Link>   
     </div>
   
+       {/* 테스트용 */}
+    <div>
+          <h3>비회원,회원예매 선택 테스트창</h3>
+          <TransportationList_test transportation= {transportation}></TransportationList_test>   
+        </div>
+        <br /> 
+    <br /> 
 
 
     <Footer/>
