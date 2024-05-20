@@ -1,6 +1,5 @@
 package com.travel.booking.domain.odsay.bus.DTO;
 
-
 public enum BusType {
     일반(1L),
     우등(2L),

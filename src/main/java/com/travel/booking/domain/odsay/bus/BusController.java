@@ -1,8 +1,7 @@
 package com.travel.booking.domain.odsay.bus;
 
-import com.travel.booking.domain.odsay.bus.DTO.BusOperationInfoDTO;
-import com.travel.booking.domain.odsay.bus.DTO.BusTerminalDTO;
-import com.travel.booking.domain.odsay.bus.DTO.TerminalTypeDTO;
+import com.travel.booking.domain.odsay.bus.DTO.ResultDTO;
+import com.travel.booking.domain.odsay.bus.DTO.ScheduleResultDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,25 +13,14 @@ import java.util.List;
 @RequestMapping("/api/bus")
 public class BusController {
     private final BusService busService;
-    @GetMapping("/near/{cityCode}")
-    public TerminalTypeDTO getNear(@PathVariable String cityCode) {
-        return busService.getNearBusTerminalList(cityCode);
+
+    @GetMapping
+    public List<ResultDTO> getAllBus(@RequestParam Long stationClass, @RequestParam String cityCode){
+        return busService.getBusTerminal(stationClass, cityCode);
     }
 
-    @GetMapping("/express")
-    public List<BusTerminalDTO> getExpress(@RequestParam String terminalName) {
-        return busService.getExpressBusTerminalList(terminalName);
+    @GetMapping("/schedule")
+    public ScheduleResultDTO getBusSchedule(@RequestParam Long startStationID, @RequestParam Long endStationID){
+        return busService.getSchedule(startStationID, endStationID);
     }
-
-    @GetMapping("/intercity")
-    public List<BusTerminalDTO> getIntercity(@RequestParam String terminalName) {
-        return busService.getIntercityBusTerminalList(terminalName);
-    }
-
-    @GetMapping("/operation/info")
-    public BusOperationInfoDTO getOperationInfo(@RequestParam Integer startStationID, @RequestParam Integer endStationID) {
-        return busService.getBusOperationInfo(startStationID,endStationID);
-    }
-
-
 }

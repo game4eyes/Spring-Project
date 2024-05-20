@@ -1,6 +1,7 @@
 package com.travel.booking.domain.odsay;
 
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -68,6 +69,17 @@ public class ApiDefault {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    public JSONArray toJSONArray(String result) {
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject object = (JSONObject) parser.parse(result);
+            return (JSONArray) object.get("result");
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
 

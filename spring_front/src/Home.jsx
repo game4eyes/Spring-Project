@@ -150,7 +150,7 @@ function Home() {
   const transportation = [
     {id : "bus", title: "버스" , explain : '버스 예약' , imgSrc: BusImage},
     {id : "train", title: "기차" , explain : '기차 예약', imgSrc: TrainImage},
-    {id : "airport", title: "항공" , explain : '항공 예약', imgSrc: AirportImage}
+    {id : "plane", title: "항공" , explain : '항공 예약', imgSrc: AirportImage}
   ];
   
   const travelList = [

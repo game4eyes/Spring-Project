@@ -21,14 +21,14 @@ const NavBar = () => {
    ];
 return (
     <div className="NavBar">
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
+<nav className="navbar navbar-expand-lg bg-body-tertiary">
+  <div className="container-fluid">
     {/* <Link to={"/"} class="navbar-brand" > 홈</Link> */}
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span className="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
        
 
 
@@ -39,11 +39,11 @@ return (
           <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           승차권 예매
           </a>
-          <ul class="dropdown-menu">
+          <ul className="dropdown-menu">
            {/* <a className="dropdown-item" href="#">예매권</a> */}
             <li><Link to={"/ticketbook/bus"} className="dropdown-item">버스 (회원, 비회원)</Link></li>
             <li><Link to={"/ticketbook/train"} className="dropdown-item">기차 (회원, 비회원)</Link></li>
-            <li><Link to={"/ticketbook/airport"} className="dropdown-item">공항 (회원, 비회원)</Link></li>
+            <li><Link to={"/ticketbook/plane"} className="dropdown-item">공항 (회원, 비회원)</Link></li>
           </ul>
         </li>
 
@@ -83,7 +83,7 @@ return (
            <a className="dropdown-item" href="#">회원예매</a>
             <li><Link to={"/bus"} className="dropdown-item">버스 - (회원)</Link></li>
             <li><Link to={"/train"} className="dropdown-item">기차 - (회원)</Link></li>
-            <li><Link to={"/airport"} className="dropdown-item">공항 - (회원)</Link></li>
+            <li><Link to={"/plane"} className="dropdown-item">공항 - (회원)</Link></li>
             <li><hr className="dropdown-divider"/></li>
             <li><a className="dropdown-item" href="#">비회원예매</a></li>
             <li><Link to={"/bus"} className="dropdown-item" >버스 - (비회원)</Link></li>
@@ -97,7 +97,7 @@ return (
           <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             조회/수정/취소
           </a>
-          <ul class="dropdown-menu">
+          <ul className="dropdown-menu">
            {/* <a className="dropdown-item" href="#">예매권</a> */}
             <li><Link to={"/ticket/Ticket_Detail"} className="dropdown-item">티켓 조회</Link></li>
             <li><Link to={"/ticket/Ticket_Modify"} className="dropdown-item">티켓 수정</Link></li>
@@ -106,13 +106,13 @@ return (
         </li>
 
 
-        <li class="nav-item">
+        <li className="nav-item">
         {topics.map(topic => (
             <li className="nav-link" aria-current="page" key={topic.id}><Link to={'/nav/navlink' + topic.id}>{topic.title}</Link></li>
          //active 클래스 : 탭이 활성화된 경우   // <li className="nav-link active" aria-current="page" key={topic.id}><Link to={'/' + topic.id}>{topic.title}</Link></li>
           ))}
         </li>
-        <li class ="nav-item">
+        <li className ="nav-item">
         <div>
 
        {/* <ul>
@@ -132,9 +132,9 @@ return (
         </li> */}
        
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
+      <form className="d-flex" role="search">
+        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+        <button className="btn btn-outline-success" type="submit">Search</button>
       </form>
       
     </div>

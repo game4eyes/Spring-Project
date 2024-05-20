@@ -15,6 +15,9 @@ const Header = () => {
     // 추가 로그아웃 로직 필요 시 여기에 작성
   };
 
+
+  
+
   const buttonStyle = { marginRight: '10px', marginBottom: '15px' };
 
   return (
@@ -25,16 +28,15 @@ const Header = () => {
 
         {/* 홈 로고 */}
         <Logo />
-
         {/* 로그인 상태에 따른 분류 */}
         <div align="right">
           {isLoggedIn ? (
             <>
-              <button type="button" className="btn btn-success" style={buttonStyle}>
-                <Link to="/api/user/mypage" style={{ color: 'white', textDecoration: 'none' }}>마이페이지</Link>
-              </button>
               <button type="button" className="btn btn-danger" style={buttonStyle} onClick={handleLogout}>
                 <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>로그아웃</Link>
+              </button>
+              <button type="button" className="btn btn-success" style={buttonStyle}>
+                <Link to="/api/user/mypage" style={{ color: 'white', textDecoration: 'none' }}>마이페이지</Link>
               </button>
             </>
           ) : (
