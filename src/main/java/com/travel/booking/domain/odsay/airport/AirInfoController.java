@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@Tag(name = "AirInfoController", description = "항공 검색 API")
+@Tag(name = "AirInfo", description = "항공 검색 API")
 @RequestMapping("/odsay/api/air")
 public class AirInfoController {
     private final AirInfoService airInfoService;

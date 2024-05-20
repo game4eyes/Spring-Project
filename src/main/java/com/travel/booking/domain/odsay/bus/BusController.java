@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/odsay/api/bus")
-@Tag(name = "BusController", description = "버스 정보 및 스케줄 API")
+@Tag(name = "Bus", description = "버스 정보 및 스케줄 API")
 public class BusController {
     private final BusService busService;
 
