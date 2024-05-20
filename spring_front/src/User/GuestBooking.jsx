@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../User/AuthContext'; // AuthContext import
+import { AuthContext } from '../global/AuthContext';
 
 const GuestBooking = () => {
   const { guestRedirectUrl } = useContext(AuthContext); // AuthContext에서 guestRedirectUrl 가져오기

@@ -6,7 +6,7 @@ import '@/bootstrap_css/bootstrap.min.css';
 import '@/bootstrap_js/bootstrap.bundle.min.js'; // 드랍다운 기능을 위해 추가
 import CurrentTime from '@components/CurrentTime';
 import Logo from '@components/Logo';
-import { AuthContext } from '../User/AuthContext';
+import { AuthContext } from '../global/AuthContext';
 import SessionTimer from './SessionTimer'; // SessionTimer 추가
 
 const Header = () => {

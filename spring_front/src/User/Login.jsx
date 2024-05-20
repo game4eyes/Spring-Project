@@ -4,7 +4,8 @@ import Header from '../components/Header';
 import Ad from '../components/Ad';
 import Footer from '../components/Footer';
 import { userLogin } from '../api/todoApi';
-import { AuthContext } from '../User/AuthContext'; // AuthContext 추가
+import { AuthContext } from '../global/AuthContext';
+
 
 const Login = () => {
   const [loginId, setLoginId] = useState('');

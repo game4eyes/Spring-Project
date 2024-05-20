@@ -19,7 +19,7 @@ import AirportImage from './components/img/Transportation_img/airport_image.png'
 import Article from '@components/Article';
 import KakaoMapComponent from './components/KakaoMapComponent';
 import './css/Popup.css'
-import { AuthContext } from './User/AuthContext';
+import { AuthContext } from './global/AuthContext';
 
 
 

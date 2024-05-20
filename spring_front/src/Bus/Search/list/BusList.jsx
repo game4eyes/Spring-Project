@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import Pagination from '../../../common/page/Pagination';
 import { getBusSchedule } from '@/api/dataApi';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../../User/AuthContext';
+import { AuthContext } from '../../../global/AuthContext';
 import '@/css/Popup.css';
 
 const BusList = ({ startStationID, endStationID, onUpdateSeat, busticket }) => {

@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../User/AuthContext';
+import { AuthContext } from '../global/AuthContext';
 
 const SessionTimer = ({ sessionTimeout, handleLogout }) => {
   const { lastActiveTime } = useContext(AuthContext);
