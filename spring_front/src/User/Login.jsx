@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import axios from 'axios'; 
-import { BrowserRouter as Router, Link, useNavigate } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Ad from '../components/Ad';
 import Footer from '../components/Footer';
@@ -8,12 +7,14 @@ import { userLogin } from '../api/todoApi';
 import { socialLogin } from '../api/todoApi'; 
 
 
-const LoginPage = () => {
+
+const Login = () => {
   const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
 
   const loginData = {
     loginId,
@@ -32,19 +33,27 @@ const LoginPage = () => {
   };
 
 
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log(loginData);
+    const loginData = {
+      loginId,
+      password,
+    };
 
     try {
+
       const response = await userLogin({ loginId, password });
       const sessionId = response.data.sessionId; // 서버에서 세션 ID를 반환하는 key에 따라 수정
       sessionStorage.setItem('sessionId', sessionId); // 세션 ID를 sessionStorage에 저장
 
 
 
+
       alert('환영합니다!');
-      navigate('/');
+      //navigate('/'); // 로그인 성공 시 홈페이지로 이동
+      navigate(redirectUrl);
+      setRedirectUrl("/");
     } catch (error) {
       let errorMessage = '로그인 중 오류가 발생했습니다. 다시 시도해주세요.';
       if (error.response && error.response.status === 400) {
@@ -121,4 +130,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Login;

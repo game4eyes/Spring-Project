@@ -6,6 +6,7 @@ import Ad from '../components/Ad';
 import Footer from '../components/Footer';
 import Article from '../components/Article';
 
+
 const Join = () => {
   const [loginId, setLoginId] = useState('');
   const [username, setUsername] = useState('');
@@ -40,6 +41,8 @@ const Join = () => {
     try {
       console.log(userData);
       await userJoin(userData); // 서버로 요청 보내기
+
+
       alert('회원가입이 완료되었습니다.');
       navigate('/api/user/login'); // 리디렉션
     } catch (error) {
