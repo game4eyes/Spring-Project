@@ -2,9 +2,14 @@ package com.travel.booking;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 @OpenAPIDefinition(
@@ -15,11 +20,34 @@ import org.springframework.context.annotation.Configuration;
         )
 )
 public class OpenApiConfig {
+    private final String devUrl;
+    private final String prodUrl;
+
+    public OpenApiConfig(@Value("${votogether.openapi.dev-url}")String devUrl,
+                         @Value("${votogether.openapi.prod-url}")String prodUrl) {
+        this.devUrl = devUrl;
+        this.prodUrl = prodUrl;
+    }
+
+    @Bean
+    public OpenAPI customOpenAPI() {
+        final Server devServer = new Server().url(devUrl);
+        devServer.description("개발 환경 서버 URL");
+
+        final Server prodServer = new Server().url(prodUrl);
+        prodServer.description("운영 환경 서버 URL");
+
+        return new OpenAPI()
+                .servers(List.of(devServer, prodServer));
+    }
+
     @Bean
     public GroupedOpenApi openAPI() {
+        String[] paths = {"/odsay/**"};
+
         return GroupedOpenApi.builder()
-                .group("odsay")
-                .pathsToMatch("/odsay/**")
+                .group("odsay v1")
+                .pathsToMatch(paths)
                 .build();
     }
 }
