@@ -14,6 +14,7 @@ import java.util.List;
 public class BookingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "BOOKING_ID")
     private Long id;
 
     @ManyToOne

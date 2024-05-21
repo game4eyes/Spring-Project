@@ -29,7 +29,7 @@ public class Payment  {
     private Long paymentId;
 
     @ManyToOne
-    @JoinColumn(name = "bookingId", nullable = false)
+    @JoinColumn(name = "booking_Id", nullable = false)
     private BookingEntity booking;
 
     @Column(nullable = false , name = "pay_type")
