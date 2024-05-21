@@ -1,0 +1,59 @@
+/* import '../../css/CommonTableStyles.css'; // 예시 경로, 실제 경로에 맞게 조정 필요 */
+
+
+.table-container {
+    margin: 20px auto;
+    width: 95%;
+    overflow-x: auto; /* 화면 너비를 초과하는 테이블에 대해 스크롤바 생성 */
+}
+
+.flights-table, .train-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    overflow: hidden; /* 둥근 모서리가 적용되도록 내부 내용이 테두리 밖으로 나가지 않도록 처리 */
+}
+
+.flights-table th, .flights-table td,
+.train-table th, .train-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #dddddd; /* 각 행의 하단에 선을 추가 */
+}
+
+.flights-table th, .train-table th {
+    background-color: #f8f8f8; /* 헤더 배경 색상 */
+    color: #333; /* 헤더 글자 색상 */
+    font-weight: bold;
+}
+
+.flights-table tr:last-child td, .train-table tr:last-child td {
+    border-bottom: none; /* 마지막 행의 하단 경계선 제거 */
+}
+
+.flights-table tr:hover, .train-table tr:hover {
+    background-color: #f1f1f1; /* 호버 효과 */
+}
+
+.button {
+    padding: 8px 16px;
+    background-color: #007BFF; /* 버튼 배경 색상 */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0056b3; /* 호버 시 버튼 색상 변경 */
+}
+
+
