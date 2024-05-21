@@ -2,6 +2,7 @@ package com.travel.booking.security.config;
 
 import com.travel.booking.security.auth.MyAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -51,4 +52,8 @@ public class SecurityConfig {
     public AccessDeniedHandler customAccessDeniedHandler() {
         return new MyAccessDeniedHandler(); // 커스텀 AccessDeniedHandler 구현
     }
+
+
+
+
 }

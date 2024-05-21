@@ -5,6 +5,9 @@ import Ad from '../components/Ad';
 import Footer from '../components/Footer';
 import { userLogin } from '../api/todoApi';
 import { AuthContext } from '../global/AuthContext';
+import Layout from '../components/Layout';
+import { socialLogin } from '../api/todoApi'; 
+
 
 
 const Login = () => {
@@ -14,23 +17,31 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  const { setIsLoggedIn, setLoginId: setContextLoginId, redirectUrl } = useContext(AuthContext); // AuthContext로부터 setIsLoggedIn,rediresctUrl 가져오기
+
+  const loginData = {
+    loginId,
+    password,
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      const data = await socialLogin(); // 소셜 로그인 함수 호출
+      // 여기서 data에는 로그인 결과가 들어있습니다.
+      // 필요에 따라 결과를 처리하거나 다른 동작을 수행할 수 있습니다.
+    } catch (error) {
+      console.error('소셜 로그인 중 오류가 발생했습니다.', error);
+      // 오류 발생 시 적절한 처리를 수행합니다.
+    }
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const loginData = {
-      loginId,
-      password,
-    };
+    console.log(loginData);
 
     try {
       await userLogin(loginData);
-      setIsLoggedIn(true); // 로그인 상태를 업데이트
-      setContextLoginId(loginId); // AuthContext에 로그인 ID 저장 ,   헤더에 쓸 전역 변수 로그인 ID 설정
       alert('환영합니다!');
-      //navigate('/'); // 로그인 성공 시 홈페이지로 이동
-      navigate(redirectUrl);
-      setRedirectUrl("/");
+      navigate('/');
     } catch (error) {
       let errorMessage = '로그인 중 오류가 발생했습니다. 다시 시도해주세요.';
       if (error.response && error.response.status === 400) {
@@ -43,7 +54,7 @@ const Login = () => {
 
   return (
     <div className="login-page">
-      <Header />
+      <Layout title="로그인" body="로그인 창" >
       <div className="login-container">
         <h2>로그인</h2>
         <form onSubmit={handleLogin}>
@@ -93,16 +104,15 @@ const Login = () => {
         {/* 소셜 로그인 버튼 추가 */}
         <div className="social-login-buttons">
           <h3>또는 소셜 로그인 사용하기</h3>
-          <button className="social-button google-login" onClick={() => window.location.href = 'GOOGLE_AUTH_URI'}>
-            구글 로그인
-          </button>
+          <button className="social-button google-login" onClick={handleGoogleLogin}>
+  구글 로그인
+</button>
           <button className="social-button naver-login" onClick={() => window.location.href = 'NAVER_AUTH_URI'}>
             네이버 로그인
           </button>
         </div>
       </div>
-      <Ad />
-      <Footer />
+      </Layout>
     </div>
   );
 };

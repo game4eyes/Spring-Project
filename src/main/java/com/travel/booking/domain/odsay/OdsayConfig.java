@@ -13,4 +13,6 @@ public class OdsayConfig {
     private String etcKey;
     @Value("${odsay.api.requestURI}")
     private String requestURI;
+    @Value("${odsay.api.bakKey}")
+    private String bakKey;
 }

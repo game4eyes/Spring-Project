@@ -2,10 +2,8 @@ package com.travel.booking.domain.user.dto;
 
 import com.travel.booking.domain.user.Role;
 import com.travel.booking.domain.user.entity.OauthUser;
-import com.travel.booking.domain.user.entity.UserEntity;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.security.core.userdetails.User;
 
 import java.util.Map;
 

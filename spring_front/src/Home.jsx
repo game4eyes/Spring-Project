@@ -20,10 +20,7 @@ import Article from '@components/Article';
 import KakaoMapComponent from './components/KakaoMapComponent';
 import './css/Popup.css'
 import { AuthContext } from './global/AuthContext';
-
-
-
-
+import Layout from './components/Layout';
 
 //  function Article(props){
 //   const articleStyle = {
@@ -52,6 +49,8 @@ import { AuthContext } from './global/AuthContext';
 
   // }
 
+
+//컴포넌트로 정리하기
 
   function TransportationList(props) {
     const listStyle = {
@@ -95,7 +94,49 @@ import { AuthContext } from './global/AuthContext';
 
 
 
+//컴포넌트로 정리하기
+
+  function TravelList(props) {
+    const listStyle = {
+      display: 'flex',
+      flexDirection: 'row',  // x축 방향으로 나열
+      justifyContent: 'flex-start', // 이미지들을 왼쪽으로 정렬
+      alignItems: 'center', // 세로 중앙 정렬
+      listStyleType: 'none', // 순서 없는 목록 스타일 제거
+      padding: 0, // 목록의 패딩 제거
+    };
   
+    const listItemStyle = {
+      textAlign: 'center', // 가운데 정렬
+      marginLeft: '10px', // 왼쪽 여백 추가
+    };
+  
+    const imgStyle = {
+      maxWidth: '100%',
+      width: '300px', // 이미지의 너비 설정
+      height: '200px', // 이미지의 높이 설정
+    };
+  
+    return (
+      <div>
+        <div style={listStyle}>
+          {props.travelList.map((t, index) => (
+            typeof t !== 'number' && (
+              <div key={t.id} style={{ ...listItemStyle, order: index % 2 === 0 ? 1 : -1 }}>
+                <Link to={t.id}>
+                  <img src={t.imgSrc} alt={t.title} style={imgStyle} />
+                </Link>
+                <Link to={t.id}><p>{t.title}</p></Link>
+                {/* <p>{t.explain}</p> */}
+              </div>
+            )
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  //컴포넌트로 정리하기 
   const Popup = ({ onClose, onOptionSelect }) => {
     return (
       <div className="popup">
@@ -110,17 +151,13 @@ import { AuthContext } from './global/AuthContext';
   };
   
  // export default Popup;
-  
 
 
 
 
 
 
-
-
-
-
+ //테스트
  function TransportationList_test(props) {
   const { isLoggedIn, setRedirectUrl, setGuestRedirectUrl } = useContext(AuthContext);// AuthContext에서 setRedirectUrl, setGuestRedirectUrl 가져오기
   const navigate = useNavigate();
@@ -205,101 +242,8 @@ import { AuthContext } from './global/AuthContext';
 
 
 
- 
 
-  // function TransportationList_test(props) {
-  //   const listStyle = {
-  //     display: 'flex',
-  //     flexDirection: 'row',  // x축 방향으로 나열
-  //     justifyContent: 'flex-start', // 이미지들을 왼쪽으로 정렬
-  //     alignItems: 'center', // 세로 중앙 정렬
-  //     listStyleType: 'none', // 순서 없는 목록 스타일 제거
-  //     padding: 0, // 목록의 패딩 제거
-  //   };
-  
-  //   const listItemStyle = {
-  //     textAlign: 'center', // 가운데 정렬
-  //     marginLeft: '10px', // 왼쪽 여백 추가
-  //   };
-  
-  //   const imgStyle = {
-  //     maxWidth: '100%',
-  //     width: '300px', // 이미지의 너비 설정
-  //     height: '200px', // 이미지의 높이 설정
-  //   };
-  
-  //   return (
-  //     <div>
-  //       <div style={listStyle}>
-  //         {props.transportation.map((t, index) => (
-  //           typeof t !== 'number' && (
-  //             <div key={t.id} style={{ ...listItemStyle, order: index % 2 === 0 ? 1 : -1 }}>
-  //               <Link to={"/ticketbook/" + t.id}>
-  //                 <img src={t.imgSrc} alt={t.title} style={imgStyle} />
-  //               </Link>
-  //               <Link to={"/ticketbook/" + t.id}><p>{t.title}</p></Link>
-  //               {/* <p>{t.explain}</p> */}
-  //             </div>
-  //           )
-  //         ))}
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
-
-
-
-  function TravelList(props) {
-    const listStyle = {
-      display: 'flex',
-      flexDirection: 'row',  // x축 방향으로 나열
-      justifyContent: 'flex-start', // 이미지들을 왼쪽으로 정렬
-      alignItems: 'center', // 세로 중앙 정렬
-      listStyleType: 'none', // 순서 없는 목록 스타일 제거
-      padding: 0, // 목록의 패딩 제거
-    };
-  
-    const listItemStyle = {
-      textAlign: 'center', // 가운데 정렬
-      marginLeft: '10px', // 왼쪽 여백 추가
-    };
-  
-    const imgStyle = {
-      maxWidth: '100%',
-      width: '300px', // 이미지의 너비 설정
-      height: '200px', // 이미지의 높이 설정
-    };
-  
-    return (
-      <div>
-        <div style={listStyle}>
-          {props.travelList.map((t, index) => (
-            typeof t !== 'number' && (
-              <div key={t.id} style={{ ...listItemStyle, order: index % 2 === 0 ? 1 : -1 }}>
-                <Link to={t.id}>
-                  <img src={t.imgSrc} alt={t.title} style={imgStyle} />
-                </Link>
-                <Link to={t.id}><p>{t.title}</p></Link>
-                {/* <p>{t.explain}</p> */}
-              </div>
-            )
-          ))}
-        </div>
-      </div>
-    );
-  }
-  
-  
-  
-  
- 
-  
-    
-
-function Home() {
-
-
+const Home = () =>{
 
   const [loginstate, setLoginstate] = useState(false);
   const location = useLocation();
@@ -328,44 +272,24 @@ function Home() {
     { id: "busan", title: "부산", explain: '부산 여행', imgSrc: BusanImage },
     { id: "daegu", title: "대구", explain: '대구 여행', imgSrc: DaeguImage }
   ];
+
+
+   //로그인 될 경우 useState 설정
+   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+   // 로그아웃 될 경우
+   const handleLogout = () => {
+     setIsLoggedIn(false);
+   };
   
-  
-
-
-  
-
-
-  //로그인 될 경우 useState 설정
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // 로그아웃 될 경우
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-  };
-  
-
-
-
-  return (
-    <>
-    
-  <div className= "Home">
-  <Header loginstate={loginstate}/>
-  
-   <Article title ="This is fucking home" body ="버스,기차,항공 예약 홈페이지입니다"></Article>
-
- 
-
-  </div>
-
-
-
-    <br /> 
-    <br />
-
-
    
 
+
+
+return(
+  
+     <Layout loginstate={loginstate} title ="홈" body ="버스,기차,항공 예약 홈페이지입니다">
+      
     
     <div>
           <h3>추천여행</h3>
@@ -375,7 +299,7 @@ function Home() {
     <br /> 
      
     <div>
-    <Ad /> 
+ 
     </div>
     
 
@@ -426,11 +350,9 @@ function Home() {
         </div>
         <br /> 
     <br /> 
-
-
-    <Footer/>
-    </>
-  )
+      </Layout>
+   
+    );
 }
 
 export default Home;

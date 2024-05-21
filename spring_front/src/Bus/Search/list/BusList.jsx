@@ -1,4 +1,3 @@
-// BusList.jsx
 import React, { useEffect, useState, useContext } from 'react';
 import Pagination from '../../../common/page/Pagination';
 import { getBusSchedule } from '@/api/dataApi';
@@ -17,6 +16,7 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, busticket }) => {
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [showUserGuestPopup, setShowUserGuestPopup] = useState(false);
     const [selectedTransportation, setSelectedTransportation] = useState(null);
+    const [dataLoadError, setDataLoadError] = useState(false);
 
     const initState = {
         ...busticket,
@@ -26,7 +26,7 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, busticket }) => {
         returnDate: busticket.returnDate,
         passengerCount: busticket.passengerCount,
         isRoundTrip: false,
-        selectedBus: null,
+        busClass: busticket.busclass,
         isDepartureModalOpen: false,
         startStationID: busticket.startStationID, // 출발지 코드
         endStationID: busticket.endStationID, // 도착지 코드
@@ -41,10 +41,19 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, busticket }) => {
                 setBusInfo(res ? res : {});
             } catch (error) {
                 console.error('Error fetching bus info:', error);
+                setDataLoadError(true);
             }
         };
 
+        const timer = setTimeout(() => {
+            if (Object.keys(busInfo).length === 0) {
+                setDataLoadError(true);
+            }
+        }, 3000);
+
         fetchData();
+
+        return () => clearTimeout(timer);
     }, [startStationID, endStationID]);
 
     const paginate = (pageNumber) => {
@@ -122,19 +131,31 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, busticket }) => {
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = busInfo.detail ? busInfo.detail.slice(indexOfFirstItem, indexOfLastItem) : [];
+
+    // Filtering logic based on busticket.busclass
+    const filteredItems = busInfo.detail ? busInfo.detail.filter(detail => {
+        return busticket.busclass === "" || parseInt(detail.busClass) === parseInt(busticket.busclass);
+    }) : [];
+
+    const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
+
+    // if (dataLoadError) {
+    //     return <p>데이터를 조회할 수 없습니다.</p>;
+    // }
 
     return (
         <div className="table-container" style={{ overflow: 'hidden' }}>
+           
             {currentItems.length > 0 ? (
                 <>
-                    <h2>출발지: {busInfo.startStationName}</h2>
-                    <h2>도착지: {busInfo.endStationName}</h2>
-                    <h3>첫차 시간: {busInfo.firstTime}</h3>
-                    <h3>막차 시간: {busInfo.lastTime}</h3>
+                 <h2>출발지: {busInfo.startStationName}</h2>
+            <h2>도착지: {busInfo.endStationName}</h2>
+            <h3>첫차 시간: {busInfo.firstTime}</h3>
+            <h3>막차 시간: {busInfo.lastTime}</h3>
                     <table border="1">
                         <thead>
                             <tr>
+                                <th>버스 등급</th>
                                 <th>출발 시간</th>
                                 <th>소요 시간</th>
                                 <th>요금</th>
@@ -144,8 +165,10 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, busticket }) => {
                             </tr>
                         </thead>
                         <tbody>
+                            
                             {currentItems.map((detail, index) => (
                                 <tr key={index}>
+                                    <td>{detail.busClass}</td>
                                     <td>{detail.departureTime}</td>
                                     <td>{Math.floor(detail.wasteTime / 60)}시간 {detail.wasteTime % 60}분</td>
                                     <td>{detail.fare.toLocaleString()}원</td>
@@ -164,10 +187,10 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, busticket }) => {
                             ))}
                         </tbody>
                     </table>
-                    <Pagination itemsPerPage={itemsPerPage} totalItems={busInfo.detail.length} paginate={paginate} />
+                    <Pagination itemsPerPage={itemsPerPage} totalItems={filteredItems.length} paginate={paginate} />
                 </>
             ) : (
-                <p>데이터를 불러오는 중입니다...</p>
+                <p>해당 버스 등급의 데이터를 불러오는 중입니다...</p>
             )}
             {showUserGuestPopup && <UserGuestPopup onClose={handleCloseUserGuestPopup} onOptionSelect={handleOptionSelect} />}
         </div>

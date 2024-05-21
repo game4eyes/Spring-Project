@@ -26,7 +26,7 @@ public class StationInfoServiceImpl implements StationInfoService {
     @Override
     public List<StationDTO> getStationList(String stationClass) {
         List<StationDTO> stationDtoList = new ArrayList<>();
-        StringBuilder urlBuilder = new ApiDefault(odsayConfig).getURLBuilder("/boundarySearch",0,odsayConfig.getKey());
+        StringBuilder urlBuilder = new ApiDefault(odsayConfig).getURLBuilder("/boundarySearch",0,odsayConfig.getBakKey());
         try {
             urlBuilder.append("&param=124.5:38.9:132.0:33");
             urlBuilder.append("&stationClass="+stationClass);
