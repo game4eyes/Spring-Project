@@ -23,6 +23,7 @@ const Join = () => {
         email,
         username,
         password,
+        passwordCheck
       };
 
       console.log(userData);
