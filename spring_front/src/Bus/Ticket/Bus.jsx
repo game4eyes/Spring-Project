@@ -4,10 +4,11 @@ import Article from '../../components/Article';
 import Footer from '../../components/Footer';
 import Ad from '../../components/Ad';
 //import '@/css/BusSeat.css';
-import BusList from '../../Bus/Search/list/BusList';
+import BusList from '../Search/list/BusList';
 // import { getCityInfo } from '../../api/todoApi';
 import Charge from '../../components/Charge';
 import { getBusSchedule, getBusTerminalList } from '../../api/dataApi';
+import Layout from '../../components/Layout';
 
 const Bus = () => {
     const initState = {
@@ -17,7 +18,7 @@ const Bus = () => {
         returnDate: '',
         passengerCount: '',
         isRoundTrip: false,
-        selectedBus: null,
+        busclass: "",
         isDepartureModalOpen: false,
         startStationID: '', //출발지코드
         endStationID: '',   //도착지코드
@@ -62,7 +63,7 @@ const Bus = () => {
     };
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        console.log(busticket.busclass);
         if (inputRef.current) {
             if (result) {
                 compareResult(result);
@@ -162,9 +163,10 @@ const Bus = () => {
 
     return (
         <div className="bus_book">
+         
+                <Layout title="버스 승차권 예매222" body="정보 입력">
             <form onSubmit={handleSubmit}>
-                <Header />
-                <Article title="버스 승차권 예매" body="정보 입력" />
+               
 
 
                 <h3>버스 예약</h3>
@@ -249,7 +251,7 @@ const Bus = () => {
                 )}
                 <br />
                 버스등급:
-                <select value={busticket.selectedBus} onChange={(e) => handleChange('selectedBus', e.target.value)}>
+                <select value={busticket.Busclass} onChange={(e) => handleChange('busclass', e.target.value)}>
                     <option value="">전체</option>
                     <option value="1">일반</option>
                     <option value="2">우등</option>
@@ -271,13 +273,13 @@ const Bus = () => {
                         startStationID={busticket.startStationID}
                         endStationID={busticket.endStationID}
                         busticket={busticket}
+                        busclass={busticket.busclass}
                     />
                 }
                 <Charge id={1} />
             </form>
 
-            <Ad />
-            <Footer />
+            </Layout>
         </div>
     );
 };

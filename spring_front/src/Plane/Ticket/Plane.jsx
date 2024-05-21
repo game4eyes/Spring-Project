@@ -9,6 +9,7 @@ import SelectInput from '../PlaneComponent/SelectInput';
 import Checkbox from '../PlaneComponent/Checkbox';
 import TimeInput from '../PlaneComponent/TimeInput';
 import AirportsData from '../PlaneComponent/AirportsData';
+import Layout from '../../components/Layout';
 import { getAirInfo } from '../../api/dataApi';
 import FlightList from '../PlaneComponent/FlightList';
 
@@ -74,8 +75,8 @@ const Plane = () => {
 
     return (
         <div className="plane_book">
-            <Header />
-            <Article title="공항 승차권 예매" body="정보 입력" />
+          
+            <Layout title="공항 승차권 예매" body="정보 입력" >
             <form onSubmit={handleSubmit}>
                 <SelectInput label="출발지" value={ticketInfo.departure} onChange={e => setTicketInfo({...ticketInfo, departure: e.target.value})} options={getValidDepartureOptions()} /><br/>
                 <SelectInput label="도착지" value={ticketInfo.destination} onChange={e => setTicketInfo({...ticketInfo, destination: e.target.value})} options={getDestinationOptions()} disabled={!ticketInfo.departure} /><br/>
@@ -90,8 +91,7 @@ const Plane = () => {
                 <FlightList flights={flights} />
             </form>
             <Charge id={3} />
-            <Ad />
-            <Footer />
+            </Layout>
         </div>
     );
 };

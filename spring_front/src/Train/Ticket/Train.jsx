@@ -6,6 +6,7 @@ import Footer from '../../components/Footer';
 import Charge from '../../components/Charge';
 import TrainList from '../Search/list/TrainList';
 import { getTrainInfo } from '../../api/dataApi';
+import Layout from '../../components/Layout';
 
 // 기차 예약 컴포넌트
 const Train = () => {
@@ -284,9 +285,9 @@ const Train = () => {
     return (
         <div className="train_book">
 
+            <Layout title="기차 승차권 예매" body="정보 입력">
             <form onSubmit={handleSubmit}>
-                <Header />
-                <Article title="기차 승차권 예매" body="정보 입력" />
+
                 <h4>기차 예약</h4>
                 {/* 출발지 입력란 */}
                 <label>
@@ -440,10 +441,7 @@ const Train = () => {
                 {/* 요금제 컴포넌트 */}
                 <Charge id={2} />
             </form>
-            {/* 광고 컴포넌트 */}
-            <Ad />
-            {/* 푸터 컴포넌트 */}
-            <Footer />
+          </Layout>
         </div>
     );
 };

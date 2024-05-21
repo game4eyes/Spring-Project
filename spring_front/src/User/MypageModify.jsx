@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Layout from '../components/Layout';
 
 const MyPageModify = () => {
   const [email, setEmail] = useState('');
@@ -66,8 +67,8 @@ const MyPageModify = () => {
 
   return (
     <div className="mypage-container">
-        <Header></Header>
-        <Article title ="마이페이지 수정" body ="회원정보 수정"/>
+       
+        <Layout title ="마이페이지 수정" body ="회원정보 수정">
       <h2>마이페이지</h2>
       <form onSubmit={handleUpdateProfile}>
         <div className="form-group">
@@ -93,6 +94,7 @@ const MyPageModify = () => {
         <button type="submit" disabled={!isChanged()}>수정하기</button>
         {message && <p>{message}</p>}
       </form>
+      </Layout>
     </div>
   );
 };

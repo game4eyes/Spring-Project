@@ -6,6 +6,7 @@ function Article(props){
       return <article style={articleStyle}>
            <h1> {props.title}</h1>
            <h2> {props.body}</h2>
+           <hr></hr>
      </article> 
   
     }
