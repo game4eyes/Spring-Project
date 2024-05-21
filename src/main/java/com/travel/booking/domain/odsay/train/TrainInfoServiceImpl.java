@@ -14,7 +14,7 @@ public class TrainInfoServiceImpl implements TrainInfoService {
 
     @Override
     public ResultDTO getFilterTrainInfo(String startStationID, String endStationID, Long hour, char dayz) {
-        StringBuilder urlBuilder =  new ApiDefault(odsayConfig).getURLBuilder("/trainServiceTime",0,odsayConfig.getKey());
+        StringBuilder urlBuilder =  new ApiDefault(odsayConfig).getURLBuilder("/trainServiceTime",0,odsayConfig.getBakKey());
         urlBuilder.append("&startStationID="+startStationID);
         urlBuilder.append("&endStationID="+endStationID);
         String result = new ApiDefault(odsayConfig).getResult(urlBuilder);
