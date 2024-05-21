@@ -8,6 +8,7 @@ import DateInput from '../PlaneComponent/DateInput';
 import SelectInput from '../PlaneComponent/SelectInput';
 import Checkbox from '../PlaneComponent/Checkbox';
 import AirportsData from '../PlaneComponent/AirportsData';
+import Layout from '../../components/Layout';
 
 const Plane = () => {
     const today = new Date().toISOString().split('T')[0];
@@ -86,8 +87,8 @@ const Plane = () => {
 
     return (
         <div className="plane_book">
-            <Header />
-            <Article title="공항 승차권 예매" body="정보 입력" />
+          
+            <Layout title="공항 승차권 예매" body="정보 입력" >
             <form onSubmit={handleSubmit}>
                 <label>
                     출발지:
@@ -125,8 +126,7 @@ const Plane = () => {
                 <button type="submit">예매하기</button>
             </form>
             <Charge id={3} />
-            <Ad />
-            <Footer />
+            </Layout>
         </div>
     );
 };
