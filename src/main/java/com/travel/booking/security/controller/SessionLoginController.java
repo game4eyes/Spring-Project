@@ -5,18 +5,15 @@ import com.travel.booking.domain.user.annotation.Login;
 import com.travel.booking.domain.user.dto.JoinReq;
 import com.travel.booking.domain.user.dto.LoginReq;
 import com.travel.booking.domain.user.dto.SessionUser;
-import com.travel.booking.domain.user.entity.OauthUser;
-import com.travel.booking.domain.user.entity.UserEntity;
+import com.travel.booking.domain.user.entity.User;
 import com.travel.booking.domain.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Enumeration;
@@ -62,7 +59,7 @@ public class SessionLoginController {
         }
 
         // 사용자 로그인 시도
-        UserEntity user = userService.login(loginRequest);
+        User user = userService.login(loginRequest);
 
         if (user == null) { // 로그인 실패 시
             return ResponseEntity.status(401).body("로그인 아이디 또는 비밀번호가 틀렸습니다.");
@@ -104,7 +101,7 @@ public class SessionLoginController {
 
     @GetMapping("/info") // 사용자 정보 페이지
     public String userInfo(@SessionAttribute(name = "userId", required = false) Long userId, Model model) {
-        UserEntity loginUser = userService.getLoginUserById(userId);
+        User loginUser = userService.getLoginUserById(userId);
 
         if (loginUser == null) { // 로그아웃된 경우
             return "redirect:/session-login/login";
@@ -116,7 +113,7 @@ public class SessionLoginController {
 
     @GetMapping("/admin") // 관리자 페이지
     public String adminPage(@SessionAttribute(name = "userId", required = false) Long userId) {
-        UserEntity loginUser = userService.getLoginUserById(userId);
+        User loginUser = userService.getLoginUserById(userId);
 
         if (loginUser == null) { // 로그인되지 않은 경우
             return "redirect:/session-login/login";

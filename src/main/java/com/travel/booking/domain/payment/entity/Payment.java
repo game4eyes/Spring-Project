@@ -2,7 +2,7 @@ package com.travel.booking.domain.payment.entity;
 
 import com.travel.booking.domain.payment.PayType;
 import com.travel.booking.domain.payment.dto.PaymentResDto;
-import com.travel.booking.domain.user.entity.UserEntity;
+import com.travel.booking.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -48,7 +48,7 @@ public class Payment  {
     private boolean paySuccessYN;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "CUSTOMER")
-    private UserEntity customer;
+    private User customer;
     @Column
     private String paymentKey;
     @Column

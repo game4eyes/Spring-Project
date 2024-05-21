@@ -1,14 +1,8 @@
 package com.travel.booking.domain.user.entity;
 
 import com.travel.booking.domain.user.Role;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
@@ -16,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-public class UserEntity {
+public class User {
 
     @Id
     @GeneratedValue
