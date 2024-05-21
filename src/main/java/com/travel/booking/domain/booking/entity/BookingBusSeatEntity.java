@@ -12,6 +12,7 @@ import java.util.Date;
 public class BookingBusSeatEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "BOOKBUSSEAT_ID")
     private Long id;
 
     @ManyToOne
