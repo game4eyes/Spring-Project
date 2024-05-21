@@ -11,7 +11,7 @@ import { socialLogin } from '../api/todoApi';
 
 
 const Login = () => {
-  const [loginId, setLoginId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({});
@@ -19,7 +19,7 @@ const Login = () => {
 
 
   const loginData = {
-    loginId,
+    email,
     password,
   };
 
@@ -59,12 +59,12 @@ const Login = () => {
         <h2>로그인</h2>
         <form onSubmit={handleLogin}>
           <div className="form-group">
-            <label htmlFor="loginId">아이디</label>
+            <label htmlFor="email">이메일</label>
             <input
               type="text"
-              id="loginId"
-              value={loginId}
-              onChange={(e) => setLoginId(e.target.value)}
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="아이디 입력"
               required
             />
