@@ -1,0 +1,26 @@
+.flights-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.flights-table th, .flights-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.flights-table th {
+    background-color: #f2f2f2;
+}
+
+.flights-table td {
+    background-color: #ffffff;
+}
+
+.flights-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.flights-table tr:hover {
+    background-color: #f1f1f1;
+}

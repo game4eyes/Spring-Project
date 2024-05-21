@@ -1,6 +1,6 @@
 package com.travel.booking.domain.booking;
 
-import com.travel.booking.domain.user.entity.UserEntity;
+import com.travel.booking.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +20,7 @@ public class BookingOrderEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
-    private UserEntity user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "BUSBOOK_ID")

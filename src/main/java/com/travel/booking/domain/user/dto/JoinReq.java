@@ -1,8 +1,7 @@
 package com.travel.booking.domain.user.dto;
 
 import com.travel.booking.domain.user.Role;
-import com.travel.booking.domain.user.entity.UserEntity;
-import jakarta.validation.constraints.NotNull;
+import com.travel.booking.domain.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,8 +22,8 @@ public class JoinReq {
     private String phonenum;
     private String gender;
 
-    public UserEntity toEntity(String encodedPassword){ // 비밀번호 암호화 로직
-        return UserEntity.builder()
+    public User toEntity(String encodedPassword){ // 비밀번호 암호화 로직
+        return User.builder()
                 .loginId(this.loginId)
                 .password(encodedPassword)
                 .username(this.username)
