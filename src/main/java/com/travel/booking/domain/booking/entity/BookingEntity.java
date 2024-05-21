@@ -1,4 +1,4 @@
-package com.travel.booking.domain.booking;
+package com.travel.booking.domain.booking.entity;
 
 import com.travel.booking.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -20,8 +20,8 @@ public class BookingEntity {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    private String startStationID;
-    private String endStationID;
+    private String startStationName;
+    private String endStationName;
     private Date date;
     private Date Time;
 
@@ -29,9 +29,9 @@ public class BookingEntity {
     private StationClassEnum stationClassEnum;
 
     private String grade;
-
+    // 항공, 기차 일 경우
     private Integer seatNum;
-
+    // 버스일 경우
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
     private List<BookingBusSeatEntity> bookedSeats;
 }
