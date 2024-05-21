@@ -1,5 +1,5 @@
 import React from 'react';
-import './FlightList.css';
+import '../../css/FlightList.css';
 
 const FlightList = ({ flights }) => {
     const flightData = flights.station || []; // 데이터 구조에 맞게 접근 경로를 확인해야 합니다.

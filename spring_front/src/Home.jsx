@@ -352,7 +352,7 @@ function Home() {
   <div className= "Home">
   <Header loginstate={loginstate}/>
   
-   <Article title ="홈" body ="버스,기차,항공 예약 홈페이지입니다"></Article>
+   <Article title ="This is fucking home" body ="버스,기차,항공 예약 홈페이지입니다"></Article>
 
  
 
@@ -360,18 +360,7 @@ function Home() {
 
 
 
-        <div style={{ textAlign: 'center' }}>
-        <form action="/search" method="GET">
-          <label htmlFor="search">검색</label>
-          <input type="text" id="search" name="q" placeholder="검색창" />
-          <button type="submit">Search</button>
-        </form>
-      </div>
-
-
-     
-
-        <br /> 
+    <br /> 
     <br />
 
 

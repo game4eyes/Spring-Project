@@ -29,6 +29,7 @@ import AdRouter from './AdRouter';
 import SearchRouter from './SearchRouter';
 import ApiRouter from './ApiRouter';
 import PayRouter from './PayRouter';
+import FooterRouter from './FooterRouter';
 
 
 
@@ -178,6 +179,12 @@ children: TicketBookRouter()
 {
   path    : 'ad',     //  /ad
   children : AdRouter()
+},
+
+
+{
+  path    : 'footer',     //  /footer
+  children : FooterRouter()
 },
 
 
