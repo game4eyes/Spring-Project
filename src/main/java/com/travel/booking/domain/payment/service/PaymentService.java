@@ -10,6 +10,10 @@ import com.travel.booking.exception.CustomLogicException;
 import com.travel.booking.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -49,7 +53,6 @@ public class PaymentService {
         payment.setPaymentKey(paymentKey);
         payment.setPaySuccessYN(true);
         payment.getCustomer().setPoint(payment.getCustomer().getPoint() + amount);
-        userService.updateMemberCache(payment.getCustomer());
         return result;
     }
 
@@ -137,7 +140,13 @@ public class PaymentService {
                 );
     }
 
-
+    public Slice<Payment> findAllChargingHistories(String username, Pageable pageable){
+        userService.verifyMember(username);
+        return paymentRepository.findAllByCustomer_Email(username,
+                PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                        Sort.Direction.DESC, "paymentId")
+                );
+    }
 
 
 

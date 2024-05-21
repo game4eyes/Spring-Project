@@ -21,17 +21,16 @@ public class UserService {
 
     // 회원가입 시 login id 중복체크
     // 중복시 true 리턴
-    public boolean checkLoginIdDuplicate(String loginId){
-        return userRepository.existsByLoginId(loginId);
+    public boolean checkEmailDuplicate(String email){
+        return userRepository.existsByEmail(email);
     }
 
     // 회원가입
     // 비밀번호 암호화해서 저장
     public void join(JoinReq req){
-        if (checkLoginIdDuplicate(req.getLoginId())) {
-            throw new RuntimeException("아이디가 중복됩니다."); // 중복 체크 오류 처리
+        if (checkEmailDuplicate(req.getEmail())) {
+            throw new RuntimeException("이메일이 중복됩니다."); // 중복 체크 오류 처리
         }
-
         // 비밀번호 암호화
         String encodedPassword = encoder.encode(req.getPassword());
         System.out.println(req.getPassword());
@@ -44,7 +43,7 @@ public class UserService {
 
     // 로그인 기능
     public User login(LoginReq req){
-        Optional<User> optionalUser = userRepository.findByLoginId(req.getLoginId());
+        Optional<User> optionalUser = userRepository.findByEmail(req.getEmail());
 
         // id와 일치하는 user가 없으면 null return
         if(optionalUser.isEmpty()){
@@ -68,26 +67,10 @@ public class UserService {
      * userId가 null이거나(로그인 X) userId로 찾아온 User가 없으면 null return
      * userId로 찾아온 User가 존재하면 User return
      */
-    public User getLoginUserById(Long id){
+    public User getLoginUserByEmail(Long id){
         if(id == null) return null;
 
         Optional<User> optionalUser = userRepository.findById(id);
-        if(optionalUser.isEmpty()) return null;
-
-        return optionalUser.get();
-    }
-
-
-    /*
-     * loginId(String)를 입력받아 User을 return 해주는 기능
-     * 인증, 인가 시 사용
-     * loginId가 null이거나(로그인 X) userId로 찾아온 User가 없으면 null return
-     * loginId로 찾아온 User가 존재하면 User return
-     */
-    public User getLoginUserByLoginId(String loginId) {
-        if(loginId == null) return null;
-
-        Optional<User> optionalUser = userRepository.findByLoginId(loginId);
         if(optionalUser.isEmpty()) return null;
 
         return optionalUser.get();
@@ -102,6 +85,14 @@ public class UserService {
         return optionalUser.get();
     }
 
-    public void updateMemberCache(User customer) {
+    public User verifyMember(String username){
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if(userOptional.isPresent()){
+            return userOptional.get();
+        } else {
+            // 사용자를 찾을 수 없는경우 예외처리
+            throw new RuntimeException("사용자를 찾을 수 없습니다" + username);
+        }
     }
+
 }

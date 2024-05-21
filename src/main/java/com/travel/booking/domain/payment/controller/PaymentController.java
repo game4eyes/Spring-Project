@@ -4,6 +4,7 @@ import com.travel.booking.domain.payment.config.TossPaymentConfig;
 import com.travel.booking.domain.payment.dto.*;
 import com.travel.booking.domain.payment.Response.SingleResponse;
 import com.travel.booking.domain.payment.entity.Payment;
+import com.travel.booking.domain.payment.mapper.PaymentMapper;
 import com.travel.booking.domain.payment.service.PaymentService;
 import com.travel.booking.domain.user.entity.User;
 import jakarta.validation.Valid;
@@ -23,6 +24,7 @@ public class PaymentController {
 
     private final PaymentService paymentService;
     private final TossPaymentConfig paymentConfig;
+    private PaymentMapper mapper;
 
     @PostMapping("/toss")
     public ResponseEntity requestPayment(@AuthenticationPrincipal User principal, @RequestBody @Valid PaymentDto paymentReqDTO) {
