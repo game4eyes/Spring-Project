@@ -1,12 +1,14 @@
 // src/components/TermsOfService.jsx
 import React from 'react';
 import './TermsOfService.css';
+import Layout from '../Layout';
 
 const TermsOfService = () => {
     return (
-
+       
         <div className="terms-container">
-          <h1 className="terms-header">국내여행 이용약관</h1>
+        <Layout title='국내여행 이용약관'>
+          <h1 className="terms-header"></h1>
           <div className="term-section">
             <p className="term-title">제1조(목적)</p>
             <p className="term-text">
@@ -182,6 +184,7 @@ const TermsOfService = () => {
             ② 특수지역에의 여행으로서 정당한 사유가 있는 경우에는 이 표준약관의 내용과 다르게 정할 수 있습니다.
             </p>
           </div>
+          </Layout>
         </div>
       );
     };
