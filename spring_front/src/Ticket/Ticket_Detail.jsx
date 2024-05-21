@@ -2,12 +2,13 @@ import Ad from "../components/Ad";
 import Article from "../components/Article";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import Layout from "../components/Layout";
 
 const Ticket_Detail = () => {
 
     return <div className="Ticket_Detail">
-        <Header />
-        <Article title="티켓 예약 정보" body="티켓 예약 정보" />
+        
+        <Layout title="티켓 예약 정보" body="티켓 예약 정보" >
         <h1>티켓 예약 정보</h1>
 
         {/* <form onSubmit={handleUpdateProfile}> */}
@@ -128,9 +129,7 @@ const Ticket_Detail = () => {
 
         </form>
 
-        <Ad />
-
-        <Footer />
+       </Layout>
 
     </div>
 

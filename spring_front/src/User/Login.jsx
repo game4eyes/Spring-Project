@@ -4,6 +4,8 @@ import Header from '../components/Header';
 import Ad from '../components/Ad';
 import Footer from '../components/Footer';
 import { userLogin } from '../api/todoApi';
+import { AuthContext } from '../global/AuthContext';
+import Layout from '../components/Layout';
 import { socialLogin } from '../api/todoApi'; 
 
 
@@ -52,7 +54,7 @@ const Login = () => {
 
   return (
     <div className="login-page">
-      <Header />
+      <Layout title="로그인" body="로그인 창" >
       <div className="login-container">
         <h2>로그인</h2>
         <form onSubmit={handleLogin}>
@@ -110,8 +112,7 @@ const Login = () => {
           </button>
         </div>
       </div>
-      <Ad />
-      <Footer />
+      </Layout>
     </div>
   );
 };

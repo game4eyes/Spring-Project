@@ -14,20 +14,22 @@ const Ad = () => {
     //{ id: "ad5", title: "광고5", explain: '광고5', src: AD5_image },
   ];
 
+
+
   return (
-    <div style={{ position: 'absolute', right: 0, top: 500 }}>
-      <ul style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', padding: 0 }}>
+    <div className="ad-container">
+      <ul className="ad-list">
         {AdList.map(ad => (
           typeof ad !== 'number' && (
-            <li key={ad.id} style={{ marginBottom: '10px' }}>
+            <li key={ad.id} className="ad-item">
               <Link to={'/ad/' + ad.id}>
                 <img
                   src={ad.src}
                   alt={ad.title}
-                  style={{ width: '150px', height: '130px', marginRight: '10px' }} // Adjusted width and height
+                  className="ad-image"
                 />
               </Link>
-              <div>
+              <div className="ad-description">
                 {/* <Link to={'/' + ad.id}>{ad.title}</Link> */}
                 {/* <p>{ad.explain}</p> */}
               </div>
@@ -37,7 +39,10 @@ const Ad = () => {
       </ul>
     </div>
   );
-  
 }
 
 export default Ad;
+
+
+
+

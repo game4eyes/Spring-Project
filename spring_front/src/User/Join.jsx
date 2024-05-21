@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import Ad from '../components/Ad';
 import Footer from '../components/Footer';
 import Article from '../components/Article';
+import Layout from '../components/Layout';
 
 
 const Join = () => {
@@ -189,8 +190,8 @@ TT 서비스의 회원관리, 서비스 개발・제공 및 향상, 안전한 �
 
   return (
     <div className="Join-container">
-      <Header />
-      <Article title="회원가입" body="회원가입 창" />
+     
+      <Layout title="회원가입" body="회원가입 창" >
       <h2>회원가입</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -304,8 +305,7 @@ TT 서비스의 회원관리, 서비스 개발・제공 및 향상, 안전한 �
           <input type="submit" value="가입" />
         </div>
       </form>
-      <Ad />
-      <Footer />
+     </Layout>
     </div>
   );
 };

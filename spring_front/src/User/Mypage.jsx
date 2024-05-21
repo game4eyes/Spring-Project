@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from '../components/Header';
 import Article from '../components/Article';
+import Layout from '../components/Layout';
 
 const MyPage = () => {
   const [email, setEmail] = useState('');
@@ -68,8 +69,8 @@ const MyPage = () => {
 
   return (
     <div className="mypage-container">
-        <Header></Header>
-        <Article title ="마이페이지" body ="회원정보 확인"/>
+      
+        <Layout title ="마이페이지" body ="회원정보 확인">
       <h1>마이페이지</h1>
       <hr/>
       <form onSubmit={handleUpdateProfile}>
@@ -218,7 +219,7 @@ const MyPage = () => {
    
 
 </form>
-      
+      </Layout>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 package com.travel.booking.domain.payment.entity;
 
+import com.travel.booking.domain.booking.BookingEntity;
 import com.travel.booking.domain.payment.PayType;
 import com.travel.booking.domain.payment.dto.PaymentResDto;
 import com.travel.booking.domain.user.entity.User;
@@ -27,6 +28,10 @@ public class Payment  {
     @Column(name = "payment_id", nullable = false, unique = true)
     private Long paymentId;
 
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private BookingEntity booking;
+
     @Column(nullable = false , name = "pay_type")
     @Enumerated(EnumType.STRING)
     private PayType payType;
@@ -40,32 +45,35 @@ public class Payment  {
     @Column(nullable = false , name = "order_id")
     private String orderId;
 
-    // 생성 시간을 나타내는 필드
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
     private boolean paySuccessYN;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "CUSTOMER")
     private User customer;
+
     @Column
     private String paymentKey;
+
     @Column
     private String failReason;
 
-    @Column
+    @Column(nullable = false)
     private boolean cancelYN;
+
     @Column
     private String cancelReason;
 
-    @Column
     public PaymentResDto toPaymentResDto() { // DB에 저장하게 될 결제 관련 정보들
         return PaymentResDto.builder()
                 .payType(payType.getDescription())
                 .amount(amount)
                 .orderName(orderName)
-                .orderId(orderId)
+                .orderId(booking.getId().toString())
                 .customerEmail(customer.getEmail())
                 .customerName(customer.getUsername())
                 .createdAt(String.valueOf(getCreatedAt()))
@@ -73,13 +81,4 @@ public class Payment  {
                 .failReason(failReason)
                 .build();
     }
-
-
-
-
-
-
-
-
-
 }
