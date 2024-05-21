@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Header from '../../components/Header';
 import Article from '../../components/Article';
 import Ad from '../../components/Ad';
@@ -28,28 +28,6 @@ const Plane = () => {
     });
     const [flights, setFlights] = useState([]);
 
-    useEffect(() => {
-        // 요일을 설정하는 로직
-        const days = ['일', '월', '화', '수', '목', '금', '토'];
-        const dayOfWeek = days[new Date(ticketInfo.date).getDay()];
-        const formattedHour = ticketInfo.time.split(':')[0]; // "06:00"에서 "06"만 추출
-    
-        if (ticketInfo.departure && ticketInfo.destination && formattedHour && dayOfWeek) {
-            getAirInfo(ticketInfo.departure, ticketInfo.destination, formattedHour, dayOfWeek)
-                .then(data => {
-                    console.log("API Data Received:", data);
-                    setFlights(data);
-                })
-                .catch(err => {
-                    console.error('Failed to fetch flights:', err);
-                    setFlights([]); // 오류 발생 시 flights 배열 비우기
-                });
-        }
-    
-        // 상태 업데이트는 API 호출 조건 검사 이후에 수행
-        setTicketInfo(prev => ({ ...prev, dayz: dayOfWeek }));
-    }, [ticketInfo.departure, ticketInfo.destination, ticketInfo.date, ticketInfo.time]);
-
     // 출발지와 도착지 옵션 로직은 변경 없음
     const getValidDepartureOptions = () => {
         return AirportsData.filter(airport => Object.keys(routes).includes(airport.stationID.toString()))
@@ -76,7 +54,22 @@ const Plane = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(ticketInfo);
+        const days = ['일', '월', '화', '수', '목', '금', '토'];
+        const dayOfWeek = days[new Date(ticketInfo.date).getDay()];
+        const formattedHour = ticketInfo.time.split(':')[0]; // "06:00"에서 "06"만 추출
+
+        getAirInfo(ticketInfo.departure, ticketInfo.destination, formattedHour, dayOfWeek)
+            .then(data => {
+                console.log("API Data Received:", data);
+                setFlights(data);
+            })
+            .catch(err => {
+                console.error('Failed to fetch flights:', err);
+                setFlights([]); // 오류 발생 시 flights 배열 비우기
+            });
+
+        // 상태 업데이트
+        setTicketInfo(prev => ({ ...prev, dayz: dayOfWeek }));
     };
 
     return (
@@ -93,8 +86,8 @@ const Plane = () => {
                 <Checkbox checked={ticketInfo.disability} onChange={() => setTicketInfo({...ticketInfo, disability: !ticketInfo.disability})} label="장애가 있습니다" />
                 <Checkbox checked={ticketInfo.legroom} onChange={() => setTicketInfo({...ticketInfo, legroom: !ticketInfo.legroom})} label="Legroom" />
                 <Checkbox checked={ticketInfo.window} onChange={() => setTicketInfo({...ticketInfo, window: !ticketInfo.window})} label="Window Seat" />
-                <FlightList flights={flights} />
                 <button type="submit">조회하기</button>
+                <FlightList flights={flights} />
             </form>
             <Charge id={3} />
             <Ad />
