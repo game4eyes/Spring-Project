@@ -73,14 +73,14 @@ public class PaymentController {
     }
 
 
-    public ResponseEntity getChargingHistory(@AuthenticationPrincipal User authMember, Pageable pageable){
-        Slice<Payment> chargingHistory = paymentService.findAllChargingHistories(authMember.getUsername(), pageable);
-        SliceInfo sliceInfo = new SliceInfo(pageable, chargingHistory.getNumberOfElements(), chargingHistory.hasNext());
-        return new ResponseEntity<>(
-                new SliceResponseDto<>(mapper.chargingHistoryToChargingHistoryResponses(chargingHistory.getContent()), sliceInfo),
-                HttpStatus.OK
-        );
-    }
+//    public ResponseEntity getChargingHistory(@AuthenticationPrincipal User authMember, Pageable pageable){
+//        Slice<Payment> chargingHistory = paymentService.findAllChargingHistories(authMember.getUsername(), pageable);
+//        SliceInfo sliceInfo = new SliceInfo(pageable, chargingHistory.getNumberOfElements(), chargingHistory.hasNext());
+//        return new ResponseEntity<>(
+//                new SliceResponseDto<>(mapper.chargingHistoryToChargingHistoryResponses(chargingHistory.getContent()), sliceInfo),
+//                HttpStatus.OK
+//        );
+//    }
 
 
 

@@ -1,6 +1,6 @@
 package com.travel.booking.domain.payment.entity;
 
-import com.travel.booking.domain.booking.BookingEntity;
+import com.travel.booking.domain.booking.entity.BookingEntity;
 import com.travel.booking.domain.payment.PayType;
 import com.travel.booking.domain.payment.dto.PaymentResDto;
 import com.travel.booking.domain.user.entity.User;
@@ -29,7 +29,7 @@ public class Payment  {
     private Long paymentId;
 
     @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
+    @JoinColumn(name = "bookingId", nullable = false)
     private BookingEntity booking;
 
     @Column(nullable = false , name = "pay_type")
@@ -73,7 +73,7 @@ public class Payment  {
                 .payType(payType.getDescription())
                 .amount(amount)
                 .orderName(orderName)
-                .orderId(booking.getId().toString())
+                .orderId(orderId)
                 .customerEmail(customer.getEmail())
                 .customerName(customer.getUsername())
                 .createdAt(String.valueOf(getCreatedAt()))
