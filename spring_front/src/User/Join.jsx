@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import Ad from '../components/Ad';
 import Footer from '../components/Footer';
 import Article from '../components/Article';
+import Layout from '../components/Layout';
 
 
 const Join = () => {
