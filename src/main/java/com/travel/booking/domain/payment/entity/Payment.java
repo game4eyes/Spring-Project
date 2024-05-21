@@ -42,6 +42,9 @@ public class Payment  {
     @Column(nullable = false , name = "pay_name")
     private String orderName;
 
+    @Column(nullable = false , name = "order_id")
+    private String orderId;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

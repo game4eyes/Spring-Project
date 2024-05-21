@@ -28,14 +28,10 @@ const Join = () => {
   const navigate = useNavigate();
 
   const userData = {
-    loginId,
     username,
     password,
     passwordCheck,
     email,
-    birth,
-    phonenum,
-    gender
   };
 
   const handleJoin = async () => {
