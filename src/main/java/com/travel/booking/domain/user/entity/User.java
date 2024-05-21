@@ -25,8 +25,7 @@ public class User {
 
     private String password;
 
-    @Lob
-    private byte[] picture;
+    private String picture;
 
     @Enumerated(EnumType.STRING)
     private Role role;
