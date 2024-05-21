@@ -1,6 +1,9 @@
 
-import { BrowserRouter, Routes, Route, RouterProvider } from 'react-router-dom';
+import React from 'react';
+
+import {BrowserRouter, Routes, Route, RouterProvider } from 'react-router-dom';
 import RootRouter from './router/RootRouter';
+//import { AuthContext } from './User/AuthContext';
 
 // import HomeRouter from './router/RootRouter';
 // import AccountRouter from './router/AccountRouter';
@@ -12,9 +15,10 @@ import RootRouter from './router/RootRouter';
 
 const App = () => {
   return (
-
-    <RouterProvider router={RootRouter}/>
-    // <BrowserRouter>
+    
+   // <AuthContext>          {/* 로그인 상태 전역 context 추가 */}
+    <RouterProvider router={RootRouter} />
+   // <BrowserRouter>
     //   <Routes>
     //     <Route path="/" element={<HomeRouter />} />
     //     <Route path="/account/*" element={<AccountRouter />} />
@@ -22,7 +26,8 @@ const App = () => {
     //     <Route path="/ticket/*" element={<TicketRouter />} />
     //     <Route path="/navigation/*" element={<NavBarRouter />} />
     //   </Routes>
-    // </BrowserRouter>
+    // </BrowserRouter> */}
+   // </AuthContext>
   )
 };
-export default App
+export default App;
