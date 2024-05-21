@@ -30,7 +30,7 @@ public class Payment  {
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
-    private BookingEntity booking;
+    private BookingEntity bookingId;
 
     @Column(nullable = false , name = "pay_type")
     @Enumerated(EnumType.STRING)
@@ -73,7 +73,7 @@ public class Payment  {
                 .payType(payType.getDescription())
                 .amount(amount)
                 .orderName(orderName)
-                .orderId(booking.getId().toString())
+                .orderId(bookingId.getId().toString())
                 .customerEmail(customer.getEmail())
                 .customerName(customer.getUsername())
                 .createdAt(String.valueOf(getCreatedAt()))
