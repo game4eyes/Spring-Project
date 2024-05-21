@@ -293,6 +293,7 @@ return(
     
     <div>
           <h3>추천여행</h3>
+      
           <TravelList travelList= {travelList}></TravelList>   
         </div>
         <br /> 

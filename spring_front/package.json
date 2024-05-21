@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "axios": "^1.6.8",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "js-cookie": "^3.0.5",
     "kakao-maps-sdk": "^1.0.1",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
     "react-kakao-maps-sdk": "^1.1.26",
     "react-router-dom": "^6.23.1",

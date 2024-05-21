@@ -6,6 +6,7 @@ import Ad from './Ad';
 import '@/css/Layout.css';
 import Article from './Article';
 import Hero from './Hero';
+import Header_test from './Header_test';
 
 const Layout = ({ loginstate, title, body, children }) => {
     const location = useLocation();
@@ -14,7 +15,9 @@ const Layout = ({ loginstate, title, body, children }) => {
     return (
         <div className="Home">
             <div className="layout">
+            <Header_test/>
                 <Header loginstate={loginstate} /><br/>
+                
                 {isHomePage ? <Hero title={title} body={body} /> : <Article title={title} body={body} />}
                 <br/>
             </div>
