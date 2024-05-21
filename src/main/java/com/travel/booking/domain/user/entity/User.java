@@ -23,10 +23,14 @@ public class User {
 
     private String email;
 
+    private String picture;
+
     private Long point;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+
 
 }
 

@@ -22,7 +22,8 @@ public class UserService {
     // 회원가입 시 login id 중복체크
     // 중복시 true 리턴
     public boolean checkEmailDuplicate(String email){
-        return userRepository.existsByEmail(email);
+        Optional<User> existingUser = userRepository.findByEmail(email);
+        return existingUser.isPresent();
     }
 
     // 회원가입
