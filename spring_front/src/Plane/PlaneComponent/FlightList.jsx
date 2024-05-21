@@ -2,7 +2,19 @@ import React from 'react';
 import '../../css/FlightList.css';
 
 const FlightList = ({ flights }) => {
-    const flightData = flights.station || []; // 데이터 구조에 맞게 접근 경로를 확인해야 합니다.
+    const flightData = flights.station || [];
+
+    // 요금을 결정하는 함수, 100원 단위로 반올림
+    const calculateFare = (runDay) => {
+        const dayOfWeek = new Date(runDay).getDay(); // 요일을 숫자로 반환 (0: 일요일, 6: 토요일)
+        let baseFare;
+        if (dayOfWeek === 0 || dayOfWeek === 6) { // 주말 요금
+            baseFare = Math.random() * (150000 - 100000) + 100000; // 10만원에서 15만원 사이
+        } else { // 평일 요금
+            baseFare = Math.random() * (100000 - 50000) + 50000; // 5만원에서 10만원 사이
+        }
+        return Math.round(baseFare / 100) * 100; // 100원 단위로 반올림
+    };
 
     return (
         <div>
@@ -30,7 +42,7 @@ const FlightList = ({ flights }) => {
                                 <td>{flight.departureTime}</td>
                                 <td>{flight.arrivalTime}</td>
                                 <td>{flight.runDay}</td>
-                                <td>₩{flight.fare}</td>
+                                <td>₩{calculateFare(flight.runDay)}</td>
                                 <td><button>Book</button></td>
                             </tr>
                         ))}
