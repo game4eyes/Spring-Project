@@ -23,19 +23,13 @@ public class UserEntity {
     @Column(name = "USER_ID")
     private Long id;
 
-    private String loginId;
-
-    @Column(name = "USERNAME")
     private String username;
 
     private String password;
 
     private String email;
 
-    private String birth;
-    private String phonenum;
-    private String gender;
-
+    private Long point;
 
     @Enumerated(EnumType.STRING)
     private Role role;
