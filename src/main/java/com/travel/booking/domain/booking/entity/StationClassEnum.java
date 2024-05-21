@@ -1,4 +1,4 @@
-package com.travel.booking.domain.booking;
+package com.travel.booking.domain.booking.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
