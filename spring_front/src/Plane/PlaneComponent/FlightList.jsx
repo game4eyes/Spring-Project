@@ -1,19 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../css/FlightList.css';
 
-const FlightList = ({ flights }) => {
+const FlightList = ({ flights, onSelectFare }) => {
     const flightData = flights.station || [];
+    const [fares, setFares] = useState({});
 
-    // 요금을 결정하는 함수, 100원 단위로 반올림
+    useEffect(() => {
+        // 각 항공편에 대해 요금을 계산하고 저장
+        const newFares = flightData.reduce((acc, flight) => {
+            acc[flight.id] = calculateFare(flight.runDay);
+            return acc;
+        }, {});
+        setFares(newFares);
+    }, [flightData]);
+
     const calculateFare = (runDay) => {
-        const dayOfWeek = new Date(runDay).getDay(); // 요일을 숫자로 반환 (0: 일요일, 6: 토요일)
+        const dayOfWeek = new Date(runDay).getDay();
         let baseFare;
-        if (dayOfWeek === 0 || dayOfWeek === 6) { // 주말 요금
-            baseFare = Math.random() * (150000 - 100000) + 100000; // 10만원에서 15만원 사이
-        } else { // 평일 요금
-            baseFare = Math.random() * (100000 - 50000) + 50000; // 5만원에서 10만원 사이
+        if (dayOfWeek === 0 || dayOfWeek === 6) {
+            baseFare = Math.random() * (150000 - 100000) + 100000;
+        } else {
+            baseFare = Math.random() * (100000 - 50000) + 50000;
         }
-        return Math.round(baseFare / 100) * 100; // 100원 단위로 반올림
+        return Math.round(baseFare / 100) * 100;
+    };
+
+    const handleBook = (e, fare) => {
+        e.preventDefault();
+        onSelectFare(fare);
     };
 
     return (
@@ -42,8 +56,10 @@ const FlightList = ({ flights }) => {
                                 <td>{flight.departureTime}</td>
                                 <td>{flight.arrivalTime}</td>
                                 <td>{flight.runDay}</td>
-                                <td>₩{calculateFare(flight.runDay)}</td>
-                                <td><button>Book</button></td>
+                                <td>₩{fares[flight.id]}</td>
+                                <td>
+                                    <button type="button" onClick={(e) => handleBook(e, fares[flight.id])}>Book</button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
