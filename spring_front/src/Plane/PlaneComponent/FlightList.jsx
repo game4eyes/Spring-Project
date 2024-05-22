@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import '../../css/FlightList.css';
 
 const FlightList = ({ flights, onSelectFare }) => {
-    const flightData = flights.station || [];
+    // useMemo를 사용하여 flightData를 메모이제이션
+    const flightData = useMemo(() => flights.station || [], [flights.station]);
+
     const [fares, setFares] = useState({});
 
     useEffect(() => {
