@@ -1,8 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../css/FlightList.css';
 
-const FlightList = ({ flights }) => {
-    const flightData = flights.station || []; // 데이터 구조에 맞게 접근 경로를 확인해야 합니다.
+const FlightList = ({ flights, onSelectFare }) => {
+    const flightData = flights.station || [];
+    const [fares, setFares] = useState({});
+
+    useEffect(() => {
+        // 각 항공편에 대해 요금을 계산하고 저장
+        const newFares = flightData.reduce((acc, flight) => {
+            acc[flight.id] = calculateFare(flight.runDay);
+            return acc;
+        }, {});
+        setFares(newFares);
+    }, [flightData]);
+
+    const calculateFare = (runDay) => {
+        const dayOfWeek = new Date(runDay).getDay();
+        let baseFare;
+        if (dayOfWeek === 0 || dayOfWeek === 6) {
+            baseFare = Math.random() * (150000 - 100000) + 100000;
+        } else {
+            baseFare = Math.random() * (100000 - 50000) + 50000;
+        }
+        return Math.round(baseFare / 100) * 100;
+    };
+
+    const handleBook = (e, fare) => {
+        e.preventDefault();
+        onSelectFare(fare);
+    };
 
     return (
         <div>
@@ -30,8 +56,10 @@ const FlightList = ({ flights }) => {
                                 <td>{flight.departureTime}</td>
                                 <td>{flight.arrivalTime}</td>
                                 <td>{flight.runDay}</td>
-                                <td>₩{flight.fare}</td>
-                                <td><button>Book</button></td>
+                                <td>₩{fares[flight.id]}</td>
+                                <td>
+                                    <button type="button" onClick={(e) => handleBook(e, fares[flight.id])}>Book</button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>

@@ -65,7 +65,7 @@ const Login = () => {
         <h2>로그인</h2>
         <form onSubmit={handleLogin}>
           <div className="form-group">
-            <label htmlFor="email">아이디</label>
+            <label htmlFor="email">이메일</label>
             <input
               type="text"
               id="email"
