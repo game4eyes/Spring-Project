@@ -29,8 +29,8 @@ public class Payment  {
     private Long paymentId;
 
     @ManyToOne
-    @JoinColumn(name = "bookingId", nullable = false)
-    private BookingEntity booking;
+    @JoinColumn(name = "booking_id", nullable = false)
+    private BookingEntity bookingId;
 
     @Column(nullable = false , name = "pay_type")
     @Enumerated(EnumType.STRING)

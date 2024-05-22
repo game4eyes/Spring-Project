@@ -7,7 +7,9 @@ import com.travel.booking.domain.user.dto.LoginReq;
 import com.travel.booking.domain.user.dto.SessionUser;
 import com.travel.booking.domain.user.entity.User;
 import com.travel.booking.domain.user.service.UserService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +54,7 @@ public class SessionLoginController {
     @PostMapping("/login")
     @ResponseBody // JSON 응답을 반환하려면 @ResponseBody 사용
     public ResponseEntity<?> login(@RequestBody LoginReq loginRequest, BindingResult bindingResult,
-                                    HttpServletRequest httpServletRequest) {
+                                    HttpServletRequest request, HttpServletResponse response) {
         // 비어있는 값 검증
         if (loginRequest.getEmail() == null || loginRequest.getPassword() == null) {
             return ResponseEntity.badRequest().body("이메일과 비밀번호는 필수입니다.");
@@ -69,12 +71,18 @@ public class SessionLoginController {
             return ResponseEntity.badRequest().body("로그인에 실패했습니다.");
         }
 
-        // 세션 생성 및 사용자 정보 저장
-        HttpSession session = httpServletRequest.getSession(true); // 새로운 세션 생성
-        session.setAttribute("email", user.getEmail()); // 세션에 로그인 ID 저장
+        // 세션 생성
+        HttpSession session = request.getSession(true);
+
+        // 세션에 사용자 정보 저장
+        session.setAttribute("email", user.getEmail());
         session.setMaxInactiveInterval(1800); // 세션 유효 시간 30분
 
-        sessionList.put(session.getId(), session); // 세션 리스트에 추가
+        // 쿠키에 세션 ID 저장
+        Cookie sessionCookie = new Cookie("sessionId", session.getId());
+        sessionCookie.setMaxAge(-1); // 브라우저가 닫힐 때 쿠키 삭제
+        sessionCookie.setPath("/"); // 모든 경로에서 접근 가능하도록 설정
+        response.addCookie(sessionCookie);
 
         // 로그인 성공 시 응답
         return ResponseEntity.ok("로그인에 성공했습니다.");
