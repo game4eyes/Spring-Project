@@ -1,9 +1,8 @@
-// src/components/TermsOfService.jsx
 import React from 'react';
-import './TermsOfService.css';
+import './TravelTermsandConditions.css';
 import Layout from '../Layout';
 
-const TermsOfService = () => {
+const TravelTermsandConditions = () => {
     return (
        
         <div className="terms-container">
@@ -12,7 +11,7 @@ const TermsOfService = () => {
           <div className="term-section">
             <p className="term-title">제1조(목적)</p>
             <p className="term-text">
-              이 약관은 ㈜교원투어와 여행자가 체결한 국내여행계약의 세부이행 및 준수사항을 정함을 목적으로 합니다.
+              이 약관은 ㈜TRABLE과 여행자가 체결한 국내여행계약의 세부이행 및 준수사항을 정함을 목적으로 합니다.
             </p>
           </div>
           <div className="term-section">
@@ -189,4 +188,4 @@ const TermsOfService = () => {
       );
     };
 
-export default TermsOfService;
+export default TravelTermsandConditions;

@@ -1,16 +1,11 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
-import NavBar from '@components/NavBar';
-import '../css/Header.css';
-import '@/bootstrap_css/bootstrap.min.css';
-import '@/bootstrap_js/bootstrap.bundle.min.js'; // 드랍다운 기능을 위해 추가
-import CurrentTime from '@components/CurrentTime';
-import Logo from '@components/Logo';
+import React, { useEffect, useContext } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../global/AuthContext';
-import SessionTimer from './SessionTimer'; // SessionTimer 추가
+import SessionTimer from './SessionTimer';
+import NavBar from './NavBar';
 
 const Header = () => {
-  const { isLoggedIn, setIsLoggedIn, lastActiveTime, setLastActiveTime,loginId } = useContext(AuthContext);
+  const { isLoggedIn, setIsLoggedIn, lastActiveTime, setLastActiveTime, loginId } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -54,36 +49,13 @@ const Header = () => {
 
   return (
     <div>
-      <CurrentTime />
-      {isLoggedIn && <SessionTimer sessionTimeout={30 * 60 * 1000} handleLogout={handleLogout} />}
-      <Logo />
-      <div align="right">
-    
-        {isLoggedIn ? (
-          <> <p>환영합니다, {loginId}님!</p>
-            <button type="button" className="btn btn-danger" style={{ marginRight: '10px', marginBottom: '15px' }} onClick={handleLogout}>
-              로그아웃
-            </button>
-            <button type="button" className="btn btn-success" style={{ marginRight: '10px', marginBottom: '15px' }}>
-              마이페이지
-            </button>
-          </>
-        ) : (
-          <>
-            <button type="button" className="btn btn-danger" style={{ marginRight: '10px', marginBottom: '15px' }}>
-              <Link to="/api/user/login" style={{ color: 'white', textDecoration: 'none' }}>로그인</Link>
-            </button>
-            <button type="button" className="btn btn-primary" style={{ marginRight: '10px', marginBottom: '15px' }}>
-              <Link to="/api/user/join" style={{ color: 'white', textDecoration: 'none' }}>회원가입</Link>
-            </button>
-          </>
-        )}
-        <button type="button" className="btn btn-success" style={{ marginRight: '10px', marginBottom: '15px' }}>
-          <Link to="/ticket/Ticket_Detail" style={{ color: 'white', textDecoration: 'none' }}>예약정보</Link>
-        </button>
-      </div>
+      {isLoggedIn && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+          <p style={{ margin: 0, marginTop:'8px', marginBottom:'8px'}}>{loginId}님 안녕하세요!</p>
+          <SessionTimer sessionTimeout={30 * 60 * 1000} handleLogout={handleLogout} />
+        </div>
+      )}
       <NavBar />
-      <br />
     </div>
   );
 };
