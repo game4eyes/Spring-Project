@@ -1,0 +1,15 @@
+/* timer.css */
+.timer-container {
+  margin-right: 10px;
+  margin-bottom: 0px;
+  text-align: right;
+}
+
+.timer-icon {
+  fill: blue;
+  transition: fill 0.5s;
+}
+
+.timer-icon.low-time {
+  fill: red;
+}
