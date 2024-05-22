@@ -1,6 +1,5 @@
 package com.travel.booking.domain.user.repository;
 
-import com.travel.booking.domain.user.entity.OauthUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

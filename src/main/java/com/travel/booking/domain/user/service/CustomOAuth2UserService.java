@@ -2,8 +2,7 @@ package com.travel.booking.domain.user.service;
 
 import com.travel.booking.domain.user.dto.OAuthAttributes;
 import com.travel.booking.domain.user.dto.SessionUser;
-import com.travel.booking.domain.user.entity.OauthUser;
-import com.travel.booking.domain.user.repository.OauthUserRepository;
+import com.travel.booking.domain.user.entity.User;
 import com.travel.booking.domain.user.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,8 @@ import java.util.Collections;
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    private final OauthUserRepository repository;
+//    private final OauthUserRepository repository;
+    private final UserRepository repository;
     private final HttpSession httpSession;
 
     @Override
@@ -48,7 +48,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
         // 사용자 저장 또는 업데이트
-        OauthUser user = saveOrUpdate(attributes);
+        User user = saveOrUpdate(attributes);
 
         // 세션에 사용자 정보 저장
         httpSession.setAttribute("user", new SessionUser(user));
@@ -59,10 +59,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 attributes.getNameAttributeKey());
     }
 
-    private OauthUser saveOrUpdate(OAuthAttributes attributes) {
-        OauthUser user = repository.findByEmail(attributes.getEmail())
+    private User saveOrUpdate(OAuthAttributes attributes) {
+        User user = repository.findByEmail(attributes.getEmail())
                 // 구글 사용자 정보 업데이트(이미 가입된 사용자) => 업데이트
-                .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
+                .map(entity -> entity.update(attributes.getUsername(), attributes.getPicture()))
                 // 가입되지 않은 사용자 => User 엔티티 생성
                 .orElse(attributes.toEntity());
 
