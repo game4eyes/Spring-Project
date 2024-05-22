@@ -39,9 +39,15 @@ const Login = () => {
     console.log(loginData);
 
     try {
-      await userLogin(loginData);
+      const response = await userLogin(loginData);
       alert('환영합니다!');
       navigate('/');
+      // 성공적으로 로그인한 경우, 세션 ID를 쿠키에 저장
+      document.cookie = `sessionId=${response.data.sessionId}; path=/`;
+      // 사용자 정보를 전역 상태로 저장
+      AuthContext.setIsAuthenticated(true);
+      AuthContext.setUser(response.data.user);
+      console.log(AuthContexts);
     } catch (error) {
       let errorMessage = '로그인 중 오류가 발생했습니다. 다시 시도해주세요.';
       if (error.response && error.response.status === 400) {
