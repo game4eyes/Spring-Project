@@ -1,14 +1,17 @@
 package com.travel.booking.domain.booking.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.cglib.core.Local;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
-@Getter @Setter
-@Table(name = "BookingByBusSeat")
+@Getter @Setter @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "booking_by_bus_seat")
 public class BookingBusSeatEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +24,7 @@ public class BookingBusSeatEntity {
 
     private Long startStationId;
     private Long endStationId;
-    private Date date;
-    private Date time;
+    private LocalDate date;
+    private LocalTime time;
     private String seatNum;
 }
