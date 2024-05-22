@@ -1,6 +1,8 @@
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../global/AuthContext';
+import { ReactComponent as TimerIcon } from '@/icon/timer_blue.svg';
+import '@/css/timer.css';
 
 const SessionTimer = ({ sessionTimeout, handleLogout }) => {
   const { lastActiveTime } = useContext(AuthContext);
@@ -37,9 +39,15 @@ const SessionTimer = ({ sessionTimeout, handleLogout }) => {
     navigate('/');
   };
 
+  const isTimeLow = sessionTimeRemaining <= 5 * 60 * 1000; // 5 minutes in milliseconds
+
   return (
-    <div style={{ marginRight: '10px', marginBottom: '15px', textAlign: 'right' }}>
-      세션 만료까지 남은 시간: {minutes}: {seconds}
+    <div 
+      className="timer-container"
+      style={{ color: isTimeLow ? 'red' : 'black' }}
+    >
+      <TimerIcon className={`timer-icon ${isTimeLow ? 'low-time' : ''}`} /> 
+      {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
     </div>
   );
 };

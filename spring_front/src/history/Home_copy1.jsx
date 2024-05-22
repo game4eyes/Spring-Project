@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 //import { Link } from 'react-router-dom'; 
 import { BrowserRouter, Link, useLocation, useNavigate } from "react-router-dom";
 import './App.css'
+import Header from './components/Header'
 import '@/bootstrap_css/bootstrap.min.css';
 import '@/bootstrap_js/bootstrap.bundle.min.js';  
 import Ad from './components/Ad'
@@ -19,7 +20,10 @@ import Article from '@components/Article';
 import KakaoMapComponent from './components/KakaoMapComponent';
 import './css/Popup.css'
 import { AuthContext } from './global/AuthContext';
-import Layout from './components/Layout';
+
+
+
+
 
 //  function Article(props){
 //   const articleStyle = {
@@ -48,8 +52,6 @@ import Layout from './components/Layout';
 
   // }
 
-
-//컴포넌트로 정리하기
 
   function TransportationList(props) {
     const listStyle = {
@@ -93,49 +95,7 @@ import Layout from './components/Layout';
 
 
 
-//컴포넌트로 정리하기
-
-  function TravelList(props) {
-    const listStyle = {
-      display: 'flex',
-      flexDirection: 'row',  // x축 방향으로 나열
-      justifyContent: 'flex-start', // 이미지들을 왼쪽으로 정렬
-      alignItems: 'center', // 세로 중앙 정렬
-      listStyleType: 'none', // 순서 없는 목록 스타일 제거
-      padding: 0, // 목록의 패딩 제거
-    };
   
-    const listItemStyle = {
-      textAlign: 'center', // 가운데 정렬
-      marginLeft: '10px', // 왼쪽 여백 추가
-    };
-  
-    const imgStyle = {
-      maxWidth: '100%',
-      width: '300px', // 이미지의 너비 설정
-      height: '200px', // 이미지의 높이 설정
-    };
-  
-    return (
-      <div>
-        <div style={listStyle}>
-          {props.travelList.map((t, index) => (
-            typeof t !== 'number' && (
-              <div key={t.id} style={{ ...listItemStyle, order: index % 2 === 0 ? 1 : -1 }}>
-                <Link to={t.id}>
-                  <img src={t.imgSrc} alt={t.title} style={imgStyle} />
-                </Link>
-                <Link to={t.id}><p>{t.title}</p></Link>
-                {/* <p>{t.explain}</p> */}
-              </div>
-            )
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  //컴포넌트로 정리하기 
   const Popup = ({ onClose, onOptionSelect }) => {
     return (
       <div className="popup">
@@ -150,13 +110,17 @@ import Layout from './components/Layout';
   };
   
  // export default Popup;
+  
 
 
 
 
 
 
- //테스트
+
+
+
+
  function TransportationList_test(props) {
   const { isLoggedIn, setRedirectUrl, setGuestRedirectUrl } = useContext(AuthContext);// AuthContext에서 setRedirectUrl, setGuestRedirectUrl 가져오기
   const navigate = useNavigate();
@@ -241,8 +205,101 @@ import Layout from './components/Layout';
 
 
 
+ 
 
-const Home = () =>{
+  // function TransportationList_test(props) {
+  //   const listStyle = {
+  //     display: 'flex',
+  //     flexDirection: 'row',  // x축 방향으로 나열
+  //     justifyContent: 'flex-start', // 이미지들을 왼쪽으로 정렬
+  //     alignItems: 'center', // 세로 중앙 정렬
+  //     listStyleType: 'none', // 순서 없는 목록 스타일 제거
+  //     padding: 0, // 목록의 패딩 제거
+  //   };
+  
+  //   const listItemStyle = {
+  //     textAlign: 'center', // 가운데 정렬
+  //     marginLeft: '10px', // 왼쪽 여백 추가
+  //   };
+  
+  //   const imgStyle = {
+  //     maxWidth: '100%',
+  //     width: '300px', // 이미지의 너비 설정
+  //     height: '200px', // 이미지의 높이 설정
+  //   };
+  
+  //   return (
+  //     <div>
+  //       <div style={listStyle}>
+  //         {props.transportation.map((t, index) => (
+  //           typeof t !== 'number' && (
+  //             <div key={t.id} style={{ ...listItemStyle, order: index % 2 === 0 ? 1 : -1 }}>
+  //               <Link to={"/ticketbook/" + t.id}>
+  //                 <img src={t.imgSrc} alt={t.title} style={imgStyle} />
+  //               </Link>
+  //               <Link to={"/ticketbook/" + t.id}><p>{t.title}</p></Link>
+  //               {/* <p>{t.explain}</p> */}
+  //             </div>
+  //           )
+  //         ))}
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
+
+
+
+  function TravelList(props) {
+    const listStyle = {
+      display: 'flex',
+      flexDirection: 'row',  // x축 방향으로 나열
+      justifyContent: 'flex-start', // 이미지들을 왼쪽으로 정렬
+      alignItems: 'center', // 세로 중앙 정렬
+      listStyleType: 'none', // 순서 없는 목록 스타일 제거
+      padding: 0, // 목록의 패딩 제거
+    };
+  
+    const listItemStyle = {
+      textAlign: 'center', // 가운데 정렬
+      marginLeft: '10px', // 왼쪽 여백 추가
+    };
+  
+    const imgStyle = {
+      maxWidth: '100%',
+      width: '300px', // 이미지의 너비 설정
+      height: '200px', // 이미지의 높이 설정
+    };
+  
+    return (
+      <div>
+        <div style={listStyle}>
+          {props.travelList.map((t, index) => (
+            typeof t !== 'number' && (
+              <div key={t.id} style={{ ...listItemStyle, order: index % 2 === 0 ? 1 : -1 }}>
+                <Link to={t.id}>
+                  <img src={t.imgSrc} alt={t.title} style={imgStyle} />
+                </Link>
+                <Link to={t.id}><p>{t.title}</p></Link>
+                {/* <p>{t.explain}</p> */}
+              </div>
+            )
+          ))}
+        </div>
+      </div>
+    );
+  }
+  
+  
+  
+  
+ 
+  
+    
+
+function Home() {
+
+
 
   const [loginstate, setLoginstate] = useState(false);
   const location = useLocation();
@@ -271,35 +328,65 @@ const Home = () =>{
     { id: "busan", title: "부산", explain: '부산 여행', imgSrc: BusanImage },
     { id: "daegu", title: "대구", explain: '대구 여행', imgSrc: DaeguImage }
   ];
-
-
-   //로그인 될 경우 useState 설정
-   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-   // 로그아웃 될 경우
-   const handleLogout = () => {
-     setIsLoggedIn(false);
-   };
   
+  
+
+
+  
+
+
+  //로그인 될 경우 useState 설정
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // 로그아웃 될 경우
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
+  
+
+
+
+  return (
+    <>
+    
+  <div className= "Home">
+      <Header loginstate={loginstate}/>
+  
+  <Article title ="홈" body ="버스,기차,항공 예약 홈페이지입니다"></Article>
+
+ 
+
+  </div>
+
+
+
+        <div style={{ textAlign: 'center' }}>
+        <form action="/search" method="GET">
+          <label htmlFor="search">검색</label>
+          <input type="text" id="search" name="q" placeholder="검색창" />
+          <button type="submit">Search</button>
+        </form>
+      </div>
+
+
+     
+
+        <br /> 
+    <br />
+
+
    
 
-
-
-return(
-  
-     <Layout loginstate={loginstate} title ="홈" body ="버스,기차,항공 예약 홈페이지입니다">
-      
     
-    {/* <div>
+    <div>
           <h3>추천여행</h3>
-      
           <TravelList travelList= {travelList}></TravelList>   
-        </div> */}
+        </div>
         <br /> 
     <br /> 
      
     <div>
- 
+    <Ad /> 
     </div>
     
 
@@ -327,56 +414,6 @@ return(
         <br /> 
     <br />  */}
 
-
-
-
-
-<hr class="featurette-divider"/>
-
-<div class="row featurette">
-  <div class="col-md-7">
-    <h2 class="featurette-heading fw-normal lh-1">First featurette heading. <span class="text-body-secondary">It’ll blow your mind.</span></h2>
-    <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
-  </div>
-  <div class="col-md-5">
-    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-bg)"/><text x="50%" y="50%" fill="var(--bs-secondary-color)" dy=".3em">500x500</text></svg>
-  </div>
-</div>
-
-<hr class="featurette-divider"/>
-
-<div class="row featurette">
-  <div class="col-md-7 order-md-2">
-    <h2 class="featurette-heading fw-normal lh-1">Oh yeah, it’s that good. <span class="text-body-secondary">See for yourself.</span></h2>
-    <p class="lead">Another featurette? Of course. More placeholder content here to give you an idea of how this layout would work with some actual real-world content in place.</p>
-  </div>
-  <div class="col-md-5 order-md-1">
-    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-bg)"/><text x="50%" y="50%" fill="var(--bs-secondary-color)" dy=".3em">500x500</text></svg>
-  </div>
-</div>
-
-<hr class="featurette-divider"/>
-
-<div class="row featurette">
-  <div class="col-md-7">
-    <h2 class="featurette-heading fw-normal lh-1">And lastly, this one. <span class="text-body-secondary">Checkmate.</span></h2>
-    <p class="lead">And yes, this is the last block of representative placeholder content. Again, not really intended to be actually read, simply here to give you a better view of what this would look like with some actual content. Your content.</p>
-  </div>
-  <div class="col-md-5">
-    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-bg)"/><text x="50%" y="50%" fill="var(--bs-secondary-color)" dy=".3em">500x500</text></svg>
-  </div>
-</div>
-
-<hr class="featurette-divider"/>
-
-
-
-
-
-
-
-
-
      <div>  
      <h3>기능 (테스트)</h3> <br /><br />
      <KakaoMapComponent />
@@ -400,9 +437,11 @@ return(
         </div>
         <br /> 
     <br /> 
-      </Layout>
-   
-    );
+
+
+    <Footer/>
+    </>
+  )
 }
 
 export default Home;

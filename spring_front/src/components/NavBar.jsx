@@ -1,6 +1,30 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+
+import '../css/Header.css';
+import '@/bootstrap_css/bootstrap.min.css';
+import '@/bootstrap_js/bootstrap.bundle.min.js'; // 드랍다운 기능을 위해 추가
+
+import Logo from '@components/Logo';
+import { Container, Nav } from 'react-bootstrap';
+
+import { ReactComponent as AirplaneTicketIcon } from '@/icon/airplane_ticket.svg';
+import { ReactComponent as BusIcon } from '@/icon/bus.svg';
+import { ReactComponent as CashIcon } from '@/icon/cash.svg';
+import { ReactComponent as FlightIcon } from '@/icon/flight.svg';
+//import { ReactComponent as HomeIcon } from '@/icon/home.svg';
+import { ReactComponent as ShoppingCartIcon } from '@/icon/shopping_cart.svg';
+import { ReactComponent as TrainIcon } from '@/icon/train.svg';
+import { ReactComponent as DepartureIcon } from '@/icon/departure.svg';
+
+import { useContext } from 'react';
+import { AuthContext } from '../global/AuthContext';
 
 const NavBar = () => {
+
+
+  const { isLoggedIn, setIsLoggedIn, lastActiveTime, setLastActiveTime, loginId } = useContext(AuthContext);
+  //const location = useLocation();
+  const navigate = useNavigate();
 
 
   // nav바 메뉴
@@ -18,130 +42,132 @@ const NavBar = () => {
  
      //  { id:8, title: "국내여행", body: '국내여행임' },
      //  { id: 9, title: "고객지원", body: '고객지원임' },
+
+
+
+     
    ];
+
+   const handleLogout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem('lastActiveTime');
+    navigate('/');
+  };
+
+
+  const headerStyle = {
+    marginTop: isLoggedIn ? '0px' : '40px', // Adjust the default marginTop value as needed
+};
+
+
 return (
-    <div className="NavBar">
-<nav className="navbar navbar-expand-lg bg-body-tertiary">
-  <div className="container-fluid">
-    {/* <Link to={"/"} class="navbar-brand" > 홈</Link> */}
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-       
+  <header style={headerStyle}>
+  <div className="px-3 py-2 text-bg-dark border-bottom">
+    <Container>
+      <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" className="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+          <Logo />
+        </a>
+        <Nav className="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+          {/* <Nav.Item>
+          <Nav.Link href="#" className="nav-link text-secondary d-flex flex-column align-items-center">
+            <HomeIcon style={{ width: '24px', height: '24px' }} />
+            <span>홈</span>
+          </Nav.Link>
+        </Nav.Item> */}
+          <Nav.Item>
+            <Nav.Link href="#" className="nav-link text-white d-flex flex-column align-items-center">
+              <DepartureIcon style={{ width: '24px', height: '24px' }} />
+              <span className="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">승차권 예매</span>
+
+              <ul className="dropdown-menu">
+                {/* <a className="dropdown-item" href="#">예매권</a> */}
+                <li><Link to={"/ticketbook/bus"} className="dropdown-item">버스</Link></li>
+                <li><Link to={"/ticketbook/train"} className="dropdown-item">기차</Link></li>
+                <li><Link to={"/ticketbook/plane"} className="dropdown-item">공항</Link></li>
+              </ul>
+            </Nav.Link>
+          </Nav.Item>
 
 
+          <Nav.Item>
+            <Nav.Link href="#" className="nav-link text-white d-flex flex-column align-items-center">
+              <FlightIcon style={{ width: '24px', height: '24px' }} />
+              <span className="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">조회/수정/취소</span>
 
+              <ul className="dropdown-menu">
+                {/* <a className="dropdown-item" href="#">예매권</a> */}
+                <li><Link to={"/ticketbook/bus"} className="dropdown-item">예약 조회</Link></li>
+                <li><Link to={"/ticketbook/train"} className="dropdown-item">예약 수정</Link></li>
+                <li><Link to={"/ticketbook/plane"} className="dropdown-item">예약 취소               
+                </Link></li>
+              </ul>
+            </Nav.Link>
+          </Nav.Item>
 
-            {/* 드랍다운 1(예매탭) -- 예매 탭에 교통수단 나열 */}
-            <li className="nav-item dropdown">                          
-          <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          승차권 예매
-          </a>
-          <ul className="dropdown-menu">
-           {/* <a className="dropdown-item" href="#">예매권</a> */}
-            <li><Link to={"/ticketbook/bus"} className="dropdown-item">버스 (회원, 비회원)</Link></li>
-            <li><Link to={"/ticketbook/train"} className="dropdown-item">기차 (회원, 비회원)</Link></li>
-            <li><Link to={"/ticketbook/plane"} className="dropdown-item">공항 (회원, 비회원)</Link></li>
-          </ul>
-        </li>
-
- 
-          {/* 드랍다운 1(예매탭) -- 예매 탭에 회원,비회원 분리 */}
-        {/* <li className="nav-item dropdown">                          
-          <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            예매
-          </a>
-          <ul class="dropdown-menu">
-             <li> <a className="dropdown-item" href="#">회원예매</a></li>
-            <li><hr className="dropdown-divider"/></li>
-            <li><a className="dropdown-item" href="#">비회원예매</a></li>
- 
-          </ul>
-        </li> */}
-
-
-
-          {/* 드랍다운 1(예매탭) -- 예매 탭만 만들 경우 */}
-
-         {/* <li class="nav-item">
-        
-            <li className="nav-link" aria-current="page"><Link to={'/'}>예매</Link></li>
-           {/* <li className="nav-link active" aria-current="page" key={topic.id}><Link to={'/' + topic.id}>{topic.title}</Link></li> */}
-        {/*} </li>  */}
-   
-
-
-
-        {/* 드랍다운 1 (예매탭)  -- 예매 탭에 회원,비회원 란을 몰아서 넣을 경우
-        <li className="nav-item dropdown">                          
-          <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            예매
-          </a>
-          <ul class="dropdown-menu">
-           <a className="dropdown-item" href="#">회원예매</a>
-            <li><Link to={"/bus"} className="dropdown-item">버스 - (회원)</Link></li>
-            <li><Link to={"/train"} className="dropdown-item">기차 - (회원)</Link></li>
-            <li><Link to={"/plane"} className="dropdown-item">공항 - (회원)</Link></li>
-            <li><hr className="dropdown-divider"/></li>
-            <li><a className="dropdown-item" href="#">비회원예매</a></li>
-            <li><Link to={"/bus"} className="dropdown-item" >버스 - (비회원)</Link></li>
-            <li><Link to={"/bus"} className="dropdown-item" >기차 - (비회원)</Link></li>
-            <li><Link to={"/bus"} className="dropdown-item" >공항 - (비회원)</Link></li>
-          </ul>
-        </li> */}
-
-          {/*드랍다운 2*/}
-          <li className="nav-item dropdown">                          
-          <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            조회/수정/취소
-          </a>
-          <ul className="dropdown-menu">
-           {/* <a className="dropdown-item" href="#">예매권</a> */}
-            <li><Link to={"/ticket/Ticket_Detail"} className="dropdown-item">티켓 조회</Link></li>
-            <li><Link to={"/ticket/Ticket_Modify"} className="dropdown-item">티켓 수정</Link></li>
-            <li><Link to={"/ticket/Ticket_Cancel"} className="dropdown-item">티켓 취소</Link></li>
-          </ul>
-        </li>
-
-
-        <li className="nav-item">
-        {topics.map(topic => (
-            <li className="nav-link" aria-current="page" key={topic.id}><Link to={'/nav/navlink' + topic.id}>{topic.title}</Link></li>
-         //active 클래스 : 탭이 활성화된 경우   // <li className="nav-link active" aria-current="page" key={topic.id}><Link to={'/' + topic.id}>{topic.title}</Link></li>
-          ))}
-        </li>
-        <li className ="nav-item">
-        <div>
-
-       {/* <ul>
-           <li><a>예매</a></li>
-          <li><Link to={"Book"} className="nav-link">회원예매</Link></li>
-          <li><Link to={"Book"} className="nav-link">비회원예매</Link></li>
-   
-        </ul> */}
-
+          <Nav.Item>
+            <Nav.Link href="#" className="nav-link text-white d-flex flex-column align-items-center">
+              <ShoppingCartIcon style={{ width: '24px', height: '24px' }} Link to={'/nav/navlink' + '1'} />
+              <span><Link to={'/nav/navlink' + '1'} style={{ color: 'white', textDecoration: 'none' }}>운행정보</Link></span>
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link href="#" className="nav-link text-white d-flex flex-column align-items-center">
+              <BusIcon style={{ width: '24px', height: '24px' }} />
+              <span><Link to={'/nav/navlink' + '2'} style={{ color: 'white', textDecoration: 'none' }}>버스 터미널 정보</Link></span>
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link href="#" className="nav-link text-white d-flex flex-column align-items-center">
+              <TrainIcon style={{ width: '24px', height: '24px' }} />
+              <span><Link to={'/nav/navlink' + '3'} style={{ color: 'white', textDecoration: 'none' }}>기차역정보/노선도</Link></span>
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link href="#" className="nav-link text-white d-flex flex-column align-items-center">
+              <AirplaneTicketIcon style={{ width: '24px', height: '24px' }} />
+              <span><Link to={'/nav/navlink' + '4'} style={{ color: 'white', textDecoration: 'none' }}>안내/공항 서비스</Link></span>
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link href="#" className="nav-link text-white d-flex flex-column align-items-center">
+              <CashIcon style={{ width: '24px', height: '24px' }} />
+              <span><Link to={'/nav/navlink' + '5'} style={{ color: 'white', textDecoration: 'none' }}>수수료 정보</Link></span>
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
+        <div style={{ marginRight: '-55px', marginTop: '20px' }}>
+          {isLoggedIn ? (
+            <>
+              {/* <p>환영합니다, {loginId}님!</p> */}
+              <button type="button" className="btn btn-danger" style={{ marginRight: '10px', marginBottom: '15px' }} onClick={handleLogout}>
+                로그아웃
+              </button>
+              <button type="button" className="btn btn-primary" style={{ marginRight: '10px', marginBottom: '15px' }}>
+                <Link to="/api/user/mypage" style={{ color: 'white', textDecoration: 'none' }}>마이페이지</Link>
+              </button>
+              <button type="button" className="btn btn-success" style={{ marginRight: '10px', marginBottom: '15px' }}>
+                <Link to="/ticket/Ticket_Detail" style={{ color: 'white', textDecoration: 'none' }}>예약정보</Link>
+              </button>
+            </>
+          ) : (
+            <>
+              <button type="button" className="btn btn-danger" style={{ marginRight: '10px', marginBottom: '15px' }}>
+                <Link to="/api/user/login" style={{ color: 'white', textDecoration: 'none' }}>로그인</Link>
+              </button>
+              <button type="button" className="btn btn-primary" style={{ marginRight: '10px', marginBottom: '15px' }}>
+                <Link to="/api/user/join" style={{ color: 'white', textDecoration: 'none' }}>회원가입</Link>
+              </button>
+              <button type="button" className="btn btn-success" style={{ marginRight: '10px', marginBottom: '15px' }}>
+                <Link to="/ticket/Ticket_Detail" style={{ color: 'white', textDecoration: 'none' }}>예약정보</Link>
+              </button>
+            </>
+          )}
+        </div>
       </div>
-        </li>
-      
-
-        
-        {/* <li class="nav-item">                                       //disabled 주석해놓음
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-        </li> */}
-       
-      </ul>
-      <form className="d-flex" role="search">
-        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button className="btn btn-outline-success" type="submit">Search</button>
-      </form>
-      
-    </div>
+    </Container>
   </div>
-  
-</nav>
-</div>
+</header>
 );
 }
 

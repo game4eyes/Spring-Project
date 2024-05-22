@@ -3,7 +3,7 @@ import { createContext, useState, useEffect } from 'react';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [lastActiveTime, setLastActiveTime] = useState(Date.now());
   const [redirectUrl, setRedirectUrl] = useState('/');              //회원 :버스,기차,항공 페이지 이동에 대한 url
   const [guestRedirectUrl, setGuestRedirectUrl] = useState('/');    //비회원 :버스,기차,항공 페이지 이동에 대한 url
