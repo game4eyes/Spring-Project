@@ -11,7 +11,7 @@ const Footer = () => {
           <p>&copy; 2024 MyWebsite. All rights reserved.</p>
         </div>
         <ul style={styles.nav}>
-          <li style={styles.navItem}><a href="/" style={styles.link}>회사소개</a></li>
+          <li style={styles.navItem}><a href="/" style={styles.link}>홈</a></li>
           <li style={styles.navItem}><Link to="/footer/Location" style={styles.link}>찾아오시는길</Link></li>
           <li style={styles.navItem}><Link to="/footer/TermsofUse" style={styles.link}>이용약관</Link></li>
           <li style={styles.navItem}><Link to="/footer/TravelTermsandConditions" style={styles.link}>여행약관</Link></li>
