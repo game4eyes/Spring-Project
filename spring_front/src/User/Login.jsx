@@ -11,7 +11,7 @@ import { socialLogin } from '../api/todoApi';
 
 
 const Login = () => {
-  const [loginId, setLoginId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({});
@@ -19,7 +19,7 @@ const Login = () => {
 
 
   const loginData = {
-    loginId,
+    email,
     password,
   };
 
@@ -39,9 +39,15 @@ const Login = () => {
     console.log(loginData);
 
     try {
-      await userLogin(loginData);
+      const response = await userLogin(loginData);
       alert('환영합니다!');
       navigate('/');
+      // 성공적으로 로그인한 경우, 세션 ID를 쿠키에 저장
+      document.cookie = `sessionId=${response.data.sessionId}; path=/`;
+      // 사용자 정보를 전역 상태로 저장
+      AuthContext.setIsAuthenticated(true);
+      AuthContext.setUser(response.data.user);
+      console.log(AuthContexts);
     } catch (error) {
       let errorMessage = '로그인 중 오류가 발생했습니다. 다시 시도해주세요.';
       if (error.response && error.response.status === 400) {
@@ -59,12 +65,12 @@ const Login = () => {
         <h2>로그인</h2>
         <form onSubmit={handleLogin}>
           <div className="form-group">
-            <label htmlFor="loginId">아이디</label>
+            <label htmlFor="email">이메일</label>
             <input
               type="text"
-              id="loginId"
-              value={loginId}
-              onChange={(e) => setLoginId(e.target.value)}
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="아이디 입력"
               required
             />

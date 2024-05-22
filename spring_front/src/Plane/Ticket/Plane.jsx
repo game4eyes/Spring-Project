@@ -25,7 +25,8 @@ const Plane = () => {
         seatType: 'standard',
         disability: false,
         legroom: false,
-        window: false
+        window: false,
+        fare: 0 
     });
     const [flights, setFlights] = useState([]);
 
@@ -73,6 +74,12 @@ const Plane = () => {
         setTicketInfo(prev => ({ ...prev, dayz: dayOfWeek }));
     };
 
+    const onSelectFare = (fare) => {
+        setTicketInfo(prev => ({ ...prev, fare }));
+    };
+
+    console.log(ticketInfo);
+
     return (
         <div className="plane_book">
           
@@ -88,7 +95,7 @@ const Plane = () => {
                 <Checkbox checked={ticketInfo.legroom} onChange={() => setTicketInfo({...ticketInfo, legroom: !ticketInfo.legroom})} label="Legroom" />
                 <Checkbox checked={ticketInfo.window} onChange={() => setTicketInfo({...ticketInfo, window: !ticketInfo.window})} label="Window Seat" />
                 <button type="submit">조회하기</button>
-                <FlightList flights={flights} />
+                <FlightList flights={flights} onSelectFare={onSelectFare} />
             </form>
             <Charge id={3} />
             </Layout>

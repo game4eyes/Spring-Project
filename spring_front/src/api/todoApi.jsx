@@ -70,7 +70,9 @@ export const socialLogin = async () => {
 // Toss 결제 함수
 export const tossPayment = async (paymentData) => {
     try {
-        const res = await axios.post(`${tossEndpoint}`, paymentData, axoisConfig);
+        const res = await axios.post(`${tossEndpoint}`, paymentData, axoisConfig, 
+        {withCredentials: true}
+    );
         return res.data;
     } catch (error) {
         throw new Error(`Toss 결제 요청 실패: ${error.message}`);

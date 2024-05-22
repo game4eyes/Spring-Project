@@ -4,6 +4,7 @@ import com.travel.booking.domain.payment.config.TossPaymentConfig;
 import com.travel.booking.domain.payment.dto.*;
 import com.travel.booking.domain.payment.Response.SingleResponse;
 import com.travel.booking.domain.payment.entity.Payment;
+import com.travel.booking.domain.payment.mapper.PaymentMapper;
 import com.travel.booking.domain.payment.service.PaymentService;
 import com.travel.booking.domain.user.entity.User;
 import jakarta.validation.Valid;
@@ -23,10 +24,26 @@ public class PaymentController {
 
     private final PaymentService paymentService;
     private final TossPaymentConfig paymentConfig;
+    private PaymentMapper mapper;
+
+//    @PostMapping("/toss")
+//    public ResponseEntity requestPayment(@AuthenticationPrincipal User principal, @RequestBody @Valid PaymentDto paymentReqDTO) {
+//        PaymentResDto paymentResDTO = paymentService.requestPayment(paymentReqDTO.toEntity(),  principal.getUsername()).toPaymentResDto();
+//        paymentResDTO.setSuccessUrl(paymentReqDTO.getSuccessUrl() == null ? paymentConfig.getSuccessUrl() : paymentReqDTO.getSuccessUrl());
+//        paymentResDTO.setFailUrl(paymentReqDTO.getFailUrl() == null ? paymentConfig.getFailUrl() : paymentReqDTO.getFailUrl());
+//
+//        return ResponseEntity.ok().body(new SingleResponse<>(paymentResDTO));
+//    }
 
     @PostMapping("/toss")
     public ResponseEntity requestPayment(@AuthenticationPrincipal User principal, @RequestBody @Valid PaymentDto paymentReqDTO) {
-        PaymentResDto paymentResDTO = paymentService.requestPayment(paymentReqDTO.toEntity(),  principal.getUsername()).toPaymentResDto();
+        if (principal == null) {
+            // 인증된 사용자가 없는 경우의 처리
+            // 예를 들어, 익명 사용자에게 제한적인 권한을 부여하거나 에러 메시지를 반환할 수 있습니다.
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+
+        PaymentResDto paymentResDTO = paymentService.requestPayment(paymentReqDTO.toEntity(), principal.getUsername()).toPaymentResDto();
         paymentResDTO.setSuccessUrl(paymentReqDTO.getSuccessUrl() == null ? paymentConfig.getSuccessUrl() : paymentReqDTO.getSuccessUrl());
         paymentResDTO.setFailUrl(paymentReqDTO.getFailUrl() == null ? paymentConfig.getFailUrl() : paymentReqDTO.getFailUrl());
 
@@ -71,14 +88,14 @@ public class PaymentController {
     }
 
 
-    public ResponseEntity getChargingHistory(@AuthenticationPrincipal User authMember, Pageable pageable){
-        Slice<Payment> chargingHistory = paymentService.findAllChargingHistories(authMember.getUsername(), pageable);
-        SliceInfo sliceInfo = new SliceInfo(pageable, chargingHistory.getNumberOfElements(), chargingHistory.hasNext());
-        return new ResponseEntity<>(
-                new SliceResponseDto<>(mapper.chargingHistoryToChargingHistoryResponses(chargingHistory.getContent()), sliceInfo),
-                HttpStatus.OK
-        );
-    }
+//    public ResponseEntity getChargingHistory(@AuthenticationPrincipal User authMember, Pageable pageable){
+//        Slice<Payment> chargingHistory = paymentService.findAllChargingHistories(authMember.getUsername(), pageable);
+//        SliceInfo sliceInfo = new SliceInfo(pageable, chargingHistory.getNumberOfElements(), chargingHistory.hasNext());
+//        return new ResponseEntity<>(
+//                new SliceResponseDto<>(mapper.chargingHistoryToChargingHistoryResponses(chargingHistory.getContent()), sliceInfo),
+//                HttpStatus.OK
+//        );
+//    }
 
 
 

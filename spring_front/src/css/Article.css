@@ -1,0 +1,24 @@
+/* Article.css */
+.article-container {
+    text-align: center;
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 800px; /* 콘텐츠의 최대 너비를 설정하여 중앙 집중적으로 보이게 함 */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    color: #333;
+}
+
+.article-container h1 {
+    font-size: 24px; /* 크기 조절 */
+    color: #007BFF; /* 제목의 색상 */
+    margin-bottom: 8px; /* 하단 여백 */
+}
+
+.article-container h2 {
+    font-size: 18px; /* 본문의 크기 */
+    font-weight: normal;
+    color: #666; /* 본문의 색상 */
+    line-height: 1.6; /* 줄 간격 */
+}

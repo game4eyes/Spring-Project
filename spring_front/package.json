@@ -25,7 +25,9 @@
     "react-kakao-maps-sdk": "^1.1.26",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.23.1",
-    "router-dom": "^2.2.11"
+    "react-slick": "^0.30.2",
+    "router-dom": "^2.2.11",
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
     "@svgr/rollup": "^8.1.0",
