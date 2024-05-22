@@ -71,11 +71,11 @@ const Join = () => {
       return { message: '닉네임을 입력하세요.', ref: usernameRef };
     }
 
-    if (!password) {
-      return { message: '비밀번호를 입력하세요.', ref: passwordRef };
-    } else if (!passwordPattern.test(password)) {
-      return { message: '비밀번호는 최소 8자 이상, 대문자, 소문자, 숫자, 특수문자를 포함해야 합니다.', ref: passwordRef };
-    }
+    // if (!password) {
+    //   return { message: '비밀번호를 입력하세요.', ref: passwordRef };
+    // } else if (!passwordPattern.test(password)) {
+    //   return { message: '비밀번호는 최소 8자 이상, 대문자, 소문자, 숫자, 특수문자를 포함해야 합니다.', ref: passwordRef };
+    // }
 
     if (password !== passwordCheck) {
       return { message: '비밀번호가 일치하지 않습니다.', ref: passwordCheckRef };

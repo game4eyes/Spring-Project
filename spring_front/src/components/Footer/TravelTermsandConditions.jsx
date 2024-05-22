@@ -1,9 +1,8 @@
-// src/components/TermsOfService.jsx
 import React from 'react';
-import './TermsOfService.css';
+import './TravelTermsandConditions.css';
 import Layout from '../Layout';
 
-const TermsOfService = () => {
+const TravelTermsandConditions = () => {
     return (
        
         <div className="terms-container">
@@ -189,4 +188,4 @@ const TermsOfService = () => {
       );
     };
 
-export default TermsOfService;
+export default TravelTermsandConditions;
