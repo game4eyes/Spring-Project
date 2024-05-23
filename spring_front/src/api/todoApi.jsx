@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const API_SERVER_HOST = 'http://localhost:9090'; // 서버 주소
 
-//export const API_SERVER_HOST = 'ec2-15-164-162-241.ap-northeast-2.compute.amazonaws.com';
+//export const API_SERVER_HOST = 'ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090';
 // 사용자 관련 엔드포인트S
 const userPrefix = `${API_SERVER_HOST}/api/user`;
 
