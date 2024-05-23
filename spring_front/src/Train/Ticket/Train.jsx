@@ -7,11 +7,12 @@ import Charge from '../../components/Charge';
 import TrainList from '../Search/list/TrainList';
 import { getTrainInfo } from '../../api/dataApi';
 import Layout from '../../components/Layout';
+import BookingForm from '../../User/BookingForm';
 
 // 기차 예약 컴포넌트
 const Train = () => {
     // 초기 상태 정의
-    const initState = {
+    const ticketInfo = {
         departure: '',            // 출발지
         destination: '',          // 도착지
         date: new Date().toISOString().slice(0, 10),                 // 출발일
@@ -27,7 +28,7 @@ const Train = () => {
     };
 
     // 상태(state)와 상태를 변경하는 함수(setter) 정의
-    const [trainticket, setTrainticket] = useState(initState);
+    const [trainticket, setTrainticket] = useState(ticketInfo);
 
     const [result, setResult] = useState(null);
 
@@ -207,14 +208,14 @@ const Train = () => {
         if (Array.isArray(result)) {
             result.forEach((item) => {
                 if (item.startStationID === document.getElementById('departure_stationID').value) {
-                    settrainticket(prevState => ({
+                    setTrainticket(prevState => ({
                         ...prevState,
                         startStationID: document.getElementById('departure_stationID').value,
                     }));
                 }
     
                 if (item.endStationID === document.getElementById('destination_stationID').value) {
-                    settrainticket(prevState => ({
+                    setTrainticket(prevState => ({
                         ...prevState,
                         endStationID: document.getElementById('destination_stationID').value,
                     }));
@@ -287,7 +288,7 @@ const Train = () => {
 
             <Layout title="기차 승차권 예매" body="정보 입력">
             <form onSubmit={handleSubmit}>
-
+            <BookingForm bookingData={ticketInfo} />
                 <h4>기차 예약</h4>
                 {/* 출발지 입력란 */}
                 <label>

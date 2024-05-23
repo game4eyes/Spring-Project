@@ -12,6 +12,7 @@ import AirportsData from '../PlaneComponent/AirportsData';
 import Layout from '../../components/Layout';
 import { getAirInfo } from '../../api/dataApi';
 import FlightList from '../PlaneComponent/FlightList';
+import BookingForm from '../../User/BookingForm';
 
 const Plane = () => {
     const today = new Date().toISOString().split('T')[0];
@@ -96,6 +97,7 @@ const Plane = () => {
                 <Checkbox checked={ticketInfo.window} onChange={() => setTicketInfo({...ticketInfo, window: !ticketInfo.window})} label="Window Seat" />
                 <button type="submit">조회하기</button>
                 <FlightList flights={flights} onSelectFare={onSelectFare} />
+                <BookingForm bookingData={ticketInfo} />
             </form>
             <Charge id={3} />
             </Layout>
