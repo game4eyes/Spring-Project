@@ -35,20 +35,7 @@ public class BookingService {
                     HttpStatus.NOT_FOUND, BookingErrorCode.BOOKING_USER_FAILED
             );
         }
-        // 출발지 유효성 검사
-        if(bookingDTO.getStartStationName() == null || bookingDTO.getStartStationId() == null ||
-        bookingDTO.getStartStationName().isEmpty() || bookingDTO.getStartStationId().describeConstable().isEmpty()) {
-            throw new BookingException(
-                    HttpStatus.BAD_REQUEST, BookingErrorCode.BOOKING_START_STATION_INFO_FAILED
-            );
-        }
-        // 도착지 유효성 검사
-        if(bookingDTO.getEndStationName() == null || bookingDTO.getEndStationId() == null ||
-                bookingDTO.getEndStationName().isEmpty() || bookingDTO.getEndStationId().describeConstable().isEmpty()) {
-            throw new BookingException(
-                    HttpStatus.BAD_REQUEST, BookingErrorCode.BOOKING_END_STATION_INFO_FAILED
-            );
-        }
+
         BookingEntity bookingEntity = BookingEntity.builder()
                 .user(user)
                 .startStationName(bookingDTO.getStartStationName())
