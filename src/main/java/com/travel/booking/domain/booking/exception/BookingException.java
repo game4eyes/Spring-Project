@@ -18,4 +18,5 @@ public class BookingException extends RuntimeException {
         this.detail = errorStatus.getMsg();
         log.error("BookingException thrown: {}", this);
     }
+
 }
