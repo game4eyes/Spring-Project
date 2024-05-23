@@ -16,7 +16,7 @@ const CurrentTime = () => {
 
   return (
     <div className="Today" align="right">
-      <h4>현재 시간: {currentDateTime}</h4>
+      <p> {currentDateTime}</p>
     </div>
   );
 }

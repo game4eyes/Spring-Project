@@ -164,7 +164,7 @@ const Bus = () => {
     return (
         <div className="bus_book">
          
-                <Layout title="버스 승차권 예매222" body="정보 입력">
+                <Layout title="버스 승차권 예매" body="정보 입력">
             <form onSubmit={handleSubmit}>
                
 

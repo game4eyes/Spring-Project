@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
+import LogoImage from '@components/img/logo/logo3.png';
+
 
 function Logo(){           // 로고
     return(
     <div className="logo"> 
-     <h1><Link to={'/'}> KIC 관광공사 (홈) </Link></h1> 
+     <Link to={'/'}><img src={LogoImage} alt="Logo" style={{marginLeft:'-25px',marginTop:'-5px'}} width='70px' height='70px' />  </Link>
     </div> 
   ) ;
   }
