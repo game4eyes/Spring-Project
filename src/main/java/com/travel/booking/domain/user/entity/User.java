@@ -30,6 +30,11 @@ public class User {
 
     private String picture;
 
+    private String provider;
+    private String providerId;
+    // oauth 정보 확인용
+    private String loginId;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 

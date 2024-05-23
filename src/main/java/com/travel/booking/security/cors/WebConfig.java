@@ -18,8 +18,8 @@ public class WebConfig implements WebMvcConfigurer {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000") // 프론트엔드 도메인
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedOrigins("http://localhost:5173") // 프론트엔드 도메인
+                        .allowedMethods("*")
                         .allowedHeaders("*")
                         .allowCredentials(true); // 중요: credentials 허용
             }
