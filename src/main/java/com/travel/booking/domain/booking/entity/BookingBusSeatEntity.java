@@ -25,6 +25,9 @@ public class BookingBusSeatEntity {
     private Long startStationId;
     private Long endStationId;
     private LocalDate date;
-    private LocalTime time;
+    // 출발 시각
+    private LocalTime departureTime;
+    // 도착 시각
+    private LocalTime arrivalTime;
     private String seatNum;
 }
