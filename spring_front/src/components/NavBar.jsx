@@ -97,9 +97,9 @@ return (
 
               <ul className="dropdown-menu">
                 {/* <a className="dropdown-item" href="#">예매권</a> */}
-                <li><Link to={"/ticketbook/bus"} className="dropdown-item">예약 조회</Link></li>
-                <li><Link to={"/ticketbook/train"} className="dropdown-item">예약 수정</Link></li>
-                <li><Link to={"/ticketbook/plane"} className="dropdown-item">예약 취소               
+                <li><Link to={"/ticket/Ticket_Detail"} className="dropdown-item">예약 조회</Link></li>
+                <li><Link to={"/ticket/Ticket_Modify"} className="dropdown-item">예약 수정</Link></li>
+                <li><Link to={"/ticket/Ticket_Cancel"} className="dropdown-item">예약 취소               
                 </Link></li>
               </ul>
             </Nav.Link>
