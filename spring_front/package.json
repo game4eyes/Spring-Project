@@ -10,18 +10,28 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "animate.css": "^4.1.1",
     "axios": "^1.6.8",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "create": "^0.0.2",
+    "create-react-app": "^5.0.1",
     "js-cookie": "^3.0.5",
     "kakao-maps-sdk": "^1.0.1",
     "react": "^18.2.0",
+    "react-app": "^1.1.2",
+    "react-bootstrap": "^2.10.2",
+    "react-cookie": "^7.1.4",
     "react-dom": "^18.2.0",
     "react-kakao-maps-sdk": "^1.1.26",
+    "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.23.1",
     "react-slick": "^0.30.2",
     "router-dom": "^2.2.11",
     "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
+    "@svgr/rollup": "^8.1.0",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",

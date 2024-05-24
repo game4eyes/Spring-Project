@@ -9,9 +9,10 @@ import BusList from '../Search/list/BusList';
 import Charge from '../../components/Charge';
 import { getBusSchedule, getBusTerminalList } from '../../api/dataApi';
 import Layout from '../../components/Layout';
+import BookingForm from '../../User/BookingForm';
 
 const Bus = () => {
-    const initState = {
+    const ticketInfo = {
         departure: '',
         destination: '',
         departureDate: new Date().toISOString().slice(0, 10),
@@ -25,7 +26,7 @@ const Bus = () => {
     
     };
 
-    const [busticket, setBusticket] = useState(initState);
+    const [busticket, setBusticket] = useState(ticketInfo);
     const [result, setResult] = useState(null);
 
 
@@ -164,7 +165,7 @@ const Bus = () => {
     return (
         <div className="bus_book">
          
-                <Layout title="버스 승차권 예매222" body="정보 입력">
+                <Layout title="버스 승차권 예매" body="정보 입력">
             <form onSubmit={handleSubmit}>
                
 
@@ -267,6 +268,7 @@ const Bus = () => {
 
                 <br />
                 <button type="submit">조회하기</button>
+                <BookingForm bookingData={ticketInfo} />
 
                 {busticket.isDepartureModalOpen &&
                     <BusList

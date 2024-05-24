@@ -4,23 +4,47 @@ import { useEffect } from 'react'
 //import { Link } from 'react-router-dom'; 
 import { BrowserRouter, Link, useLocation, useNavigate } from "react-router-dom";
 import './App.css'
-import Header from './components/Header'
 import '@/bootstrap_css/bootstrap.min.css';
 import '@/bootstrap_js/bootstrap.bundle.min.js';  
 import Ad from './components/Ad'
 import SeoulImage from './components/img/region_img/seoul.jpg';
 import DaeguImage from './components/img/region_img/daegu.jpg';
 import BusanImage from './components/img/region_img/busan.jpeg';
-import Footer from './components/Footer'
+//import Footer from './components/Footer'
 
 import BusImage from './components/img/Transportation_img/bus_image.png';
 import TrainImage from './components/img/Transportation_img/train_image.png';
 import AirportImage from './components/img/Transportation_img/airport_image.png';
-import Article from '@components/Article';
+//import Article from '@components/Article';
 import KakaoMapComponent from './components/KakaoMapComponent';
 import './css/Popup.css'
 import { AuthContext } from './global/AuthContext';
 import Layout from './components/Layout';
+
+import Travellist1 from '@/components/img/travellist/travellist1.jpeg';
+import Travellist2 from '@/components/img/travellist/travellist2.jpg';
+import Travellist3 from '@/components/img/travellist/travellist3.jpeg';
+import Travellist4 from '@/components/img/travellist/travellist4.jpg';
+import Travellist5 from '@/components/img/travellist/travellist5.jpg';
+import Travellist6 from '@/components/img/travellist/travellist6.jpg';
+import Travellist7 from '@/components/img/travellist/travellist7.jpg';
+import Travellist8 from '@/components/img/travellist/travellist8.jpg';
+import Travellist9 from '@/components/img/travellist/travellist9.jpeg';
+import Travellist10 from '@/components/img/travellist/travellist10.jpeg';
+import Travellist11 from '@/components/img/travellist/travellist11.jpeg';
+import RandomTravelList from './recommendlist/RandomTravelList';
+import RandomTravelList_2 from './recommendlist/RandomTravelList';
+
+
+
+
+
+
+
+
+
+
+//import CustomCards from '@/components/Customcards';
 
 //  function Article(props){
 //   const articleStyle = {
@@ -50,8 +74,88 @@ import Layout from './components/Layout';
   // }
 
 
-//컴포넌트로 정리하기
 
+//여행지 추천 리스트
+const recommendList = [
+
+
+  {
+
+   region: '부산',      //travellist1
+   name: '해운대 해수욕장',
+   imgSrc: Travellist1,
+   description: '부산의 대표적인 해수욕장으로 맑은 바다와 고운 모래로 유명합니다.'
+ },
+ {
+   region: '제주',  //2
+   name: '성산 일출봉',
+   imgSrc: Travellist2,
+   description: '제주의 동쪽 해안에 위치한 일출 명소로, 장엄한 일출을 감상할 수 있습니다.'
+ },
+ {
+   region: '서울',    //3
+   name: '경복궁',
+   imgSrc: Travellist3,
+   description: '서울의 대표적인 고궁으로, 한국의 전통 건축 양식을 감상할 수 있는 곳입니다.'
+ },
+ {              //4
+   region: '경주',
+   name: '불국사',
+   imgSrc: Travellist4,
+   description: '경주의 대표적인 사찰로, 유네스코 세계문화유산으로 지정되어 있습니다.'
+ },
+ {
+   region: '인천',  //5
+   name: '월미도',
+   imgSrc: Travellist5,
+   description: '인천의 유명한 관광지로, 다양한 해양 액티비티와 해변을 즐길 수 있습니다.'
+ },
+ {
+   region: '군위군',  //6
+   name: '군위군 리틀포레스트 촬영지',
+   imgSrc: Travellist6,
+   description: '군위군 리틀포레스트 촬영지에 대한 설명'
+ },
+ {
+  region: '군위군', //6
+  name: '군위군 리틀포레스트 촬영지',
+  imgSrc: Travellist6,
+  description: '자연 속에서 휴식을 즐기며 아름다운 풍경을 감상할 수 있는 군위군 리틀포레스트 촬영지입니다.'
+},
+{
+  region: '부산', //7
+  name: '연산동 고분군',
+  imgSrc: Travellist7,
+  description: '고대의 역사를 엿볼 수 있는 연산동 고분군은 부산의 유적지 중 하나로, 아름다운 풍경도 함께 감상할 수 있습니다.'
+},
+{
+  region: '밀양', //8
+  name: '달빛쌈지공원',
+  imgSrc: Travellist8,
+  description: '달빛 아래에서 즐기는 산책은 달빛쌈지공원에서만 느낄 수 있는 특별한 경험입니다.'
+},
+{
+  region: '고성', //9
+  name: '폭포암',
+  imgSrc: Travellist9,
+  description: '자연의 소리와 폭포의 아름다움을 함께 느낄 수 있는 고성의 명소, 폭포암입니다.'
+},
+{
+  region: '충남', //10
+  name: '서산 용비저수지',
+  imgSrc: Travellist10,
+  description: '맑은 물과 아름다운 자연 풍경으로 가득한 서산 용비저수지는 여행객들의 발길을 사로잡는 곳입니다.'
+},
+{
+  region: '충남', //11
+  name: '판교 마을',
+  imgSrc: Travellist11,
+  description: '전통적인 분위기를 간직한 충남의 마을인 판교는 한국의 고유한 문화를 경험할 수 있는 곳입니다.'
+}
+];
+
+
+//컴포넌트로 정리하기
   function TransportationList(props) {
     const listStyle = {
       display: 'flex',
@@ -243,6 +347,56 @@ import Layout from './components/Layout';
 
 
 
+
+
+
+
+function CustomCards({ transportation }) {
+  const imgStyle = {
+    width: '100%',
+    height: 'auto',
+    marginBottom: '10px'
+  };
+
+  const textStyle = {
+    color: 'white',
+    textDecoration: 'none',
+    fontWeight: 'bold',
+    fontSize: '30px',
+    marginLeft: '10px'
+  };
+
+  const handleClick = () => {
+    window.scrollTo(0, 0);
+  };
+
+  return (
+    <div className="container px-4 py-5" id="custom-cards">
+      <h2 className="pb-2 border-bottom">예매</h2>
+
+      <div className="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+        {transportation.map(t => (
+          <div className="col" key={t.id}>
+            <div className="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg">
+              <Link to={"/ticketbook/" + t.id} style={textStyle} onClick={handleClick}>
+                <img src={t.imgSrc} alt={t.title} style={imgStyle} />
+                <p style={textStyle}>{t.title}</p>
+              </Link>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+//export default CustomCards;
+
+
+
+
+
+
 const Home = () =>{
 
   const [loginstate, setLoginstate] = useState(false);
@@ -291,25 +445,20 @@ return(
      <Layout loginstate={loginstate} title ="홈" body ="버스,기차,항공 예약 홈페이지입니다">
       
     
-    <div>
+    {/* <div>
           <h3>추천여행</h3>
+      
           <TravelList travelList= {travelList}></TravelList>   
-        </div>
-        <br /> 
-    <br /> 
-     
-    <div>
- 
-    </div>
+        </div> */}
     
 
 
-        <div>
+        {/* <div>
           <h3>예매</h3>
           <TransportationList transportation= {transportation}></TransportationList>   
         </div>
         <br /> 
-    <br /> 
+    <br />  */}
 
       {/* <div>
           <h3>회원예매</h3>
@@ -327,29 +476,153 @@ return(
         <br /> 
     <br />  */}
 
-     <div>  
+
+{/* <div class="b-example-divider"></div> */}
+
+
+  <CustomCards transportation= {transportation}/>
+  {/* <div className="container px-4 py-5" id="custom-cards">
+  <h2 className="pb-2 border-bottom">예매</h2>
+
+  <div className="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+    <div className="col">
+    <div className="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style={{backgroundImage: "url('components/img/Transportation_img/bus_image.png')"}}>
+        <div className="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+          <h3 className="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">버스</h3>
+          <ul className="d-flex list-unstyled mt-auto">
+            <li className="me-auto">
+              <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" className="rounded-circle border border-white"/>
+            </li>
+            <li className="d-flex align-items-center me-3">
+              <svg className="bi me-2" width="1em" height="1em"><use xlinkHref="#geo-fill"/></svg>
+              <small>Earth</small>
+            </li>
+            <li className="d-flex align-items-center">
+              <svg className="bi me-2" width="1em" height="1em"><use xlinkHref="#calendar3"/></svg>
+              <small>3d</small>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div className="col">
+      <div className="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style={{backgroundImage: "url('unsplash-photo-2.jpg')"}}>
+        <div className="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+          <h3 className="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">기차</h3>
+          {/* <ul className="d-flex list-unstyled mt-auto">
+            <li className="me-auto">
+              <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" className="rounded-circle border border-white"/>
+            </li>
+            <li className="d-flex align-items-center me-3">
+              <svg className="bi me-2" width="1em" height="1em"><use xlinkHref="#geo-fill"/></svg>
+              <small>Pakistan</small>
+            </li>
+            <li className="d-flex align-items-center">
+              <svg className="bi me-2" width="1em" height="1em"><use xlinkHref="#calendar3"/></svg>
+              <small>4d</small>
+            </li>
+          </ul> 
+        </div>
+      </div>
+    </div>
+
+    <div className="col">
+      <div className="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style={{backgroundImage: "url('unsplash-photo-3.jpg')"}}>
+        <div className="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
+          <h3 className="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">비행기</h3>
+          <ul className="d-flex list-unstyled mt-auto">
+            {/* <li className="me-auto">
+              <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" className="rounded-circle border border-white"/>
+            </li>
+            <li className="d-flex align-items-center me-3">
+              <svg className="bi me-2" width="1em" height="1em"><use xlinkHref="#geo-fill"/></svg>
+              <small>California</small>
+            </li>
+            <li className="d-flex align-items-center">
+              <svg className="bi me-2" width="1em" height="1em"><use xlinkHref="#calendar3"/></svg>
+              <small>5d</small>
+            </li> 
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> */}
+
+
+
+{/* <hr class="featurette-divider"/> */}
+
+<RandomTravelList list={recommendList} count={3} viewType={1} />
+
+{/* <div class="row featurette">
+  <div class="col-md-7">
+    <h2 class="featurette-heading fw-normal lh-1"> 제주도<span class="text-body-secondary">천백고지</span></h2>
+    <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
+  </div>
+  <div class="col-md-5">
+    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-bg)"/><text x="50%" y="50%" fill="var(--bs-secondary-color)" dy=".3em">500x500</text></svg>
+  </div>
+</div>
+
+<hr class="featurette-divider"/>
+
+<div class="row featurette">
+  <div class="col-md-7 order-md-2">
+    <h2 class="featurette-heading fw-normal lh-1">Oh yeah, it’s that good. <span class="text-body-secondary">See for yourself.</span></h2>
+    <p class="lead">Another featurette? Of course. More placeholder content here to give you an idea of how this layout would work with some actual real-world content in place.</p>
+  </div>
+  <div class="col-md-5 order-md-1">
+    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-bg)"/><text x="50%" y="50%" fill="var(--bs-secondary-color)" dy=".3em">500x500</text></svg>
+  </div>
+</div>
+
+<hr class="featurette-divider"/>
+
+<div class="row featurette">
+  <div class="col-md-7">
+    <h2 class="featurette-heading fw-normal lh-1">And lastly, this one. <span class="text-body-secondary">Checkmate.</span></h2>
+    <p class="lead">And yes, this is the last block of representative placeholder content. Again, not really intended to be actually read, simply here to give you a better view of what this would look like with some actual content. Your content.</p>
+  </div>
+  <div class="col-md-5">
+    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-bg)"/><text x="50%" y="50%" fill="var(--bs-secondary-color)" dy=".3em">500x500</text></svg>
+  </div>
+</div>*/}
+
+<hr class="featurette-divider"/>
+
+
+
+<RandomTravelList list={recommendList} count={3} />         {/* viewType 이 없을 경우 여행지에 관한 정보가 자세히 나오는 문단이 나옴*/}
+
+
+<br/>
+
+
+     {/* <div>  
      <h3>기능 (테스트)</h3> <br /><br />
      <KakaoMapComponent />
 
       <Link to = {"/BusSeat"}>버스 좌석</Link>
      </div>
      <br /> 
-     <br /> 
+     <br />  */}
 
 
     {/* 테스트용 마이페이지 */}
 
-    <div>
+    {/* <div>
     <Link to = {"/api/user/mypage"}>마이페이지</Link>   
-    </div>
+    </div> */}
   
        {/* 테스트용 */}
-    <div>
+    {/* <div>
           <h3>비회원,회원예매 선택 테스트창</h3>
           <TransportationList_test transportation= {transportation}></TransportationList_test>   
         </div>
         <br /> 
-    <br /> 
+    <br />  */}
       </Layout>
    
     );
