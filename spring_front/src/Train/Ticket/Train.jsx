@@ -9,7 +9,7 @@ import { getTrainInfo } from '../../api/dataApi';
 import Layout from '../../components/Layout';
 import { ReactComponent as ExchangeIcon } from '@/icon/exchange.svg';
 
-import BookingForm from '../../User/BookingForm';
+
 
 // 기차 예약 컴포넌트
 const Train = () => {

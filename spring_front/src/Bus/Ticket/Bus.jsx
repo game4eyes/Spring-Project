@@ -8,7 +8,7 @@ import { getBusSchedule, getBusTerminalList } from '../../api/dataApi';
 import Layout from '../../components/Layout';
 import {ReactComponent as ExchangeIcon} from '@/icon/exchange.svg';
 import '@/css/form/bookingform.css';
-import BookingForm from '../../User/BookingForm';
+
 
 const Bus = () => {
     const ticketInfo = {
