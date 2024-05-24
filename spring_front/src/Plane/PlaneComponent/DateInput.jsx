@@ -6,8 +6,8 @@ const DateInput = ({ label, onChange }) => {
 
     return (
         <label>
-            {label}:
-            <input type="date" onChange={onChange} defaultValue={today} min={today} />
+            {label}
+            <input style={{width:'25%',marginLeft:'10px'}} type="date" onChange={onChange} defaultValue={today} min={today} />
         </label>
     );
 };

@@ -24,10 +24,10 @@ import { ReactComponent as JoinIcon } from '@/icon/user/join.svg';
 import { ReactComponent as InfoIcon } from '@/icon/user/info.svg';
 
 
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../global/AuthContext';
 
-const NavBar = () => {
+const HiddenNavBar = () => {
 
 
   const { isLoggedIn, setIsLoggedIn, lastActiveTime, setLastActiveTime, loginId } = useContext(AuthContext);
@@ -56,6 +56,8 @@ const NavBar = () => {
 
   ];
 
+
+
   const handleLogout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem('lastActiveTime');
@@ -63,17 +65,53 @@ const NavBar = () => {
   };
 
 
-  const navbarStyle = {
-    marginTop: isLoggedIn ? '0px' : '40px', // Adjust the default marginTop value as needed
+  const hiddennavbarStyle = {
+    marginTop:'-190px',
   };
 
 
+  const [hidden, setHidden] = useState(true);
+
+  useEffect(() => {
+    if(isLoggedIn){
+    const handleScroll = () => {
+      const scrollPercentage =
+        (window.scrollY / (document.documentElement.scrollHeight - document.documentElement.clientHeight)) * 100;
+      setHidden(scrollPercentage <= 15); // 스크롤이 15% 이하인 경우 hidden 상태를 true로 설정
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }
+  else{   //비로그인 상태
+    const handleScroll = () => {
+      const scrollPercentage =
+        (window.scrollY / (document.documentElement.scrollHeight - document.documentElement.clientHeight)) * 100;
+      setHidden(scrollPercentage <= 5); // 스크롤이 15% 이하인 경우 hidden 상태를 true로 설정
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+
+
+  }
+
+  }, []);
+
+
   return (
-    <navbar style={navbarStyle}>
+    <hiddennavbar style={{ display: hidden ? 'none' : 'block', marginTop: isLoggedIn ? '-190px' : '-140px' }}>
+
       <div className="px-3 py-2 text-bg-dark">
         <Container>
-          <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" className="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+          <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start" style={{marginTop:'10px',marginBottom:'-10px'}}>
+            <a href="/" className="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none" >
               <Logo />
             </a>
             <Nav className="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
@@ -239,8 +277,8 @@ const NavBar = () => {
           </div>
         </Container>
       </div>
-    </navbar>
+    </hiddennavbar>
   );
 }
 
-export default NavBar;
+export default HiddenNavBar;

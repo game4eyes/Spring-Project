@@ -1,8 +1,5 @@
-import Ad from "../components/Ad";
-import Article from "../components/Article";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
 import Layout from "../components/Layout";
+
 
 const Ticket_Detail = () => {
 

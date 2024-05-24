@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [redirectUrl, setRedirectUrl] = useState('/');
   const [guestRedirectUrl, setGuestRedirectUrl] = useState('/');
   const [loginId, setLoginId] = useState('');
-  const [userEmail, setUserEmail] = useState(''); // 이메일 BookingForm 가져다쓰기
+  const [userEmail, setUserEmail] = useState(''); 
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
