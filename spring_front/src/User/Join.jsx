@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { userJoin } from '../api/todoApi';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
-
+import '@/css/form/joinform.css'
 const Join = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -84,6 +84,15 @@ const Join = () => {
     return null; // 모든 유효성 검사를 통과한 경우
   };
 
+
+  // const checkemail = () {
+
+
+
+  // }
+
+
+
   const privacyPolicy = `
   [개인정보 수집 및 이용 동의서]
   - 수집하는 개인정보 항목: 아이디, 비밀번호, 이름, 이메일, 전화번호 등
@@ -160,12 +169,15 @@ const Join = () => {
   `;
 
   return (
+    <Layout title="회원가입" body="회원가입 창">
+    <div className="join-page">
     <div className="Join-container">
-      <Layout title="회원가입" body="회원가입 창">
-        <h2>회원가입</h2>
-        <form onSubmit={handleSubmit}>
+   
+        <h2>회원가입</h2> <br></br>
+        <form onSubmit={handleSubmit} style={{width:'150%'}}>
           <div className="form-group">
             <label htmlFor="email">이메일</label>
+            {/* <button type="button" onclick={checkEmail}>이메일 확인</button> */}
             <input
               type="email"
               id="email"
@@ -220,6 +232,7 @@ const Join = () => {
               value={privacyPolicy}
               style={{ width: '100%', resize: 'none', overflowY: 'scroll', marginBottom: '10px' }}
             />
+             <div className="checkbox" style={{display:'flex'}}>
             <input
               type="checkbox"
               id="terms"
@@ -227,13 +240,17 @@ const Join = () => {
               onChange={(e) => setAgreedToTerms(e.target.checked)}
             />
             <label htmlFor="terms">개인정보 수집 및 이용에 동의합니다</label>
+            </div>
           </div>
           <div className="form-group">
             <input type="submit" value="가입" />
           </div>
+          
         </form>
-      </Layout>
+    
+      </div>
     </div>
+    </Layout>
   );
 };
 
