@@ -27,6 +27,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private final UserRepository repository;
     private final HttpSession httpSession;
 
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
@@ -62,7 +63,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private User saveOrUpdate(OAuthAttributes attributes) {
         User user = repository.findByEmail(attributes.getEmail())
                 // 구글 사용자 정보 업데이트(이미 가입된 사용자) => 업데이트
-                .map(entity -> entity.update(attributes.getUsername(), attributes.getPicture()))
+                .map(entity -> entity.update(attributes.toEntity().getUsername(), attributes.getPicture()))
                 // 가입되지 않은 사용자 => User 엔티티 생성
                 .orElse(attributes.toEntity());
 

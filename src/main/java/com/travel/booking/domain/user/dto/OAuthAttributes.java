@@ -3,8 +3,10 @@ package com.travel.booking.domain.user.dto;
 import com.travel.booking.domain.user.Role;
 import com.travel.booking.domain.user.entity.User;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Getter
@@ -12,17 +14,21 @@ public class OAuthAttributes {
 
     private Map<String, Object> attributes;
     private String nameAttributeKey;
-    private String username;
+    private String provider;
+    private String providerId;
+    private String name;
     private String email;
     private String picture;
 
     @Builder
     public OAuthAttributes(Map<String, Object> attributes,
-                            String nameAttributeKey, String username,
-                            String email, String picture) {
+                            String nameAttributeKey, String name,
+                            String email, String picture, String provider, String providerId) {
+        this.provider = provider;
+        this.providerId = providerId;
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
-        this.username = username;
+        this.name = name;
         this.email = email;
         this.picture = picture;
     }
@@ -30,8 +36,8 @@ public class OAuthAttributes {
     // OAuth2User에서 반환하는 사용자 정보는 Map
     // 따라서 값 하나하나를 변환해야 한다.
     public static OAuthAttributes of(String registrationId,
-                                        String userNameAttributeName,
-                                        Map<String, Object> attributes) {
+                                     String userNameAttributeName,
+                                     Map<String, Object> attributes) {
 
         return ofGoogle(userNameAttributeName, attributes);
     }
@@ -40,7 +46,7 @@ public class OAuthAttributes {
     private static OAuthAttributes ofGoogle(String usernameAttributeName,
                                             Map<String, Object> attributes) {
         return OAuthAttributes.builder()
-                .username((String) attributes.get("username"))
+                .name((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
                 .picture((String) attributes.get("picture"))
                 .attributes(attributes)
@@ -51,7 +57,7 @@ public class OAuthAttributes {
     // User 엔티티 생성
     public User toEntity() {
         return User.builder()
-                .username(username)
+                .username(name)
                 .email(email)
                 .picture(picture)
                 .role(Role.USER)

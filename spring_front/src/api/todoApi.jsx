@@ -2,9 +2,9 @@ import axios from "axios";
 
 // 서버 호스트 설정
 
-// export const API_SERVER_HOST = 'http://localhost:9090'; // 서버 주소
+export const API_SERVER_HOST = 'http://localhost:9090'; // 서버 주소
 
-export const API_SERVER_HOST = 'http://ec2-15-164-162-241.ap-northeast-2.compute.amazonaws.com:9090';
+// export const API_SERVER_HOST = 'http://ec2-15-164-162-241.ap-northeast-2.compute.amazonaws.com:9090';
 // 사용자 관련 엔드포인트S
 const userPrefix = `${API_SERVER_HOST}/api/user`;
 
@@ -56,6 +56,11 @@ export const getSessionList = async () => {
     const res = await axios.get(`${userPrefix}/session-list`); // 세션 리스트 엔드포인트
     return res.data;
 };
+
+export const getUserInfo = async() => {
+    const res = await axios.get(`${userPrefix}/info`); // 세션 리스트 엔드포인트
+    return res.data;
+}
 
 // 소셜 로그인 (구글)
 export const socialLogin = async () => {
