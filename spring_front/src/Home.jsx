@@ -1,16 +1,16 @@
 /* eslint-disable */
 import { useContext, useState } from 'react'
 import { useEffect } from 'react'
-//import { Link } from 'react-router-dom'; 
+
 import { BrowserRouter, Link, useLocation, useNavigate } from "react-router-dom";
 import './App.css'
 import '@/bootstrap_css/bootstrap.min.css';
 import '@/bootstrap_js/bootstrap.bundle.min.js';  
-import Ad from './components/Ad'
+
 import SeoulImage from './components/img/region_img/seoul.jpg';
 import DaeguImage from './components/img/region_img/daegu.jpg';
 import BusanImage from './components/img/region_img/busan.jpeg';
-//import Footer from './components/Footer'
+
 
 import BusImage from './components/img/Transportation_img/bus_image.png';
 import TrainImage from './components/img/Transportation_img/train_image.png';
@@ -33,7 +33,7 @@ import Travellist9 from '@/components/img/travellist/travellist9.jpeg';
 import Travellist10 from '@/components/img/travellist/travellist10.jpeg';
 import Travellist11 from '@/components/img/travellist/travellist11.jpeg';
 import RandomTravelList from './recommendlist/RandomTravelList';
-import RandomTravelList_2 from './recommendlist/RandomTravelList';
+
 
 
 
@@ -111,47 +111,42 @@ const recommendList = [
    description: '인천의 유명한 관광지로, 다양한 해양 액티비티와 해변을 즐길 수 있습니다.'
  },
  {
-   region: '군위군',  //6
-   name: '군위군 리틀포레스트 촬영지',
-   imgSrc: Travellist6,
-   description: '군위군 리틀포레스트 촬영지에 대한 설명'
- },
- {
-  region: '군위군', //6
+  region: '군위군',  //6
   name: '군위군 리틀포레스트 촬영지',
   imgSrc: Travellist6,
-  description: '자연 속에서 휴식을 즐기며 아름다운 풍경을 감상할 수 있는 군위군 리틀포레스트 촬영지입니다.'
+  description: '군위군의 아름다운 자연을 배경으로 한 영화 "리틀 포레스트"의 촬영지입니다. 평화로운 풍경과 정겨운 분위기를 느낄 수 있습니다.'
 },
 {
-  region: '부산', //7
+  region: '부산',    //7
   name: '연산동 고분군',
   imgSrc: Travellist7,
-  description: '고대의 역사를 엿볼 수 있는 연산동 고분군은 부산의 유적지 중 하나로, 아름다운 풍경도 함께 감상할 수 있습니다.'
+  description: '부산 연산동에 위치한 고분군으로, 역사의 흔적을 간직한 유적지입니다. 고분과 함께 산책을 즐기기에 좋은 곳입니다.'
 },
 {
-  region: '밀양', //8
+  region: '밀양',  //8
   name: '달빛쌈지공원',
   imgSrc: Travellist8,
-  description: '달빛 아래에서 즐기는 산책은 달빛쌈지공원에서만 느낄 수 있는 특별한 경험입니다.'
+  description: '밀양의 달빛쌈지공원은 조용한 휴식과 산책을 즐길 수 있는 곳으로, 자연 속에서 여유로운 시간을 보낼 수 있습니다.'
 },
 {
-  region: '고성', //9
+  region: '고성',  //9
   name: '폭포암',
   imgSrc: Travellist9,
-  description: '자연의 소리와 폭포의 아름다움을 함께 느낄 수 있는 고성의 명소, 폭포암입니다.'
+  description: '고성에 위치한 폭포암은 웅장한 폭포와 아름다운 자연경관을 자랑합니다. 힐링과 사진 촬영 명소로 인기입니다.'
 },
 {
-  region: '충남', //10
+  region: '충남',    //10
   name: '서산 용비저수지',
   imgSrc: Travellist10,
-  description: '맑은 물과 아름다운 자연 풍경으로 가득한 서산 용비저수지는 여행객들의 발길을 사로잡는 곳입니다.'
+  description: '서산의 용비저수지는 낚시와 산책을 즐기기에 좋은 장소로, 아름다운 저수지 풍경이 인상적입니다.'
 },
 {
-  region: '충남', //11
+  region: '충남',  //11
   name: '판교 마을',
   imgSrc: Travellist11,
-  description: '전통적인 분위기를 간직한 충남의 마을인 판교는 한국의 고유한 문화를 경험할 수 있는 곳입니다.'
+  description: '충남의 판교 마을은 전통적인 한국의 농촌 마을 풍경을 간직하고 있습니다. 전통 체험과 함께 농촌의 여유로움을 느낄 수 있습니다.'
 }
+
 ];
 
 
@@ -588,41 +583,41 @@ return(
   <div class="col-md-5">
     <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-bg)"/><text x="50%" y="50%" fill="var(--bs-secondary-color)" dy=".3em">500x500</text></svg>
   </div>
-</div>*/}
+</div>
 
-<hr class="featurette-divider"/>
+// <hr class="featurette-divider"/> */}
 
 
 
 <RandomTravelList list={recommendList} count={3} />         {/* viewType 이 없을 경우 여행지에 관한 정보가 자세히 나오는 문단이 나옴*/}
 
 
-<br/>
 
 
-     {/* <div>  
+
+     <div>  
      <h3>기능 (테스트)</h3> <br /><br />
      <KakaoMapComponent />
 
       <Link to = {"/BusSeat"}>버스 좌석</Link>
      </div>
      <br /> 
-     <br />  */}
+     <br /> 
 
 
     {/* 테스트용 마이페이지 */}
 
-    {/* <div>
+    <div>
     <Link to = {"/api/user/mypage"}>마이페이지</Link>   
-    </div> */}
+    </div>
   
        {/* 테스트용 */}
-    {/* <div>
+    <div>
           <h3>비회원,회원예매 선택 테스트창</h3>
           <TransportationList_test transportation= {transportation}></TransportationList_test>   
         </div>
         <br /> 
-    <br />  */}
+    <br /> 
       </Layout>
    
     );

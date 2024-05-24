@@ -4,6 +4,9 @@ import { AuthContext } from '../global/AuthContext';
 import SessionTimer from './SessionTimer';
 import NavBar from './NavBar';
 
+
+import { ReactComponent as MemberIcon } from '@/icon/member.svg';
+
 const Header = () => {
   const { isLoggedIn, setIsLoggedIn, lastActiveTime, setLastActiveTime, loginId } = useContext(AuthContext);
   const location = useLocation();
@@ -48,9 +51,10 @@ const Header = () => {
   }, [isLoggedIn, setLastActiveTime]);
 
   return (
-    <div>
+    <div className='fixedheader'>
       {isLoggedIn && (
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+          <MemberIcon style={{ width: '24px', height: '24px' }} />
           <p style={{ margin: 0, marginTop:'8px', marginBottom:'8px'}}>{loginId}님 안녕하세요!</p>
           <SessionTimer sessionTimeout={30 * 60 * 1000} handleLogout={handleLogout} />
         </div>

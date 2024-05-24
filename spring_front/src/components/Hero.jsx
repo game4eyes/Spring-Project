@@ -11,7 +11,7 @@ const travelListData = [
 
 const Hero = () => {
     return (
-        <div id="myCarousel" className="carousel slide mb-6" data-bs-ride="carousel" style={{ height: '500px', marginTop: '-35.5px' }}>
+        <div id="myCarousel" className="carousel slide mb-6" data-bs-ride="carousel" style={{ height: '500px', marginTop: '-35px' }}>
             <div className="carousel-indicators">
                 {travelListData.map((_, index) => (
                     <button

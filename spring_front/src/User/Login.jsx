@@ -4,6 +4,9 @@ import { userLogin } from '../api/todoApi';
 import { AuthContext } from '../global/AuthContext';
 import Layout from '../components/Layout';
 import { socialLogin } from '../api/todoApi';
+
+import '@/css/form/loginform.css';
+import {ReactComponent as GoogleLogoIcon} from '@/icon/google_logo2.svg'
 import { useCookies } from 'react-cookie';
 
 const Login = () => {
@@ -71,46 +74,104 @@ const Login = () => {
   }, [isLoggedIn]);                 // 로그인 잘 되는지 확인 완
 
   return (
-    <div className="login-page">
-      <Layout title="로그인" body="로그인 창">
+
+    <Layout title="로그인" body="로그인 창" >
+      <div className="login-page">
+
         <div className="login-container">
-          <h2>로그인</h2>
+          <h2>로그인</h2><br></br>
           <form onSubmit={handleLogin}>
             <div className="form-group">
               <label htmlFor="email">이메일</label>
-              <input type="text" id="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="아이디 입력" required />
+              <input
+                type="text"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="아이디 입력"
+                required
+              />
             </div>
             <div className="form-group">
               <label htmlFor="password">비밀번호</label>
-              <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호 입력" required autoComplete="current-password" />
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="비밀번호 입력"
+                required
+              />
             </div>
-            <div className="form-group">
-              <input type="checkbox" id="remember-me" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
-              <label htmlFor="remember-me">아이디 저장</label>
+
+            {/* <div className="form-group" style={{display:'flex',marginLeft:'160px',marginTop:'-30px'}}>
+            <input
+              type="checkbox"
+              id="remember-me"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+            />
+            <label htmlFor="remember-me">아이디 저장</label>
+          </div> */}
+            {/* <div className="login-actions"> */}
+            {/* <button type="submit" className="btn-primary">로그인</button> */}
+            {/* <div className="links" style={{display:'flex'}}>
+              <Link to="/api/finduserid">아이디 찾기</Link> */}
+
+
+
+            <div className="links" style={{ width: '100%', display: 'flex', alignItems: 'center', marginTop: '-30px' }}>
+              <div className="form-group" style={{ display: 'flex', alignItems: 'center', marginRight: '20px', marginTop: '21px' }}>
+                <input
+                  type="checkbox"
+                  id="remember-me"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  style={{ marginRight: '5px' }}
+                />
+                <label htmlFor="remember-me" style={{ marginTop: '5px' }}>아이디 저장</label>
+              </div>
+              <span style={{ marginRight: '10px' }}>  </span>
+              <Link to="/api/user/finduserid">아이디 찾기</Link>
+              <span style={{ margin: '0 10px' }}> | </span>
+              <Link to="/api/user/resetpassword">비밀번호 찾기</Link>
             </div>
+
+
+
             <div className="login-actions">
               <button type="submit" className="btn-primary">로그인</button>
-              <div className="links">
-                <Link to="/api/finduserid">아이디 찾기</Link>
-                <span> | </span>
-                <Link to="/api/resetpassword">비밀번호 찾기</Link>
-                <span> | </span>
-                <Link to="/api/user/join">회원가입</Link>
-              </div>
             </div>
           </form>
-          <div className="social-login-buttons">
-            <h3>또는 소셜 로그인 사용하기</h3>
-            <button className="social-button google-login" onClick={handleGoogleLogin}>
-              구글 로그인
-            </button>
-            <button className="social-button naver-login" onClick={() => window.location.href = 'NAVER_AUTH_URI'}>
-              네이버 로그인
-            </button>
-          </div>
+              <br></br>
+
+              <div className="col2" style={{ display: 'flex', alignItems: 'center' }}>
+  {/* 회원가입 버튼 추가 */}
+  <div className="join-button" style={{ marginRight: '10px' }}>
+    <h4>계정이 없으십니까?</h4>
+    <Link to="/api/user/join"><button type="button" className="btn-primary" style={{backgroundColor:'green'}}>회원가입</button></Link>
+  </div>
+  <h4 style={{ marginRight: '30px', fontWeight: 'normal', color: '#888888' }}>|</h4>
+
+  {/* 소셜 로그인 버튼 추가 */}
+  <div className="social-login-buttons">
+  <h4>소셜 로그인</h4>
+    <button className="social-button google-login" onClick={handleGoogleLogin}>
+    <GoogleLogoIcon style={{fill:'white',width: '22px', height: '22px' }} />구글 로그인
+
+      {/* 구글 로그인 */}
+    </button>
+    {/* <button className="social-button naver-login" onClick={() => window.location.href = 'NAVER_AUTH_URI'}>
+      네이버 로그인
+    </button> */}
+  </div>
+</div>
+
+
         </div>
-      </Layout>
-    </div>
+      </div>
+    </Layout>
+
   );
 };
 

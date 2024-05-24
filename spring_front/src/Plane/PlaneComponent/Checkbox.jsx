@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Checkbox = ({ checked, onChange, label }) => (
-    <div>
+    <div style={{display : 'flex'}}>
         <input type="checkbox" checked={checked} onChange={onChange} />
-        <label>{label}</label>
+        <label style={{marginLeft:'5px', marginTop:'5px'}}>{label}</label>
     </div>
 );
 
