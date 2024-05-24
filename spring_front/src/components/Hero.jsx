@@ -32,7 +32,7 @@ const Hero = () => {
                         <div className="container">
                             <div className={`carousel-caption ${index === 0 ? 'text-start' : index === 1 ? '' : 'text-end'}`}>
                                 <h1>{item.title}</h1>
-                                <p>{item.explain}</p>
+                                <p style ={{color:'white'}}>{item.explain}</p>
                                 <p><a className="btn btn-lg btn-primary" href={`#${item.id}`}>이동하기</a></p>
                             </div>
                         </div>

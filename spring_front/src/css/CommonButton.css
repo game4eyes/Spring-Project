@@ -61,3 +61,38 @@ a:hover {
     border-color: #333;
     color: #fff;
 }
+
+
+
+
+/*-----역 목록을 버튼으로 나타냄-------*/
+.train-station-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .train-station-list li {
+    margin-bottom: 10px;
+  }
+  
+  .train-station-list li button {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+  .train-station-list li button a {
+    display: block;
+    padding: 10px;
+    background-color: #f0f0f0;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .train-station-list li button a:hover {
+    background-color: #ddd;
+  }
+  

@@ -216,12 +216,12 @@ const SearchTrainStation = ({ departure, destination, onSearchResult }) => {
                      <button key={i} className="button" onClick={() => handleRegionClick(region)}>{region}</button>
                 ))}
             </div>
-            <div>
+            <div className='train-station-list'>
                 <ul>
                     {/* sortedData에 따라 기차역 정보를 출력합니다. */}
                     {sortedData.map(station => (
                         <li key={station.stationID} onClick={() => handleStationClick(station.stationName,station.stationID)}>
-                            <a href ={"#"}>{station.stationName}</a>
+                          <button type="button"> <a href ={"#"}>{station.stationName}</a></button> 
                         </li>
                     ))}
                 </ul>

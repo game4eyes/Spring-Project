@@ -3,15 +3,30 @@ import Article from "../../Article";
 import Footer from "../../Footer";
 import Header from "../../Header";
 import Layout from "../../Layout";
+import Sidebars from "../../sidebars/Sidebars";
 
 const NavLink2 = () =>{
 
     return(
-        <div className = "navLink2">
+      
               <Layout title ="터미널정보" body ="버스운행정보">
-              터미널정보 (버스)
+                  <div className = "navLink2">
+              <div className ='col1_2' style ={{display:'flex'}}>
+                    <div className ='col1' style={{float:'left',width:'30%',height:'100%'}}>
+
+                    
+                    <Sidebars title="터미널 정보"/>
+                    </div>
+                    <div className='col2' style={{float:'right',width:'100%',height:'100%'}}>
+                터미널정보
+
+                    </div>
+
+
+                </div>
+                </div>
           </Layout>
-        </div>
+    
         );
 
 
