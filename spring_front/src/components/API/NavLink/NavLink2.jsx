@@ -1,9 +1,6 @@
-import Ad from "../../Ad";
-import Article from "../../Article";
-import Footer from "../../Footer";
-import Header from "../../Header";
+
 import Layout from "../../Layout";
-import Sidebars from "../../sidebars/Sidebars";
+import Sidebars from "@components/Sidebars";
 
 const NavLink2 = () =>{
 

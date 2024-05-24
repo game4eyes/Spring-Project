@@ -6,7 +6,7 @@ import '@/js/sidebars.js';
 
 const Sidebars = ({title}) => {
   return (
-    <div className="flex-shrink-0 p-3" style={{ width: '280px', border: '0.5px solid gray', marginBottom:'30px'  }}>
+    <div className="flex-shrink-0 p-3" style={{ width: '280px', border: '0.1px solid grey',marginBottom:'30px'  }}>
       <a href="/" className="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom" style={{backgroundColor:'white'}}>
         <svg className="bi pe-none me-2" width="30" height="24"><use xlinkHref="#bootstrap"/></svg>
         <span className="fs-5 fw-semibold" style ={{color:'black'}}>{title}</span>

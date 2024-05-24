@@ -1,11 +1,9 @@
 
 
-import Ad from "../../Ad";
-import Article from "../../Article";
-import Footer from "../../Footer";
-import Header from "../../Header";
+
 import Layout from "../../Layout";
-import Sidebars from "../../sidebars/Sidebars";
+import Sidebars from "@components/Sidebars";
+
 
 const NavLink1 = () =>{
 
@@ -19,7 +17,7 @@ const NavLink1 = () =>{
                     <Sidebars title="운행 정보"/>
                     </div>
                     <div className='col2' style={{float:'right',width:'100%',height:'100%'}}>
-                운행정보
+                      운행정보
 
                     </div>
 
