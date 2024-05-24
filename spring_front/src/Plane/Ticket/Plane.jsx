@@ -12,6 +12,7 @@ import AirportsData from '../PlaneComponent/AirportsData';
 import Layout from '../../components/Layout';
 import { getAirInfo } from '../../api/dataApi';
 import FlightList from '../PlaneComponent/FlightList';
+import BookingForm from '../../User/BookingForm';
 
 const Plane = () => {
     const today = new Date().toISOString().split('T')[0];
@@ -107,7 +108,7 @@ const Plane = () => {
                 <button type="button" style={{backgroundColor:'green'}} onClick={handleChargeClick} className="fee-check-button">수수료확인</button>
                 </div>
                 <FlightList flights={flights} onSelectFare={onSelectFare} />
-                
+                <BookingForm bookingData={ticketInfo} />
             </form>
             {/* <Charge id={3} /> */}
             </div>

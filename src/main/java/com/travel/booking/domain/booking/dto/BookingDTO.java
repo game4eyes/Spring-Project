@@ -38,8 +38,10 @@ public class BookingDTO {
     private List<Integer> busSeatNum;
     // 예약 날짜
     private LocalDate date;
-    // 예약 시간
-    private LocalTime time;
+    // 출발 시각
+    private LocalTime departureTime;
+    // 도착 시각
+    private LocalTime arrivalTime;
     // 가격
     private Integer amount;
 }

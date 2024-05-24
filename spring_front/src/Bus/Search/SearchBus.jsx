@@ -4,6 +4,7 @@ import CityName from "@/Bus/Search/list/CityName.jsx";
 import BusClass from "@/Bus/Search/list/BusClass.jsx";
 import StartStationList from "@/Bus/Search/list/StartStationList.jsx";
 import EndStationList from "@/Bus/Search/list/EndStationList.jsx";
+import '../../css/CommonButton.css'; 
 
 export const Region = [
     "서울", "경기도", "인천", "강원도", "대전", "충청남도", "충청북도", "광주",
@@ -120,7 +121,7 @@ const SearchBus = ({ onSearchResult }) => {
         <div>
             <p>{allSelected}</p>
             {Region.map((region, index) => (
-                <button key={index} onClick={() => handleGetCityInfo(region)}>
+                <button key={index} className="button" onClick={() => handleGetCityInfo(region)}>
                     {region}
                 </button>
             ))}
@@ -156,7 +157,7 @@ const SearchBus = ({ onSearchResult }) => {
             )}
             {startStationID && endStationID && (
                 <div>
-                    <button onClick={() => confirm({handleStartStationID,handleEndStationID})}>확인</button>
+                     <button className="button" onClick={() => confirm({ handleStartStationID, handleEndStationID })}>확인</button>
                 </div>
             )}
         </div>

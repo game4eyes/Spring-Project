@@ -8,9 +8,10 @@ import { getBusSchedule, getBusTerminalList } from '../../api/dataApi';
 import Layout from '../../components/Layout';
 import {ReactComponent as ExchangeIcon} from '@/icon/exchange.svg';
 import '@/css/form/bookingform.css';
+import BookingForm from '../../User/BookingForm';
 
 const Bus = () => {
-    const initState = {
+    const ticketInfo = {
         departure: '',
         destination: '',
         departureDate: new Date().toISOString().slice(0, 10),
@@ -24,7 +25,7 @@ const Bus = () => {
     
     };
 
-    const [busticket, setBusticket] = useState(initState);
+    const [busticket, setBusticket] = useState(ticketInfo);
     const [result, setResult] = useState(null);
 
     useEffect(() => {
@@ -196,7 +197,10 @@ const Bus = () => {
                 ref={inputRef}
             />
         </label>
+
+
         <br />
+
         <label>
             가는 날
 
@@ -247,6 +251,7 @@ const Bus = () => {
             <option value="8">프리미엄우등(주말)</option>
         </select>
         <br />
+            {/* 선택 좌석: <input type="text" id="seatResult" value={busticket.seats.value} onChange={handleSeatResultChange} readOnly/> */}
         <div style={{ display: 'flex', alignItems: 'center',marginTop: '85px', marginRight: '10px', marginBottom: '35px'}}>
             <button type="submit" style={{marginTop: '0px',marginRight: '40px'}}>조회하기</button>
             <button type="button" style={{ backgroundColor: 'green'}} className = 'fee-check-button' onClick={handleChargeClick}>수수료확인</button>
