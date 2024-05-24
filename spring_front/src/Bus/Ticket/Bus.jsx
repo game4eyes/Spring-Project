@@ -9,7 +9,7 @@ import BusList from '../Search/list/BusList';
 import Charge from '../../components/Charge';
 import { getBusSchedule, getBusTerminalList } from '../../api/dataApi';
 import Layout from '../../components/Layout';
-import BookingForm from '../../User/BookingForm';
+
 
 const Bus = () => {
     const ticketInfo = {
@@ -268,7 +268,6 @@ const Bus = () => {
 
                 <br />
                 <button type="submit">조회하기</button>
-                <BookingForm bookingData={ticketInfo} />
 
                 {busticket.isDepartureModalOpen &&
                     <BusList

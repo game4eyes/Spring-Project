@@ -7,7 +7,7 @@ import Charge from '../../components/Charge';
 import TrainList from '../Search/list/TrainList';
 import { getTrainInfo } from '../../api/dataApi';
 import Layout from '../../components/Layout';
-import BookingForm from '../../User/BookingForm';
+
 
 // 기차 예약 컴포넌트
 const Train = () => {
@@ -288,7 +288,6 @@ const Train = () => {
 
             <Layout title="기차 승차권 예매" body="정보 입력">
             <form onSubmit={handleSubmit}>
-            <BookingForm bookingData={ticketInfo} />
                 <h4>기차 예약</h4>
                 {/* 출발지 입력란 */}
                 <label>
