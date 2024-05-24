@@ -47,7 +47,7 @@ const Login = () => {
       // 사용자 정보를 전역 상태로 저장
       AuthContext.setIsAuthenticated(true);
       AuthContext.setUser(response.data.user);
-      console.log(AuthContexts);
+      console.log(AuthContext);
     } catch (error) {
       let errorMessage = '로그인 중 오류가 발생했습니다. 다시 시도해주세요.';
       if (error.response && error.response.status === 400) {
