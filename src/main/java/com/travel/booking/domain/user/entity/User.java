@@ -31,4 +31,6 @@ public class User {
     private Role role;
 
     private Long point;
+
+    private String accessToken;
 }
