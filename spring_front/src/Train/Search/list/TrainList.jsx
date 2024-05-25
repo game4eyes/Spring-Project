@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { getTrainInfo } from '@/api/dataApi';
 import { useNavigate } from 'react-router-dom';
 import Pagination from '../../../common/page/Pagination';
 import '@/css/TrainList.css'; // CSS 파일 임포트
+import { AuthContext } from '../../../global/AuthContext';
 
 const TrainList = ({ startStationID, endStationID, hour, dayz }) => {
     const [trainInfo, setTrainInfo] = useState([]);
@@ -10,7 +11,7 @@ const TrainList = ({ startStationID, endStationID, hour, dayz }) => {
     const [itemsPerPage] = useState(5);
     const [loading, setLoading] = useState(true);
     const [timeoutReached, setTimeoutReached] = useState(false);
-
+    const { isLoggedIn, setRedirectUrl, setGuestRedirectUrl } = useContext(AuthContext);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -38,6 +39,51 @@ const TrainList = ({ startStationID, endStationID, hour, dayz }) => {
     const currentItems = trainInfo.slice(indexOfFirstItem, indexOfLastItem);
 
     const paginate = pageNumber => setCurrentPage(pageNumber);
+
+
+    // if (isLoggedIn) {
+    //     const url = `/ticketbook/${transportation}?type=회원`;
+    //     setRedirectUrl(url);
+    //     navigate(url);
+    // } else {
+    //     setShowUserGuestPopup(true);
+    // }
+
+    const searchURLObject = (pathname) => {
+        if (pathname.includes('bus')) return 'bus';
+        if (pathname.includes('train')) return 'train';
+        if (pathname.includes('plane')) return 'plane';
+        return null;
+    };
+
+
+const handleCloseUserGuestPopup = () => {
+    setShowUserGuestPopup(false);
+};
+
+const handleOptionSelect = (option) => {
+    setShowUserGuestPopup(false);
+    const url = `/ticketbook/${selectedTransportation}?type=${option}`;
+    if (option === '회원') {
+        //setRedirectUrl(url);
+        navigate('/api/user/login?paytest');
+    } else {
+       // setGuestRedirectUrl(url);
+        navigate('/api/user/guest-booking');
+    }
+};
+
+
+const UserGuestPopup = ({ onClose, onOptionSelect }) => (
+    <div className="UserGuestPopup">
+        <div className="UserGuestPopup-inner">
+            <h3>예매 유형 선택</h3>
+            <button onClick={() => onOptionSelect('회원')}>회원 예매</button>
+            <button onClick={() => onOptionSelect('비회원')}>비회원 예매</button>
+            <button onClick={onClose}>닫기</button>
+        </div>
+    </div>
+);
 
     const seatselect = () => {
         window.open('http://localhost:5173/search/busseat', '_blank', 'width=600,height=400');
@@ -90,6 +136,7 @@ const TrainList = ({ startStationID, endStationID, hour, dayz }) => {
                                 </td>
                                 <td><button className="button" onClick={seatselect}>좌석 선택</button></td>
                                 <td><button className="button" onClick={payment}>결제</button></td>
+                                <td><button className="button" onClick={() => handleItemClick(searchURLObject(location.pathname), detail)}>테스트 버튼</button></td>
                             </tr>
                         ))}
                     </tbody>

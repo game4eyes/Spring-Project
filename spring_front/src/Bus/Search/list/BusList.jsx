@@ -105,7 +105,7 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, busticket }) => {
         const url = `/ticketbook/${selectedTransportation}?type=${option}`;
         if (option === '회원') {
             setRedirectUrl(url);
-            navigate('/api/user/login');
+            navigate('/api/user/login?paytest');
         } else {
             setGuestRedirectUrl(url);
             navigate('/api/user/guest-booking');

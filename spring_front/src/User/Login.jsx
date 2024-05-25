@@ -18,6 +18,9 @@ const Login = () => {
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies(['userEmail']);
 
+
+const currentURL = window.location.href;
+
   useEffect(() => {
     if (isLoggedIn) {
       navigate('/');
@@ -52,8 +55,16 @@ const Login = () => {
       
       setUser(response.data.user);
 
-      document.cookie = `sessionId=${response.data.sessionId}; path=/; SameSite=Lax`;
+      // document.cookie = `sessionId=${response.data.sessionId}; path=/; SameSite=Lax`;
+      if(nowurl.has('paytest')){
+        document.cookie = `sessionId=${response.data.sessionId}; path=/api/user/mypage; SameSite=Lax`;
+        navigate('/api/user/join');
+
+      }
+      else{
+        document.cookie = `sessionId=${response.data.sessionId}; path=/; SameSite=Lax`;
       navigate('/');
+      }
     } catch (error) {
       let errorMessage = '로그인 중 오류가 발생했습니다. 다시 시도해주세요.';
       if (error.response && error.response.status === 400) {
