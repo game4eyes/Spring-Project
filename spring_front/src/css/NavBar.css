@@ -98,12 +98,16 @@ hr {
 .custom-link:hover {
   color: skyblue;
   fill: skyblue;
+  text-decoration: none;
 }
 
 .custom-link:active {
   color: red;
   fill: red;
+  text-decoration: none;
 }
+
+
 
 
 
