@@ -26,6 +26,7 @@ import { ReactComponent as InfoIcon } from '@/icon/user/info.svg';
 
 import { useContext, useState } from 'react';
 import { AuthContext } from '../global/AuthContext';
+import OffCanvasButton from '@/components/OffCanvasButton';
 
 const NavBar = () => {
 
@@ -122,12 +123,12 @@ const NavBar = () => {
 
 
 
-              <Nav.Item>
+              {/* <Nav.Item>
                 <Link to={'/nav/navlink' + '1'} className="nav-link d-flex flex-column align-items-center">
                   <TrainIcon className="custom-link" style={{ width: '24px', height: '24px' }} />
                   <span className="custom-link">운행정보</span>
                 </Link>
-              </Nav.Item>
+              </Nav.Item> */}
               <Nav.Item>
                 <Link to={'/nav/navlink' + '2'} className="nav-link d-flex flex-column align-items-center">
                   <TrainIcon className="custom-link" style={{ width: '24px', height: '24px' }} />
@@ -171,6 +172,8 @@ const NavBar = () => {
                     </Link>
                   </Nav.Item>
 
+                  <OffCanvasButton/>
+
 
 
 
@@ -198,6 +201,7 @@ const NavBar = () => {
                       <span className="custom-link">예약정보</span>
                     </Link>
                   </Nav.Item>
+                  <OffCanvasButton/>
 
                 </>
               )}

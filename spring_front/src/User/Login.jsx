@@ -139,7 +139,7 @@ const Login = () => {
 
 
 
-            <div className="login-actions">
+            <div className="login-actions" style={{alignItems:'center'}}>
               <button type="submit" className="btn-primary">로그인</button>
             </div>
           </form>

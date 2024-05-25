@@ -3,7 +3,7 @@ import NavLink1 from '../components/API/NavLink/NavLink1';
 import NavLink2 from '../components/API/NavLink/NavLink2';
 import NavLink3 from '../components/API/NavLink/NavLink3';
 import NavLink4 from '../components/API/NavLink/NavLink4';
-import NavLink5 from '../components/API/NavLink/NavLink5';
+// import NavLink5 from '../components/API/NavLink/NavLink5';
 import { Suspense } from 'react';
 
 
@@ -35,10 +35,10 @@ element : <Suspense fallback={Loading}><NavLink3/></Suspense>
 path    : 'navlink4',             // 'nav/navlink4'
 element : <Suspense fallback={Loading}><NavLink4/></Suspense>
 },
-{
-path    : 'navlink5',             //  'nav/navlink5'
-element : <Suspense fallback={Loading}><NavLink5/></Suspense>
-},
+// {
+// path    : 'navlink5',             //  'nav/navlink5'
+// element : <Suspense fallback={Loading}><NavLink5/></Suspense>
+// },
 
     // <Routes>
     //   <Route path="/nav/navLink1" element={<NavLink1 />} />
