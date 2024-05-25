@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import '../../css/FlightList.css';
 
-const FlightList = ({ flights, onSelectFare }) => {
-    // useMemo를 사용하여 flightData를 메모이제이션
+const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationName, selectedDepartureTime }) => {
     const flightData = useMemo(() => flights.station || [], [flights.station]);
 
     const [fares, setFares] = useState({});
 
     useEffect(() => {
-        // 각 항공편에 대해 요금을 계산하고 저장
         const newFares = flightData.reduce((acc, flight) => {
             acc[flight.id] = calculateFare(flight.runDay);
             return acc;
@@ -27,15 +25,24 @@ const FlightList = ({ flights, onSelectFare }) => {
         return Math.round(baseFare / 100) * 100;
     };
 
-    const handleBook = (e, fare) => {
+    const handleBook = (e, flight, fare) => {
         e.preventDefault();
-        onSelectFare(fare);
+        onSelectFareAndBook(flight, fare, flight.departureTime); // 선택한 시간 정보를 상위 컴포넌트로 전달
     };
+
+    // 사용자가 선택한 시간 이후의 출발 시간만 필터링
+    const filteredFlights = useMemo(() => {
+        const selectedTime = new Date(`1970-01-01T${selectedDepartureTime}:00`).getTime();
+        return flightData.filter(flight => {
+            const flightTime = new Date(`1970-01-01T${flight.departureTime}:00`).getTime();
+            return flightTime >= selectedTime;
+        });
+    }, [flightData, selectedDepartureTime]);
 
     return (
         <div>
             <h3>Available Flights</h3>
-            {flightData.length > 0 ? (
+            {filteredFlights.length > 0 ? (
                 <table className="flights-table">
                     <thead>
                         <tr>
@@ -50,17 +57,17 @@ const FlightList = ({ flights, onSelectFare }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {flightData.map((flight, index) => (
+                        {filteredFlights.map((flight, index) => (
                             <tr key={index}>
                                 <td>{flight.airline}</td>
-                                <td>{flight.startStationName}</td>
-                                <td>{flight.endStationName}</td>
+                                <td>{departureName}</td>
+                                <td>{destinationName}</td>
                                 <td>{flight.departureTime}</td>
                                 <td>{flight.arrivalTime}</td>
                                 <td>{flight.runDay}</td>
                                 <td>₩{fares[flight.id]}</td>
                                 <td>
-                                    <button type="button" onClick={(e) => handleBook(e, fares[flight.id])}>Book</button>
+                                    <button type="button" onClick={(e) => handleBook(e, flight, fares[flight.id])}>Book</button>
                                 </td>
                             </tr>
                         ))}
