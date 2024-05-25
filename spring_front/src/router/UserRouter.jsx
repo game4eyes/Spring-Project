@@ -6,7 +6,7 @@ import ResetPassword from '../User/ResetPassword';
 import { Suspense } from 'react';
 import FindUserId from '../User/FindUserId';
 import MyPageModify from '../User/MypageModify';
-import GuestBooking from '../User/GuestBooking';
+
 
 
 
@@ -52,10 +52,7 @@ path    : 'resetpassword',
 element : <ResetPassword/>
 },
 
-{
-  path    : 'guest-booking',
-  element : <GuestBooking/>
-  },
+
 
 
     // <Routes>
