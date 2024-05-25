@@ -123,12 +123,12 @@ const NavBar = () => {
 
 
 
-              <Nav.Item>
+              {/* <Nav.Item>
                 <Link to={'/nav/navlink' + '1'} className="nav-link d-flex flex-column align-items-center">
                   <TrainIcon className="custom-link" style={{ width: '24px', height: '24px' }} />
                   <span className="custom-link">운행정보</span>
                 </Link>
-              </Nav.Item>
+              </Nav.Item> */}
               <Nav.Item>
                 <Link to={'/nav/navlink' + '2'} className="nav-link d-flex flex-column align-items-center">
                   <TrainIcon className="custom-link" style={{ width: '24px', height: '24px' }} />
@@ -141,12 +141,12 @@ const NavBar = () => {
                   <span className="custom-link">기차역정보/노선도</span>
                 </Link>
               </Nav.Item>
-              {/* <Nav.Item>
+              <Nav.Item>
                 <Link to={'/nav/navlink' + '4'} className="nav-link d-flex flex-column align-items-center ">
                   <AirplaneTicketIcon className="custom-link" style={{ width: '24px', height: '24px' }} />
                   <span className="custom-link">안내/공항 서비스</span>
                 </Link>
-              </Nav.Item> */}
+              </Nav.Item>
               <h1 style={{ color: 'gray', marginLeft: '25px', marginRight: '25px' }}>|</h1>
 
 
