@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { loadTossPayments } from '@tosspayments/payment-sdk';
 import '../../css/FlightList.css';
 
 const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationName, selectedDepartureTime }) => {
+    const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
     const flightData = useMemo(() => flights.station || [], [flights.station]);
 
     const [fares, setFares] = useState({});
@@ -25,12 +27,33 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
         return Math.round(baseFare / 100) * 100;
     };
 
-    const handleBook = (e, flight, fare) => {
+    const handleBook = async (e, flight, fare) => {
         e.preventDefault();
-        onSelectFareAndBook(flight, fare, flight.departureTime); // 선택한 시간 정보를 상위 컴포넌트로 전달
+        try {
+            const tossPayments = await loadTossPayments(clientKey);
+            tossPayments.requestPayment('카드', {
+                amount: fare,
+                orderId: `order_${flight.id}_${Date.now()}`,
+                orderName: `${flight.airline} - ${departureName} to ${destinationName}`,
+                customerName: '고객명', // 실제 고객 이름으로 대체하세요
+                successUrl: '/pay/paysuccess', // 성공시 URL
+                failUrl: '/pay/payfail', // 실패시 URL
+            }).catch(function (error) {
+                if (error.code === 'USER_CANCEL') {
+                    // 사용자가 결제창을 닫았을 때 처리
+                } else if (error.code === 'INVALID_CARD_COMPANY') {
+                    // 유효하지 않은 카드 코드 처리
+                } else {
+                    // 기타 에러 처리
+                    console.error(error);
+                }
+            });
+        } catch (error) {
+            console.error('토스 결제 로드 에러:', error);
+        }
+        onSelectFareAndBook(flight, fare, flight.departureTime);
     };
 
-    // 사용자가 선택한 시간 이후의 출발 시간만 필터링
     const filteredFlights = useMemo(() => {
         const selectedTime = new Date(`1970-01-01T${selectedDepartureTime}:00`).getTime();
         return flightData.filter(flight => {
