@@ -6,7 +6,7 @@ import Layout from '../components/Layout';
 import { socialLogin } from '../api/todoApi';
 
 import '@/css/form/loginform.css';
-import {ReactComponent as GoogleLogoIcon} from '@/icon/google_logo2.svg'
+import { ReactComponent as GoogleLogoIcon } from '@/icon/google_logo2.svg'
 import { useCookies } from 'react-cookie';
 
 const Login = () => {
@@ -19,7 +19,7 @@ const Login = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['userEmail']);
 
 
-const currentURL = window.location.href;
+  const currenturl = window.location.href;
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -46,25 +46,23 @@ const currentURL = window.location.href;
     e.preventDefault();
     try {
       const response = await userLogin(loginData);
-      
+
       alert('환영합니다!');
       console.log(loginData);
       setIsLoggedIn(true);
       console.log(loginData.email);
-      setCookie("userEmail",loginData.email);
-      
+      setCookie("userEmail", loginData.email);
+
       setUser(response.data.user);
-
-      // document.cookie = `sessionId=${response.data.sessionId}; path=/; SameSite=Lax`;
-      if(nowurl.has('paytest')){
+      if (currenturl.has('paytest')) {
         document.cookie = `sessionId=${response.data.sessionId}; path=/api/user/mypage; SameSite=Lax`;
-        navigate('/api/user/join');
-
+        navigate('/api/user/mypage');
       }
-      else{
+      else {
         document.cookie = `sessionId=${response.data.sessionId}; path=/; SameSite=Lax`;
-      navigate('/');
+        navigate('/');
       }
+
     } catch (error) {
       let errorMessage = '로그인 중 오류가 발생했습니다. 다시 시도해주세요.';
       if (error.response && error.response.status === 400) {
@@ -144,33 +142,33 @@ const currentURL = window.location.href;
 
 
 
-            <div className="login-actions" style={{alignItems:'center'}}>
+            <div className="login-actions" style={{ alignItems: 'center' }}>
               <button type="submit" className="btn-primary">로그인</button>
             </div>
           </form>
-              <br></br>
+          <br></br>
 
-              <div className="col2" style={{ display: 'flex', alignItems: 'center' }}>
-  {/* 회원가입 버튼 추가 */}
-  <div className="join-button" style={{ marginRight: '10px' }}>
-    <h4>계정이 없으십니까?</h4>
-    <Link to="/api/user/join"><button type="button" className="btn-primary" style={{backgroundColor:'green'}}>회원가입</button></Link>
-  </div>
-  <h4 style={{ marginRight: '30px', fontWeight: 'normal', color: '#888888' }}>|</h4>
+          <div className="col2" style={{ display: 'flex', alignItems: 'center' }}>
+            {/* 회원가입 버튼 추가 */}
+            <div className="join-button" style={{ marginRight: '10px' }}>
+              <h4>계정이 없으십니까?</h4>
+              <Link to="/api/user/join"><button type="button" className="btn-primary" style={{ backgroundColor: 'green' }}>회원가입</button></Link>
+            </div>
+            <h4 style={{ marginRight: '30px', fontWeight: 'normal', color: '#888888' }}>|</h4>
 
-  {/* 소셜 로그인 버튼 추가 */}
-  <div className="social-login-buttons">
-  <h4>소셜 로그인</h4>
-    <button className="social-button google-login" onClick={handleGoogleLogin}>
-    <GoogleLogoIcon style={{fill:'white',width: '22px', height: '22px' }} />구글 로그인
+            {/* 소셜 로그인 버튼 추가 */}
+            <div className="social-login-buttons">
+              <h4>소셜 로그인</h4>
+              <button className="social-button google-login" onClick={handleGoogleLogin}>
+                <GoogleLogoIcon style={{ fill: 'white', width: '22px', height: '22px' }} />구글 로그인
 
-      {/* 구글 로그인 */}
-    </button>
-    {/* <button className="social-button naver-login" onClick={() => window.location.href = 'NAVER_AUTH_URI'}>
+                {/* 구글 로그인 */}
+              </button>
+              {/* <button className="social-button naver-login" onClick={() => window.location.href = 'NAVER_AUTH_URI'}>
       네이버 로그인
     </button> */}
-  </div>
-</div>
+            </div>
+          </div>
 
 
         </div>

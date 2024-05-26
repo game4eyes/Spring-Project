@@ -8,10 +8,9 @@ const MyPage = () => {
   const [email, setEmail] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
+
   const [message, setMessage] = useState('');
-  const [initialData, setInitialData] = useState({ email: '', phone: '', address: '' }); // 초기 데이터 저장
+  const [initialData, setInitialData] = useState({ email: ''}); // 초기 데이터 저장
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -19,8 +18,6 @@ const MyPage = () => {
         const response = await axios.get('/api/user/profile');          // API 예시주소
         const userData = response.data;
         setEmail(userData.email || '');
-        setPhone(userData.phone || '');
-        setAddress(userData.address || '');
         // 초기 데이터 설정
         setInitialData({
           email: userData.email || '',
@@ -39,8 +36,6 @@ const MyPage = () => {
   
   const isChanged = () => {
     return email !== initialData.email ||
-           phone !== initialData.phone ||
-           address !== initialData.address ||
            currentPassword.length > 0 ||
            newPassword.length > 0;
   };
@@ -59,7 +54,7 @@ const MyPage = () => {
         }
       }
 
-      await axios.post('/api/user/update', { email, phone, address });
+      await axios.post('/api/user/update', { email });
       setMessage('프로필이 성공적으로 업데이트되었습니다.');
     } catch (error) {
       console.error('프로필 업데이트 실패:', error);
@@ -90,16 +85,6 @@ const MyPage = () => {
           <label>새 비밀번호:</label>
           <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
         </div> */}
-        <div className="form-group">
-          <label>핸드폰번호:</label>
-          핸드폰번호 DB 값
-          {/* <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} /> */}
-        </div>
-        <div className="form-group">
-          <label>주소:</label>
-          주소 DB 값
-          {/* <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} /> */}
-        </div>
         <button type="submit" disabled={!isChanged()}>수정하기</button>
         {message && <p>{message}</p>}
       
@@ -123,16 +108,6 @@ const MyPage = () => {
           <label>새 비밀번호:</label>
           <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
         </div> */}
-        <div className="form-group">
-          <label>핸드폰번호:</label>
-          핸드폰번호 DB 값
-          {/* <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} /> */}
-        </div>
-        <div className="form-group">
-          <label>주소:</label>
-          주소 DB 값
-          {/* <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} /> */}
-        </div>
         <button type="submit" disabled={!isChanged()}>수정하기</button>
         {message && <p>{message}</p>}
       
@@ -157,16 +132,6 @@ const MyPage = () => {
           <label>새 비밀번호:</label>
           <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
         </div> */}
-        <div className="form-group">
-          <label>핸드폰번호:</label>
-          핸드폰번호 DB 값
-          {/* <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} /> */}
-        </div>
-        <div className="form-group">
-          <label>주소:</label>
-          주소 DB 값
-          {/* <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} /> */}
-        </div>
         <button type="submit" disabled={!isChanged()}>수정하기</button>
         {message && <p>{message}</p>}
       
@@ -191,16 +156,6 @@ const MyPage = () => {
           <label>새 비밀번호:</label>
           <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
         </div> */}
-        <div className="form-group">
-          <label>핸드폰번호:</label>
-          핸드폰번호 DB 값
-          {/* <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} /> */}
-        </div>
-        <div className="form-group">
-          <label>주소:</label>
-          주소 DB 값
-          {/* <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} /> */}
-        </div>
         <button type="submit" disabled={!isChanged()}>수정하기</button>
         {message && <p>{message}</p>}
       

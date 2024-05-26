@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { getTrainInfo } from '@/api/dataApi';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Pagination from '../../../common/page/Pagination';
 import '@/css/TrainList.css'; // CSS 파일 임포트
 import { AuthContext } from '../../../global/AuthContext';
+import '@/css/Popup.css';
 
 const TrainList = ({ startStationID, endStationID, hour, dayz }) => {
     const [trainInfo, setTrainInfo] = useState([]);
@@ -12,6 +13,13 @@ const TrainList = ({ startStationID, endStationID, hour, dayz }) => {
     const [loading, setLoading] = useState(true);
     const [timeoutReached, setTimeoutReached] = useState(false);
     const { isLoggedIn, setRedirectUrl, setGuestRedirectUrl } = useContext(AuthContext);
+    const [showUserGuestPopup, setShowUserGuestPopup] = useState(false);
+    const [selectedTransportation, setSelectedTransportation] = useState(null);
+
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -56,22 +64,42 @@ const TrainList = ({ startStationID, endStationID, hour, dayz }) => {
         return null;
     };
 
+    const handleItemClick = (transportation, detail) => {
+        setSelectedTransportation(transportation);
+        console.log("Selected Seats:", selectedSeats);
+        console.log("Detail:", detail);
+        console.log("Busticket:", busticket);
 
-const handleCloseUserGuestPopup = () => {
-    setShowUserGuestPopup(false);
-};
+        setSelectedbusticket(prevState => ({
+            ...prevState,
+            selectedBus: detail // Update the selectedBus with detail
+        }));
 
-const handleOptionSelect = (option) => {
-    setShowUserGuestPopup(false);
-    const url = `/ticketbook/${selectedTransportation}?type=${option}`;
-    if (option === '회원') {
-        //setRedirectUrl(url);
-        navigate('/api/user/login?paytest');
-    } else {
-       // setGuestRedirectUrl(url);
-        navigate('/api/user/guest-booking');
-    }
-};
+        if (isLoggedIn) {
+            const url = `/ticketbook/${transportation}?type=회원`;
+            setRedirectUrl(url);
+            navigate(url);
+        } else {
+            setShowUserGuestPopup(true);
+        }
+    };
+
+    const handleCloseUserGuestPopup = () => {
+        setShowUserGuestPopup(false);
+    };
+
+    const handleOptionSelect = (option) => {
+        setShowUserGuestPopup(false);
+        const url = `/ticketbook/${selectedTransportation}?type=${option}`;
+        if (option === '회원') {
+            setRedirectUrl(url);
+            navigate('/api/user/login?paytest');
+        } else {
+            setGuestRedirectUrl(url);
+            navigate('/api/user/guest-booking');
+        }
+    };
+
 
 
 const UserGuestPopup = ({ onClose, onOptionSelect }) => (
@@ -136,7 +164,7 @@ const UserGuestPopup = ({ onClose, onOptionSelect }) => (
                                 </td>
                                 <td><button className="button" onClick={seatselect}>좌석 선택</button></td>
                                 <td><button className="button" onClick={payment}>결제</button></td>
-                                <td><button className="button" onClick={() => handleItemClick(searchURLObject(location.pathname), detail)}>테스트 버튼</button></td>
+                                <td><button className="button" onClick={() => handleItemClick(searchURLObject(location.pathname), train)}>테스트 버튼</button></td>
                             </tr>
                         ))}
                     </tbody>
@@ -145,6 +173,7 @@ const UserGuestPopup = ({ onClose, onOptionSelect }) => (
             <p>조회값이 없습니다</p>
             )}
             <Pagination itemsPerPage={itemsPerPage} totalItems={trainInfo.length} paginate={paginate} />
+            {showUserGuestPopup && <UserGuestPopup onClose={handleCloseUserGuestPopup} onOptionSelect={handleOptionSelect} />}
         </div>
     );
 };

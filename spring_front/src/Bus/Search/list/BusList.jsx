@@ -145,13 +145,13 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, busticket }) => {
 
     return (
         <div className="table-container" style={{ overflow: 'hidden' }}>
-           
+
             {currentItems.length > 0 ? (
                 <>
-                 <h2>출발지: {busInfo.startStationName}</h2>
-            <h2>도착지: {busInfo.endStationName}</h2>
-            <h3>첫차 시간: {busInfo.firstTime}</h3>
-            <h3>막차 시간: {busInfo.lastTime}</h3>
+                    <h2>출발지: {busInfo.startStationName}</h2>
+                    <h2>도착지: {busInfo.endStationName}</h2>
+                    <h3>첫차 시간: {busInfo.firstTime}</h3>
+                    <h3>막차 시간: {busInfo.lastTime}</h3>
                     <table border="1">
                         <thead>
                             <tr>
@@ -165,7 +165,7 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, busticket }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                             {currentItems.map((detail, index) => (
                                 <tr key={index}>
                                     <td>{detail.busClass}</td>
