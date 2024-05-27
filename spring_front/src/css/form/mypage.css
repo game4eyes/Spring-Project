@@ -1,0 +1,86 @@
+/* mypage.css */
+
+.mypage-container {
+    padding: 20px;
+  }
+  
+  .mypage-container  .profile-form {
+    margin-bottom: 20px;
+  }
+  
+  .mypage-container  .form-group {
+    margin-bottom: 10px;
+  }
+  
+  .mypage-container .form-group label {
+    display: inline-block;
+    width: 100px;
+  }
+  
+  .mypage-container .form-group span {
+    display: inline-block;
+    width: calc(100% - 100px);
+  }
+  
+  .mypage-container .cancel-btn {
+    float: right;
+  }
+  .mypage-container .cancel-btn {
+    background-color: #ff0000; /* Red background */
+    color: #ffffff; /* White text */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .mypage-container  .cancel-btn:hover {
+    background-color: #cc0000; /* Darker red background on hover */
+  }
+  
+  .mypage-container .profile-form button[type="submit"] {
+    background-color: #00ff00; /* Green background */
+    color: #ffffff; /* White text */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    float: right; /* Align button to the right */
+  }
+  
+  .mypage-container .profile-form button[type="submit"]:disabled {
+    background-color: #cccccc; /* Grey background when disabled */
+    cursor: not-allowed;
+  }
+  
+  .mypage-container .profile-form button[type="submit"]:hover:not([disabled]) {
+    background-color: #00cc00; /* Darker green background on hover */
+  }
+  
+  .mypage-container  .confirm-delete button {
+    margin-right: 10px;
+    background-color: #ff0000; /* Red background */
+    color: #ffffff; /* White text */
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .mypage-container .confirm-delete button:hover {
+    background-color: #cc0000; /* Darker red background on hover */
+  }
+  
+  .mypage-container .button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 30px;
+}
+
+
