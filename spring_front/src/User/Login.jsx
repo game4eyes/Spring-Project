@@ -8,6 +8,7 @@ import { socialLogin } from '../api/todoApi';
 import '@/css/form/loginform.css';
 import { ReactComponent as GoogleLogoIcon } from '@/icon/google_logo2.svg'
 import { useCookies } from 'react-cookie';
+import Logo_black from '@/components/Logo_black';
 
 const Login = () => {
   const { isLoggedIn, setIsLoggedIn, setUser } = useContext(AuthContext);  // isLoggedIn 추가
@@ -44,7 +45,7 @@ const Login = () => {
 
         navigate(url);
       }
-      else {
+      else {        //그 이외의 경우에 대한 로그인
         navigate('/');
       }
     }
@@ -143,11 +144,14 @@ const Login = () => {
 
   return (
 
-    <Layout title="로그인" body="로그인 창" >
+    // <Layout title="로그인" body="로그인 창" >
       <div className="login-page">
         {/* <Testresult/> 데이터 테스트*/}
+        {/* <div className="logoposition" style ={{ top: -100, marginBottom:'30px'}}>
+      
+        </div> */}
         <div className="login-container">
-          <h2 style={{marginTop:'30px'}}>로그인</h2><br></br>
+          <h2 style={{marginTop:'30px'}}>  <Logo_black/></h2><br></br>
           <form onSubmit={handleLogin}>
             <div className="form-group">
               <label htmlFor="email">이메일</label>
@@ -199,10 +203,12 @@ const Login = () => {
                 />
                 <label htmlFor="remember-me" style={{ marginTop: '5px' }}>아이디 저장</label>
               </div>
-              <span style={{ marginRight: '10px' }}>  </span>
-              <Link to="/api/user/finduserid">아이디 찾기</Link>
-              <span style={{ margin: '0 10px' }}> | </span>
-              <Link to="/api/user/resetpassword">비밀번호 찾기</Link>
+              <div style={{alignItems:'right'}} >
+              <span style={{ marginRight: '10px'}}>  </span>
+              <Link to="/api/user/finduserid" style ={{color:'black'}}>아이디 찾기</Link>
+              <span style={{ margin: '0 10px',color:'black' }}> | </span>
+              <Link to="/api/user/resetpassword" style ={{color:'black'}}>비밀번호 찾기</Link>
+              </div>
             </div>
 
 
@@ -237,7 +243,7 @@ const Login = () => {
 
         </div>
       </div>
-    </Layout>
+    // </Layout>
 
   );
 };

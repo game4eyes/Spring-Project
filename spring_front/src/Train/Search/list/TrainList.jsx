@@ -64,8 +64,8 @@ const TrainList = ({ startStationID, endStationID, hour, dayz, trainticket}) => 
 
 
 
-    const searchURLObject = (pathname) => {
-        if (pathname.includes('Train')) return 'Train';
+    const searchURLObject = (pathname) => {                 //URL에 'bus나,train,plane'이 들어있을 경우 해당 문자를 return
+        if (pathname.includes('bus')) return 'bus';
         if (pathname.includes('train')) return 'train';
         if (pathname.includes('plane')) return 'plane';
         return null;
@@ -94,9 +94,9 @@ const TrainList = ({ startStationID, endStationID, hour, dayz, trainticket}) => 
     // };
 
 
-    const handleItemClick = (transportation, train,trainticket) => {
+    const handleItemClick = (transportation, train,trainticket) => {            //'테스트 버튼'을 눌렀을 때 실행되는 함수. trainsportation: 교통수단종류, train: 선택한 기차, trainticket: train.jsx에서 가져온 정보
         setSelectedtrain(train);
-        if (isLoggedIn) {
+        if (isLoggedIn) {                   //만약 '테스트 버튼'을 눌렀을 떄, 로그인 상태를 판별. 로그인 상태가 아닐 시 팝업 호출
             const url = `/ticketbook/bookresult?paylogin&railName=${encodeURIComponent(selectedtrain.railName)}&trainClass=${encodeURIComponent(selectedtrain.trainClass)}&trainNo=${encodeURIComponent(selectedtrain.trainNo)}&departureTime=${encodeURIComponent(selectedtrain.departureTime)}
             &departure=${encodeURIComponent(trainticket.departure)}&destination=${encodeURIComponent(trainticket.destination)}&hour=${encodeURIComponent(trainticket.hour)}&date=${encodeURIComponent(trainticket.date)}&dayz=${encodeURIComponent(trainticket.dayz)}&price=${getTodayFare(selectedtrain.fare)}`;
             navigate(url);
@@ -109,19 +109,20 @@ const TrainList = ({ startStationID, endStationID, hour, dayz, trainticket}) => 
     
 
 
-    const handleCloseUserGuestPopup = () => {
+    const handleCloseUserGuestPopup = () => {                               //결제 ['로그인''회원가입'] 팝업창을 닫는 함수
         setShowUserGuestPopup(false);
     };
 
-    const handleOptionSelect = (option) => {
+    const handleOptionSelect = (option) => {                                   //팝업창에서 '비로그인 상태'에서 결제를 실행할 경우의 url
         setShowUserGuestPopup(false);
         // const url = `/ticketbook/${selectedTransportation}?type=${option}`;
-        if (option === 'login') {
-            // setRedirectUrl(url);
+        if (option === 'login') {                                               //'비로그인 상태'에서 로그인을 실행할 시에 대한 url 이동
+            // setRedirectUrl(url);                                                     
             const url = `/api/user/login?paylogin&railName=${encodeURIComponent(selectedtrain.railName)}&trainClass=${encodeURIComponent(selectedtrain.trainClass)}&trainNo=${encodeURIComponent(selectedtrain.trainNo)}&departureTime=${encodeURIComponent(selectedtrain.departureTime)}
             &departure=${encodeURIComponent(trainticket.departure)}&destination=${encodeURIComponent(trainticket.destination)}&hour=${encodeURIComponent(trainticket.hour)}&date=${encodeURIComponent(trainticket.date)}&dayz=${encodeURIComponent(trainticket.dayz)}&price=${getTodayFare(selectedtrain.fare)}`;
-            navigate(url);
-        } else {
+            // navigate(url);
+            window.open(url, '_blank', 'width=800,height=800');
+        } else {                                                              //'비로그인 상태'에서 회원가입을 실행할 시에 대한 url 이동
             setGuestRedirectUrl(url);
             const url = `/api/user/join?payjoin&railName=${encodeURIComponent(selectedtrain.railName)}&trainClass=${encodeURIComponent(selectedtrain.trainClass)}&trainNo=${encodeURIComponent(selectedtrain.trainNo)}&departureTime=${encodeURIComponent(selectedtrain.departureTime)}
             &departure=${encodeURIComponent(trainticket.departure)}&destination=${encodeURIComponent(trainticket.destination)}&hour=${encodeURIComponent(trainticket.hour)}&date=${encodeURIComponent(trainticket.date)}&dayz=${encodeURIComponent(trainticket.dayz)}&price=${getTodayFare(selectedtrain.fare)}`;
@@ -131,13 +132,13 @@ const TrainList = ({ startStationID, endStationID, hour, dayz, trainticket}) => 
 
 
 
-const UserGuestPopup = ({ onClose, onOptionSelect }) => (
+const UserGuestPopup = ({ onClose, onOptionSelect }) => (           //결제 ['로그인''회원가입'] 팝업창을 호출
     <div className="UserGuestPopup">
-        <div className="UserGuestPopup-inner">
-            <h3>로그인이 필요한 서비스입니다</h3>
-            <button onClick={() => onOptionSelect('login')}>로그인</button>
-            <button onClick={() => onOptionSelect('join')}>회원가입</button>
-            <button onClick={onClose}>닫기</button>
+        <div className="UserGuestPopup-inner button-container">
+            <h3 style={{marginBottom:'30px'}}>로그인이 필요한 서비스입니다</h3>
+            <button style ={{backgroundColor : 'blue',marginRight:'10px'}} onClick={() => onOptionSelect('login')}>로그인</button>
+            <button style ={{backgroundColor : 'green',marginRight:'10px'}} onClick={() => onOptionSelect('join')}>회원가입</button>
+            <button style ={{backgroundColor : 'red'}} onClick={onClose}>닫기</button>
         </div>
     </div>
 );
@@ -188,7 +189,9 @@ const UserGuestPopup = ({ onClose, onOptionSelect }) => (
                                     <td>{train.arrivalTime}</td>
                                     <td>{train.wasteTime}</td>
                                     <td>{train.runDay}</td>
-                                    <td>{getTodayFare(train.fare)}</td>
+                                    {/* {getTodayFare(train.fare)} : 오늘 날짜에 대한 요금 측정 */}
+                                    <td>{getTodayFare(train.fare)}</td>                
+
                                     <td>
                                         {train.fare.generalFare.weekday && <p>평일: {train.fare.generalFare.weekday}</p>}
                                         {train.fare.generalFare.weekend && <p>주말: {train.fare.generalFare.weekend}</p>}

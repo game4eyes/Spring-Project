@@ -21,14 +21,6 @@ const Mypage = () => {
     console.log('User Email:', cookies.userEmail);
     console.log('Booking Info:', cookies.bookingInfo);
 
-    const bookingcancel = (e) => {
-        e.preventDefault();
-        const isConfirmed = window.confirm('예약을 취소하시겠습니까?');
-        if (isConfirmed) {
-            alert('예약이 취소되었습니다');
-            navigate('/');
-        }
-    };
 
     const handleProfileEdit = () => {
         alert('프로필 수정 페이지로 이동합니다.');
@@ -42,6 +34,17 @@ const Mypage = () => {
             navigate('/'); // 예시 경로
         }
     };
+
+    const bookingcancel = (e) => {
+        e.preventDefault();
+        const isConfirmed = window.confirm('예약을 취소하시겠습니까?');
+        if (isConfirmed) {
+            alert('예약이 취소되었습니다');
+            setCookie('bookingInfo', null, { path: '/' }); // bookingInfo 쿠키 삭제
+            navigate('/');
+        }
+    };
+    
 
     return (
         <Layout title="마이페이지">
@@ -76,14 +79,15 @@ const Mypage = () => {
                         <p>열차 종류: {bookingInfo.trainClass}</p>
                         <p>열차 번호: {bookingInfo.trainNo}</p>
                         <p>출발 시간: {bookingInfo.departureTime}</p>
+                        <div className="button-container">
+                    <button type="button" className="cancel-button" style={{ backgroundColor: '#f44336' }} onClick={bookingcancel}>취소</button>
+                </div>
                     </div>
                 ) : (
                     <p>예약된 열차 정보가 없습니다.</p>
                 )}
 
-                <div className="button-container">
-                    <button type="button" className="cancel-button" style={{ backgroundColor: '#f44336' }} onClick={bookingcancel}>취소</button>
-                </div>
+              
             </div>
         </Layout>
     );

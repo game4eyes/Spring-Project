@@ -58,7 +58,7 @@ const Bookresult = () => {
     };
 
     return (
-        <Layout title="예약 정보 확인">
+        // <Layout title="예약 정보 확인">
             <div className="bookresultcontainer">
                 <h2 style={{ marginBottom: '30px' }}>예약 내용이 다음과 같습니까?</h2>
                 <hr></hr>
@@ -93,7 +93,7 @@ const Bookresult = () => {
                     <button type="button" onClick={bookingcancel}>취소</button>
                 </div>
             </div>
-        </Layout>
+       // </Layout>
     );
 };
 
