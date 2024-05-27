@@ -142,7 +142,7 @@ const HiddenNavBar = () => {
               </Dropdown>
 
 
-              <Dropdown
+              {/* <Dropdown
                 show={showDropdown2}
                 onMouseEnter={() => setShowDropdown2(true)}
                 onMouseLeave={() => setShowDropdown2(false)}
@@ -155,10 +155,9 @@ const HiddenNavBar = () => {
                 <Dropdown.Menu>
                   <Dropdown.Item><Link to={"/ticket/Ticket_Detail"} className="dropdown-item">예약 조회</Link></Dropdown.Item>
                   {/* <Dropdown.Item><Link to={"/ticket/Ticket_Modify"} className="dropdown-item">예약 수정</Link></Dropdown.Item> */}
-                  <Dropdown.Item><Link to={"/ticket/Ticket_Cancel"} className="dropdown-item">예약 취소</Link></Dropdown.Item>
+                  {/* <Dropdown.Item><Link to={"/ticket/Ticket_Cancel"} className="dropdown-item">예약 취소</Link></Dropdown.Item>
                 </Dropdown.Menu>
-              </Dropdown>
-
+              </Dropdown>  */}
 
 
 
@@ -204,12 +203,12 @@ const HiddenNavBar = () => {
                       <span className="custom-link">마이페이지</span>
                     </Link>
                   </Nav.Item>
-                  <Nav.Item>
+                  {/* <Nav.Item>
                     <Link to={'/ticket/Ticket_Detail'} className="nav-link d-flex flex-column align-items-center ">
                       <InfoIcon className="custom-link" style={{ width: '24px', height: '24px' }} />
                       <span className="custom-link">예약정보</span>
                     </Link>
-                  </Nav.Item>
+                  </Nav.Item> */}
 
                   <OffCanvasButton/>
 
@@ -231,12 +230,12 @@ const HiddenNavBar = () => {
                       <span className="custom-link">회원가입</span>
                     </Link>
                   </Nav.Item>
-                  <Nav.Item>
+                  {/* <Nav.Item>
                     <Link to={'/ticket/Ticket_Detail'} className="nav-link d-flex flex-column align-items-center ">
                       <InfoIcon className="custom-link" style={{ width: '24px', height: '24px' }} />
                       <span className="custom-link">예약정보</span>
                     </Link>
-                  </Nav.Item>
+                  </Nav.Item> */}
 
                   <OffCanvasButton/>
                 </>
