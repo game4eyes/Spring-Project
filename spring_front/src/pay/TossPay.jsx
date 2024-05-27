@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 
-const TossPay = ({ amount, orderId, orderName, customerName, successUrl, failUrl, onSelectFareAndBook }) => {
+const TossPay = ({ amount, orderId, orderName, userName, successUrl, failUrl, onSelectFareAndBook }) => {
     const [paymentType, setPaymentType] = useState('카드');
 
     const handlePayment = async () => {
@@ -11,7 +11,7 @@ const TossPay = ({ amount, orderId, orderName, customerName, successUrl, failUrl
                 amount,
                 orderId,
                 orderName,
-                customerName,
+                userName,
                 successUrl,
                 failUrl
             }).then(response => {
