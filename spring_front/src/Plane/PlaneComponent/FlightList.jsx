@@ -31,11 +31,14 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
         e.preventDefault();
         try {
             const tossPayments = await loadTossPayments(clientKey);
+            const uniqueOrderId = `order_${flight.id}_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
             tossPayments.requestPayment('카드', {
                 amount: fare,
-                orderId: `order_${flight.id}_${Date.now()}`,
+                orderId: uniqueOrderId,
                 orderName: `${flight.airline} - ${departureName} to ${destinationName}`,
-                customerName: '고객명', // 실제 고객 이름으로 대체하세요
+                userName: '고객명',
+                userEmail: '',
+                payType: 'CARD',
                 successUrl: 'http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090/pay/paysuccess', // 성공시 URL
                 failUrl: 'http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090/pay/payfail', // 실패시 URL
             }).catch(function (error) {
