@@ -1,6 +1,6 @@
 package com.travel.booking.domain.user.dto;
 
-import com.travel.booking.domain.user.entity.OauthUser;
+import com.travel.booking.domain.user.entity.User;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -9,12 +9,12 @@ import java.io.Serializable;
 public class SessionUser implements Serializable {
 
     // 인증된 사용자 정보만 필요
-    private String name;
+    private String username;
     private String email;
     private String picture;
 
-    public SessionUser(OauthUser user){
-        this.name = user.getName();
+    public SessionUser(User user){
+        this.username = user.getUsername();
         this.email = user.getEmail();
         this.picture = user.getEmail();
     }

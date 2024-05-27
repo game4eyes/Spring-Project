@@ -28,10 +28,6 @@ public class Payment  {
     @Column(name = "payment_id", nullable = false, unique = true)
     private Long paymentId;
 
-    @ManyToOne
-    @JoinColumn(name = "booking_id", nullable = false)
-    private BookingEntity bookingId;
-
     @Column(nullable = false , name = "pay_type")
     @Enumerated(EnumType.STRING)
     private PayType payType;
@@ -68,17 +64,24 @@ public class Payment  {
     @Column
     private String cancelReason;
 
+    private String userEmail;
+
     public PaymentResDto toPaymentResDto() { // DB에 저장하게 될 결제 관련 정보들
         return PaymentResDto.builder()
                 .payType(payType.getDescription())
                 .amount(amount)
                 .orderName(orderName)
                 .orderId(orderId)
-                .customerEmail(customer.getEmail())
-                .customerName(customer.getUsername())
+                .userEmail(customer.getEmail())
+                .userName(customer.getUsername())
                 .createdAt(String.valueOf(getCreatedAt()))
                 .cancelYN(cancelYN)
                 .failReason(failReason)
                 .build();
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
     }
 }
