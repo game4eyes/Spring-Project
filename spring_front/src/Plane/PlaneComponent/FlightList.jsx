@@ -90,7 +90,7 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
                                 <td>{flight.runDay}</td>
                                 <td>₩{fares[flight.id]}</td>
                                 <td>
-                                    <button type="button" onClick={(e) => handleBook(e, flight, fares[flight.id])}>Book</button>
+                                    <button type="button" onClick={(e) => handleBook(e, flight, fares[flight.id])}>결제</button>
                                 </td>
                             </tr>
                         ))}
