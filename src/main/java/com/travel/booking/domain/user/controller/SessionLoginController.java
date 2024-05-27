@@ -101,6 +101,7 @@ public class SessionLoginController {
         return ResponseEntity.ok("로그인에 성공했습니다.");
     }
 
+
     //@PostMapping("/social-google") // 소셜로그인(구글)
     //public String google(@Login SessionUser user, Model model) {
         // 세션에 저장된 값이 있을 때만 model에 userName 등록
