@@ -39,10 +39,6 @@ public class PaymentService {
     @Transactional
     public Payment requestPayment(Payment payment, String userEmail){
         User user = userService.FindByEmail(userEmail);
-        System.out.println(userEmail);
-        if (user == null) {
-            throw new CustomLogicException(ErrorCode.USER_NOT_FOUND);
-        }
         if (payment.getAmount() < 1000) {
             throw new CustomLogicException(ErrorCode.INVALID_PAYMENT_AMOUNT);
         }

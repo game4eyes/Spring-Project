@@ -4,9 +4,7 @@ import { tossPayment } from '../api/todoApi'; // 경로 수정
 const Pay = () => {
     const windowClose = () => {
         window.close();
-    }
-
-    const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
+    };
 
     useEffect(() => {
         const script = document.createElement('script');
@@ -22,8 +20,7 @@ const Pay = () => {
     const handlePayment = useCallback(async () => {
         try {
             const paymentData = {
-                amount: 58500,
-                bookingId: 1,
+                amount: 1390000,
                 orderId: 'bec1d544-2a34-4f44-ada0-c5213d8fd8dd',
                 orderName: '포인트 충전',
                 userName: 'game4eyes',
@@ -33,10 +30,24 @@ const Pay = () => {
                 failUrl: 'http://localhost:9090/api/v1/payments/toss/fail'
             };
 
+            // 먼저 서버로 결제 데이터를 전송
             const result = await tossPayment(paymentData);
             console.log(result);
+
+            // 서버 응답을 사용하여 토스 결제 창 띄우기
+            const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb'; // 실제 클라이언트 키로 대체
+
+            const tossPayments = TossPayments(clientKey);
+            tossPayments.requestPayment(paymentData.payType, {
+                amount: paymentData.amount,
+                orderId: paymentData.orderId,
+                orderName: paymentData.orderName,
+                customerName: paymentData.userName,
+                successUrl: paymentData.successUrl,
+                failUrl: paymentData.failUrl
+            });
         } catch (error) {
-            console.error(error);
+            console.error('Payment Error:', error);
         }
     }, []);
 

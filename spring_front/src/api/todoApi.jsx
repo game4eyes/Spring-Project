@@ -2,19 +2,20 @@ import axios from "axios";
 
 // 서버 호스트 설정
 
-// export const API_SERVER_HOST = 'http://localhost:9090'; // 서버 주소
+export const API_SERVER_HOST = 'http://localhost:9090'; // 서버 주소
 
-export const API_SERVER_HOST = 'http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090'; // 서버 주소
+// export const API_SERVER_HOST = 'http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090'; // 서버 주소
 
 // 사용자 관련 엔드포인트S
 const userPrefix = `${API_SERVER_HOST}/api/user`;
 
-const tossEndpoint = `${API_SERVER_HOST}/api/user/toss`;
+const tossEndpoint = `${API_SERVER_HOST}/api/user`;
 
 const axoisConfig = {
     headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        'Accept': 'application/json'
     }
 }
 
@@ -76,7 +77,7 @@ export const socialLogin = async () => {
 // Toss 결제 함수
 export const tossPayment = async (paymentData) => {
     try {
-        const res = await axios.post(`${tossEndpoint}`, paymentData, axoisConfig, 
+        const res = await axios.post(`${tossEndpoint}/toss`, paymentData, axoisConfig, 
         {withCredentials: true}
     );
         return res.data;

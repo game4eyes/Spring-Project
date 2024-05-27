@@ -35,11 +35,10 @@ public class PaymentController {
 //        return ResponseEntity.ok().body(new SingleResponse<>(paymentResDTO));
 //    }
 
-    @PostMapping("/toss")
+    @PostMapping(value = "/toss", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> requestPayment(@RequestBody @Valid PaymentDto paymentReqDTO) {
         try {
             Payment payment = paymentReqDTO.toEntity();
-            // paymentReqDTO에서 userEmail 추출
             String userEmail = paymentReqDTO.getUserEmail();
             PaymentResDto paymentResDTO = paymentService.requestPayment(payment, userEmail).toPaymentResDto();
             paymentResDTO.setSuccessUrl(paymentReqDTO.getSuccessUrl() == null ? paymentConfig.getSuccessUrl() : paymentReqDTO.getSuccessUrl());
@@ -47,7 +46,7 @@ public class PaymentController {
             return ResponseEntity.ok().body(new SingleResponse<>(paymentResDTO));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("An error occurred while processing the payment request.");
+            return ResponseEntity.status(500).body("An error occurred while processing the payment request: " + e.getMessage());
         }
     }
 
@@ -62,6 +61,7 @@ public class PaymentController {
     }
 
 
+    @PostMapping("/toss/fail")
     public ResponseEntity tossPaymentFail(
             @RequestParam String code,
             @RequestParam String msg,

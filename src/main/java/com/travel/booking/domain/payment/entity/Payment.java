@@ -28,10 +28,6 @@ public class Payment  {
     @Column(name = "payment_id", nullable = false, unique = true)
     private Long paymentId;
 
-    @ManyToOne
-    @JoinColumn(name = "booking_id", nullable = false)
-    private BookingEntity bookingId;
-
     @Column(nullable = false , name = "pay_type")
     @Enumerated(EnumType.STRING)
     private PayType payType;

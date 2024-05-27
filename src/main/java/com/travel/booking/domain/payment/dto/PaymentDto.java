@@ -24,15 +24,12 @@ public class PaymentDto {
 
     private String userEmail;
 
-    private BookingEntity bookingId;
-
     private String SuccessUrl;
     private String failUrl;
 
     public Payment toEntity() {
         return Payment.builder()
                 .payType(payType)
-                .bookingId(bookingId)
                 .amount(amount)
                 .userEmail(userEmail)
                 .orderName(orderName)
