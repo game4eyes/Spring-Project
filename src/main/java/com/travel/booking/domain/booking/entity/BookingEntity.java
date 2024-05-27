@@ -46,4 +46,8 @@ public class BookingEntity {
     // 버스일 경우
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
     private List<BookingBusSeatEntity> bookedSeats;
+
+    public BookingEntity(Long id) {
+        this.id = id;
+    }
 }

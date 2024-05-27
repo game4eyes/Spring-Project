@@ -3,10 +3,8 @@ package com.travel.booking.security.config;
 import com.travel.booking.domain.user.principal.PrincipalOauth2UserService;
 import com.travel.booking.security.auth.MyAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -33,7 +31,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/user/social-google").permitAll() // 경로 허용
+                        .requestMatchers("/api/user/toss").permitAll() // 결제 경로 허용
+                        .requestMatchers("/api/user/social-google").permitAll()
                         .requestMatchers("/security-login/info").authenticated()
                         .requestMatchers("/security-login/admin/**").hasAuthority("ADMIN")
                         .anyRequest().permitAll()
@@ -49,13 +48,15 @@ public class SecurityConfig {
                         .logoutUrl("/security-login/logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
-                ).oauth2Login(oauth2 -> oauth2
+                )
+                .oauth2Login(oauth2 -> oauth2
                         .loginPage("/api/user/login")
                         .defaultSuccessUrl("/api/user/security-login")
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(principalOauth2UserService)
                         )
-                ).exceptionHandling(exception -> exception
+                )
+                .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/security-login/login"))
                         .accessDeniedHandler(customAccessDeniedHandler())
                 );
@@ -81,5 +82,4 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
 }

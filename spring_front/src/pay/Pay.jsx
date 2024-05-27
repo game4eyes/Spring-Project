@@ -23,10 +23,12 @@ const Pay = () => {
         try {
             const paymentData = {
                 amount: 58500,
+                bookingId: 1,
                 orderId: 'bec1d544-2a34-4f44-ada0-c5213d8fd8dd',
                 orderName: '포인트 충전',
-                customerName: 'test1234',
-                customerEmail: 'darkjjun68@gmail.com',
+                userName: 'game4eyes',
+                userEmail: 'darkjjun68@gmail.com',
+                payType: 'CARD',
                 successUrl: 'http://localhost:9090/api/v1/payments/toss/success',
                 failUrl: 'http://localhost:9090/api/v1/payments/toss/fail'
             };

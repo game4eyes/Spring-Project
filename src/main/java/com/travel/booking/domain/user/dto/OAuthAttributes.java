@@ -16,19 +16,19 @@ public class OAuthAttributes {
     private String nameAttributeKey;
     private String provider;
     private String providerId;
-    private String name;
+    private String username;
     private String email;
     private String picture;
 
     @Builder
     public OAuthAttributes(Map<String, Object> attributes,
-                            String nameAttributeKey, String name,
+                            String nameAttributeKey, String username,
                             String email, String picture, String provider, String providerId) {
         this.provider = provider;
         this.providerId = providerId;
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
-        this.name = name;
+        this.username = username;
         this.email = email;
         this.picture = picture;
     }
@@ -46,7 +46,7 @@ public class OAuthAttributes {
     private static OAuthAttributes ofGoogle(String usernameAttributeName,
                                             Map<String, Object> attributes) {
         return OAuthAttributes.builder()
-                .name((String) attributes.get("name"))
+                .username((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
                 .picture((String) attributes.get("picture"))
                 .attributes(attributes)
@@ -57,7 +57,7 @@ public class OAuthAttributes {
     // User 엔티티 생성
     public User toEntity() {
         return User.builder()
-                .username(name)
+                .username(username)
                 .email(email)
                 .picture(picture)
                 .role(Role.USER)

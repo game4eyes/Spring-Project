@@ -31,17 +31,22 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PaymentService {
 
-    private JpaPaymentRepository paymentRepository;
-    private UserService userService;
-    private TossPaymentConfig tossPaymentConfig;
+    private final JpaPaymentRepository paymentRepository;
+    private final UserService userService;
+    private final TossPaymentConfig tossPaymentConfig;
 
 
     @Transactional
     public Payment requestPayment(Payment payment, String userEmail){
         User user = userService.FindByEmail(userEmail);
-        if (payment.getAmount() < 1000){
-            throw new CustomLogicException(ErrorCode.INVAILD_PAYMENT_AMOUNT);
+        System.out.println(userEmail);
+        if (user == null) {
+            throw new CustomLogicException(ErrorCode.USER_NOT_FOUND);
         }
+        if (payment.getAmount() < 1000) {
+            throw new CustomLogicException(ErrorCode.INVALID_PAYMENT_AMOUNT);
+        }
+
         payment.setCustomer(user);
         return paymentRepository.save(payment);
     }
