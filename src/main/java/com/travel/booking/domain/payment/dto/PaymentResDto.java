@@ -13,8 +13,8 @@ public class PaymentResDto {
     private Long amount;        // 가격 정보
     private String orderName;   // 주문명
     private String orderId;     // 주문 id
-    private String customerEmail;   // 고객 이메일
-    private String customerName;    // 고객명
+    private String userEmail;   // 고객 이메일
+    private String userName;    // 고객명
     private String successUrl;  // 성공시 redirect url
     private String failUrl;     // 실패시 redirect url
 
@@ -22,6 +22,7 @@ public class PaymentResDto {
     private boolean cancelYN;   // 취소여부
     private String cancelReason; // 취소이유
     private String createdAt;   // 결제한 시간
+
 
 
 

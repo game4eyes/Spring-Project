@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -88,13 +89,18 @@ public class SessionLoginController {
         return ResponseEntity.ok("로그인에 성공했습니다.");
     }
 
-    @PostMapping("/social-google") // 소셜로그인(구글)
-    public String google(@Login SessionUser user, Model model) {
+    //@PostMapping("/social-google") // 소셜로그인(구글)
+    //public String google(@Login SessionUser user, Model model) {
         // 세션에 저장된 값이 있을 때만 model에 userName 등록
-        if (user != null) {
-            model.addAttribute("userName", user.getName());
-        }
-        return "http://localhost:9090/oauth2/authorization/google";
+      //  if (user != null) {
+      //      model.addAttribute("userName", user.getUsername());
+      //  }
+      // return "redirect:/oauth2/authorization/google";
+    //}
+
+   @GetMapping("/social-google") // 소셜로그인(구글)
+    public RedirectView google() {
+       return new RedirectView("http://localhost:9090/oauth2/authorization/google");
     }
 
 
