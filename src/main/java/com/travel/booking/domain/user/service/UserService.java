@@ -77,11 +77,28 @@ public class UserService {
         return optionalUser.get();
     }
 
+//    public User FindByEmail(String email){
+//        if(email == null) return null;
+//
+//        Optional<User> optionalUser = userRepository.findByEmail(email);
+//        if(optionalUser.isEmpty()) return null;
+//
+//        return optionalUser.get();
+//    }
+
     public User FindByEmail(String email){
-        if(email == null) return null;
+        if(email == null) {
+            System.out.println("Email is null");
+            return null;
+        }
+
+        System.out.println("Finding user with email: " + email);
 
         Optional<User> optionalUser = userRepository.findByEmail(email);
-        if(optionalUser.isEmpty()) return null;
+        if(optionalUser.isEmpty()) {
+            System.out.println("User not found for email: " + email);
+            return null;
+        }
 
         return optionalUser.get();
     }
