@@ -1,0 +1,98 @@
+/* CommonButton.css */
+body {
+    font-family: 'Arial', sans-serif; /* 원하는 기본 글꼴 설정 */
+    line-height: 1.6;
+    color: #333;
+}
+
+h2 {
+    font-family: 'Arial', sans-serif; /* 제목 글꼴 설정 */
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+p {
+    font-family: 'Arial', sans-serif; /* 일반 텍스트 글꼴 설정 */
+    font-size: 16px;
+    color: #555;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+/* Common button styles */
+.button {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #333;
+    padding: 7px 14px; /* 패딩을 줄였습니다 */
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px; /* 글꼴 크기를 줄였습니다 */
+    transition: all 0.3s ease;
+}
+
+.button:hover {
+    background-color: #f0f0f0;
+    border-color: #bbb;
+}
+
+.button:active {
+    background-color: #333;
+    border-color: #333;
+    color: #fff;
+}
+
+
+
+
+/*-----역 목록을 버튼으로 나타냄-------*/
+.train-station-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .train-station-list li {
+    margin-bottom: 10px;
+  }
+  
+  .train-station-list li button {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+  .train-station-list li button a {
+    display: block;
+    padding: 10px;
+    background-color: #f0f0f0;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .train-station-list li button a:hover {
+    background-color: #ddd;
+  }
+  

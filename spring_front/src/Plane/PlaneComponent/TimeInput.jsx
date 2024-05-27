@@ -4,8 +4,9 @@ const TimeInput = ({ label, value, onChange }) => {
     return (
         <div>
             <label>
-                {label}:
+                {label}
                 <input
+                 style={{marginLeft:'10px'}}
                     type="time"
                     value={value}
                     onChange={onChange}

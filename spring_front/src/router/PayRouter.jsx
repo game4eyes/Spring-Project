@@ -8,6 +8,9 @@ import FindUserId from '../User/FindUserId';
 import MyPageModify from '../User/MypageModify';
 import ResultPage from '../components/ResultPage';
 import Pay from '../pay/Pay';
+import Charge from '../components/Charge';
+import SuccessPage from '../pay/SuccessPage';
+import FailPage from '../pay/FailPage';
 
 
 
@@ -29,15 +32,27 @@ const PayRouter = () => {
   
   {
     path    : 'paysuccess',     //   '/pay/paysuccess
-    element : <Suspense fallback={Loading}><ResultPage result={"결제가 완료되었습니다"} /></Suspense>,
+    element : <Suspense fallback={Loading}><SuccessPage/></Suspense>,
   },
  
   
   {
     path    : 'payfail',     //   '/pay/payfail
-    element : <Suspense fallback={Loading}><ResultPage result={"결제가 실패되었습니다"} /></Suspense>,
+    element : <Suspense fallback={Loading}><FailPage/></Suspense>,
   },
  
+  {           //버스 수수료 정보 페이지
+    path    : 'chargeinfo/bus',     //   '/pay/chargeinfo/bus/
+    element : <Suspense fallback={Loading}><Charge id ={1}/></Suspense>,
+  },
+  {           //기차 수수료 정보 페이지
+    path    : 'chargeinfo/train',     //   '/pay/chargeinfo/train/
+    element : <Suspense fallback={Loading}><Charge id ={2}/></Suspense>,
+  },
+    {           //비행기 수수료 정보 페이지
+    path    : 'chargeinfo/plane',     //   '/pay/chargeinfo/plane/
+    element : <Suspense fallback={Loading}><Charge id ={3}/></Suspense>,
+  },
   ]
 };
 

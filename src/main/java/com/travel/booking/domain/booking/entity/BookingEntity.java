@@ -26,7 +26,10 @@ public class BookingEntity {
     private String startStationName;
     private String endStationName;
     private LocalDate date;
-    private LocalTime time;
+    // 출발 시각
+    private LocalTime departureTime;
+    // 도착 시각
+    private LocalTime arrivalTime;
 
     @Enumerated(EnumType.STRING)
     private StationClassEnum stationClassEnum;

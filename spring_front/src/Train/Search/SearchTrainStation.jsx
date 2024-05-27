@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getStationInfo } from '../../api/dataApi';
 import { useNavigate } from 'react-router-dom';
+import '../../css/CommonButton.css';
 //import {setTrainticketAndUpdate} from '../../Ticket/Ticket_Book/Train';
 
 const SearchTrainStation = ({ departure, destination, onSearchResult }) => {
@@ -199,9 +200,9 @@ const SearchTrainStation = ({ departure, destination, onSearchResult }) => {
             {stationClassParam === '5'&&  <h2>비행기 정보</h2>} 
             </div>
             <div>
-                <input type="text" value={searchTerm} id = "searchbox" onChange={handleInputChange} />
-                <button type="button" onClick={() => confirm(searchTerm)}>확인</button>
-                <button type="button" onClick={windowclose}>나가기</button>
+                <input type="text" value={searchTerm} id="searchbox" onChange={handleInputChange} />
+                <button className="button" type="button" onClick={() => confirm(searchTerm)}>확인</button>
+                <button className="button" type="button" onClick={windowclose}>나가기</button>
             </div>
             <div>
                 {/* URL의 값에 따라 출발지 선택 또는 도착지 선택을 렌더링합니다. */}
@@ -212,15 +213,15 @@ const SearchTrainStation = ({ departure, destination, onSearchResult }) => {
                 <h2>지역 선택</h2>
                 {/* 한글 자음 버튼들을 출력합니다. */}
                 {KoreanArrays.map((region, i) => (
-                    <button key={i} onClick={() => handleRegionClick(region)}>{region}</button>
+                     <button key={i} className="button" onClick={() => handleRegionClick(region)}>{region}</button>
                 ))}
             </div>
-            <div>
+            <div className='train-station-list'>
                 <ul>
                     {/* sortedData에 따라 기차역 정보를 출력합니다. */}
                     {sortedData.map(station => (
                         <li key={station.stationID} onClick={() => handleStationClick(station.stationName,station.stationID)}>
-                            <a href ={"#"}>{station.stationName}</a>
+                          <button type="button"> <a href ={"#"}>{station.stationName}</a></button> 
                         </li>
                     ))}
                 </ul>

@@ -4,6 +4,8 @@
     align-items: center;
 } */
 
+
+
 .layout {
     margin-bottom: 20px; /* Added margin between Header and Article */
 }
@@ -25,17 +27,30 @@
     
 }
 
-.ad-container {
-    width: 20%; /* Set ad-container width to 20% of the content */
+ /* .ad-container {
+    width: 20%; 
     position: sticky;
-    top: 40px;
+    top: 300px;
     margin-top: 40px;
     margin-left: 10px;
-    margin-right: 10px; /* Reduced the right margin */
+    margin-right: 10px;
     display: flex;
     flex-direction: column;
-    align-items: flex-end; /* Align items to the right */
-}
+    align-items: flex-end; 
+}  */
+
+
+ .ad-container {
+    width: 30%; 
+    position: sticky;
+    top: 300px;
+    margin-top: 40px;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; 
+} 
 
 .ad-list {
     display: flex;
@@ -61,4 +76,3 @@
 .ad-description {
     /* Additional styles for ad description if needed */
 }
-
