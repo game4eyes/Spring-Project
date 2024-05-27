@@ -9,6 +9,8 @@ import MyPageModify from '../User/MypageModify';
 import ResultPage from '../components/ResultPage';
 import Pay from '../pay/Pay';
 import Charge from '../components/Charge';
+import SuccessPage from '../pay/SuccessPage';
+import FailPage from '../pay/FailPage';
 
 
 
@@ -30,13 +32,13 @@ const PayRouter = () => {
   
   {
     path    : 'paysuccess',     //   '/pay/paysuccess
-    element : <Suspense fallback={Loading}><ResultPage result={"결제가 완료되었습니다"} /></Suspense>,
+    element : <Suspense fallback={Loading}><SuccessPage/></Suspense>,
   },
  
   
   {
     path    : 'payfail',     //   '/pay/payfail
-    element : <Suspense fallback={Loading}><ResultPage result={"결제가 실패되었습니다"} /></Suspense>,
+    element : <Suspense fallback={Loading}><FailPage/></Suspense>,
   },
  
   {           //버스 수수료 정보 페이지
