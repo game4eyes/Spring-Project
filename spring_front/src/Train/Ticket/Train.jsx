@@ -310,7 +310,7 @@ const Train = () => {
 
         <Layout title="기차 승차권 예매" body="정보 입력">
             <div className="train_book">
-                <form onSubmit={handleSubmit} style={{ marginLeft: '10%' }}>
+                <form onSubmit={handleSubmit}>
                     
                     <h2 style={{ marginBottom: '50px' }}>기차 예약</h2>
                     <div className="col1">
@@ -438,6 +438,7 @@ const Train = () => {
                             endStationID={trainticket.endStationID}
                             dayz={trainticket.dayz}
                             hour={trainticket.hour}
+                         trainticket={trainticket}
                         />
                     }
                 </form>

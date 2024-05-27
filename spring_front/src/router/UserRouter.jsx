@@ -1,11 +1,11 @@
 //import { Routes, Route } from 'react-router-dom';
 import Login from '../User/Login';
 import Join from '../User/Join';
-import MyPage from '../User/Mypage';
 import ResetPassword from '../User/ResetPassword';
 import { Suspense } from 'react';
 import FindUserId from '../User/FindUserId';
 import MyPageModify from '../User/MypageModify';
+import Mypage from '../User/Mypage';
 
 
 
@@ -30,7 +30,7 @@ const UserRouter = () => {
 },
 {
     path    : 'mypage',          //   '/api/user/mypage'
-    element : <Suspense fallback={Loading}><MyPage/></Suspense>
+    element : <Suspense fallback={Loading}><Mypage/></Suspense>
 },
 {
     path    : 'finduserid',     //   '/api/user/finduserid'
