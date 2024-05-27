@@ -124,7 +124,7 @@ const Plane = () => {
                     <DateInput label="출발일" value={ticketInfo.date} onChange={e => setTicketInfo({...ticketInfo, date: e.target.value})} /><br/>
                     <TimeInput label="출발 시간" value={selectedDepartureTime} onChange={e => setSelectedDepartureTime(e.target.value)} /><br/>
                     <SelectInput label="인원" value={ticketInfo.passengerCount} onChange={e => setTicketInfo({...ticketInfo, passengerCount: e.target.value})} options={Array.from({length: 10}, (_, i) => ({value: i + 1, label: `${i + 1}명`}))} /><br/>
-                    <SelectInput label="좌석 유형" value={ticketInfo.seatType} onChange={e => setTicketInfo({...ticketInfo, seatType: e.target.value})} options={[{value: 'standard', label: '일반'}, {value: 'premium', label: '프리미엄'}]} />
+                    <SelectInput label="좌석 유형" value={ticketInfo.seatType} onChange={e => setTicketInfo({...ticketInfo, seatType: e.target.value})} options={[{value: 'economy', label: '이코노미'}, {value: 'business', label: '비즈니스'}, {value: 'first', label: '퍼스트'}]} />
                     <Checkbox checked={ticketInfo.disability} onChange={() => setTicketInfo({...ticketInfo, disability: !ticketInfo.disability})} label="장애가 있습니다" />
                     <Checkbox checked={ticketInfo.legroom} onChange={() => setTicketInfo({...ticketInfo, legroom: !ticketInfo.legroom})} label="Legroom" />
                     <Checkbox checked={ticketInfo.window} onChange={() => setTicketInfo({...ticketInfo, window: !ticketInfo.window})} label="Window Seat" />
