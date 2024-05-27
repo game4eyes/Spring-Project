@@ -1,182 +1,92 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Header from '../components/Header';
-import Article from '../components/Article';
-import Layout from '../components/Layout';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import Layout from "../components/Layout";
+import '@/css/form/mypage.css';
 
-const MyPage = () => {
-  const [email, setEmail] = useState('');
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+const Mypage = () => {
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const navigate = useNavigate();
 
-  const [message, setMessage] = useState('');
-  const [initialData, setInitialData] = useState({ email: ''}); // 초기 데이터 저장
+    const [cookies, setCookie] = useCookies(['userEmail', 'bookingInfo']);
+    const [bookingInfo, setBookingInfo] = useState(null);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get('/api/user/profile');          // API 예시주소
-        const userData = response.data;
-        setEmail(userData.email || '');
-        // 초기 데이터 설정
-        setInitialData({
-          email: userData.email || '',
-          phone: userData.phone || '',
-          address: userData.address || ''
-        });
-      } catch (error) {
-        console.error('프로필 정보를 불러오는데 실패했습니다.', error);
-        setMessage('프로필 정보를 불러오는데 실패했습니다.');
-      }
+    useEffect(() => {
+        if (cookies.bookingInfo) {
+            setBookingInfo(cookies.bookingInfo);
+        }
+    }, [cookies.bookingInfo]);
+
+    console.log('User Email:', cookies.userEmail);
+    console.log('Booking Info:', cookies.bookingInfo);
+
+    const bookingcancel = (e) => {
+        e.preventDefault();
+        const isConfirmed = window.confirm('예약을 취소하시겠습니까?');
+        if (isConfirmed) {
+            alert('예약이 취소되었습니다');
+            navigate('/');
+        }
     };
 
-    fetchUserData();
-  }, []);
+    const handleProfileEdit = () => {
+        alert('프로필 수정 페이지로 이동합니다.');
+        navigate('/api/user/MypageModify'); // 예시 경로
+    };
 
-  
-  const isChanged = () => {
-    return email !== initialData.email ||
-           currentPassword.length > 0 ||
-           newPassword.length > 0;
-  };
-
-  const handleUpdateProfile = async (e) => {
-    e.preventDefault();
-    try {
-      if (currentPassword && newPassword) {
-        const passwordValidationResponse = await axios.post('/api/user/validate-password', { password: currentPassword });
-        if (passwordValidationResponse.data.isValid) {
-          await axios.post('/api/user/change-password', { newPassword });
-          setMessage('비밀번호가 성공적으로 변경되었습니다.');
-        } else {
-          setMessage('현재 비밀번호가 일치하지 않습니다.');
-          return;
+    const handleAccountDelete = () => {
+        const isConfirmed = window.confirm('정말로 회원탈퇴 하시겠습니까?');
+        if (isConfirmed) {
+            alert('회원탈퇴가 완료되었습니다.');
+            navigate('/'); // 예시 경로
         }
-      }
+    };
 
-      await axios.post('/api/user/update', { email });
-      setMessage('프로필이 성공적으로 업데이트되었습니다.');
-    } catch (error) {
-      console.error('프로필 업데이트 실패:', error);
-      setMessage('프로필 업데이트에 실패했습니다.');
-    }
-  };
+    return (
+        <Layout title="마이페이지">
+            <div className="mypage-container">
+                {/* <h2 style={{ marginBottom: '30px' }}>마이페이지</h2>
+                <hr /> */}
 
-  return (
-    <div className="mypage-container">
-      
-        <Layout title ="마이페이지" body ="회원정보 확인">
-      <h1>마이페이지</h1>
-      <hr/>
-      <form onSubmit={handleUpdateProfile}>
-        <h3>프로필</h3>
-        <div className="form-group">
-          <label>이메일:</label>
-          이메일 DB 값
-          {/* <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} /> */}
-        </div>
-        <div className="form-group">
-          {/* <label>기존 비밀번호:</label> */}
-          <label>비밀번호:</label>
-          비밀번호 DB 값
-          {/* <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} /> */}
-        </div>
-        {/* <div className="form-group">
-          <label>새 비밀번호:</label>
-          <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-        </div> */}
-        <button type="submit" disabled={!isChanged()}>수정하기</button>
-        {message && <p>{message}</p>}
-      
-      </form>
-      <hr />
+                <h2 style={{ marginBottom: '40px' }}>프로필</h2>
+                <div className="form-group">
+                    <label>이메일</label>
+                    <span>{cookies.userEmail}</span>
+                </div>
+                <div className="form-group">
+                    <label>닉네임</label>
+                    <span>닉네임 정보 입력(하드코딩)</span>
+                </div>
+                <div className="button-container profile-buttons">
+    <button type="button" style={{ backgroundColor: '#4CAF50', marginRight:'15px' }} onClick={handleProfileEdit}>수정하기</button>
+    <button type="button" style={{ backgroundColor: '#f44336' }} onClick={handleAccountDelete}>회원탈퇴</button>
+</div>
+                <hr style={{ marginTop: '20px', marginBottom: '50px' }} />
+                <h2 style={{ marginBottom: '40px' }}>열차 정보</h2>
+                {bookingInfo ? (
+                    <div>
+                        <p>출발지: {bookingInfo.departure}</p>
+                        <p>도착지: {bookingInfo.destination}</p>
+                        <p>가격 : {bookingInfo.price}</p>
+                        <p>날짜 : {bookingInfo.date}</p>
+                        <p>시간: {bookingInfo.hour}</p>
+                        <p>요일: {bookingInfo.dayz}</p>
+                        <p>열차 이름: {bookingInfo.railName}</p>
+                        <p>열차 종류: {bookingInfo.trainClass}</p>
+                        <p>열차 번호: {bookingInfo.trainNo}</p>
+                        <p>출발 시간: {bookingInfo.departureTime}</p>
+                    </div>
+                ) : (
+                    <p>예약된 열차 정보가 없습니다.</p>
+                )}
 
-      <form onSubmit={handleUpdateProfile}>
-        <h3>티켓 정보 (버스, if문 : 버스 예약 정보가 있을 경우)</h3>
-        <div className="form-group">
-          <label>티켓 이름:</label>
-          티켓 이름 DB 값
-          {/* <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} /> */}
-        </div>
-        <div className="form-group">
-          {/* <label>기존 비밀번호:</label> */}
-          <label>비밀번호:</label>
-          비밀번호 DB 값
-          {/* <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} /> */}
-        </div>
-        {/* <div className="form-group">
-          <label>새 비밀번호:</label>
-          <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-        </div> */}
-        <button type="submit" disabled={!isChanged()}>수정하기</button>
-        {message && <p>{message}</p>}
-      
-      </form>
-
-      <hr />
-
-      <form onSubmit={handleUpdateProfile}>
-        <h3>티켓 정보 (기차, if문 : 기차 예약 정보가 있을 경우)</h3>
-        <div className="form-group">
-          <label>티켓 이름:</label>
-          티켓 이름 DB 값
-          {/* <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} /> */}
-        </div>
-        <div className="form-group">
-          {/* <label>기존 비밀번호:</label> */}
-          <label>비밀번호:</label>
-          비밀번호 DB 값
-          {/* <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} /> */}
-        </div>
-        {/* <div className="form-group">
-          <label>새 비밀번호:</label>
-          <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-        </div> */}
-        <button type="submit" disabled={!isChanged()}>수정하기</button>
-        {message && <p>{message}</p>}
-      
-      </form>
-
-      <hr />
-
-      <form onSubmit={handleUpdateProfile}>
-        <h3>티켓 정보 (공항, if문 : 공항 예약 정보가 있을 경우)</h3>
-        <div className="form-group">
-          <label>티켓 이름:</label>
-          티켓 이름 DB 값
-          {/* <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} /> */}
-        </div>
-        <div className="form-group">
-          {/* <label>기존 비밀번호:</label> */}
-          <label>비밀번호:</label>
-          비밀번호 DB 값
-          {/* <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} /> */}
-        </div>
-        {/* <div className="form-group">
-          <label>새 비밀번호:</label>
-          <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-        </div> */}
-        <button type="submit" disabled={!isChanged()}>수정하기</button>
-        {message && <p>{message}</p>}
-      
-      </form>
-
-      <hr />
-
-<form onSubmit={handleUpdateProfile}>
-  
-  <div className="form-group">
-    
-  <h3>티켓 정보가 없습니다 (else : 아무 예약 정보가 없을 경우)</h3>
-  
-  </div>
-
-   
-
-</form>
-      </Layout>
-    </div>
-  );
+                <div className="button-container">
+                    <button type="button" className="cancel-button" style={{ backgroundColor: '#f44336' }} onClick={bookingcancel}>취소</button>
+                </div>
+            </div>
+        </Layout>
+    );
 };
 
-export default MyPage;
+export default Mypage;
