@@ -36,8 +36,8 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
                 orderId: `order_${flight.id}_${Date.now()}`,
                 orderName: `${flight.airline} - ${departureName} to ${destinationName}`,
                 customerName: '고객명', // 실제 고객 이름으로 대체하세요
-                successUrl: '/pay/paysuccess', // 성공시 URL
-                failUrl: '/pay/payfail', // 실패시 URL
+                successUrl: 'http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090/pay/paysuccess', // 성공시 URL
+                failUrl: 'http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090/pay/payfail', // 실패시 URL
             }).catch(function (error) {
                 if (error.code === 'USER_CANCEL') {
                     // 사용자가 결제창을 닫았을 때 처리
