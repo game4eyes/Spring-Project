@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -54,7 +55,7 @@ public class SessionLoginController {
     @PostMapping("/login")
     @ResponseBody // JSON 응답을 반환하려면 @ResponseBody 사용
     public ResponseEntity<?> login(@RequestBody LoginReq loginRequest, BindingResult bindingResult,
-                                    HttpServletRequest request, HttpServletResponse response) {
+                                   HttpServletRequest request, HttpServletResponse response) {
         // 비어있는 값 검증
         if (loginRequest.getEmail() == null || loginRequest.getPassword() == null) {
             return ResponseEntity.badRequest().body("이메일과 비밀번호는 필수입니다.");
@@ -76,6 +77,7 @@ public class SessionLoginController {
 
         // 세션에 사용자 정보 저장
         session.setAttribute("email", user.getEmail());
+        session.setAttribute("username", user.getUsername());
         session.setMaxInactiveInterval(1800); // 세션 유효 시간 30분
 
         // 쿠키에 세션 ID 저장
@@ -84,17 +86,34 @@ public class SessionLoginController {
         sessionCookie.setPath("/"); // 모든 경로에서 접근 가능하도록 설정
         response.addCookie(sessionCookie);
 
+        // 쿠키에 사용자 정보 저장
+        Cookie emailCookie = new Cookie("email", user.getEmail());
+        emailCookie.setMaxAge(1800); // 30분 유효
+        emailCookie.setPath("/"); // 모든 경로에서 접근 가능하도록 설정
+        response.addCookie(emailCookie);
+
+        Cookie usernameCookie = new Cookie("username", user.getUsername());
+        usernameCookie.setMaxAge(1800); // 30분 유효
+        usernameCookie.setPath("/"); // 모든 경로에서 접근 가능하도록 설정
+        response.addCookie(usernameCookie);
+
         // 로그인 성공 시 응답
         return ResponseEntity.ok("로그인에 성공했습니다.");
     }
 
-    @PostMapping("/social-google") // 소셜로그인(구글)
-    public String google(@Login SessionUser user, Model model) {
+
+    //@PostMapping("/social-google") // 소셜로그인(구글)
+    //public String google(@Login SessionUser user, Model model) {
         // 세션에 저장된 값이 있을 때만 model에 userName 등록
-        if (user != null) {
-            model.addAttribute("userName", user.getName());
-        }
-        return "http://localhost:9090/oauth2/authorization/google";
+      //  if (user != null) {
+      //      model.addAttribute("userName", user.getUsername());
+      //  }
+      // return "redirect:/oauth2/authorization/google";
+    //}
+
+   @GetMapping("/social-google") // 소셜로그인(구글)
+    public RedirectView google() {
+       return new RedirectView("http://localhost:9090/oauth2/authorization/google");
     }
 
 

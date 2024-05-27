@@ -206,11 +206,11 @@ const SearchTrainStation = ({ departure, destination, onSearchResult }) => {
             </div>
             <div>
                 {/* URL의 값에 따라 출발지 선택 또는 도착지 선택을 렌더링합니다. */}
-                {urlParams.has('departure')&& <h2>출발지 선택</h2>}
-                {urlParams.has('destination')&& <h2>도착지 선택</h2>}
+                {urlParams.has('departure')&& <h2>출발지 지역 선택</h2>}
+                {urlParams.has('destination')&& <h2>도착지 지역 선택</h2>}
             </div>
             <div>
-                <h2>지역 선택</h2>
+              
                 {/* 한글 자음 버튼들을 출력합니다. */}
                 {KoreanArrays.map((region, i) => (
                      <button key={i} className="button" onClick={() => handleRegionClick(region)}>{region}</button>
