@@ -2,19 +2,20 @@ import axios from "axios";
 
 // 서버 호스트 설정
 
- export const API_SERVER_HOST = 'http://localhost:9090'; // 서버 주소
+export const API_SERVER_HOST = 'http://localhost:9090'; // 서버 주소
 
 // export const API_SERVER_HOST = 'http://ec2-3-37-87-73.ap-northeast-2.compute.amazonaws.com:9090'; // 서버 주소
 
 // 사용자 관련 엔드포인트S
 const userPrefix = `${API_SERVER_HOST}/api/user`;
 
-const tossEndpoint = `${API_SERVER_HOST}/api/user/toss`;
+const tossEndpoint = `${API_SERVER_HOST}/api/user`;
 
 const axoisConfig = {
     headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        'Accept': 'application/json'
     }
 }
 
@@ -58,20 +59,25 @@ export const getSessionList = async () => {
     return res.data;
 };
 
+export const getUserInfo = async() => {
+    const res = await axios.get(`${userPrefix}/info`); // 세션 리스트 엔드포인트
+    return res.data;
+}
+
 // 소셜 로그인 (구글)
 export const socialLogin = async () => {
     try {
       const res = await axios.post(`${userPrefix}/social-google`, axoisConfig); // 소셜 로그인 엔드포인트
-      return res.data;
+        return res.data;
     } catch (error) {
       throw new Error('소셜 로그인 중 오류가 발생했습니다.'); // 오류 발생 시 에러 처리
     }
-  };
+};
 
 // Toss 결제 함수
 export const tossPayment = async (paymentData) => {
     try {
-        const res = await axios.post(`${tossEndpoint}`, paymentData, axoisConfig, 
+        const res = await axios.post(`${tossEndpoint}/toss`, paymentData, axoisConfig, 
         {withCredentials: true}
     );
         return res.data;

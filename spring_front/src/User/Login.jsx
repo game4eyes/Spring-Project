@@ -4,11 +4,11 @@ import { userLogin } from '../api/todoApi';
 import { AuthContext } from '../global/AuthContext';
 import Layout from '../components/Layout';
 import { socialLogin } from '../api/todoApi';
-
 import '@/css/form/loginform.css';
 import { ReactComponent as GoogleLogoIcon } from '@/icon/google_logo2.svg'
 import { useCookies } from 'react-cookie';
 import Logo_black from '@/components/Logo_black';
+
 
 const Login = () => {
   const { isLoggedIn, setIsLoggedIn, setUser } = useContext(AuthContext);  // isLoggedIn 추가
