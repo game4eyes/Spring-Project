@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import '../../css/FlightList.css';
+import TossPay from '../../pay/TossPay'; 
 
 const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationName, selectedDepartureTime }) => {
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
@@ -27,36 +28,6 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
         return Math.round(baseFare / 100) * 100;
     };
 
-    const handleBook = async (e, flight, fare) => {
-        e.preventDefault();
-        try {
-            const tossPayments = await loadTossPayments(clientKey);
-            const uniqueOrderId = `order_${flight.id}_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
-            tossPayments.requestPayment('카드', {
-                amount: fare,
-                orderId: uniqueOrderId,
-                orderName: `${flight.airline} - ${departureName} to ${destinationName}`,
-                userName: '고객명',
-                userEmail: '',
-                payType: 'CARD',
-                successUrl: 'http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090/pay/paysuccess', // 성공시 URL
-                failUrl: 'http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090/pay/payfail', // 실패시 URL
-            }).catch(function (error) {
-                if (error.code === 'USER_CANCEL') {
-                    // 사용자가 결제창을 닫았을 때 처리
-                } else if (error.code === 'INVALID_CARD_COMPANY') {
-                    // 유효하지 않은 카드 코드 처리
-                } else {
-                    // 기타 에러 처리
-                    console.error(error);
-                }
-            });
-        } catch (error) {
-            console.error('토스 결제 로드 에러:', error);
-        }
-        onSelectFareAndBook(flight, fare, flight.departureTime);
-    };
-
     const filteredFlights = useMemo(() => {
         const selectedTime = new Date(`1970-01-01T${selectedDepartureTime}:00`).getTime();
         return flightData.filter(flight => {
@@ -79,7 +50,7 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
                             <th>Arrival Time</th>
                             <th>Run Day</th>
                             <th>Fare</th>
-                            <th>Action</th>
+                            <th>Payment method</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -93,7 +64,15 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
                                 <td>{flight.runDay}</td>
                                 <td>₩{fares[flight.id]}</td>
                                 <td>
-                                    <button type="button" onClick={(e) => handleBook(e, flight, fares[flight.id])}>결제</button>
+                                    <TossPay
+                                        amount={fares[flight.id]}
+                                        orderId={`order_${flight.id}_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`}
+                                        orderName={`${flight.airline} - ${departureName} to ${destinationName}`}
+                                        customerName="고객명"
+                                        successUrl="http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090/pay/paysuccess"
+                                        failUrl="http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090/pay/payfail"
+                                        onSelectFareAndBook={() => onSelectFareAndBook(flight, fares[flight.id], flight.departureTime)}
+                                    />
                                 </td>
                             </tr>
                         ))}
