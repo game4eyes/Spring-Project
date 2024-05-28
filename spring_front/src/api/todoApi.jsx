@@ -15,6 +15,7 @@ const axoisConfig = {
     headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
+        'withCredentials': true,
         'Accept': 'application/json'
     }
 }
@@ -67,7 +68,7 @@ export const getUserInfo = async() => {
 // 소셜 로그인 (구글)
 export const socialLogin = async () => {
     try {
-      const res = await axios.post(`${userPrefix}/social-google`, axoisConfig); // 소셜 로그인 엔드포인트
+      const res = await axios.get(`${userPrefix}/social-google`, axoisConfig); // 소셜 로그인 엔드포인트
         return res.data;
     } catch (error) {
       throw new Error('소셜 로그인 중 오류가 발생했습니다.'); // 오류 발생 시 에러 처리

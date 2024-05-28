@@ -56,6 +56,10 @@ public class User {
         return this;
     }
 
+    public User(String email) {
+        this.email = email;
+    }
+
     public String getRoleKey(){
         return this.role.getKey();
     }
@@ -67,7 +71,6 @@ public class User {
                 .email((String) attributes.get("email"))
                 .picture((String) attributes.get("picture"))
                 .attributes(attributes)
-                .nameAttributeKey(userNameAttributeName)
                 .build();
     }
 

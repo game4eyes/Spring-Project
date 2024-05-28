@@ -55,7 +55,7 @@ public class SessionLoginController {
     @PostMapping("/login")
     @ResponseBody // JSON 응답을 반환하려면 @ResponseBody 사용
     public ResponseEntity<?> login(@RequestBody LoginReq loginRequest, BindingResult bindingResult,
-                                   HttpServletRequest request, HttpServletResponse response) {
+                                     HttpServletRequest request, HttpServletResponse response) {
         // 비어있는 값 검증
         if (loginRequest.getEmail() == null || loginRequest.getPassword() == null) {
             return ResponseEntity.badRequest().body("이메일과 비밀번호는 필수입니다.");
@@ -111,11 +111,10 @@ public class SessionLoginController {
       // return "redirect:/oauth2/authorization/google";
     //}
 
-   @GetMapping("/social-google") // 소셜로그인(구글)
-    public RedirectView google() {
-       return new RedirectView("http://localhost:9090/oauth2/authorization/google");
-    }
-
+//   @GetMapping("/social-google") // 소셜로그인(구글)
+//    public RedirectView google() {
+//       return new RedirectView("http://localhost:9090/oauth2/authorization/google");
+//    }
 
     @GetMapping("/logout") // 로그아웃 처리
     public String logout(HttpServletRequest request) {
@@ -128,20 +127,20 @@ public class SessionLoginController {
     }
 
     @GetMapping("/info") // 사용자 정보 페이지
-    public String userInfo(@SessionAttribute(name = "userId", required = false) Long userId, Model model) {
-        User loginUser = userService.getLoginUserByEmail(userId);
+    public String userInfo(@SessionAttribute(name = "email", required = false) String email, Model model) {
+        User loginUser = userService.getLoginUserByEmail(email);
 
         if (loginUser == null) { // 로그아웃된 경우
-            return "redirect:/session-login/login";
+            return "redirect:/login";
         }
 
-        model.addAttribute("user", loginUser); // 사용자 정보 추가
+        model.addAttribute("email", loginUser); // 사용자 정보 추가
         return "info"; // 사용자 정보 페이지
     }
 
     @GetMapping("/admin") // 관리자 페이지
-    public String adminPage(@SessionAttribute(name = "userId", required = false) Long userId) {
-        User loginUser = userService.getLoginUserByEmail(userId);
+    public String adminPage(@SessionAttribute(name = "userId", required = false) String email) {
+        User loginUser = userService.getLoginUserByEmail(email);
 
         if (loginUser == null) { // 로그인되지 않은 경우
             return "redirect:/session-login/login";

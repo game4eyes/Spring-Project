@@ -9,58 +9,53 @@ import lombok.Getter;
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter
+@Data
+@Builder
 public class OAuthAttributes {
 
-    private Map<String, Object> attributes;
-    private String nameAttributeKey;
     private String provider;
-    private String providerId;
+    private Map<String, Object> attributes;
+    private String userId;
     private String username;
     private String email;
     private String picture;
+    private String nickname;
 
-    @Builder
-    public OAuthAttributes(Map<String, Object> attributes,
-                            String nameAttributeKey, String username,
-                            String email, String picture, String provider, String providerId) {
-        this.provider = provider;
-        this.providerId = providerId;
-        this.attributes = attributes;
-        this.nameAttributeKey = nameAttributeKey;
-        this.username = username;
-        this.email = email;
-        this.picture = picture;
+    public static OAuthAttributes of(String provider, String usernameAttributeName, Map<String, Object> attributes){
+        switch (provider){
+            case "google":
+                return OAuthAttributes.ofGoogle(provider, usernameAttributeName, attributes);
+            default:
+                throw new RuntimeException("소셜 로그인 접근 실패");
+        }
     }
 
-    // OAuth2User에서 반환하는 사용자 정보는 Map
-    // 따라서 값 하나하나를 변환해야 한다.
-    public static OAuthAttributes of(String registrationId,
-                                     String userNameAttributeName,
-                                     Map<String, Object> attributes) {
 
-        return ofGoogle(userNameAttributeName, attributes);
-    }
+    private static OAuthAttributes ofGoogle(String provider, String usernameAttributeName, Map<String, Object> attributes){
 
-    // 구글 생성자
-    private static OAuthAttributes ofGoogle(String usernameAttributeName,
-                                            Map<String, Object> attributes) {
         return OAuthAttributes.builder()
-                .username((String) attributes.get("name"))
-                .email((String) attributes.get("email"))
-                .picture((String) attributes.get("picture"))
+                .provider(provider)
                 .attributes(attributes)
-                .nameAttributeKey(usernameAttributeName)
+                .username(String.valueOf(attributes.get("name")))
+                .email(String.valueOf(attributes.get("email")))
+                .userId(String.valueOf(attributes.get(usernameAttributeName)))
                 .build();
     }
 
-    // User 엔티티 생성
-    public User toEntity() {
-        return User.builder()
-                .username(username)
-                .email(email)
-                .picture(picture)
-                .role(Role.USER)
-                .build();
+    public Map<String, Object> mapAttribute(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("username", username);
+        map.put("email", email);
+        map.put("provider", provider);
+
+        return map;
     }
+
+
+
+
+
+
+
 }
