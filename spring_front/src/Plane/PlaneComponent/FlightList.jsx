@@ -2,13 +2,15 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import '../../css/FlightList.css';
 import TossPay from '../../pay/TossPay'; 
+import { useCookies } from 'react-cookie';
 
 const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationName, selectedDepartureTime }) => {
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
     const flightData = useMemo(() => flights.station || [], [flights.station]);
 
     const [fares, setFares] = useState({});
-
+    const [cookies] = useCookies(['username']); 
+    const userName = cookies.username || '고객명'; // 쿠키에 username이 없다면 '고객명'으로 대체
     useEffect(() => {
         const newFares = flightData.reduce((acc, flight) => {
             acc[flight.id] = calculateFare(flight.runDay);
@@ -68,7 +70,7 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
                                         amount={fares[flight.id]}
                                         orderId={`order_${flight.id}_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`}
                                         orderName={`${flight.airline} - ${departureName} to ${destinationName}`}
-                                        userName="고객명"
+                                        userName={userName}
                                         successUrl="http://ec2-3-37-87-73.ap-northeast-2.compute.amazonaws.com:9090/pay/paysuccess"
                                         failUrl="http://ec2-3-37-87-73.ap-northeast-2.compute.amazonaws.com/pay/payfail"
                                         onSelectFareAndBook={() => onSelectFareAndBook(flight, fares[flight.id], flight.departureTime)}
