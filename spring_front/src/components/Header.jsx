@@ -4,13 +4,15 @@ import { AuthContext } from '../global/AuthContext';
 import SessionTimer from './SessionTimer';
 import NavBar from './NavBar';
 
+import { useCookies } from 'react-cookie';
 
 import { ReactComponent as MemberIcon } from '@/icon/member.svg';
 
 const Header = () => {
-  const { isLoggedIn, setIsLoggedIn, lastActiveTime, setLastActiveTime, loginId } = useContext(AuthContext);
+  const { isLoggedIn, setIsLoggedIn, lastActiveTime, setLastActiveTime, loginId, userEmail, setUserEmail } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(['userEmail']); 
 
   useEffect(() => {
     const handleHistoryChange = () => {
@@ -50,12 +52,14 @@ const Header = () => {
     }
   }, [isLoggedIn, setLastActiveTime]);
 
+
+
   return (
     <div className='fixedheader'>
       {isLoggedIn && (
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
           <MemberIcon style={{ width: '24px', height: '24px' }} />
-          <p style={{ margin: 0, marginTop:'8px', marginBottom:'8px'}}>{loginId}님 안녕하세요!</p>
+          <p style={{ margin: 0, marginTop:'8px', marginBottom:'8px',marginRight:'15px'}}>{cookies.userEmail}님 안녕하세요!</p>
           <SessionTimer sessionTimeout={30 * 60 * 1000} handleLogout={handleLogout} />
         </div>
       )}

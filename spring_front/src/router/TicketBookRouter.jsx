@@ -3,6 +3,9 @@ import Bus from '../Bus/Ticket/Bus';
 import Train from '../Train/Ticket/Train';
 import { Suspense } from 'react';
 import Plane from '../Plane/Ticket/Plane';
+import BookResult from '../User/BookResult';
+
+
 // import TicketBookingPage from '../Ticket/Ticket_Book/TicketBookingPage';
 
 
@@ -32,6 +35,13 @@ element : <Suspense fallback={Loading}>{<Train/>}</Suspense>
 path    : 'plane',  //  /ticketbook/plane
 element : <Suspense fallback={Loading}>{<Plane/>}</Suspense>
 },
+{
+  path    : 'bookresult',  //  /ticketbook/bookresult
+  element : <Suspense fallback={Loading}>{<BookResult/>}</Suspense>
+  },
+
+
+
 // {
 //   path    : 'ticket_ticketbookingpage',
 //   element : <Suspense fallback={Loading}><TicketBookingPage/></Suspense>       @@@@@@@@@@@@@@@@@@@@ useNavigate 쓸 수 있을 때 여기로 이동시키자
