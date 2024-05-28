@@ -45,7 +45,6 @@ const Login = () => {
       const response = await userLogin(loginData);
       
       alert('환영합니다!');
-      console.log(loginData);
       setIsLoggedIn(true);
       console.log(loginData.email);
       setCookie("userEmail",loginData.email);
@@ -55,8 +54,6 @@ const Login = () => {
       document.cookie = `sessionId=${response.data.sessionId}; path=/; SameSite=Lax`;
       navigate('/');
       // 성공적으로 로그인한 경우, 세션 ID를 쿠키에 저장
-      document.cookie = `sessionId=${response.data.sessionId}; path=/`;
-      // 사용자 정보를 전역 상태로 저장
       AuthContext.setIsAuthenticated(true);
       AuthContext.setUser(response.data.user);
       console.log(AuthContext);
