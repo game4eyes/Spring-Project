@@ -96,7 +96,7 @@ const Plane = () => {
             console.log('보내야 하는 데이터임!!!!! : ', bookingData); // bookingData를 로그에 출력합니다.
 
             // history.push('/confirmation', { bookingData }); @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 데이터 예약 완료로 보내기 위해 있음
-
+            localStorage.setItem('bookingData', JSON.stringify(bookingData));   //로컬 스토리지로 저장
 
             return updatedTicketInfo;
         });

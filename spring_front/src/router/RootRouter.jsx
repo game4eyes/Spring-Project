@@ -37,6 +37,7 @@ import FooterRouter from './FooterRouter';
 
 const Loading = <div className={'bg-purple-500'}>Loading</div>;
  const Home = lazy(() => import("../Home"));
+ 
 
 const RootRouter = createBrowserRouter([
   {

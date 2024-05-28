@@ -123,7 +123,7 @@
 
 .train_book input[type="text"]{
 
-    width: 10%;
+    width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -174,7 +174,7 @@
     width: 50%;
 }
 
-.train_book .col2 button,.train_book .col2 button{
+.train_book .column2 button,.train_book .col2 button{
     margin-top: 25px;
     margin-left: 50px;
     height: 150px;

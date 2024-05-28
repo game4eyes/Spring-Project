@@ -30,7 +30,8 @@ const Join = () => {
       console.log(userData);
       await userJoin(userData); // 서버로 요청 보내기
       alert('회원가입이 완료되었습니다.');
-      navigate('/api/user/login'); // 리디렉션
+      // navigate('/api/user/login'); // 리디렉션
+      navigate('/');
     } catch (error) {
       let errorMessage = '회원가입 중 오류가 발생했습니다. 다시 시도해주세요.';
       if (error.response && error.response.data.message) {
