@@ -8,7 +8,7 @@ import '@/css/Popup.css';
 import LoginModal from '@/components/LoginModal';
 import BookResultModal from '@/components/BookResultModal';
 
-const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationName, selectedDepartureTime }) => {
+const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationName, selectedDepartureTime,updatebookingData }) => {
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
     const flightData = useMemo(() => flights.station || [], [flights.station]);
 
@@ -53,6 +53,7 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
     };
 
     const handleItemClick = (transportation, e, flight, fare) => {
+        onSelectFareAndBook(flight, fare, flight.departureTime);            //최신화
         if (isLoggedIn) {
             setShowBookResultModal(true);
         } else {
@@ -169,7 +170,7 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
             )}
             {showUserGuestPopup && <UserGuestPopup onClose={handleCloseUserGuestPopup} onOptionSelect={handleOptionSelect} />}
             {showLoginModal && <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} />}
-            {showBookResultModal && isLoggedIn && <BookResultModal transportationtype={3} handleClose={() => setShowBookResultModal(false)} />}
+            {showBookResultModal && isLoggedIn && <BookResultModal transportationtype={'plane'} handleClose={() => setShowBookResultModal(false)} />}
         </div>
     );
 };

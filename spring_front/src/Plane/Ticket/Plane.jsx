@@ -7,9 +7,13 @@ import AirportsData from '../PlaneComponent/AirportsData';
 import Layout from '../../components/Layout';
 import { getAirInfo } from '../../api/dataApi';
 import FlightList from '../PlaneComponent/FlightList';
+import { useCookies } from 'react-cookie';
 
 const Plane = () => {
+   
     const today = new Date().toISOString().split('T')[0];
+    const [cookies] = useCookies(['userEmail']); // 'userEmail' 쿠키 읽기
+    const userEmail = cookies.userEmail || '';
     const [ticketInfo, setTicketInfo] = useState({
         departure: '',
         destination: '',
@@ -23,6 +27,7 @@ const Plane = () => {
         window: false,
         fare: 0,
         operator: '', // 추가: 항공사 이름
+        email: userEmail, // 사용자 이메일
     });
 
     const [flights, setFlights] = useState([]);
@@ -77,7 +82,7 @@ const Plane = () => {
             const updatedTicketInfo = { ...prev, fare, operator: flight.airline, time: departureTime };
 
             const bookingData = {
-                email: 'user@example.com', // 사용자 이메일
+                email: userEmail, // 사용자 이메일
                 startStationId: parseInt(updatedTicketInfo.departure),
                 endStationId: parseInt(updatedTicketInfo.destination),
                 startStationName: AirportsData.find(airport => airport.stationID === parseInt(updatedTicketInfo.departure)).stationName,
@@ -101,6 +106,12 @@ const Plane = () => {
             return updatedTicketInfo;
         });
     };
+
+    
+
+
+
+
 
     console.log('이게 티켓정보임 : ', ticketInfo); // 여기서 ticketInfo 값을 확인합니다.
 

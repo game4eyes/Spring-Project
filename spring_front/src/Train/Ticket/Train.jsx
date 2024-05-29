@@ -181,7 +181,9 @@ const Train = () => {
 
     return (
         <Layout title="기차 승차권 예매" body="정보 입력">
-            <div className="train_book">
+           <div className="train_book" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    {/* 세로로 나열될 요소들 */}
+
                 <form onSubmit={handleSubmit}>
                     <h2 style={{ marginBottom: '50px' }}>기차 예약</h2>
                     <div className="col1">
@@ -191,7 +193,7 @@ const Train = () => {
                                     출발지<br></br>
                                     <input
                                         type="text"
-                                        value={train.departure}
+                                        value={train.departure.value}
                                         onChange={handleDepartureChange}
                                         placeholder="출발지를 입력하세요"
                                         onClick={openPopup('3', 'departure')}
@@ -212,7 +214,7 @@ const Train = () => {
                                     도착지<br></br>
                                     <input
                                         type="text"
-                                        value={train.destination}
+                                        value={train.destination.value}
                                         onChange={handleDestinationChange}
                                         placeholder="도착지를 입력하세요"
                                         onClick={openPopup('3', 'destination')}
@@ -231,7 +233,7 @@ const Train = () => {
                                 <br />
                             </div>
                             <div className='button-container column2'>
-                                <button type="button" className="exchange-button" style={{ backgroundColor: 'orange', marginTop: '50px', marginLeft: '-200px', height: "100px", width: '100px' }} onClick={changeDepartureDestination}><ExchangeIcon /></button>
+                                <button type="button" className="exchange-button" style={{ backgroundColor: 'orange', marginTop: '50px', marginLeft: '-150px', height: "100px", width: '100px' }} onClick={changeDepartureDestination}><ExchangeIcon /></button>
                             </div>
                         </div>
                         <div style={{ display: 'flex' }}>
@@ -257,6 +259,9 @@ const Train = () => {
                         <div>
                             <label>
                                 시간
+
+
+                                
                                 <select style={{ width: '50%', marginLeft: '10px' }} value={train.hour} onChange={handleHourChange}>
                                     <option value="">시간을 선택하세요</option>
                                     <option value="00">00:00</option>
@@ -292,6 +297,8 @@ const Train = () => {
                         </div>
                     </div>
                     <br />
+
+                    <div>
                     {train.isDepartureModalOpen &&
                         <TrainList
                             startStationID={train.startStationID}
@@ -301,6 +308,7 @@ const Train = () => {
                             train={train}
                         />
                     }
+                    </div>
                 </form>
             </div>
         </Layout>

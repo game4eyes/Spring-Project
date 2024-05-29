@@ -30,7 +30,7 @@ const TrainList = ({ startStationID, endStationID, hour, dayz, train }) => {
         setShowLoginModal(false);
         // Check if user is logged in and then open BookResult modal
         if (isLoggedIn) {
-         
+
             setShowBookResultModal(true);
         }
     };
@@ -86,7 +86,7 @@ const TrainList = ({ startStationID, endStationID, hour, dayz, train }) => {
     const handleItemClick = (transportation, selectedtrain, train) => {
         setSelectedtrain(selectedtrain);
         localStorage.setItem('selectedtrain', JSON.stringify(selectedtrain)); // selectedtrain을 로컬 스토리지에 저장
-        localStorage.setItem('train', JSON.stringify(train)); 
+        localStorage.setItem('train', JSON.stringify(train));
 
         if (isLoggedIn) {
             setShowBookResultModal(true); // Show BookResultModal if logged in
@@ -138,54 +138,63 @@ const TrainList = ({ startStationID, endStationID, hour, dayz, train }) => {
         <div className="table-container">
             {trainInfo.length > 0 ? (
                 <>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>열차 이름</th>
-                                <th>열차 종류</th>
-                                <th>열차 번호</th>
-                                <th>출발 시간</th>
-                                <th>도착 시간</th>
-                                <th>소요 시간</th>
-                                <th>운행 요일</th>
-                                <th style={{ marginRight: '59px' }}> 요금</th>
-                                <th>요금 정보</th>
-                                <th>좌석 선택</th>
-                                <th>예매</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {currentItems.map((selectedtrain, index) => (
-                                <tr key={index}>
-                                    <td>{selectedtrain.railName}</td>
-                                    <td>{selectedtrain.trainClass}</td>
-                                    <td>{selectedtrain.trainNo}</td>
-                                    <td>{selectedtrain.departureTime}</td>
-                                    <td>{selectedtrain.arrivalTime}</td>
-                                    <td>{selectedtrain.wasteTime}</td>
-                                    <td>{selectedtrain.runDay}</td>
-                                    {/* {getTodayFare(train.fare)} : 오늘 날짜에 대한 요금 측정 */}
-                                    <td>{getTodayFare(selectedtrain.fare)}</td>
-                                    <td>
-                                        {selectedtrain.fare.generalFare.weekday && <p>평일: {selectedtrain.fare.generalFare.weekday}</p>}
-                                        {selectedtrain.fare.generalFare.weekend && <p>주말: {selectedtrain.fare.generalFare.weekend}</p>}
-                                        {selectedtrain.fare.generalFare.holiday && <p>공휴일: {selectedtrain.fare.generalFare.holiday}</p>}
-                                    </td>
-                                    <td><button className="button" onClick={payment}>결제</button></td>
-                                    <td><button className="button" onClick={() => handleItemClick(searchURLObject(location.pathname), selectedtrain, train)}>테스트 버튼</button></td>
+                    <div>
+                        <div style ={{marginTop:'600px'}}>
+                            <h2>출발지 : {train.departure}</h2>
+                            <h2>도착지 : {train.destination}</h2>
+                        </div>
+
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>열차 이름</th>
+                                    <th>열차 종류</th>
+                                    <th>열차 번호</th>
+                                    <th>출발 시간</th>
+                                    <th>도착 시간</th>
+                                    <th>소요 시간</th>
+                                    <th>운행 요일</th>
+                                    <th style={{ marginRight: '59px' }}> 요금</th>
+                                    <th>요금 정보</th>
+                                    <th>좌석 선택</th>
+                                    <th>예매</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    <Pagination itemsPerPage={itemsPerPage} totalItems={trainInfo.length} paginate={paginate} />
+                            </thead>
+                            <tbody>
+                                {currentItems.map((selectedtrain, index) => (
+                                    <tr key={index}>
+                                        <td>{selectedtrain.railName}</td>
+                                        <td>{selectedtrain.trainClass}</td>
+                                        <td>{selectedtrain.trainNo}</td>
+                                        <td>{selectedtrain.departureTime}</td>
+                                        <td>{selectedtrain.arrivalTime}</td>
+                                        <td>{selectedtrain.wasteTime}</td>
+                                        <td>{selectedtrain.runDay}</td>
+                                        {/* {getTodayFare(train.fare)} : 오늘 날짜에 대한 요금 측정 */}
+                                        <td>{getTodayFare(selectedtrain.fare)}</td>
+                                        <td>
+                                            {selectedtrain.fare.generalFare.weekday && <p>평일: {selectedtrain.fare.generalFare.weekday}</p>}
+                                            {selectedtrain.fare.generalFare.weekend && <p>주말: {selectedtrain.fare.generalFare.weekend}</p>}
+                                            {selectedtrain.fare.generalFare.holiday && <p>공휴일: {selectedtrain.fare.generalFare.holiday}</p>}
+                                        </td>
+                                        <td><button className="button" onClick={payment}>결제</button></td>
+                                        <td><button className="button" onClick={() => handleItemClick(searchURLObject(location.pathname), selectedtrain, train)}>테스트 버튼</button></td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <Pagination itemsPerPage={itemsPerPage} totalItems={trainInfo.length} paginate={paginate} />
+                    </div>
                 </>
             ) : (
                 <p>조회값이 없습니다</p>
             )}
             {showUserGuestPopup && <UserGuestPopup onClose={handleCloseUserGuestPopup} onOptionSelect={handleOptionSelect} />}
             {showLoginModal && <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} />}
-            {showBookResultModal && isLoggedIn && <BookResultModal transportationtype ={2} trainprice={getTodayFare(selectedtrain.fare)} handleClose={() => setShowBookResultModal(false)} />}
-        </div>                                                  //transportationtype 1:버스 2:기차 3:비행기
+            {showBookResultModal && isLoggedIn && <BookResultModal transportationtype={'train'} trainprice={getTodayFare(selectedtrain.fare)} handleClose={() => setShowBookResultModal(false)} />}
+                                                         {/* //transportationtype : 'bus'(버스), 'train' (기차), 'plane'(비행기)*/}
+        </div>
     );
 };
 

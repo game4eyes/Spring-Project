@@ -17,6 +17,21 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, busticket }) => {
     const [showUserGuestPopup, setShowUserGuestPopup] = useState(false);
     const [selectedTransportation, setSelectedTransportation] = useState(null);
     const [dataLoadError, setDataLoadError] = useState(false);
+    const [showBookResultModal, setShowBookResultModal] = useState(false); // State for BookResult modal
+    const [selectedBus, setSelectedBus] = useState(null);
+
+    const [showLoginModal, setShowLoginModal] = useState(false); // Login 모달 상태 추가
+
+    
+    const handleCloseLoginModal = () => {
+        setShowLoginModal(false);
+        // Check if user is logged in and then open BookResult modal
+        if (isLoggedIn) {
+
+            setShowBookResultModal(true);
+        }
+    };
+
 
     const initState = {
         ...busticket,
@@ -76,39 +91,66 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, busticket }) => {
         return null;
     };
 
-    const handleItemClick = (transportation, detail) => {
-        setSelectedTransportation(transportation);
-        console.log("Selected Seats:", selectedSeats);
-        console.log("Detail:", detail);
-        console.log("Busticket:", busticket);
+    // const handleItemClick = (transportation, detail) => {
+    //     setSelectedTransportation(transportation);
+    //     console.log("Selected Seats:", selectedSeats);
+    //     console.log("Detail:", detail);
+    //     console.log("Busticket:", busticket);
 
-        setSelectedbusticket(prevState => ({
-            ...prevState,
-            selectedBus: detail // Update the selectedBus with detail
-        }));
+    //     setSelectedbusticket(prevState => ({
+    //         ...prevState,
+    //         selectedBus: detail // Update the selectedBus with detail
+    //     }));
+
+    //     if (isLoggedIn) {
+    //         const url = `/ticketbook/${transportation}?type=회원`;
+    //         setRedirectUrl(url);
+    //         navigate(url);
+    //     } else {
+    //         setShowUserGuestPopup(true);
+    //     }
+    // };
+
+    const handleItemClick = (transportation, selectedtrain, train) => {
+        setSelectedtrain(selectedtrain);
+        localStorage.setItem('selectedtrain', JSON.stringify(selectedtrain)); // selectedtrain을 로컬 스토리지에 저장
+        localStorage.setItem('train', JSON.stringify(train));
 
         if (isLoggedIn) {
-            const url = `/ticketbook/${transportation}?type=회원`;
-            setRedirectUrl(url);
-            navigate(url);
+            setShowBookResultModal(true); // Show BookResultModal if logged in
         } else {
             setShowUserGuestPopup(true);
         }
     };
 
+
+
     const handleCloseUserGuestPopup = () => {
         setShowUserGuestPopup(false);
     };
 
+    // const handleOptionSelect = (option) => {
+    //     setShowUserGuestPopup(false);
+    //     const url = `/ticketbook/${selectedTransportation}?type=${option}`;
+    //     if (option === '회원') {
+    //         setRedirectUrl(url);
+    //         navigate('/api/user/login?paytest');
+    //     } else {
+    //         setGuestRedirectUrl(url);
+    //         navigate('/api/user/guest-booking');
+    //     }
+    // };
+
+
     const handleOptionSelect = (option) => {
-        setShowUserGuestPopup(false);
-        const url = `/ticketbook/${selectedTransportation}?type=${option}`;
-        if (option === '회원') {
-            setRedirectUrl(url);
-            navigate('/api/user/login?paytest');
+        if (option === 'login') {
+            setShowUserGuestPopup(false); // 기존 팝업 닫기
+            setShowLoginModal(true); // 로그인 모달 열기
         } else {
+            const url = `/api/user/join?payjoin&railName=${encodeURIComponent(selectedtrain.railName)}&trainClass=${encodeURIComponent(selectedtrain.trainClass)}&trainNo=${encodeURIComponent(selectedtrain.trainNo)}&departureTime=${encodeURIComponent(selectedtrain.departureTime)}
+            &departure=${encodeURIComponent(train.departure)}&destination=${encodeURIComponent(train.destination)}&hour=${encodeURIComponent(train.hour)}&date=${encodeURIComponent(train.date)}&dayz=${encodeURIComponent(train.dayz)}&price=${getTodayFare(selectedtrain.fare)}`;
             setGuestRedirectUrl(url);
-            navigate('/api/user/guest-booking');
+            navigate(url);
         }
     };
 
@@ -118,13 +160,14 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, busticket }) => {
         onUpdateSeat(newValue);
     };
 
+
     const UserGuestPopup = ({ onClose, onOptionSelect }) => (
         <div className="UserGuestPopup">
-            <div className="UserGuestPopup-inner">
-                <h3>예매 유형 선택</h3>
-                <button onClick={() => onOptionSelect('회원')}>회원 예매</button>
-                <button onClick={() => onOptionSelect('비회원')}>비회원 예매</button>
-                <button onClick={onClose}>닫기</button>
+            <div className="UserGuestPopup-inner button-container">
+                <h3 style={{ marginBottom: '30px' }}>로그인이 필요한 서비스입니다</h3>
+                <button style={{ backgroundColor: 'blue', marginRight: '10px' }} onClick={() => onOptionSelect('login')}>로그인</button>
+                <button style={{ backgroundColor: 'green', marginRight: '10px' }} onClick={() => onOptionSelect('join')}>회원가입</button>
+                <button style={{ backgroundColor: 'red' }} onClick={onClose}>닫기</button>
             </div>
         </div>
     );
@@ -192,7 +235,10 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, busticket }) => {
             ) : (
                 <p>해당 버스 등급의 데이터를 불러오는 중입니다...</p>
             )}
-            {showUserGuestPopup && <UserGuestPopup onClose={handleCloseUserGuestPopup} onOptionSelect={handleOptionSelect} />}
+             {showUserGuestPopup && <UserGuestPopup onClose={handleCloseUserGuestPopup} onOptionSelect={handleOptionSelect} />}
+            {showLoginModal && <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} />}
+            {showBookResultModal && isLoggedIn && <BookResultModal transportationtype={'bus'} handleClose={() => setShowBookResultModal(false)} />}
+                                                         {/* //transportationtype : bus(버스), train (기차), plane(비행기)*/}
         </div>
     );
 };

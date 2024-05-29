@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../global/AuthContext';
 import SessionTimer from './SessionTimer';
 import NavBar from './NavBar';
@@ -79,8 +79,8 @@ const Header = () => {
     <div className='fixedheader'>
       {isLoggedIn && (
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-          <MemberIcon style={{ width: '24px', height: '24px' }} />
-          <p style={{ margin: 0, marginTop: '8px', marginBottom: '8px', marginRight: '15px' }}>{userEmail}님 안녕하세요!</p>
+          <Link to='/api/user/mypage'><MemberIcon style={{ width: '24px', height: '24px' }} /></Link>
+          <p style={{ margin: 0, marginTop: '8px', marginBottom: '8px', marginRight: '15px' }}><Link to='/api/user/mypage'>{userEmail}</Link>님 안녕하세요!</p>
           <SessionTimer sessionTimeout={30 * 60 * 1000} handleLogout={handleLogout} />
         </div>
       )}

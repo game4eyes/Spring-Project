@@ -6,7 +6,7 @@ import '@/css/form/bookresult.css';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 
 
-const BookResult = ({ transportationtype, trainprice, handleClose }) => {
+const BookResult = ({ transportationtype, trainprice, handleClose }) => {   //기차 가격은 따로 만들어서 보내는 방식으로 함
 
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
 
@@ -23,18 +23,18 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
 
     // Retrieve selected train, train ticket, or booking data from local storage
     useEffect(() => {
-        if (transportationtype === 1) {  // 버스일 경우 (아직 안함)
+        if (transportationtype === 'bus') {  // 버스일 경우 (아직 안함)
             const selectedTrain = JSON.parse(localStorage.getItem('selectedtrain'));
             const train = JSON.parse(localStorage.getItem('train'));
             setSelectedTrain(selectedTrain);
             setTrain(train);
-        } else if (transportationtype === 2) {  // 기차일 경우
+        } else if (transportationtype === 'train') {  // 기차일 경우
             const selectedTrain = JSON.parse(localStorage.getItem('selectedtrain'));
             const train = JSON.parse(localStorage.getItem('train'));
             setSelectedTrain(selectedTrain);
             setTrain(train);
-        } else if (transportationtype === 3) {  // 공항일 경우
-            const selectedPlane = JSON.parse(localStorage.getItem('bookingData'));
+        } else if (transportationtype === 'plane') {  // 공항일 경우
+            const selectedPlane = JSON.parse(localStorage.getItem('bookingData'));  //로컬스토리지에 저장된 부분을
             setSelectedPlane(selectedPlane);
         }
     }, [transportationtype]);
@@ -143,7 +143,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     //결제한 데이터를 쿠키에 저장
     const handlePayment = () => {
         let bookingInfo;
-        if (transportationtype === 1 || transportationtype === 2) {  // 버스나 기차일 경우
+        if (transportationtype === 'bus' || transportationtype === 'train') {  // 버스나 기차일 경우
             bookingInfo = {
                 railName: selectedTrain.railName,
                 trainClass: selectedTrain.trainClass,
@@ -156,9 +156,9 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                 hour: train.hour,
                 dayz: train.dayz,
             };
-        } else if (transportationtype === 3) {  // 공항일 경우
+        } else if (transportationtype === 'plane') {  // 공항일 경우
             bookingInfo = {
-                email: 'user@example.com', // 사용자 이메일
+                email: cookies.userEmail, // 사용자 이메일
                 startStationId: selectedPlane.startStationId,
                 endStationId: selectedPlane.endStationId,
                 startStationName: selectedPlane.startStationName,
@@ -181,7 +181,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
 
     return (
         <>
-            {transportationtype === 1 && (
+            {transportationtype === 'bus' && (
                 <div className="bookresultcontainer">
                     <h2 style={{ marginBottom: '30px' }}>예약 내용이 다음과 같습니까? (버스)</h2>
                     <hr />
@@ -232,7 +232,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                 </div>
             )}
 
-            {transportationtype === 2 && (
+            {transportationtype === 'train' && (
                 <div className="bookresultcontainer">
                     <h2 style={{ marginBottom: '30px' }}>예약 내용이 다음과 같습니까? (기차)</h2>
                     <hr />
@@ -283,7 +283,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                 </div>
             )}
 
-            {transportationtype === 3 && (
+            {transportationtype === 'plane' && (
                 <div className="bookresultcontainer">
                     <h2 style={{ marginBottom: '30px' }}>예약 내용이 다음과 같습니까? (공항)</h2>
                     <hr />
@@ -305,7 +305,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                                 <p>출발 시간: {selectedPlane.departureTime}</p>
                                 <p>도착 시간: {selectedPlane.arrivalTime || '정보 없음'}</p>
                                 <p>날짜: {selectedPlane.date}</p>
-                                <p>이메일: {selectedPlane.email}</p>
+                                <p>이메일: {cookies.userEmail}</p>
                                 <p>출발지: {selectedPlane.startStationName}</p>
                                 <p>도착지: {selectedPlane.endStationName}</p>
                                 <p>등급: {selectedPlane.grade}</p>
