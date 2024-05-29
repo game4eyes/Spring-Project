@@ -1,37 +1,22 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import '../../css/FlightList.css';
-import { useContext } from 'react';
-import { AuthContext } from '../../global/AuthContext';
-import { useLocation, useNavigate } from 'react-router-dom';
-import '@/css/Popup.css';
-import LoginModal from '@/components/LoginModal';
-import BookResultModal from '@/components/BookResultModal';
+import TossPay from '../../pay/TossPay'; 
+import { useCookies } from 'react-cookie';
 
-const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationName, selectedDepartureTime,updatebookingData }) => {
+const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationName, selectedDepartureTime }) => {
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
     const flightData = useMemo(() => flights.station || [], [flights.station]);
 
-    const { isLoggedIn, setRedirectUrl, setGuestRedirectUrl } = useContext(AuthContext);
-    const [showUserGuestPopup, setShowUserGuestPopup] = useState(false);
     const [fares, setFares] = useState({});
-    const [showBookResultModal, setShowBookResultModal] = useState(false);
-    const [showLoginModal, setShowLoginModal] = useState(false);
-
-    const location = useLocation();
-    const navigate = useNavigate();
-
+    const [cookies] = useCookies(['username']); 
+    const userName = cookies.username || '고객명'; // 쿠키에 username이 없다면 '고객명'으로 대체
     useEffect(() => {
-        const storedFares = JSON.parse(localStorage.getItem('flightFares')) || {};
         const newFares = flightData.reduce((acc, flight) => {
-            if (!storedFares[flight.id]) {
-                storedFares[flight.id] = calculateFare(flight.runDay);
-            }
-            acc[flight.id] = storedFares[flight.id];
+            acc[flight.id] = calculateFare(flight.runDay);
             return acc;
         }, {});
         setFares(newFares);
-        localStorage.setItem('flightFares', JSON.stringify(newFares));
     }, [flightData]);
 
     const calculateFare = (runDay) => {
@@ -43,80 +28,6 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
             baseFare = Math.random() * (100000 - 50000) + 50000;
         }
         return Math.round(baseFare / 100) * 100;
-    };
-
-    const searchURLObject = (pathname) => {
-        if (pathname.includes('bus')) return 'bus';
-        if (pathname.includes('train')) return 'train';
-        if (pathname.includes('plane')) return 'plane';
-        return null;
-    };
-
-    const handleItemClick = (transportation, e, flight, fare) => {
-        onSelectFareAndBook(flight, fare, flight.departureTime);            //최신화
-        if (isLoggedIn) {
-            setShowBookResultModal(true);
-        } else {
-            setShowUserGuestPopup(true);
-        }
-    };
-
-    const handleCloseUserGuestPopup = () => {
-        setShowUserGuestPopup(false);
-    };
-
-    const UserGuestPopup = ({ onClose, onOptionSelect }) => (
-        <div className="UserGuestPopup">
-            <div className="UserGuestPopup-inner button-container">
-                <h3 style={{ marginBottom: '30px' }}>로그인이 필요한 서비스입니다</h3>
-                <button style={{ backgroundColor: 'blue', marginRight: '10px' }} onClick={() => onOptionSelect('login')}>로그인</button>
-                <button style={{ backgroundColor: 'green', marginRight: '10px' }} onClick={() => onOptionSelect('join')}>회원가입</button>
-                <button style={{ backgroundColor: 'red' }} onClick={onClose}>닫기</button>
-            </div>
-        </div>
-    );
-
-    const handleCloseLoginModal = () => {
-        setShowLoginModal(false);
-        if (isLoggedIn) {
-            setShowBookResultModal(true);
-        }
-    };
-
-    const handleOptionSelect = (option) => {
-        if (option === 'login') {
-            setShowUserGuestPopup(false);
-            setShowLoginModal(true);
-        } else {
-            const url = `/api/user/join?payjoin&railName=${encodeURIComponent(selectedtrain.railName)}&trainClass=${encodeURIComponent(selectedtrain.trainClass)}&trainNo=${encodeURIComponent(selectedtrain.trainNo)}&departureTime=${encodeURIComponent(selectedtrain.departureTime)}
-            &departure=${encodeURIComponent(train.departure)}&destination=${encodeURIComponent(train.destination)}&hour=${encodeURIComponent(train.hour)}&date=${encodeURIComponent(train.date)}&dayz=${encodeURIComponent(train.dayz)}&price=${getTodayFare(selectedtrain.fare)}`;
-            setGuestRedirectUrl(url);
-            navigate(url);
-        }
-    };
-
-    const handleBook = async (e, flight, fare) => {
-        e.preventDefault();
-        try {
-            const tossPayments = await loadTossPayments(clientKey);
-            tossPayments.requestPayment('카드', {
-                amount: fare,
-                orderId: `order_${flight.id}_${Date.now()}`,
-                orderName: `${flight.airline} - ${departureName} to ${destinationName}`,
-                customerName: '고객명',
-                successUrl: 'http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090/pay/paysuccess',
-                failUrl: 'http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090/pay/payfail',
-            }).catch(function (error) {
-                if (error.code === 'USER_CANCEL') {
-                } else if (error.code === 'INVALID_CARD_COMPANY') {
-                } else {
-                    console.error(error);
-                }
-            });
-        } catch (error) {
-            console.error('토스 결제 로드 에러:', error);
-        }
-        onSelectFareAndBook(flight, fare, flight.departureTime);
     };
 
     const filteredFlights = useMemo(() => {
@@ -141,8 +52,7 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
                             <th>Arrival Time</th>
                             <th>Run Day</th>
                             <th>Fare</th>
-                            <th>Action</th>
-                            <th>라우팅테스트</th>
+                            <th>Payment method</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -156,10 +66,15 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
                                 <td>{flight.runDay}</td>
                                 <td>₩{fares[flight.id]}</td>
                                 <td>
-                                    <button type="button" onClick={(e) => handleBook(e, flight, fares[flight.id])}>Book</button>
-                                </td>
-                                <td>
-                                    <button className="button" onClick={(e) => handleItemClick(searchURLObject(location.pathname), e, flight, fares[flight.id])}>테스트 버튼</button>
+                                    <TossPay
+                                        amount={fares[flight.id]}
+                                        orderId={`order_${flight.id}_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`}
+                                        orderName={`${flight.airline} - ${departureName} to ${destinationName}`}
+                                        userName={userName}
+                                        successUrl="http://ec2-3-37-87-73.ap-northeast-2.compute.amazonaws.com:9090/pay/paysuccess"
+                                        failUrl="http://ec2-3-37-87-73.ap-northeast-2.compute.amazonaws.com/pay/payfail"
+                                        onSelectFareAndBook={() => onSelectFareAndBook(flight, fares[flight.id], flight.departureTime, flight.arrivalTime)}
+                                    />
                                 </td>
                             </tr>
                         ))}
@@ -168,9 +83,6 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
             ) : (
                 <p>No flights available for the selected criteria.</p>
             )}
-            {showUserGuestPopup && <UserGuestPopup onClose={handleCloseUserGuestPopup} onOptionSelect={handleOptionSelect} />}
-            {showLoginModal && <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} />}
-            {showBookResultModal && isLoggedIn && <BookResultModal transportationtype={'plane'} handleClose={() => setShowBookResultModal(false)} />}
         </div>
     );
 };
