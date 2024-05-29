@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 
-export const API_SERVER_HOST = 'http://ec2-3-37-87-73.ap-northeast-2.compute.amazonaws.com:9090'; // 서버 주소
+export const API_SERVER_HOST = 'http://ec2-3-34-129-44.ap-northeast-2.compute.amazonaws.com:9090'; // 서버 주소
 
 // 예약 데이터 넘기기
 const bookingPrefix = `${API_SERVER_HOST}/booking`;

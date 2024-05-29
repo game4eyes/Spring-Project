@@ -59,7 +59,7 @@ const NavBar = () => {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    localStorage.removeItem('lastActiveTime');
+    localStorage.removeItem('lastActiveTime'); 
     navigate('/');
   };
 
