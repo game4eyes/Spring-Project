@@ -87,3 +87,7 @@ export const tossPayment = async (paymentData) => {
     }
 };
 
+export const paymentInfo = async() => {
+    const res = axios.get(`${userPrefix}/toss/info`);
+    return res.data;
+};

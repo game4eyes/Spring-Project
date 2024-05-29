@@ -64,6 +64,7 @@ public class Payment  {
     @Column
     private String cancelReason;
 
+    @Column
     private String userEmail;
 
     public PaymentResDto toPaymentResDto() { // DB에 저장하게 될 결제 관련 정보들
