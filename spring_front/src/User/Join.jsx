@@ -3,6 +3,7 @@ import { userJoin } from '../api/todoApi';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import '@/css/form/joinform.css'
+import Logo_black from '@/components/Logo_black';
 const Join = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -29,7 +30,8 @@ const Join = () => {
       console.log(userData);
       await userJoin(userData); // 서버로 요청 보내기
       alert('회원가입이 완료되었습니다.');
-      navigate('/api/user/login'); // 리디렉션
+      // navigate('/api/user/login'); // 리디렉션
+      navigate('/');
     } catch (error) {
       let errorMessage = '회원가입 중 오류가 발생했습니다. 다시 시도해주세요.';
       if (error.response && error.response.data.message) {
@@ -169,12 +171,15 @@ const Join = () => {
   `;
 
   return (
-    <Layout title="회원가입" body="회원가입 창">
-    <div className="join-page">
-    <div className="Join-container">
-   
-        <h2>회원가입</h2> <br></br>
-        <form onSubmit={handleSubmit} style={{width:'150%'}}>
+    // <Layout title="회원가입" body="회원가입 창">
+    <div className="join-page" style={{ textAlign: 'center',marginTop:'40px' }}>
+    <div className="Join-container"  style={{  width:'30%',textAlign: 'center' }}>
+
+
+    <h2 style={{ marginBottom:'30px'}}>  <Logo_black/></h2><br></br>
+        {/* <h2 style={{ textAlign: 'center', marginBottom:'30px', marginTop:'-80px' }}>회원가입</h2> */}
+        <br></br>
+        <form onSubmit={handleSubmit} style={{marginTop:'-80px',width:'100%', textAlign:'left'}}>
           <div className="form-group">
             <label htmlFor="email">이메일</label>
             {/* <button type="button" onclick={checkEmail}>이메일 확인</button> */}
@@ -250,7 +255,8 @@ const Join = () => {
     
       </div>
     </div>
-    </Layout>
+ 
+ //</Layout> 
   );
 };
 
