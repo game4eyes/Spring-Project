@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import AD1_image from './img/Ad_img/ad1.jpeg';
 import AD2_image from './img/Ad_img/ad2.jpeg';
 import AD3_image from './img/Ad_img/ad3.jpeg';
+import AD4_image from './img/Ad_img/ad4.jpeg';
 
 const Ad = () => {
   const [adVisible, setAdVisible] = useState(true); // 광고 리스트의 가시성을 관리하는 상태
@@ -11,6 +12,7 @@ const Ad = () => {
     { id: "ad1", title: "광고1", explain: '광고1', src: AD1_image },
     { id: "ad2", title: "광고2", explain: '광고2', src: AD2_image },
     { id: "ad3", title: "광고3", explain: '광고3', src: AD3_image },
+    { id: "ad4", title: "광고3", explain: '광고4', src: AD4_image },
   ];
 
   // x 버튼 클릭 시 광고 리스트의 가시성을 토글하는 함수

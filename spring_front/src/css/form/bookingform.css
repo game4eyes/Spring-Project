@@ -104,6 +104,7 @@
 
 .train_book form {
     margin-left: 10%;
+  
 }
 
 .train_book h1 {
@@ -113,7 +114,7 @@
 
 .train_book .col1 {
     float: left;
-    width: 50%;
+    width: 100%;
 }
 
 .train_book label {
@@ -123,7 +124,7 @@
 
 .train_book input[type="text"]{
 
-    width: 10%;
+    width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -174,7 +175,7 @@
     width: 50%;
 }
 
-.train_book .col2 button,.train_book .col2 button{
+.train_book .column2 button,.train_book .col2 button{
     margin-top: 25px;
     margin-left: 50px;
     height: 150px;

@@ -43,7 +43,8 @@
  .ad-container {
     width: 30%; 
     position: sticky;
-    top: 300px;
+    top: 200px;
+    bottom: 50px;
     margin-top: 40px;
     margin-left: 10px;
     margin-right: 10px;

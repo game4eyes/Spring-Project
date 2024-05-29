@@ -30,13 +30,18 @@ import SearchRouter from './SearchRouter';
 import ApiRouter from './ApiRouter';
 import PayRouter from './PayRouter';
 import FooterRouter from './FooterRouter';
+import '../css/Loading.css';
 
 
 
 
+const Loading = <div className="loading-container" >
+                    <div className="loading-spinner"></div>
+                    Loading
+                </div>;
 
-const Loading = <div className={'bg-purple-500'}>Loading</div>;
  const Home = lazy(() => import("../Home"));
+ 
 
 const RootRouter = createBrowserRouter([
   {

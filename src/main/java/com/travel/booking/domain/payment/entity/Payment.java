@@ -1,6 +1,5 @@
 package com.travel.booking.domain.payment.entity;
 
-import com.travel.booking.domain.booking.entity.BookingEntity;
 import com.travel.booking.domain.payment.PayType;
 import com.travel.booking.domain.payment.dto.PaymentResDto;
 import com.travel.booking.domain.user.entity.User;
