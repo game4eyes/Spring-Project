@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useCookies } from 'react-cookie';
 import DateInput from '../PlaneComponent/DateInput';
 import SelectInput from '../PlaneComponent/SelectInput';
 import Checkbox from '../PlaneComponent/Checkbox';
@@ -23,7 +24,7 @@ const Plane = () => {
         window: false,
         fare: 0,
         operator: '', // 추가: 항공사 이름
-        userEmail:''
+        userEmail: useCookies.email
     });
 
     const [flights, setFlights] = useState([]);
@@ -110,8 +111,6 @@ const Plane = () => {
             };
 
             console.log('보내야 하는 데이터임!!!!! : ', bookingData); // bookingData를 로그에 출력합니다.
-
-            // history.push('/confirmation', { bookingData }); @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 데이터 예약 완료로 보내기 위해 있음
 
 
             return updatedTicketInfo;
