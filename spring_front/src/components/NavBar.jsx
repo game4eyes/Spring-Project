@@ -36,7 +36,7 @@ const NavBar = () => {
   //const location = useLocation();
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false); // Dropdown 상태 추가
-  const [showDropdown2, setShowDropdown2] = useState(false);
+
 
   const [showLoginModal, setShowLoginModal] = useState(false);
 

@@ -102,21 +102,15 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
     const handleBook = async (e, flight, fare) => {
         e.preventDefault();
         try {
-            const tossPayments = await loadTossPayments(clientKey);
-            tossPayments.requestPayment('카드', {
-                amount: fare,
-                orderId: `order_${flight.id}_${Date.now()}`,
-                orderName: `${flight.airline} - ${departureName} to ${destinationName}`,
-                customerName: '고객명',
-                successUrl: 'http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090/pay/paysuccess',
-                failUrl: 'http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090/pay/payfail',
-            }).catch(function (error) {
-                if (error.code === 'USER_CANCEL') {
-                } else if (error.code === 'INVALID_CARD_COMPANY') {
-                } else {
-                    console.error(error);
-                }
-            });
+            <TossPay
+            amount={fares[flight.id]}
+            orderId={`order_${flight.id}_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`}
+            orderName={`${flight.airline} - ${departureName} to ${destinationName}`}
+            userName={userName}
+            successUrl="http://ec2-3-37-87-73.ap-northeast-2.compute.amazonaws.com:9090/pay/paysuccess"
+            failUrl="http://ec2-3-37-87-73.ap-northeast-2.compute.amazonaws.com/pay/payfail"
+            onSelectFareAndBook={() => onSelectFareAndBook(flight, fares[flight.id], flight.departureTime, flight.arrivalTime)}
+        />
         } catch (error) {
             console.error('토스 결제 로드 에러:', error);
         }

@@ -123,6 +123,9 @@ const Plane = () => {
 
             // history.push('/confirmation', { bookingData }); @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 데이터 예약 완료로 보내기 위해 있음
             localStorage.setItem('bookingData', JSON.stringify(bookingData));   //로컬 스토리지로 저장
+            localStorage.setItem('flight', JSON.stringify(flight));   //로컬 스토리지로 저장
+            localStorage.setItem('flight_departureName', JSON.stringify(bookingData.startStationName));   //로컬 스토리지로 저장 
+            localStorage.setItem('flight_destinationName', JSON.stringify(bookingData.endStationName));   //로컬 스토리지로 저장  
 
 
             return updatedTicketInfo;
