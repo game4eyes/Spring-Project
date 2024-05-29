@@ -11,7 +11,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     const [cookies, setCookie] = useCookies(['userEmail', 'bookingInfo']);
     const [selectedTrain, setSelectedTrain] = useState(null);
     const [train, setTrain] = useState(null);
-
+    const userName = cookies.username || '고객명';
     const [flight, setFlight] = useState(null); 
     const [selectedPlane, setSelectedPlane] = useState(null);
     const [flight_departureName,setFlight_departureName]=useState(null);
@@ -53,16 +53,16 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
         }
     };
 
-    const handlePayment = async (amount, orderId, orderName) => {
+    const handlePayment = async (amount, orderId, orderName, successUrl, failUrl) => {
         try {
             const tossPayments = await loadTossPayments(clientKey);
             tossPayments.requestPayment('카드', {
                 amount: amount,
                 orderId: orderId,
                 orderName: orderName,
-                customerName: '고객명', // 실제 고객 이름으로 대체하세요
-                successUrl: 'http://localhost:9090/api/v1/payments/toss/success',
-                failUrl: 'http://localhost:9090/api/v1/payments/toss/fail',
+                userName: {userName}, // 실제 고객 이름으로 대체하세요
+                successUrl: 'http://localhost:9090/api/user/toss/success',
+                failUrl: 'http://localhost:9090/api/user/toss/fail',
             }).catch(function (error) {
                 if (error.code === 'USER_CANCEL') {
                     // 사용자가 결제창을 닫았을 때 처리

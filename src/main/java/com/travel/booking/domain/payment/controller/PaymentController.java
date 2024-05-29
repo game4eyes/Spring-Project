@@ -7,6 +7,7 @@ import com.travel.booking.domain.payment.entity.Payment;
 import com.travel.booking.domain.payment.mapper.PaymentMapper;
 import com.travel.booking.domain.payment.service.PaymentService;
 import com.travel.booking.domain.user.entity.User;
+import com.travel.booking.domain.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,6 +26,7 @@ public class PaymentController {
 
     private final PaymentService paymentService;
     private final TossPaymentConfig paymentConfig;
+    private final UserService userService;
     private PaymentMapper mapper;
 
 //    @PostMapping("/toss")
@@ -48,6 +51,18 @@ public class PaymentController {
             e.printStackTrace();
             return ResponseEntity.status(500).body("An error occurred while processing the payment request: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/toss/info")
+    public String paymentInfo(@SessionAttribute(name = "email", required = false) String email, Model model){
+        User loginUser = userService.FindByEmail(email);
+
+        if (loginUser == null){
+            return null;
+        }
+
+        model.addAttribute("email", loginUser);
+        return "toss/info";
     }
 
     @GetMapping("/toss/success")

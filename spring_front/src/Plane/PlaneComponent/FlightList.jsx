@@ -123,7 +123,7 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
                             <th>Arrival Time</th>
                             <th>Run Day</th>
                             <th>Fare</th>
-                            <th>Action</th>
+                            <th>Payment Method</th>
                             <th>라우팅테스트</th>
                         </tr>
                     </thead>
