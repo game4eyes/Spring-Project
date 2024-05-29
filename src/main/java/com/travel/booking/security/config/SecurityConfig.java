@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/user/toss").permitAll() // 결제 경로 허용
                         .requestMatchers("/api/user/social-google").permitAll()
+                        .requestMatchers("/api/user/google-login").permitAll() // 로그인 페이지 경로 허용
                         .requestMatchers("/security-login/info").authenticated()
                         .requestMatchers("/security-login/admin/**").hasAuthority("ADMIN")
                         .anyRequest().permitAll()
@@ -40,7 +41,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .usernameParameter("loginId")
                         .passwordParameter("password")
-                        .loginPage("/security-login/login")
+                        .loginPage("/api/user/login")
                         .defaultSuccessUrl("/security-login")
                         .failureUrl("/security-login/login?error=true")
                 )
@@ -50,8 +51,8 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/api/user/login")
-                        .defaultSuccessUrl("/api/user/security-login")
+                        .loginPage("/api/user/google-login")
+                        .defaultSuccessUrl("/security-login")
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(principalOauth2UserService)
                         )

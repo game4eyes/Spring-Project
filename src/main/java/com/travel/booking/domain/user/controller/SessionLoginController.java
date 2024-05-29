@@ -116,6 +116,11 @@ public class SessionLoginController {
 //       return new RedirectView("http://localhost:9090/oauth2/authorization/google");
 //    }
 
+    @GetMapping("/social-google")
+    public RedirectView redirectToGoogle() {
+        return new RedirectView("/oauth2/authorization/google");
+    }
+
     @GetMapping("/logout") // 로그아웃 처리
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false); // 기존 세션 얻기
