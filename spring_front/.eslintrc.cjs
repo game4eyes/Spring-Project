@@ -17,7 +17,8 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
-    "no-unused-vars":"off",
-    "react/prop-types":"off",
+    'no-unused-vars': 'off',
+    'react/prop-types': 'off',
+    'no-empty': 'off', // 추가된 부분: empty block statement 규칙 비활성화
   },
 }

@@ -61,13 +61,18 @@ const Login = ({ handleClose }) => {
     e.preventDefault();
     try {
       const response = await userLogin(loginData);
-
       alert('환영합니다!');
       setIsLoggedIn(true);
 
+
+
       setCookie("userEmail", loginData.email);
 
+
       setUser(response.data.user);
+
+      setCookie("userEmail", response.data.user.email, {path: '/'});
+      setCookie("username", response.data.user.username, {path: '/'});
 
       document.cookie = `sessionId=${response.data.sessionId}; path=/; SameSite=Lax`;
       navigate('/');
