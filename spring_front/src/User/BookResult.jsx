@@ -11,7 +11,12 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     const [cookies, setCookie] = useCookies(['userEmail', 'bookingInfo']);
     const [selectedTrain, setSelectedTrain] = useState(null);
     const [train, setTrain] = useState(null);
+
+    const [flight, setFlight] = useState(null); 
     const [selectedPlane, setSelectedPlane] = useState(null);
+    const [flight_departureName,setFlight_departureName]=useState(null);
+    const [flight_destinationName,setFlight_destinationName]=useState(null);
+
     const [showBookingResultModal, setShowBookingResultModal] = useState(false);
 
     useEffect(() => {
@@ -27,8 +32,15 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
             setTrain(train);
         } else if (transportationtype === 'plane') {
             const selectedPlane = JSON.parse(localStorage.getItem('bookingData'));
+            const flight = JSON.parse(localStorage.getItem('flight'));
+            const flight_departureName = JSON.parse(localStorage.getItem('flight_departureName'));
+            const flight_destinationName = JSON.parse(localStorage.getItem('flight_destinationName'));
+
             console.log('Loaded selectedPlane:', selectedPlane); // 디버그용 로그
             setSelectedPlane(selectedPlane);
+            setFlight(flight);
+            setFlight_departureName(flight_departureName);
+            setFlight_destinationName(flight_destinationName);
         }
     }, [transportationtype]);
 
@@ -41,15 +53,13 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
         }
     };
 
-    const handleBook_plane = async (e, selectedPlane, fare) => {
-        e.preventDefault();
-        console.log('handleBook_plane called with:', selectedPlane, fare); // 디버그용 로그
+    const handlePayment = async (amount, orderId, orderName) => {
         try {
             const tossPayments = await loadTossPayments(clientKey);
             tossPayments.requestPayment('카드', {
-                amount: fare,
-                orderId: `order_${selectedPlane.id}_${Date.now()}`,
-                orderName: `${selectedPlane.airline} - ${selectedPlane.departureName} to ${selectedPlane.destinationName}`,
+                amount: amount,
+                orderId: orderId,
+                orderName: orderName,
                 customerName: '고객명', // 실제 고객 이름으로 대체하세요
                 successUrl: 'http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090/pay/paysuccess',
                 failUrl: 'http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090/pay/payfail',
@@ -66,6 +76,18 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
         } catch (error) {
             console.error('토스 결제 로드 에러:', error);
         }
+    };
+
+    const handleBook_bus = async (e, bus, fare) => {
+        e.preventDefault();
+        console.log('handleBook_bus called with:', bus, fare); // 디버그용 로그
+        await handlePayment(fare, `order_${bus.id}_${Date.now()}`, `${bus.name} 버스 티켓`);
+    };
+
+    const handleBook_plane = async (e, flight, fare, flight_departureName, flight_destinationName) => {
+        e.preventDefault();
+        console.log('handleBook_plane called with:', flight, fare); // 디버그용 로그
+        await handlePayment(fare, `order_${flight.id}_${Date.now()}`, `${flight.airline} - ${flight_departureName} to ${flight_destinationName}`);
     };
 
     return (
@@ -106,8 +128,8 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                         )}
                     </div>
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
-                        <button type="button" style={{ marginRight: '40px' }} onClick={handlePayment}>결제</button>
-                        <button type="button" onClick={(e) => handleBook_bus(e, selectedPlane, selectedPlane.amount)}>결제</button>
+                        <button type="button" style={{ marginRight: '40px' }} onClick={() => handlePayment(trainprice, `order_${selectedTrain.trainNo}_${Date.now()}`, `${selectedTrain.railName} 티켓`)}>결제</button>
+                        <button type="button" onClick={(e) => handleBook_bus(e, selectedTrain, trainprice)}>결제</button>
                         <button type="button" onClick={bookingCancel}>취소</button>
                     </div>
                     {showBookingResultModal && (
@@ -157,7 +179,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                         )}
                     </div>
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
-                        <button type="button" style={{ marginRight: '40px' }} onClick={handlePayment}>결제</button>
+                        <button type="button" style={{ marginRight: '40px' }} onClick={() => handlePayment(trainprice, `order_${selectedTrain.trainNo}_${Date.now()}`, `${selectedTrain.railName} 티켓`)}>결제</button>
                         {/* <button type="button" onClick={(e) => handleBook_train(e, selectedPlane, selectedPlane.amount)}>결제</button> */}
                         <button type="button" onClick={bookingCancel}>취소</button>
                     </div>
@@ -204,8 +226,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                         )}
                     </div>
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
-                        {/* <button type="button" style={{ marginRight: '40px' }} onClick={handlePayment}>결제</button> */}
-                        <button type="button" onClick={(e) => handleBook_plane(e, selectedPlane, selectedPlane.amount)}>결제</button>
+                        <button type="button" onClick={(e) => handleBook_plane(e, flight, selectedPlane.amount, flight_departureName, flight_destinationName)}>결제</button>
                         <button type="button" onClick={bookingCancel}>취소</button>
                     </div>
                     {showBookingResultModal && (
