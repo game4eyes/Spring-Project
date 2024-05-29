@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useCookies } from 'react-cookie';
 import DateInput from '../PlaneComponent/DateInput';
 import SelectInput from '../PlaneComponent/SelectInput';
 import Checkbox from '../PlaneComponent/Checkbox';
@@ -27,6 +28,7 @@ const Plane = () => {
         window: false,
         fare: 0,
         operator: '', // 추가: 항공사 이름
+        userEmail: useCookies.email
     });
 
     const [flights, setFlights] = useState([]);
@@ -95,7 +97,9 @@ const Plane = () => {
         setTicketInfo(prev => {
             const updatedTicketInfo = { ...prev, fare, operator: flight.airline, departureTime: flight.departureTime, arrivalTime: flight.arrivalTime};
 
-           const bookingData = {
+
+            const bookingData = {
+
                 email: userEmail, // 사용자 이메일
                 startStationId: parseInt(updatedTicketInfo.departure),
                 endStationId: parseInt(updatedTicketInfo.destination),
@@ -108,14 +112,18 @@ const Plane = () => {
                 busSeatNum: null, // 항공편의 경우 사용하지 않음
                 date: updatedTicketInfo.date,
                 departureTime: updatedTicketInfo.departureTime,
-                arrivalTime: updatedTicketInfo.arrivalTime, // 필요 시 추가
+
+                arrivalTime: updatedTicketInfo.arrivalTime,
+
                 amount: updatedTicketInfo.fare
             };
 
             console.log('보내야 하는 데이터임!!!!! : ', bookingData); // bookingData를 로그에 출력합니다.
 
+
             // history.push('/confirmation', { bookingData }); @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 데이터 예약 완료로 보내기 위해 있음
             localStorage.setItem('bookingData', JSON.stringify(bookingData));   //로컬 스토리지로 저장
+
 
             return updatedTicketInfo;
         });
