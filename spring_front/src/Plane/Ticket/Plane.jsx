@@ -8,7 +8,7 @@ import AirportsData from '../PlaneComponent/AirportsData';
 import Layout from '../../components/Layout';
 import { getAirInfo } from '../../api/dataApi';
 import FlightList from '../PlaneComponent/FlightList';
-import { useCookies } from 'react-cookie';
+
 
 const Plane = () => {
    

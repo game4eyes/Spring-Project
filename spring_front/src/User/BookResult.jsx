@@ -61,8 +61,8 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                 orderId: orderId,
                 orderName: orderName,
                 customerName: '고객명', // 실제 고객 이름으로 대체하세요
-                successUrl: 'http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090/pay/paysuccess',
-                failUrl: 'http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090/pay/payfail',
+                successUrl: 'http://localhost:9090/api/v1/payments/toss/success',
+                failUrl: 'http://localhost:9090/api/v1/payments/toss/fail',
             }).catch(function (error) {
                 if (error.code === 'USER_CANCEL') {
                     // 사용자가 결제창을 닫았을 때 처리
