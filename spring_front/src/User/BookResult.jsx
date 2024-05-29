@@ -61,8 +61,8 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                 orderId: orderId,
                 orderName: orderName,
                 customerName: '고객명', // 실제 고객 이름으로 대체하세요
-                successUrl: 'http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090/pay/paysuccess',
-                failUrl: 'http://ec2-15-164-224-69.ap-northeast-2.compute.amazonaws.com:9090/pay/payfail',
+                successUrl: 'http://localhost:9090/api/v1/payments/toss/success',
+                failUrl: 'http://localhost:9090/api/v1/payments/toss/fail',
             }).catch(function (error) {
                 if (error.code === 'USER_CANCEL') {
                     // 사용자가 결제창을 닫았을 때 처리
@@ -84,10 +84,17 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
         await handlePayment(fare, `order_${bus.id}_${Date.now()}`, `${bus.name} 버스 티켓`);
     };
 
+    const handleBook_train = async (e, bus, fare) => {
+        e.preventDefault();
+        console.log('handleBook_bus called with:', bus, fare); // 디버그용 로그
+        await handlePayment(fare, `order_${bus.id}_${Date.now()}`, `${bus.name} 기차 티켓`);
+    };
+
+
     const handleBook_plane = async (e, flight, fare, flight_departureName, flight_destinationName) => {
         e.preventDefault();
         console.log('handleBook_plane called with:', flight, fare); // 디버그용 로그
-        await handlePayment(fare, `order_${flight.id}_${Date.now()}`, `${flight.airline} - ${flight_departureName} to ${flight_destinationName}`);
+        await handlePayment(fare, `order_${flight.id}`, `${flight.airline} - ${flight_departureName} to ${flight_destinationName}`);
     };
 
     return (

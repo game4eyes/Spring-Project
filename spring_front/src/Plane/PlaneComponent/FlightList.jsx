@@ -1,39 +1,42 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import '../../css/FlightList.css';
-
-import TossPay from '../../pay/TossPay'; 
-import { useCookies } from 'react-cookie';
 import { useContext } from 'react';
 import { AuthContext } from '../../global/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import '@/css/Popup.css';
 import LoginModal from '@/components/LoginModal';
 import BookResultModal from '@/components/BookResultModal';
+import { useCookies } from 'react-cookie';
+import TossPay from '../../pay/TossPay';
 
 
-const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationName, selectedDepartureTime }) => {
+
+const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationName, selectedDepartureTime,updatebookingData }) => {
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
     const flightData = useMemo(() => flights.station || [], [flights.station]);
 
+    const { isLoggedIn, setRedirectUrl, setGuestRedirectUrl } = useContext(AuthContext);
+    const [showUserGuestPopup, setShowUserGuestPopup] = useState(false);
     const [fares, setFares] = useState({});
-
-    const [cookies] = useCookies(['username']); 
-    const userName = cookies.username || '고객명'; // 쿠키에 username이 없다면 '고객명'으로 대체
-
     const [showBookResultModal, setShowBookResultModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
-
+    const [cookies] = useCookies(['username']);
+    const userName = cookies.username || '고객명'; // 쿠키에 username이 없다면 '고객명'으로 대체
     const location = useLocation();
     const navigate = useNavigate();
 
-
     useEffect(() => {
+        const storedFares = JSON.parse(localStorage.getItem('flightFares')) || {};
         const newFares = flightData.reduce((acc, flight) => {
-            acc[flight.id] = calculateFare(flight.runDay);
+            if (!storedFares[flight.id]) {
+                storedFares[flight.id] = calculateFare(flight.runDay);
+            }
+            acc[flight.id] = storedFares[flight.id];
             return acc;
         }, {});
         setFares(newFares);
+        localStorage.setItem('flightFares', JSON.stringify(newFares));
     }, [flightData]);
 
     const calculateFare = (runDay) => {
@@ -46,8 +49,6 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
         }
         return Math.round(baseFare / 100) * 100;
     };
-
-
 
     const searchURLObject = (pathname) => {
         if (pathname.includes('bus')) return 'bus';
@@ -91,12 +92,13 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
         if (option === 'login') {
             setShowUserGuestPopup(false);
             setShowLoginModal(true);
-        } else {
-            const url = `/api/user/join?payjoin&railName=${encodeURIComponent(selectedtrain.railName)}&trainClass=${encodeURIComponent(selectedtrain.trainClass)}&trainNo=${encodeURIComponent(selectedtrain.trainNo)}&departureTime=${encodeURIComponent(selectedtrain.departureTime)}
-            &departure=${encodeURIComponent(train.departure)}&destination=${encodeURIComponent(train.destination)}&hour=${encodeURIComponent(train.hour)}&date=${encodeURIComponent(train.date)}&dayz=${encodeURIComponent(train.dayz)}&price=${getTodayFare(selectedtrain.fare)}`;
-            setGuestRedirectUrl(url);
-            navigate(url);
-        }
+        } 
+        // else {
+        //     const url = `/api/user/join?payjoin&railName=${encodeURIComponent(selectedtrain.railName)}&trainClass=${encodeURIComponent(selectedtrain.trainClass)}&trainNo=${encodeURIComponent(selectedtrain.trainNo)}&departureTime=${encodeURIComponent(selectedtrain.departureTime)}
+        //     &departure=${encodeURIComponent(train.departure)}&destination=${encodeURIComponent(train.destination)}&hour=${encodeURIComponent(train.hour)}&date=${encodeURIComponent(train.date)}&dayz=${encodeURIComponent(train.dayz)}&price=${getTodayFare(selectedtrain.fare)}`;
+        //     setGuestRedirectUrl(url);
+        //     navigate(url);
+        // }
     };
 
     const handleBook = async (e, flight, fare) => {
@@ -116,7 +118,6 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
         }
         onSelectFareAndBook(flight, fare, flight.departureTime);
     };
-
 
     const filteredFlights = useMemo(() => {
         const selectedTime = new Date(`1970-01-01T${selectedDepartureTime}:00`).getTime();
@@ -140,12 +141,8 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
                             <th>Arrival Time</th>
                             <th>Run Day</th>
                             <th>Fare</th>
-
-                            <th>Payment method</th>
-
                             <th>Action</th>
                             <th>라우팅테스트</th>
-
                         </tr>
                     </thead>
                     <tbody>
@@ -179,6 +176,9 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
             ) : (
                 <p>No flights available for the selected criteria.</p>
             )}
+            {showUserGuestPopup && <UserGuestPopup onClose={handleCloseUserGuestPopup} onOptionSelect={handleOptionSelect} />}
+            {showLoginModal && <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} />}
+            {showBookResultModal && isLoggedIn && <BookResultModal transportationtype={'plane'} handleClose={() => setShowBookResultModal(false)} />}
         </div>
     );
 };
