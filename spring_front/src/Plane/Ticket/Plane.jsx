@@ -21,13 +21,12 @@ const Plane = () => {
         time: '06:00',
         dayz: '',
         passengerCount: '1',
-        seatType: 'standard',
+        seatType: '',
         disability: false,
         legroom: false,
         window: false,
         fare: 0,
         operator: '', // 추가: 항공사 이름
-        email: userEmail, // 사용자 이메일
     });
 
     const [flights, setFlights] = useState([]);
@@ -64,6 +63,21 @@ const Plane = () => {
         const dayOfWeek = days[new Date(ticketInfo.date).getDay()];
         const formattedHour = ticketInfo.time.split(':')[0];
 
+        if (!ticketInfo.departure) {
+            alert('출발지를 선택해주세요.');
+            return;
+        }
+
+        if (!ticketInfo.destination) {
+            alert('도착지를 선택해주세요.');
+            return;
+        }
+
+        if (ticketInfo.seatType == '') {
+            alert('좌석 유형을 선택해주세요.');
+            return;
+        }
+
         getAirInfo(ticketInfo.departure, ticketInfo.destination, formattedHour, dayOfWeek)
             .then(data => {
                 console.log("API Data Received:", data);
@@ -79,9 +93,9 @@ const Plane = () => {
 
     const onSelectFareAndBook = (flight, fare, departureTime) => {
         setTicketInfo(prev => {
-            const updatedTicketInfo = { ...prev, fare, operator: flight.airline, time: departureTime };
+            const updatedTicketInfo = { ...prev, fare, operator: flight.airline, departureTime: flight.departureTime, arrivalTime: flight.arrivalTime};
 
-            const bookingData = {
+           const bookingData = {
                 email: userEmail, // 사용자 이메일
                 startStationId: parseInt(updatedTicketInfo.departure),
                 endStationId: parseInt(updatedTicketInfo.destination),
@@ -93,8 +107,8 @@ const Plane = () => {
                 seatNum: parseInt(updatedTicketInfo.passengerCount),
                 busSeatNum: null, // 항공편의 경우 사용하지 않음
                 date: updatedTicketInfo.date,
-                departureTime: updatedTicketInfo.time,
-                arrivalTime: null, // 필요 시 추가
+                departureTime: updatedTicketInfo.departureTime,
+                arrivalTime: updatedTicketInfo.arrivalTime, // 필요 시 추가
                 amount: updatedTicketInfo.fare
             };
 
@@ -135,7 +149,7 @@ const Plane = () => {
                     <DateInput label="출발일" value={ticketInfo.date} onChange={e => setTicketInfo({...ticketInfo, date: e.target.value})} /><br/>
                     <TimeInput label="출발 시간" value={selectedDepartureTime} onChange={e => setSelectedDepartureTime(e.target.value)} /><br/>
                     <SelectInput label="인원" value={ticketInfo.passengerCount} onChange={e => setTicketInfo({...ticketInfo, passengerCount: e.target.value})} options={Array.from({length: 10}, (_, i) => ({value: i + 1, label: `${i + 1}명`}))} /><br/>
-                    <SelectInput label="좌석 유형" value={ticketInfo.seatType} onChange={e => setTicketInfo({...ticketInfo, seatType: e.target.value})} options={[{value: 'standard', label: '일반'}, {value: 'premium', label: '프리미엄'}]} />
+                    <SelectInput label="좌석 유형" value={ticketInfo.seatType} onChange={e => setTicketInfo({...ticketInfo, seatType: e.target.value})} options={[{value: 'economy', label: '이코노미'}, {value: 'business', label: '비즈니스'}, {value: 'first', label: '퍼스트'}]} required />
                     <Checkbox checked={ticketInfo.disability} onChange={() => setTicketInfo({...ticketInfo, disability: !ticketInfo.disability})} label="장애가 있습니다" />
                     <Checkbox checked={ticketInfo.legroom} onChange={() => setTicketInfo({...ticketInfo, legroom: !ticketInfo.legroom})} label="Legroom" />
                     <Checkbox checked={ticketInfo.window} onChange={() => setTicketInfo({...ticketInfo, window: !ticketInfo.window})} label="Window Seat" />
