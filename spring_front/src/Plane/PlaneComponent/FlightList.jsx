@@ -158,11 +158,11 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
                                 <td>
                                     <TossPay
                                         amount={fares[flight.id]}
-                                        orderId={`order_${flight.id}_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`}
+                                        orderId={`4miIa9B-z6p_3GYcfY3C3`}
                                         orderName={`${flight.airline} - ${departureName} to ${destinationName}`}
                                         userName={userName}
-                                        successUrl="http://ec2-3-37-87-73.ap-northeast-2.compute.amazonaws.com:9090/pay/paysuccess"
-                                        failUrl="http://ec2-3-37-87-73.ap-northeast-2.compute.amazonaws.com/pay/payfail"
+                                        successUrl='http://localhost:9090/api/user/toss/success'
+                                        failUrl='http://localhost:9090/api/user/toss/fail'
                                         onSelectFareAndBook={() => onSelectFareAndBook(flight, fares[flight.id], flight.departureTime, flight.arrivalTime)}
                                     />
                                 </td>
