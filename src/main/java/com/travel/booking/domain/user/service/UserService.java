@@ -1,6 +1,7 @@
 package com.travel.booking.domain.user.service;
 
 import com.travel.booking.domain.user.entity.User;
+import com.travel.booking.domain.user.Role;
 import com.travel.booking.domain.user.dto.JoinReq;
 import com.travel.booking.domain.user.dto.LoginReq;
 import com.travel.booking.domain.user.repository.UserRepository;
