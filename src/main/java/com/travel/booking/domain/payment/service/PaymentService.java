@@ -44,6 +44,7 @@ public class PaymentService {
         }
 
         payment.setCustomer(user);
+        payment.setUserEmail(user.getEmail());
         return paymentRepository.save(payment);
     }
 

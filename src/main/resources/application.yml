@@ -10,7 +10,7 @@ spring:
   profiles:
     include: oauth
   config:
-    import: classpath:application-api.yml, classpath:application-swagger.yml
+    import: classpath:application-api.yml, classpath:application-oauth.yml, classpath:application-swagger.yml
   thymeleaf:
     cache: false
   datasource:
