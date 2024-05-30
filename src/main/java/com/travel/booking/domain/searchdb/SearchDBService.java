@@ -1,6 +1,7 @@
 package com.travel.booking.domain.searchdb;
 
 import com.travel.booking.domain.payment.repository.JpaPaymentRepository;
+import com.travel.booking.domain.searchdb.dto.BusScheduleDTO;
 import com.travel.booking.domain.searchdb.dto.ScheduleDTO;
 import com.travel.booking.domain.searchdb.dto.StationInfoDTO;
 import com.travel.booking.domain.searchdb.entity.Schedule;
@@ -85,6 +86,31 @@ public class SearchDBService {
                     ));
             if (schedule.getCarrier().contains(daily) || schedule.getCarrier().contains(weekdayCarrier)) {
                 result.add(new ScheduleDTO(schedule));
+                count++;
+            }
+        }
+        Map<String, Object> send = new HashMap<>();
+        send.put("count", count);
+        send.put("result", result);
+        return ResponseEntity.ok(send);
+    }
+
+    public ResponseEntity<?> getBusSchedule(Long startStationId, Long endStationId,
+                                            String gradeCarrier, String departureTime) {
+        List<Schedule> list = scheduleRepository.findByStartStation_IdAndEndStation_IdAndDepartureTimeGreaterThanEqualOrderById(startStationId,endStationId,departureTime);
+        TreeSet<Long> ids = new TreeSet<>();
+        for (Schedule schedule : list) {
+            ids.add(schedule.getId());
+        }
+        List<BusScheduleDTO> result = new ArrayList<>();
+        Long count = 0L;
+        for (Long id : ids) {
+            Schedule schedule = scheduleRepository.findById(id)
+                    .orElseThrow(() -> new SearchException(
+                            HttpStatus.BAD_REQUEST, SearchExceptionCode.SEARCH_FIND_SCHEDULE_FAILED
+                    ));
+            if(schedule.getCarrier().equals(gradeCarrier) || gradeCarrier.equals("전체")) {
+                result.add(new BusScheduleDTO(schedule));
                 count++;
             }
         }

@@ -25,4 +25,10 @@ public class SearchDBController {
     @RequestParam("weekdayCarrier") String weekdayCarrier, @RequestParam("departureTime") String departureTime) {
         return searchDBService.getSchedules(startStationId,endStationId,weekdayCarrier,departureTime);
     }
+
+    @GetMapping("/schedule/info/bus")
+    public ResponseEntity<?> getBusSchedule(@RequestParam("startStationId") Long startStationId, @RequestParam("endStationId") Long endStationId,
+                                            @RequestParam("gradeCarrier") String gradeCarrier, @RequestParam("departureTime") String departureTime) {
+        return searchDBService.getBusSchedule(startStationId,endStationId,gradeCarrier,departureTime);
+    }
 }
