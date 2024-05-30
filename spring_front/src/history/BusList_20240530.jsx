@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../global/AuthContext';
 import '@/css/Popup.css';
 
-const BusList = ({ startStationID, endStationID, onUpdateSeat, bus }) => {
+const BusList = ({ startStationID, endStationID, onUpdateSeat, busticket }) => {
     const [busInfo, setBusInfo] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(10);
@@ -34,25 +34,25 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, bus }) => {
 
 
     const initState = {
-        ...bus,
-        // departure: bus.departure,
-        // destination: bus.destination,
-        // departureDate: bus.departureDate,
-        // returnDate: bus.returnDate,
-        // passengerCount: bus.passengerCount,
-        // isRoundTrip: false,
-        // busClass: bus.busclass,
-        // isDepartureModalOpen: false,
-        startStationID: bus.startStationID, // 출발지 코드
-        endStationID: bus.endStationID, // 도착지 코드
+        ...busticket,
+        departure: busticket.departure,
+        destination: busticket.destination,
+        departureDate: busticket.departureDate,
+        returnDate: busticket.returnDate,
+        passengerCount: busticket.passengerCount,
+        isRoundTrip: false,
+        busClass: busticket.busclass,
+        isDepartureModalOpen: false,
+        startStationID: busticket.startStationID, // 출발지 코드
+        endStationID: busticket.endStationID, // 도착지 코드
     };
 
-    const [selectedbus, setSelectedbus] = useState(initState);
+    const [selectedbusticket, setSelectedbusticket] = useState(initState);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await getBusSchedule(bus.startStationID, bus.endStationID);
+                const res = await getBusSchedule(startStationID, endStationID);
                 setBusInfo(res ? res : {});
             } catch (error) {
                 console.error('Error fetching bus info:', error);
@@ -86,7 +86,7 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, bus }) => {
 
     const searchURLObject = (pathname) => {
         if (pathname.includes('bus')) return 'bus';
-        if (pathname.includes('Bus')) return 'Bus';
+        if (pathname.includes('train')) return 'train';
         if (pathname.includes('plane')) return 'plane';
         return null;
     };
@@ -95,9 +95,9 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, bus }) => {
     //     setSelectedTransportation(transportation);
     //     console.log("Selected Seats:", selectedSeats);
     //     console.log("Detail:", detail);
-    //     console.log("bus:", bus);
+    //     console.log("Busticket:", busticket);
 
-    //     setSelectedbus(prevState => ({
+    //     setSelectedbusticket(prevState => ({
     //         ...prevState,
     //         selectedBus: detail // Update the selectedBus with detail
     //     }));
@@ -111,10 +111,10 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, bus }) => {
     //     }
     // };
 
-    const handleItemClick = (transportation, selectedBus, Bus) => {
-        setSelectedBus(selectedBus);
-        localStorage.setItem('selectedBus', JSON.stringify(selectedBus)); // selectedBus을 로컬 스토리지에 저장
-        localStorage.setItem('Bus', JSON.stringify(Bus));
+    const handleItemClick = (transportation, selectedtrain, train) => {
+        setSelectedtrain(selectedtrain);
+        localStorage.setItem('selectedtrain', JSON.stringify(selectedtrain)); // selectedtrain을 로컬 스토리지에 저장
+        localStorage.setItem('train', JSON.stringify(train));
 
         if (isLoggedIn) {
             setShowBookResultModal(true); // Show BookResultModal if logged in
@@ -147,8 +147,8 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, bus }) => {
             setShowUserGuestPopup(false); // 기존 팝업 닫기
             setShowLoginModal(true); // 로그인 모달 열기
         } else {
-            const url = `/api/user/join?payjoin&railName=${encodeURIComponent(selectedBus.railName)}&BusClass=${encodeURIComponent(selectedBus.BusClass)}&BusNo=${encodeURIComponent(selectedBus.BusNo)}&departureTime=${encodeURIComponent(selectedBus.departureTime)}
-            &departure=${encodeURIComponent(Bus.departure)}&destination=${encodeURIComponent(Bus.destination)}&hour=${encodeURIComponent(Bus.hour)}&date=${encodeURIComponent(Bus.date)}&dayz=${encodeURIComponent(Bus.dayz)}&price=${getTodayFare(selectedBus.fare)}`;
+            const url = `/api/user/join?payjoin&railName=${encodeURIComponent(selectedtrain.railName)}&trainClass=${encodeURIComponent(selectedtrain.trainClass)}&trainNo=${encodeURIComponent(selectedtrain.trainNo)}&departureTime=${encodeURIComponent(selectedtrain.departureTime)}
+            &departure=${encodeURIComponent(train.departure)}&destination=${encodeURIComponent(train.destination)}&hour=${encodeURIComponent(train.hour)}&date=${encodeURIComponent(train.date)}&dayz=${encodeURIComponent(train.dayz)}&price=${getTodayFare(selectedtrain.fare)}`;
             setGuestRedirectUrl(url);
             navigate(url);
         }
@@ -175,9 +175,9 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, bus }) => {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-    // Filtering logic based on bus.busclass
+    // Filtering logic based on busticket.busclass
     const filteredItems = busInfo.detail ? busInfo.detail.filter(detail => {
-        return bus.busclass === "" || parseInt(detail.busClass) === parseInt(bus.busclass);
+        return busticket.busclass === "" || parseInt(detail.busClass) === parseInt(busticket.busclass);
     }) : [];
 
     const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
@@ -238,7 +238,7 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, bus }) => {
              {showUserGuestPopup && <UserGuestPopup onClose={handleCloseUserGuestPopup} onOptionSelect={handleOptionSelect} />}
             {showLoginModal && <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} />}
             {showBookResultModal && isLoggedIn && <BookResultModal transportationtype={'bus'} handleClose={() => setShowBookResultModal(false)} />}
-                                                         {/* //transportationtype : bus(버스), Bus (기차), plane(비행기)*/}
+                                                         {/* //transportationtype : bus(버스), train (기차), plane(비행기)*/}
         </div>
     );
 };

@@ -8,7 +8,7 @@ import '@/css/Popup.css';
 import LoginModal from '@/components/LoginModal';
 import BookResultModal from '@/components/BookResultModal';
 
-const TrainList = ({ startStationID, endStationID, hour, dayz, trainticket }) => {
+const TrainList = ({ startStationID, endStationID, hour, dayz, train }) => {
     const [trainInfo, setTrainInfo] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5);
@@ -16,6 +16,7 @@ const TrainList = ({ startStationID, endStationID, hour, dayz, trainticket }) =>
     const [timeoutReached, setTimeoutReached] = useState(false);
     const { isLoggedIn, setRedirectUrl, setGuestRedirectUrl } = useContext(AuthContext);
     const [showUserGuestPopup, setShowUserGuestPopup] = useState(false);
+    const [selectedTransportation, setSelectedTransportation] = useState(null);
     const [selectedtrain, setSelectedtrain] = useState(null);
     const [showBookResultModal, setShowBookResultModal] = useState(false); // State for BookResult modal
 
@@ -29,6 +30,7 @@ const TrainList = ({ startStationID, endStationID, hour, dayz, trainticket }) =>
         setShowLoginModal(false);
         // Check if user is logged in and then open BookResult modal
         if (isLoggedIn) {
+
             setShowBookResultModal(true);
         }
     };
@@ -74,14 +76,18 @@ const TrainList = ({ startStationID, endStationID, hour, dayz, trainticket }) =>
         }
     };
 
-    const searchURLObject = (pathname) => {
+
+
+
+    const searchURLObject = (pathname) => {                 //URL에 'bus나,train,plane'이 들어있을 경우 해당 문자를 return
+
         if (pathname.includes('bus')) return 'bus';
         if (pathname.includes('train')) return 'train';
         if (pathname.includes('plane')) return 'plane';
         return null;
     };
 
-    const handleItemClick = (transportation, selectedtrain, trainticket) => {
+    const handleItemClick = (transportation, selectedtrain, train) => {
         setSelectedtrain(selectedtrain);
         localStorage.setItem('selectedtrain', JSON.stringify(selectedtrain)); // selectedtrain을 로컬 스토리지에 저장
         localStorage.setItem('train', JSON.stringify(train));
@@ -148,11 +154,22 @@ const TrainList = ({ startStationID, endStationID, hour, dayz, trainticket }) =>
             setShowUserGuestPopup(false); // 기존 팝업 닫기
             setShowLoginModal(true); // 로그인 모달 열기
         } else {
-            const url = `/api/user/join?payjoin&railName=${encodeURIComponent(selectedtrain.railName)}&trainClass=${encodeURIComponent(selectedtrain.trainClass)}&trainNo=${encodeURIComponent(selectedtrain.trainNo)}&departureTime=${encodeURIComponent(selectedtrain.departureTime)}&departure=${encodeURIComponent(trainticket.departure)}&destination=${encodeURIComponent(trainticket.destination)}&hour=${encodeURIComponent(trainticket.hour)}&date=${encodeURIComponent(trainticket.date)}&dayz=${encodeURIComponent(trainticket.dayz)}&price=${getTodayFare(selectedtrain.fare)}`;
+
+            const url = `/api/user/join?payjoin&railName=${encodeURIComponent(selectedtrain.railName)}&trainClass=${encodeURIComponent(selectedtrain.trainClass)}&trainNo=${encodeURIComponent(selectedtrain.trainNo)}&departureTime=${encodeURIComponent(selectedtrain.departureTime)}
+            &departure=${encodeURIComponent(train.departure)}&destination=${encodeURIComponent(train.destination)}&hour=${encodeURIComponent(train.hour)}&date=${encodeURIComponent(train.date)}&dayz=${encodeURIComponent(train.dayz)}&price=${getTodayFare(selectedtrain.fare)}`;
             setGuestRedirectUrl(url);
             navigate(url);
         }
     };
+
+
+
+
+    // const seatselect = () => {
+    //     window.open('http://localhost:5173/search/Trainseat', '_blank', 'width=600,height=400');
+    // }
+
+
 
     const payment = () => {
         window.open('http://localhost:5173/pay/pay', '_blank', 'width=600,height=400');
@@ -168,15 +185,19 @@ const TrainList = ({ startStationID, endStationID, hour, dayz, trainticket }) =>
 
     return (
         <div className="table-container">
+
+       
+
             {trainInfo.length > 0 ? (
                 <>
                     <div>
-                        <div style={{ marginTop: '600px' }}>
-                            <h2>출발지 : {trainticket.departure}</h2>
-                            <h2>도착지 : {trainticket.destination}</h2>
+                        <div style ={{marginTop:'600px'}}>
+                            <h2>출발지 : {train.departure}</h2>
+                            <h2>도착지 : {train.destination}</h2>
                         </div>
 
                         <table>
+
                             <thead>
                                 <tr>
                                     <th>열차 이름</th>
@@ -190,6 +211,7 @@ const TrainList = ({ startStationID, endStationID, hour, dayz, trainticket }) =>
                                     <th>요금 정보</th>
                                     <th>좌석 선택</th>
                                     <th>예매</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -202,6 +224,7 @@ const TrainList = ({ startStationID, endStationID, hour, dayz, trainticket }) =>
                                         <td>{selectedtrain.arrivalTime}</td>
                                         <td>{selectedtrain.wasteTime}</td>
                                         <td>{selectedtrain.runDay}</td>
+                                        {/* {getTodayFare(train.fare)} : 오늘 날짜에 대한 요금 측정 */}
                                         <td>{getTodayFare(selectedtrain.fare)}</td>
                                         <td>
                                             {selectedtrain.fare.generalFare.weekday && <p>평일: {selectedtrain.fare.generalFare.weekday}</p>}
@@ -209,7 +232,7 @@ const TrainList = ({ startStationID, endStationID, hour, dayz, trainticket }) =>
                                             {selectedtrain.fare.generalFare.holiday && <p>공휴일: {selectedtrain.fare.generalFare.holiday}</p>}
                                         </td>
                                         <td><button className="button" onClick={payment}>결제</button></td>
-                                        <td><button className="button" onClick={() => handleItemClick(searchURLObject(location.pathname), selectedtrain, trainticket)}>테스트 버튼</button></td>
+                                        <td><button className="button" onClick={() => handleItemClick(searchURLObject(location.pathname), selectedtrain, train)}>테스트 버튼</button></td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -223,6 +246,7 @@ const TrainList = ({ startStationID, endStationID, hour, dayz, trainticket }) =>
             {showUserGuestPopup && <UserGuestPopup onClose={handleCloseUserGuestPopup} onOptionSelect={handleOptionSelect} />}
             {showLoginModal && <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} />}
             {showBookResultModal && isLoggedIn && <BookResultModal transportationtype={'train'} trainprice={getTodayFare(selectedtrain.fare)} handleClose={() => setShowBookResultModal(false)} />}
+                                                         {/* //transportationtype : 'bus'(버스), 'train' (기차), 'plane'(비행기)*/}
         </div>
     );
 };

@@ -1,8 +1,8 @@
 // 서버 호스트 설정
 import axios from "axios";
 
-
-export const API_SERVER_HOST = 'http://ec2-3-34-129-44.ap-northeast-2.compute.amazonaws.com:9090'; // 서버 주소
+export const API_SERVER_HOST = 'http://localhost:9090'; // 서버 주소
+ //export const API_SERVER_HOST = 'http://ec2-3-34-129-44.ap-northeast-2.compute.amazonaws.com:9090'; // 서버 주소
 
 
 // 기본 주소 설정
@@ -17,6 +17,24 @@ const busPrefix = `${apiPrefix}/bus`;
 const trainPrefix = `${apiPrefix}/train`
 // 항공
 const airPrefix = `${apiPrefix}/air`
+
+
+
+// 출발지 리스트
+// http://localhost:9090/search/db/start/station/info?stationTypeId=3
+// 도착지 리스트
+// http://localhost:9090/search/db/end/station/info?startStationId=9
+// //검색
+const searchPrefix = `${API_SERVER_HOST}/search/db`;
+
+
+//출발지 조회
+const startStationPrefix = `${searchPrefix}/start/station/info`;
+
+//도착지 조회
+const endStationPrefix = `${searchPrefix}/end/station/info`;
+
+
 
 // 각 도 별 도시 정보 출력
 // 도시정보
@@ -84,6 +102,34 @@ export const getBusSchedule = async (startStationID, endStationID) => {
         params : {
             startStationID : startStationID,
             endStationID : endStationID
+        }
+    });
+    return res.data;
+}
+
+
+// 출발지 리스트 조회
+// http://localhost:9090/search/db/start/station/info?stationTypeId=3
+                                                         //stationTypeId 1: 버스 2: 기차 3: 항공
+
+export const getStartStationList = async (stationTypeId) => {
+    const res = await axios.get(`${startStationPrefix}`,{
+        params : {
+            stationTypeId : stationTypeId
+        }
+    });
+    return res.data;
+}
+
+
+// 도착지 리스트
+// http://localhost:9090/search/db/end/station/info?startStationId=9
+//ex)출발지 ID가 9번인 출발지의 도착지 목록을 나열
+
+export const getEndStationList = async (startStationId) => {
+    const res = await axios.get(`${endStationPrefix}`,{
+        params : {
+            startStationId : startStationId
         }
     });
     return res.data;
