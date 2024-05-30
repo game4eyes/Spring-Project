@@ -1,6 +1,5 @@
 package com.travel.booking.domain.booking.dto;
 
-import com.travel.booking.domain.booking.entity.StationClassEnum;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
