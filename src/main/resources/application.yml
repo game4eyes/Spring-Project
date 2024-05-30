@@ -14,10 +14,10 @@ spring:
   thymeleaf:
     cache: false
   datasource:
-    url: jdbc:mysql://localhost:3306/AWS
+    url: jdbc:mysql://localhost:3306/booking
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root # 기본값으로 root를 사용하도록 설정
-    password: khs04140 # 기본값으로 khs04140을 사용하도록 설정
+    username: booking # 기본값으로 root를 사용하도록 설정
+    password: booking # 기본값으로 khs04140을 사용하도록 설정
 
   jpa:
     hibernate:
@@ -33,6 +33,7 @@ spring:
 logging:
   level:
     org:
+      springframework: debug
       hibernate:
         SQL: debug
         type: trace
