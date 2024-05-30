@@ -12,6 +12,11 @@ public class SearchDBController {
 
     @GetMapping("/start/station/info")
     public ResponseEntity<?> startStation(@RequestParam Long stationTypeId) {
-        return searchDBService.getBusStartList(stationTypeId);
+        return searchDBService.getStationStartList(stationTypeId);
+    }
+
+    @GetMapping("/end/station/info")
+    public ResponseEntity<?> getEndStations(@RequestParam Long startStationId) {
+        return searchDBService.getStationStopList(startStationId);
     }
 }
