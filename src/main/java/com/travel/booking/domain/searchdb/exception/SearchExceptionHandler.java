@@ -18,9 +18,9 @@ public class SearchExceptionHandler {
         response.put("Error Message : ", e.getDetail());
         return new ResponseEntity<>(response,e.getStatus());
     }
-    // 선언 되지 않은 에러 발생 때를 대비한 헨들러
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleGeneralException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
-    }
+//    // 선언 되지 않은 에러 발생 때를 대비한 헨들러
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<Object> handleGeneralException(Exception ex) {
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
+//    }
 }
