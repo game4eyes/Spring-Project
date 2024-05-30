@@ -37,10 +37,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
         if(optionalUser.isEmpty()){
             user = User.builder()
-                    .loginId(loginId)
                     .username(oAuth2User.getAttribute("name"))
-                    .provider(provider)
-                    .providerId(providerId)
                     .role(Role.USER)
                     .build();
             repository.save(user);
