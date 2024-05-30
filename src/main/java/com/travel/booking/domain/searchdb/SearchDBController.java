@@ -19,4 +19,10 @@ public class SearchDBController {
     public ResponseEntity<?> getEndStations(@RequestParam("startStationId") Long startStationId) {
         return searchDBService.getStationStopList(startStationId);
     }
+
+    @GetMapping("/schedule/info")
+    public ResponseEntity<?> getSchedule(@RequestParam Long startStationId, @RequestParam Long endStationId,
+    @RequestParam String weekdayCarrier, @RequestParam String departureTime) {
+        return searchDBService.getSchedules(startStationId,endStationId,weekdayCarrier,departureTime);
+    }
 }
