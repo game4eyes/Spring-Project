@@ -20,10 +20,10 @@ public class Schedule {
     private Long id;
 
     @Column(name = "departureTime")
-    private LocalTime departureTime;
+    private String departureTime;
 
     @Column(name = "arrivalTime")
-    private LocalTime arrivalTime;
+    private String arrivalTime;
 
     @Size(max = 255)
     @Column(name = "frequency")

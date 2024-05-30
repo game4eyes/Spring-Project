@@ -1,6 +1,7 @@
 package com.travel.booking.domain.searchdb;
 
 import com.travel.booking.domain.payment.repository.JpaPaymentRepository;
+import com.travel.booking.domain.searchdb.dto.StationInfoDTO;
 import com.travel.booking.domain.searchdb.entity.Schedule;
 import com.travel.booking.domain.searchdb.entity.Stationinfo;
 import com.travel.booking.domain.searchdb.entity.Stationtype;
@@ -14,7 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -29,9 +33,8 @@ public class SearchDBService {
     private final JpaPaymentRepository jpaPaymentRepository;
 
     // 각 정차지의 시작 지점을 찾는 메서드
-    public ResponseEntity<?> getBusStartList(Long stationTypeId) {
+    public ResponseEntity<?> getStationStartList(Long stationTypeId) {
         // stationTypeId에 해당하는 값이 있는지 찾는 메서드
-        log.debug("Searching for StationType with ID: {}", stationTypeId);
         Stationtype stationType = stationtypeRepository.findById(stationTypeId)
                 // StationTypeId에 해당하는 StationType가 없을 경우 예외처리
                 .orElseThrow(() -> new SearchException(HttpStatus.BAD_REQUEST, SearchExceptionCode.SEARCH_STATION_TYPE_FAILED));
@@ -47,4 +50,29 @@ public class SearchDBService {
 
         return ResponseEntity.ok(result);
     }
+
+    // 출발지에 따른 도착지를 찾기 위한 메서드
+    public ResponseEntity<?> getStationStopList(Long startStationId) {
+        // 시작지 아이디로 스케줄 찾기
+        List<Schedule> list = scheduleRepository.findByStartStation_Id(startStationId);
+        if (list.isEmpty()) {
+            throw new SearchException(HttpStatus.BAD_REQUEST, SearchExceptionCode.SEARCH_START_STATION_INFO_FIND_FAILED);
+        }
+
+        // 도착지 id 중복 제거를 위한 Set
+        Set<Long> endId = new HashSet<>();
+        for (Schedule schedule : list) {
+            endId.add(schedule.getEndStation().getId());
+        }
+
+        List<StationInfoDTO> result = new ArrayList<>();
+        for (Long id : endId) {
+            Stationinfo stationinfo = stationinfoRepository.findById(id)
+                    .orElseThrow(() -> new SearchException(HttpStatus.BAD_REQUEST, SearchExceptionCode.SEARCH_START_STATION_INFO_FIND_BY_START_STATION_ID_FAILED));
+            result.add(new StationInfoDTO(stationinfo));
+        }
+
+        return ResponseEntity.ok(result);
+    }
+
 }
