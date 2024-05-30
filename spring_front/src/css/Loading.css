@@ -1,0 +1,27 @@
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 검은빛 배경 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* 다른 요소 위에 표시 */
+}
+
+.loading-spinner {
+    width: 64px;
+    height: 64px;
+    border: 8px solid black;
+    border-top-color: white; /* 더 어두운 색 */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

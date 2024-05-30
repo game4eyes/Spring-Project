@@ -1,0 +1,79 @@
+/* .Home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+} */
+
+
+
+.layout {
+    margin-bottom: 20px; /* Added margin between Header and Article */
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.main-content {
+    width: 100%; /* Set main-content width to 80% of the content */
+    padding-right: 10px;
+    padding-left: 100px;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: left; /* Center vertically */
+    flex-direction: column; /* Ensure children are stacked vertically */
+    
+}
+
+ /* .ad-container {
+    width: 20%; 
+    position: sticky;
+    top: 300px;
+    margin-top: 40px;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; 
+}  */
+
+
+ .ad-container {
+    width: 30%; 
+    position: sticky;
+    top: 200px;
+    bottom: 50px;
+    margin-top: 40px;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; 
+} 
+
+.ad-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Align items to the right */
+    padding: 0;
+    width: 100%; /* Ensure ad-list takes the full width of ad-container */
+}
+
+.ad-item {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-end; /* Ensure ad-item elements are aligned to the right */
+    width: 100%; /* Ensure ad-item takes the full width of ad-list */
+}
+
+.ad-image {
+    width: 150px;
+    height: 130px;
+    margin-right: 0; /* Remove right margin to align it to the right */
+}
+
+.ad-description {
+    /* Additional styles for ad description if needed */
+}

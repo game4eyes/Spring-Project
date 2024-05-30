@@ -1,0 +1,31 @@
+.terms-container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.terms-header {
+    color: #007bff;
+    margin-bottom: 16px;
+}
+
+.term-section {
+    margin-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.term-title {
+    font-weight: bold;
+    color: #343a40;
+    margin-bottom: 8px;
+}
+
+.term-text {
+    margin-top: 4px;
+    color: #6c757d;
+    line-height: 1.6;
+}

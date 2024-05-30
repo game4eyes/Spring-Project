@@ -7,17 +7,23 @@ server:
       force: true
 
 spring:
+  profiles:
+    include: oauth
+  config:
+    import: classpath:application-api.yml, classpath:application-oauth.yml, classpath:application-swagger.yml
   thymeleaf:
     cache: false
   datasource:
-    url: jdbc:mysql://localhost:3306/jpa
+    url: jdbc:mysql://localhost:3306/AWS
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: khs04140
+    username: root # 기본값으로 root를 사용하도록 설정
+    password: khs04140 # 기본값으로 khs04140을 사용하도록 설정
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
+      naming:
+        physical-strategy:  org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
         format_sql: true

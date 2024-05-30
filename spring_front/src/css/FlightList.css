@@ -1,0 +1,37 @@
+.flights-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.flights-table th, .flights-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.flights-table th {
+    background-color: #f2f2f2;
+}
+
+.flights-table td {
+    background-color: #ffffff;
+}
+
+.flights-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.flights-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.flights-table .payment-select {
+    width: 100%;
+    height: 35px;
+    padding: 4px 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+    cursor: pointer;
+}

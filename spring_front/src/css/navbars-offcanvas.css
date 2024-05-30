@@ -1,0 +1,33 @@
+body {
+  padding-bottom: 20px;
+}
+
+.navbar {
+  margin-bottom: 20px;
+}
+
+.navbar #bus,#train,#plane,#check,#cancel {
+  color: white !important;
+  background-color: transparent !important;
+}
+
+/* .navbar a.nav-link:hover {
+  color: black !important;
+  background-color: transparent !important;
+} */
+
+.navbar .navbar-dark .navbar-nav .nav-link,
+.navbar .navbar-dark .navbar-toggler-icon,
+.navbar .btn,
+.navbar .btn-toggle,
+.navbar .btn-toggle-nav .link-body-emphasis,
+.navbar .collapse.show .btn-toggle-nav .link-body-emphasis,
+.navbar .dropdown-menu .dropdown-item {
+  color: white !important;
+  /* margineft: 50px; */
+}
+
+.navbar .mb-1 {
+  color:white !important;
+  background-color: transparent !important;
+}
