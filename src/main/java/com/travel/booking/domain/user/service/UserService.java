@@ -1,6 +1,7 @@
 package com.travel.booking.domain.user.service;
 
 import com.travel.booking.domain.user.entity.User;
+import com.travel.booking.domain.user.Role;
 import com.travel.booking.domain.user.dto.JoinReq;
 import com.travel.booking.domain.user.dto.LoginReq;
 import com.travel.booking.domain.user.repository.UserRepository;
@@ -68,10 +69,10 @@ public class UserService {
      * userId가 null이거나(로그인 X) userId로 찾아온 User가 없으면 null return
      * userId로 찾아온 User가 존재하면 User return
      */
-    public User getLoginUserByEmail(Long id){
-        if(id == null) return null;
+    public User getLoginUserByEmail(String email){
+        if(email == null) return null;
 
-        Optional<User> optionalUser = userRepository.findById(id);
+        Optional<User> optionalUser = userRepository.findByEmail(email);
         if(optionalUser.isEmpty()) return null;
 
         return optionalUser.get();

@@ -48,14 +48,23 @@ const Login = ({ handleClose }) => {
     password,
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      const data = await socialLogin();
-      // 추가적인 로그인 결과 처리
-    } catch (error) {
-      console.error('소셜 로그인 중 오류가 발생했습니다.', error);
-    }
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     const data = await socialLogin();
+  //     // 추가적인 로그인 결과 처리
+  //   } catch (error) {
+  //     console.error('소셜 로그인 중 오류가 발생했습니다.', error);
+  //   }
+  // };
+
+  // const handleGoogleLogin = () => {
+  //   window.location.href = 'http://localhost:9090/api/user/social-google';
+  // };
+
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://localhost:9090/oauth2/authorization/google';
   };
+  
 
   const handleLogin = async (e) => {
     e.preventDefault();

@@ -141,8 +141,7 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
                             <th>Arrival Time</th>
                             <th>Run Day</th>
                             <th>Fare</th>
-                            <th>Action</th>
-                            <th>라우팅테스트</th>
+                            <th>Payment Method</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -156,18 +155,7 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
                                 <td>{flight.runDay}</td>
                                 <td>₩{fares[flight.id]}</td>
                                 <td>
-                                    <TossPay
-                                        amount={fares[flight.id]}
-                                        orderId={`4miIa9B-z6p_3GYcfY3C3`}
-                                        orderName={`${flight.airline} - ${departureName} to ${destinationName}`}
-                                        userName={userName}
-                                        successUrl='http://localhost:9090/api/user/toss/success'
-                                        failUrl='http://localhost:9090/api/user/toss/fail'
-                                        onSelectFareAndBook={() => onSelectFareAndBook(flight, fares[flight.id], flight.departureTime, flight.arrivalTime)}
-                                    />
-                                </td>
-                                <td>
-                                    <button className="button" onClick={(e) => handleItemClick(searchURLObject(location.pathname), e, flight, fares[flight.id])}>테스트 버튼</button>
+                                    <button className="button" onClick={(e) => handleItemClick(searchURLObject(location.pathname), e, flight, fares[flight.id])}>결제</button>
                                 </td>
                             </tr>
                         ))}

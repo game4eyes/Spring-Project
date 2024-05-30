@@ -231,8 +231,13 @@ const TrainList = ({ startStationID, endStationID, hour, dayz, train }) => {
                                             {selectedtrain.fare.generalFare.weekend && <p>주말: {selectedtrain.fare.generalFare.weekend}</p>}
                                             {selectedtrain.fare.generalFare.holiday && <p>공휴일: {selectedtrain.fare.generalFare.holiday}</p>}
                                         </td>
+<<<<<<< HEAD
                                         <td><button className="button" onClick={payment}>결제</button></td>
                                         <td><button className="button" onClick={() => handleItemClick(searchURLObject(location.pathname), selectedtrain, train)}>테스트 버튼</button></td>
+=======
+                                        <td><button className="button" onClick={payment}>좌석선택</button></td>
+                                        <td><button className="button" onClick={() => handleItemClick(searchURLObject(location.pathname), selectedtrain, train)}>결제</button></td>
+>>>>>>> 6ed977627e4f9ded94febb5de36b652187eb0c21
                                     </tr>
                                 ))}
                             </tbody>

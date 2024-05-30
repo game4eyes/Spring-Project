@@ -31,34 +31,38 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/user/toss").permitAll() // 결제 경로 허용
+                        .requestMatchers("/api/user/join").permitAll()
+                        .requestMatchers("/api/user/login").permitAll()
                         .requestMatchers("/api/user/social-google").permitAll()
+<<<<<<< HEAD
                         .requestMatchers("/security-login/info").authenticated()
                         .requestMatchers("/security-login/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/search/db/**").permitAll()
                         .anyRequest().permitAll()
+=======
+                        .requestMatchers("/search/db/**").permitAll()
+                        .anyRequest().authenticated()
+>>>>>>> 6ed977627e4f9ded94febb5de36b652187eb0c21
                 )
                 .formLogin(form -> form
-                        .usernameParameter("loginId")
-                        .passwordParameter("password")
-                        .loginPage("/security-login/login")
-                        .defaultSuccessUrl("/security-login")
-                        .failureUrl("/security-login/login?error=true")
+                        .loginPage("/api/user/login")
+                        .defaultSuccessUrl("/")
+                        .failureUrl("/api/user/login?error=true")
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/security-login/logout")
+                        .logoutUrl("/api/user/logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/api/user/login")
-                        .defaultSuccessUrl("/api/user/security-login")
+                        .loginPage("/api/user/google-login")
+                        .defaultSuccessUrl("/api/user/info")
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(principalOauth2UserService)
                         )
                 )
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/security-login/login"))
+                        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/user/login"))
                         .accessDeniedHandler(customAccessDeniedHandler())
                 );
 
@@ -67,13 +71,13 @@ public class SecurityConfig {
 
     @Bean
     public AccessDeniedHandler customAccessDeniedHandler() {
-        return new MyAccessDeniedHandler(); // 커스텀 AccessDeniedHandler 구현
+        return new MyAccessDeniedHandler();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:5173"); // 프론트엔드 도메인
+        configuration.addAllowedOrigin("http://localhost:5173");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
