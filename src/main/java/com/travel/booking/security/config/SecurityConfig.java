@@ -35,6 +35,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/user/social-google").permitAll()
                         .requestMatchers("/security-login/info").authenticated()
                         .requestMatchers("/security-login/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/search/db/**").permitAll()
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
