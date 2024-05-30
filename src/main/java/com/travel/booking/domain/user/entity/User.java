@@ -27,12 +27,6 @@ public class User {
 
     private String password;
 
-    private String picture;
-
-    private String provider;
-    private String providerId;
-    // oauth 정보 확인용
-    private String loginId;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -41,16 +35,14 @@ public class User {
 
 
     @Builder
-    public User(String username, String email, String picture, Role role){
+    public User(String username, String email,  Role role){
         this.username = username;
         this.email = email;
-        this.picture = picture;
         this.role = role;
     }
 
     public User update(String username, String picture){
         this.username = username;
-        this.picture = picture;
 
         return this;
     }
@@ -68,7 +60,6 @@ public class User {
         return OAuthAttributes.builder()
                 .username((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
-                .picture((String) attributes.get("picture"))
                 .attributes(attributes)
                 .build();
     }
