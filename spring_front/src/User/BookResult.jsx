@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext  } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import '@/css/form/bookresult.css';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
+import TossPay from '../pay/TossPay';
+import LoginModal from '@/components/LoginModal';
+import BookResultModal from '@/components/BookResultModal';
+import { AuthContext } from '@/global/AuthContext';
 
 const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
@@ -11,12 +15,15 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     const [cookies, setCookie] = useCookies(['userEmail', 'bookingInfo']);
     const [selectedTrain, setSelectedTrain] = useState(null);
     const [train, setTrain] = useState(null);
-
+    const userName = cookies.username || '고객명';
     const [flight, setFlight] = useState(null); 
     const [selectedPlane, setSelectedPlane] = useState(null);
     const [flight_departureName,setFlight_departureName]=useState(null);
     const [flight_destinationName,setFlight_destinationName]=useState(null);
 
+    const { isLoggedIn, setShowLoginModal } = useContext(AuthContext);
+    const [paymentType, setPaymentType] = useState('카드');  // 결제 유형 상태
+    const [showBookResultModal, setShowBookResultModal] = useState(false);
     const [showBookingResultModal, setShowBookingResultModal] = useState(false);
 
     useEffect(() => {
@@ -53,28 +60,32 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
         }
     };
 
-    const handlePayment = async (amount, orderId, orderName) => {
-        try {
-            const tossPayments = await loadTossPayments(clientKey);
-            tossPayments.requestPayment('카드', {
-                amount: amount,
-                orderId: orderId,
-                orderName: orderName,
-                customerName: '고객명', // 실제 고객 이름으로 대체하세요
-                successUrl: 'http://localhost:9090/api/v1/payments/toss/success',
-                failUrl: 'http://localhost:9090/api/v1/payments/toss/fail',
-            }).catch(function (error) {
-                if (error.code === 'USER_CANCEL') {
-                    // 사용자가 결제창을 닫았을 때 처리
-                } else if (error.code === 'INVALID_CARD_COMPANY') {
-                    // 유효하지 않은 카드 코드 처리
-                } else {
-                    // 기타 에러 처리
-                    console.error(error);
-                }
-            });
-        } catch (error) {
-            console.error('토스 결제 로드 에러:', error);
+    const handlePayment = async (amount, orderId, orderName, successUrl, failUrl) => {
+
+        if (!isLoggedIn) {
+            setShowLoginModal(true);
+            return;
+        }
+
+        if (window.confirm('예약 정보를 확인하셨습니까? 결제를 진행합니다.')) {
+            try {
+                const tossPayments = await loadTossPayments('test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb');
+                tossPayments.requestPayment(paymentType, {
+                    amount,
+                    orderId,
+                    orderName,
+                    userName,
+                    successUrl: 'http://localhost:9090/api/user/toss/success',
+                    failUrl: 'http://localhost:9090/api/user/toss/fail',
+                }).then(response => {
+                    console.log('Payment successful:', response);
+                    setShowBookResultModal(true);  // 결제 성공 후 결과 모달 표시
+                }).catch(error => {
+                    console.error('Payment error:', error);
+                });
+            } catch (error) {
+                console.error('Failed to load Toss Payments SDK:', error);
+            }
         }
     };
 
@@ -127,6 +138,17 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                             </>
                         )}
                     </div>
+                    <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
+                    <h2 style={{ marginBottom: '30px' }}>결제수단 선택</h2>
+                    <div>
+                    <select value={paymentType} onChange={e => setPaymentType(e.target.value)}>
+                            <option value="카드">카드</option>
+                            <option value="가상계좌">가상계좌</option>
+                            <option value="계좌이체">계좌이체</option>
+                            <option value="휴대폰">휴대폰</option>
+                    </select>
+                    </div>
+                    <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
                         <button type="button" style={{ marginRight: '40px' }} onClick={() => handlePayment(trainprice, `order_${selectedTrain.trainNo}_${Date.now()}`, `${selectedTrain.railName} 티켓`)}>결제</button>
                         <button type="button" onClick={(e) => handleBook_bus(e, selectedTrain, trainprice)}>결제</button>
@@ -178,6 +200,17 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                             </>
                         )}
                     </div>
+                    <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
+                    <h2 style={{ marginBottom: '30px' }}>결제수단 선택</h2>
+                    <div>
+                    <select value={paymentType} onChange={e => setPaymentType(e.target.value)}>
+                            <option value="카드">카드</option>
+                            <option value="가상계좌">가상계좌</option>
+                            <option value="계좌이체">계좌이체</option>
+                            <option value="휴대폰">휴대폰</option>
+                    </select>
+                    </div>
+                    <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
                         <button type="button" style={{ marginRight: '40px' }} onClick={() => handlePayment(trainprice, `order_${selectedTrain.trainNo}_${Date.now()}`, `${selectedTrain.railName} 티켓`)}>결제</button>
                         {/* <button type="button" onClick={(e) => handleBook_train(e, selectedPlane, selectedPlane.amount)}>결제</button> */}
@@ -225,6 +258,17 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                             </>
                         )}
                     </div>
+                    <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
+                    <h2 style={{ marginBottom: '30px' }}>결제수단 선택</h2>
+                    <div>
+                    <select value={paymentType} onChange={e => setPaymentType(e.target.value)}>
+                            <option value="카드">카드</option>
+                            <option value="가상계좌">가상계좌</option>
+                            <option value="계좌이체">계좌이체</option>
+                            <option value="휴대폰">휴대폰</option>
+                    </select>
+                    </div>
+                    <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
                         <button type="button" onClick={(e) => handleBook_plane(e, flight, selectedPlane.amount, flight_departureName, flight_destinationName)}>결제</button>
                         <button type="button" onClick={bookingCancel}>취소</button>
