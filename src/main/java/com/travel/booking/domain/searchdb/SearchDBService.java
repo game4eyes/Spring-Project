@@ -1,5 +1,7 @@
 package com.travel.booking.domain.searchdb;
 
+import com.travel.booking.domain.booking.repo.SeatAvailabilityRepository;
+import com.travel.booking.domain.booking.repo.SeatReservationRepository;
 import com.travel.booking.domain.payment.repository.JpaPaymentRepository;
 import com.travel.booking.domain.searchdb.dto.BusScheduleDTO;
 import com.travel.booking.domain.searchdb.dto.ScheduleDTO;

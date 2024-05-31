@@ -10,7 +10,8 @@ public enum SearchExceptionCode {
     SEARCH_STATION_INFO_FIND_BY_STATION_TYPE_FAILED("401", "정차지의 종류를 찾았으나 아직 데이터가 없습니다."),
     SEARCH_START_STATION_INFO_FIND_FAILED("402", "출발지를 찾지 못하였습니다. 다시 확인해주세요"),
     SEARCH_START_STATION_INFO_FIND_BY_START_STATION_ID_FAILED("403", "출발지에 해당하는 도착지의 정보를 찾지 못하였습니다."),
-    SEARCH_FIND_SCHEDULE_FAILED("404", "해당 운행정보를 확인할 수 없습니다.");
+    SEARCH_FIND_SCHEDULE_FAILED("404", "해당 운행정보를 확인할 수 없습니다."),
+    SEARCH_FIND_TRAIN_PRICE_FAILED("405", "가격이 없습니다.");
 
     private final String code;
     private final String message;
