@@ -4,9 +4,11 @@ import com.travel.booking.domain.payment.repository.JpaPaymentRepository;
 import com.travel.booking.domain.searchdb.dto.BusScheduleDTO;
 import com.travel.booking.domain.searchdb.dto.ScheduleDTO;
 import com.travel.booking.domain.searchdb.dto.StationInfoDTO;
+import com.travel.booking.domain.searchdb.dto.TrainPriceDTO;
 import com.travel.booking.domain.searchdb.entity.Schedule;
 import com.travel.booking.domain.searchdb.entity.Stationinfo;
 import com.travel.booking.domain.searchdb.entity.Stationtype;
+import com.travel.booking.domain.searchdb.entity.Trainprice;
 import com.travel.booking.domain.searchdb.exception.SearchException;
 import com.travel.booking.domain.searchdb.exception.SearchExceptionCode;
 import com.travel.booking.domain.searchdb.repo.*;
@@ -24,12 +26,13 @@ import java.util.*;
 @Slf4j
 public class SearchDBService {
     private final ScheduleRepository scheduleRepository;
-    private final SeatavailabilityRepository seatavailabilityRepository;
     private final StationinfoRepository stationinfoRepository;
     private final StationtypeRepository stationtypeRepository;
     private final TrainpriceRepository trainpriceRepository;
     private final UserRepository userRepository;
     private final JpaPaymentRepository jpaPaymentRepository;
+    private final SeatReservationRepository seatReservationRepository;
+    private final SeatAvailabilityRepository seatAvailabilityRepository;
 
     // 각 정차지의 시작 지점을 찾는 메서드
     public ResponseEntity<?> getStationStartList(Long stationTypeId) {
@@ -118,5 +121,14 @@ public class SearchDBService {
         send.put("count", count);
         send.put("result", result);
         return ResponseEntity.ok(send);
+    }
+
+    public ResponseEntity<?> getTrainPrice(Long id) {
+        Trainprice trainprice = trainpriceRepository.findByTrainSchedule_Id(id)
+                .orElseThrow(() -> new SearchException(
+                        HttpStatus.BAD_REQUEST, SearchExceptionCode.SEARCH_FIND_TRAIN_PRICE_FAILED
+                ));
+
+        return ResponseEntity.ok(new TrainPriceDTO(trainprice));
     }
 }
