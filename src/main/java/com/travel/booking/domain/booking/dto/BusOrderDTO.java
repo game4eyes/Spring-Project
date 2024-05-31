@@ -7,11 +7,15 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.List;
 
-@Getter @Setter
+@Getter
 @Builder
 public class BusOrderDTO {
-    private Long userEmail;
+    // 사용자 이메일
+    private String userEmail;
+    // 예약 스케쥴
     private Long scheduleId;
+    // 예약 날짜
     private LocalDate date;
+    // 좌석 번호 (리스트로)
     private List<String> seatMapKey;
 }

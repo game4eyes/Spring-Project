@@ -6,12 +6,17 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Getter @Setter
+@Getter
 @Builder
 public class EtcOrderDTO {
-    private Long userEmail;
-    private Long scheduleid;
+    // 사용자 이메일
+    private String userEmail;
+    // 스케쥴 id
+    private Long scheduleId;
+    // 예약 날짜
     private LocalDate date;
+    // 기차 항공 자리 예약 등급
     private String seatType;
+    // 몇자리 인지
     private Long quantity;
 }
