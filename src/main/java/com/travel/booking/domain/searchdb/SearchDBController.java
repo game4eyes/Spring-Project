@@ -31,4 +31,9 @@ public class SearchDBController {
                                             @RequestParam("gradeCarrier") String gradeCarrier, @RequestParam("departureTime") String departureTime) {
         return searchDBService.getBusSchedule(startStationId,endStationId,gradeCarrier,departureTime);
     }
+
+    @GetMapping("/train/price")
+    public ResponseEntity<?> getTrainPriceDefault(@RequestParam("TrainScheduleId") Long trainScheduleId) {
+        return searchDBService.getTrainPrice(trainScheduleId);
+    }
 }
