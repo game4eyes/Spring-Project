@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/user/join").permitAll()
                         .requestMatchers("/api/user/login").permitAll()
                         .requestMatchers("/api/user/social-google").permitAll()
+                        .requestMatchers("/api/user/toss/success").permitAll()
                         .requestMatchers("/search/db/**").permitAll()
                         .anyRequest().authenticated()
                 )
