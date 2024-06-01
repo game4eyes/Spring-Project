@@ -1,13 +1,11 @@
-package com.travel.booking.domain.searchdb.entity;
+package com.travel.booking.domain.booking.entity;
 
+import com.travel.booking.domain.searchdb.entity.Schedule;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
-import java.util.Map;
 
 @Getter
 @Setter
@@ -26,9 +24,15 @@ public class SeatAvailability {
     // 좌석 가용성을 관리할 날짜를 저장
     @Column(name = "date", nullable = false)
     private LocalDate date;
-
-    // 좌석 상태를 JSON 형태로 저장 (좌석 번호 또는 등급별 가용성/수량)
-    @Column(name = "seatMap")
-    @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> seatMap;
+    // 버스 좌석 가용성 관리 컬럼
+    @Column(name = "busSeat")
+    private Integer busSeat;
+    // 기차 좌석 가용성 관리 컬럼
+    private Integer trainStandingFreeSeating;
+    private Integer trainGeneral;
+    private Integer trainSpecial;
+    // 항공 좌석 가용성 관리 컬럼
+    private Integer airEconomy;
+    private Integer airBusiness;
+    private Integer airFirst;
 }
