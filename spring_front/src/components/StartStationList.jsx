@@ -40,14 +40,14 @@ const StartStationList = ({ stationTypeId, onStationSelect,onDepartureSelect }) 
                 </select>
             </label>
             <br />
-            <label>선택된 출발지 이름<br></br>
+            {/* <label>선택된 출발지 이름<br></br> */}
                 <input
-                    type="text"
+                    type="hidden"
                     value={departure}
                     readOnly
                     placeholder="선택된 출발지 이름이 여기에 표시됩니다"
                 />
-            </label>
+            {/* </label> */}
         </div>
     );
 };

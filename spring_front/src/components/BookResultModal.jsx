@@ -1,13 +1,13 @@
 import React from 'react';
-import Bookresult from '../User/BookResult';
 import '@/css/form/bookresult.css';
+import BookResult from '@/User/BookResult';
 
-const BookResultModal = ({ transportationtype, selectedTrain, train, handleClose,trainprice }) => {
+const BookResultModal = ({ transportationtype, selectedTrainSeats, selectedTrain, train, handleClose }) => {
     return (
         <div className="bookresultmodal">
             <div className="modal-content">
             <span className="close" style={{ marginLeft:'530px' }} onClick={handleClose}>&times;</span>
-                <Bookresult transportationtype={transportationtype} selectedTrain={selectedTrain} trainprice ={trainprice } handleClose={handleClose} />
+                <BookResult transportationtype={transportationtype} selectedTrainSeats={selectedTrainSeats} selectedTrain={selectedTrain} train ={train} handleClose={handleClose} />
               
             </div>
         </div>

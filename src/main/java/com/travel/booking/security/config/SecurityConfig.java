@@ -34,15 +34,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/user/join").permitAll()
                         .requestMatchers("/api/user/login").permitAll()
                         .requestMatchers("/api/user/social-google").permitAll()
-<<<<<<< HEAD
                         .requestMatchers("/security-login/info").authenticated()
                         .requestMatchers("/security-login/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/search/db/**").permitAll()
                         .anyRequest().permitAll()
-=======
-                        .requestMatchers("/search/db/**").permitAll()
-                        .anyRequest().authenticated()
->>>>>>> 6ed977627e4f9ded94febb5de36b652187eb0c21
                 )
                 .formLogin(form -> form
                         .loginPage("/api/user/login")

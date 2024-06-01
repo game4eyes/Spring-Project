@@ -46,14 +46,14 @@ const EndStationList = ({ startStationId, onStationSelect }) => {
                 </select>
             </label>
             <br />
-            <label>선택된 도착지 이름<br></br>
+            {/* <label>선택된 도착지 이름<br></br> */}
                 <input
-                    type="text"
+                    type="hidden"
                     value={destination}
                     readOnly
                     placeholder="선택된 도착지 이름이 여기에 표시됩니다"
                 />
-            </label>
+            {/* </label> */}
         </div>
     );
 };

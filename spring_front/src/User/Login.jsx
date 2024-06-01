@@ -22,6 +22,8 @@ const Login = ({ handleClose }) => {
 
   const currenturl = window.location.href;
 
+
+
   useEffect(() => {
     if (isLoggedIn) {
       if (currenturl.includes('/ticketbook/train')) {      //기차 예약 페이지에서 로그인할 경우
@@ -65,23 +67,25 @@ const Login = ({ handleClose }) => {
     window.location.href = 'http://localhost:9090/oauth2/authorization/google';
   };
   
+  let sessionStorage = window.sessionStorage;
+  
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await userLogin(loginData);
       alert('환영합니다!');
+   
+
+      sessionStorage.setItem("userEmail", email);
       setIsLoggedIn(true);
+      //sessionStorage.getItem("userEmail");
 
-
-
-      setCookie("userEmail", loginData.email);
-
-
-      setUser(response.data.user);
-
-      setCookie("userEmail", response.data.user.email, {path: '/'});
-      setCookie("username", response.data.user.username, {path: '/'});
+      // setCookie("userEmail", loginData.email);
+      // setUser(response.data.user);
+      // setCookie("userEmail", response.data.user.email, {path: '/'});
+      // setCookie("username", response.data.user.username, {path: '/'});
 
       document.cookie = `sessionId=${response.data.sessionId}; path=/; SameSite=Lax`;
       navigate('/');
