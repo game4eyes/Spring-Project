@@ -80,8 +80,8 @@ public class PaymentService {
         PaymentSuccessDto result = null;
         try{
             result = restTemplate.postForObject(TossPaymentConfig.URL + paymentKey,
-            // 최종 결제 승인 요청 / 요청 URL = config에 작성한 https://api.tosspayments.com/v1/payments/
-            new HttpEntity<>(params, headers),
+                    // 최종 결제 승인 요청 / 요청 URL = config에 작성한 https://api.tosspayments.com/v1/payments/
+                    new HttpEntity<>(params, headers),
                     PaymentSuccessDto.class);
         } catch (Exception e){
             throw new CustomLogicException(ErrorCode.ALREADY_APPROVED);
@@ -89,6 +89,7 @@ public class PaymentService {
 
         return result;
     }
+
 
     private HttpHeaders getHeaders(){ // 요청 헤더에 꼭 authorization 넣어줘야함. 시크릿 키를 base64로 인코딩
         HttpHeaders headers = new HttpHeaders();
