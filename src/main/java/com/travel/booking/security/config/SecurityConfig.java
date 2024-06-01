@@ -36,7 +36,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/user/social-google").permitAll()
                         .requestMatchers("/api/user/toss/success").permitAll()
                         .requestMatchers("/search/db/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/api/user/login")

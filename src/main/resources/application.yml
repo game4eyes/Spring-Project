@@ -12,7 +12,7 @@ spring:
   config:
     import: classpath:application-api.yml, classpath:application-oauth.yml, classpath:application-swagger.yml
   datasource:
-    url: jdbc:mysql://localhost:3306/BOOKING
+    url: jdbc:mysql://localhost:3306/AWS
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: khs04140
@@ -30,7 +30,6 @@ spring:
 logging:
   level:
     org:
-      springframework: debug
       hibernate:
         SQL: debug
         type: trace

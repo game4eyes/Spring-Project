@@ -8,20 +8,18 @@ import TrainList from '../Search/list/TrainList';
 import { getTrainInfo } from '../../api/dataApi';
 import Layout from '../../components/Layout';
 import { ReactComponent as ExchangeIcon } from '@/icon/exchange.svg';
-import StartStationList from '../../components/StartStationList';
-import EndStationList from '../../components/EndStationList';
 
 const Train = () => {
     const initialTicketInfo = {
         departure: '',
         destination: '',
         date: new Date().toISOString().slice(0, 10),
-        departureTime: '06',
-        weekdayCarrier: '',
+        hour: '06',
+        dayz: '',
         selectedTrain: null,
         isDepartureModalOpen: false,
-        startStationId: '',
-        endStationId: '',
+        startStationID: '',
+        endStationID: '',
     };
 
     const [train, setTrain] = useState(initialTicketInfo);
@@ -31,40 +29,40 @@ const Train = () => {
     const [popupWindow, setPopupWindow] = useState(null);
 
     useEffect(() => {
-        if (train.startStationId && train.endStationId && train.departureTime && train.weekdayCarrier) {
-            getTrainInfo(train.startStationId, train.endStationId, train.departureTime, train.weekdayCarrier)
+        if (train.startStationID && train.endStationID && train.hour && train.dayz) {
+            getTrainInfo(train.startStationID, train.endStationID, train.hour, train.dayz)
                 .then(data => {
                     setResult(data);
                 });
         }
-    }, [train.startStationId, train.endStationId, train.departureTime, train.weekdayCarrier]);
+    }, [train.startStationID, train.endStationID, train.hour, train.dayz]);
 
     useEffect(() => {
-        // const departure_ID = document.getElementById("departure_stationID").value;
-        // const destination_ID = document.getElementById("destination_stationID").value;
+        const departure_ID = document.getElementById("departure_stationID").value;
+        const destination_ID = document.getElementById("destination_stationID").value;
         const days = ['일', '월', '화', '수', '목', '금', '토'];
         const today = new Date();
-        const todayweekdayCarrier = days[today.getDay()];
+        const todayDayz = days[today.getDay()];
 
         setTrain(prevTrain => ({
             ...prevTrain,
-            // startStationId: departure_ID,
-            // endStationId: destination_ID,
-            weekdayCarrier: todayweekdayCarrier
+            startStationID: departure_ID,
+            endStationID: destination_ID,
+            dayz: todayDayz
         }));
     }, []);
 
     const handleHourChange = (e) => {
         setTrain(prevTrain => ({
             ...prevTrain,
-            departureTime: e.target.value
+            hour: e.target.value
         }));
     };
 
-    const handleweekdayCarrierChange = (e) => {
+    const handleDayzChange = (e) => {
         setTrain(prevTrain => ({
             ...prevTrain,
-            weekdayCarrier: e.target.value
+            dayz: e.target.value
         }));
     };
 
@@ -78,38 +76,63 @@ const Train = () => {
         }
 
         const days = ['일', '월', '화', '수', '목', '금', '토'];
-        const selectedweekdayCarrier = days[new Date(selectedDate).getDay()];
+        const selectedDayz = days[new Date(selectedDate).getDay()];
 
         setTrain(prevState => ({
             ...prevState,
-            weekdayCarrier: selectedweekdayCarrier,
+            dayz: selectedDayz,
             date: selectedDate
         }));
     };
 
-    const handleStartStationIdChange = (Id, name) => {
+    const handleDepartureChange = (e) => {
         setTrain(prevState => ({
             ...prevState,
-            startStationId: Id,
-            departure: name, // Update departure stationName
-            endStationId: '', // Reset end station when start station changes
-            endStations: [], // Reset end stations list
+            departure: e.target.value
         }));
     };
 
-    const handleEndStationIdChange = (Id, name) => {
+    const handleDestinationChange = (e) => {
         setTrain(prevState => ({
             ...prevState,
-            endStationId: Id,
-            destination: name, // Update destination stationName
+            destination: e.target.value
         }));
+    };
+
+    const handleStartStationIDChange = (e) => {
+        setTrain(prevState => ({
+            ...prevState,
+            startStationID: e.target.value,
+        }));
+    };
+
+    const handleEndStationIDChange = (e) => {
+        setTrain(prevState => ({
+            ...prevState,
+            endStationID: e.target.value
+        }));
+    };
+
+    const openPopup = (stationClass, departure_destination) => () => {
+        const value = departure_destination === 'departure' ? document.getElementById("departure").value : document.getElementById("destination").value;
+
+        const params = new URLSearchParams({
+            [departure_destination]: value,
+            stationClass: stationClass.toString(),
+        });
+
+        const newPopup = window.open(`http://localhost:5173/search/searchtrain?${params}`, '_blank', 'width=600,height=400');
+        newPopup.setTrainAndUpdate = setTrainAndUpdate;
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.log(train);
         setTrain(prevState => ({
             ...prevState,
+            departure: document.getElementById('departure').value,
+            destination: document.getElementById('destination').value,
+            startStationID: document.getElementById('departure_stationID').value,
+            endStationID: document.getElementById('destination_stationID').value,
             isDepartureModalOpen: true
         }));
     };
@@ -132,67 +155,96 @@ const Train = () => {
         document.getElementById(inputId).value = stationName;
     };
 
-    // const setStationCodeAndUpdate = () => {
-    //     const departure_stationID = document.getElementById("departure_stationID").value;
-    //     const destination_stationID = document.getElementById("destination_stationID").value;
+    const setStationCodeAndUpdate = () => {
+        const departure_stationID = document.getElementById("departure_stationID").value;
+        const destination_stationID = document.getElementById("destination_stationID").value;
 
-    //     setTrain(prevState => ({
-    //         ...prevState,
-    //         startStationId: departure_stationID,
-    //         endStationId: destination_stationID
-    //     }));
-    // };
+        setTrain(prevState => ({
+            ...prevState,
+            startStationID: departure_stationID,
+            endStationID: destination_stationID
+        }));
+    };
 
-    // useEffect(() => {
-    //     setStationCodeAndUpdate();
-    // }, [train.departure, train.destination]);
+    useEffect(() => {
+        setStationCodeAndUpdate();
+    }, [train.departure, train.destination]);
 
-    // useEffect(() => {
-    //     setStationCodeAndUpdate();
-    // }, [train.isDepartureModalOpen]);
+    useEffect(() => {
+        setStationCodeAndUpdate();
+    }, [train.isDepartureModalOpen]);
 
     const handleChargeClick = () => {
         const newPopup = window.open('http://localhost:5173/pay/chargeinfo/train', '_blank', 'width=600,height=400');
         setPopupWindow(newPopup);
     };
 
-    // const handlePayment = async (amount, orderId, orderName) => {
-    //     const userEmail = sessionStorage.getItem('userEmail'); // Retrieve userEmail from sessionStorage
-
-    //     if (!userEmail) {
-    //         console.error('User email not found in sessionStorage');
-    //         return;
-    //     }
-
-    //     try {
-    //         // Redirect to Toss Payments sandbox environment with userEmail included in the URL
-    //         const tossPaymentsUrl = `https://payment-gateway-sandbox.tosspayments.com?userEmail=${encodeURIComponent(userEmail)}&amount=${amount}&orderId=${orderId}&orderName=${orderName}`;
-    //         window.location.href = tossPaymentsUrl;
-    //     } catch (error) {
-    //         console.error('Failed to redirect to Toss Payments:', error);
-    //     }
-    // };
-
     return (
         <Layout title="기차 승차권 예매" body="정보 입력">
-            <div className="train_book" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+           <div className="train_book" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    {/* 세로로 나열될 요소들 */}
+
                 <form onSubmit={handleSubmit}>
                     <h2 style={{ marginBottom: '50px' }}>기차 예약</h2>
                     <div className="col1">
-                        <div>
+
+                    <div> {/* 출발지 */}
                             <StartStationList stationTypeId={'3'} onStationSelect={handleStartStationIdChange} />
                         </div>
-                        <div>
-                            <EndStationList startStationId={train.startStationId} onStationSelect={handleEndStationIdChange} />
+                        <div> {/* 도착지 */}
+                            <EndStationList startStationId={bus.startStationId} onStationSelect={handleEndStationIdChange} />
                         </div>
-                        {/* <div className="column1_2" style={{ display: 'flex' }}>
+
+
+                        <div className="column1_2" style={{ display: 'flex' }}>
                             <div className="column1" style={{ width: '600px' }}>
+                                <label>
+                                    출발지<br></br>
+                                    <input
+                                        type="text"
+                                        value={train.departure.value}
+                                        onChange={handleDepartureChange}
+                                        placeholder="출발지를 입력하세요"
+                                        onClick={openPopup('3', 'departure')}
+                                        id="departure"
+                                        readOnly
+                                        style={{ width: '50%', marginLeft: '10px' }}
+                                    />
+                                    <input
+                                        type="hidden"
+                                        value={train.startStationID}
+                                        onChange={handleStartStationIDChange}
+                                        id="departure_stationID"
+                                        ref={inputRef}
+                                    />
+                                </label>
+                                <br />
+                                <label>
+                                    도착지<br></br>
+                                    <input
+                                        type="text"
+                                        value={train.destination.value}
+                                        onChange={handleDestinationChange}
+                                        placeholder="도착지를 입력하세요"
+                                        onClick={openPopup('3', 'destination')}
+                                        id="destination"
+                                        readOnly
+                                        style={{ width: '50%', marginLeft: '10px' }}
+                                    />
+                                    <input
+                                        type="hidden"
+                                        value={train.endStationID}
+                                        onChange={handleEndStationIDChange}
+                                        id="destination_stationID"
+                                        ref={inputRef}
+                                    />
+                                </label>
                                 <br />
                             </div>
                             <div className='button-container column2'>
                                 <button type="button" className="exchange-button" style={{ backgroundColor: 'orange', marginTop: '50px', marginLeft: '-150px', height: "100px", width: '100px' }} onClick={changeDepartureDestination}><ExchangeIcon /></button>
                             </div>
-                        </div> */}
+                        </div>
                         <div style={{ display: 'flex' }}>
                             <label style={{ marginRight: '30px' }}>
                                 출발일<br></br>
@@ -200,7 +252,7 @@ const Train = () => {
                             </label>
                             <label>
                                 요일 <br></br>
-                                <select value={train.weekdayCarrier} onChange={handleweekdayCarrierChange} disabled>
+                                <select value={train.dayz} onChange={handleDayzChange} disabled>
                                     <option value="">시간을 선택하세요</option>
                                     <option value="일">일</option>
                                     <option value="월">월</option>
@@ -216,7 +268,10 @@ const Train = () => {
                         <div>
                             <label>
                                 시간
-                                <select style={{ width: '50%', marginLeft: '10px' }} value={train.departureTime} onChange={handleHourChange}>
+
+
+                                
+                                <select style={{ width: '50%', marginLeft: '10px' }} value={train.hour} onChange={handleHourChange}>
                                     <option value="">시간을 선택하세요</option>
                                     <option value="00">00:00</option>
                                     <option value="01">01:00</option>
@@ -251,18 +306,17 @@ const Train = () => {
                         </div>
                     </div>
                     <br />
+
                     <div>
-                        {train.isDepartureModalOpen &&
-                            <TrainList
-                                startStationId={train.startStationId}
-                                endStationId={train.endStationId}
-                                weekdayCarrier={train.weekdayCarrier}
-                                departureTime={train.departureTime}
-                                // weekdayCarrier={train.weekdayCarrier}
-                                // departureTime={train.departureTime}
-                                train={train}
-                            />
-                        }
+                    {train.isDepartureModalOpen &&
+                        <TrainList
+                            startStationID={train.startStationID}
+                            endStationID={train.endStationID}
+                            dayz={train.dayz}
+                            hour={train.hour}
+                            train={train}
+                        />
+                    }
                     </div>
                 </form>
             </div>

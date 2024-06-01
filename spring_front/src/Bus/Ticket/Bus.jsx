@@ -1,15 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
-
-//import '@/css/BusSeat.css';
+import React, { useEffect, useState } from 'react';
 import BusList from '../Search/list/BusList';
-// import { getCityInfo } from '../../api/todoApi';
 import Charge from '../../components/Charge';
-import { getBusSchedule, getBusTerminalList } from '../../api/dataApi';
+import { getEndStationList } from '../../api/dataApi';
 import Layout from '../../components/Layout';
-import { ReactComponent as ExchangeIcon } from '@/icon/exchange.svg';
 import '@/css/form/bookingform.css';
-
-
+import StartStationList from '../../components/StartStationList';
+import EndStationList from '../../components/EndStationList';
+import '@/css/List.css';
 const Bus = () => {
     const ticketInfo = {
         departure: '',
@@ -18,30 +15,49 @@ const Bus = () => {
         returnDate: '',
         passengerCount: '',
         isRoundTrip: false,
-        busclass: "",
+        gradeCarrier: "전체",
         isDepartureModalOpen: false,
-        startStationID: '', //출발지코드
-        endStationID: '',   //도착지코드
-
+        startStationId: '',
+        endStationId: '',
+        departureTime: '06',
+        dayz: '',
+       
     };
 
-    const [busticket, setBusticket] = useState(ticketInfo);
-    const [result, setResult] = useState(null);
+    const [bus, setBus] = useState(ticketInfo);
 
     useEffect(() => {
-        if (busticket.startStationID && busticket.endStationID) {
-            getBusSchedule(busticket.startStationID, busticket.endStationID)
+        if (bus.startStationId) {
+            getEndStationList(bus.startStationId)
                 .then(data => {
-                    setResult(data);
-                })
+                    setBus(prevState => ({
+                        ...prevState,
+                        endStations: data,
+                    }));
+                });
         }
-    }, [busticket.startStationID, busticket.endStationID]);
+    }, [bus.startStationId]);
 
-    const [cities, setCities] = useState([]);
-    const inputRef = useRef(null);
+    const handleStartStationIdChange = (Id, name) => {
+        setBus(prevState => ({
+            ...prevState,
+            startStationId: Id,
+            departure: name, // Update departure stationName
+            endStationId: '', // Reset end station when start station changes
+            endStations: [], // Reset end stations list
+        }));
+    };
+
+    const handleEndStationIdChange = (Id, name) => {
+        setBus(prevState => ({
+            ...prevState,
+            endStationId: Id,
+            destination: name, // Update destination stationName
+        }));
+    };
 
     const handleChange = (key, value) => {
-        setBusticket(prevState => ({
+        setBus(prevState => ({
             ...prevState,
             [key]: value
         }));
@@ -49,238 +65,140 @@ const Bus = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (inputRef.current) {
-            if (result) {
-                compareResult(result);
-            } else {
-                console.error('Result is null or undefined');
-            }
-
-            inputRef.current.setAttribute('input_test', '입력이 아닌 받아오는 값으로 인한 change변경!');
-            setBusticket({
-                ...busticket,
-                departure: document.getElementById('departure').value,
-                destination: document.getElementById('destination').value,
-                startStationID: document.getElementById('departure_stationID').value,
-                endStationID: document.getElementById('destination_stationID').value,
-                isDepartureModalOpen: true
-            });
-        }
-    };
-
-    const handleStartStationIDChange = (e) => {
-        setBusticket(prevState => ({
+        console.log(bus);
+        setBus(prevState => ({
             ...prevState,
-            startStationID: e.target.value,
+            isDepartureModalOpen: true
         }));
     };
 
-    const handleEndStationIDChange = (e) => {
-        setBusticket(prevState => ({
+ 
+    const handleDepartureTimeChange = (e) => {
+        setBus(prevState => ({
             ...prevState,
-            endStationID: e.target.value
+            departureTime: e.target.value
         }));
     };
-
-    const handleSeatResultChange = (e) => {
-        setBusticket(prevState => ({
-            ...prevState,
-            seats: e.target.value
-        }));
-    };
-
-    const openPopup = (stationClass, departure_destination) => () => {
-        const departure = document.getElementById("departure").value;
-        const destination = document.getElementById("destination").value;
-        const params = new URLSearchParams({
-            departure: departure.toString(),
-            destination: destination.toString(),
-        });
-        const newPopup = window.open(`http://localhost:5173/search/searchbus?${params}`, '_blank', 'width=600,height=400');
-    };
-
-    const changeDepartureDestination = () => {
-        let tmp = document.getElementById("departure").value;
-        document.getElementById("departure").value = document.getElementById("destination").value;
-        document.getElementById("destination").value = tmp;
-        tmp = document.getElementById("departure_stationID").value;
-        document.getElementById("departure_stationID").value = document.getElementById("destination_stationID").value;
-        document.getElementById("destination_stationID").value = tmp;
-    };
-
-    const compareResult = (result) => {
-        if (Array.isArray(result)) {
-            result.forEach((item) => {
-                if (item.startStationID === document.getElementById('departure_stationID').value) {
-                    setBusticket(prevState => ({
-                        ...prevState,
-                        startStationID: document.getElementById('departure_stationID').value,
-                    }));
-                }
-                if (item.endStationID === document.getElementById('destination_stationID').value) {
-                    setBusticket(prevState => ({
-                        ...prevState,
-                        endStationID: document.getElementById('destination_stationID').value,
-                    }));
-                }
-            });
-        } else {
-            console.error('Result is not an array:', result);
-        }
-    };
-
-    // 수수료 정보 팝업 열기 이벤트 핸들러
-    const [popupWindow, setPopupWindow] = useState(null);
 
     const handleChargeClick = () => {
         const newPopup = window.open('http://localhost:5173/pay/chargeinfo/bus', '_blank', 'width=600,height=400');
         setPopupWindow(newPopup);
     };
 
-    // const renderChargeInPopup = () => {
-    //     if (popupWindow) {
-    //       popupWindow.document.body.innerHTML = `
-    //         <div style="padding: 20px;">
-    //           <h2>수수료 정보</h2>
-    //           <button onclick="window.close()">닫기</button>
-    //           <div>
-    //             <Charge id={1} />
-    //           </div>
-    //         </div>
-    //       `;
-    //     }
-    // };
 
     return (
-
         <Layout title="버스 승차권 예매" body="정보 입력">
             <div className="bus_book">
                 <form onSubmit={handleSubmit} style={{ marginLeft: '10%' }}>
-                    <h2 style={{ textAlign: 'left', marginBottom: '50px',marginTop: '30px' }}>버스 예약</h2>
+                    <h2 style={{ textAlign: 'left', marginBottom: '50px', marginTop: '30px' }}>버스 예약</h2>
                     <div className="col1">
-
-                        <div style={{ display: 'flex' }}>
-                            <div className='column1'>
-                                <label>
-                                    출발지
-                                    <input
-                                        type="text"
-                                        value={busticket.departure.value}
-                                        onChange={(e) => handleChange('departure', e.target.value)}
-                                        placeholder="출발지를 입력하세요"
-                                        onClick={openPopup()}
-                                        id="departure"
-                                        style={{ width: '100%', marginLeft: '10px' }}
-                                    />
-                                    <input
-                                        type="hidden"
-                                        value={busticket.startStationID.value}
-                                        onChange={handleStartStationIDChange}
-                                        id="departure_stationID"
-                                        ref={inputRef}
-                                    />
-                                </label>
-                                <br />
-                                <label>
-                                    도착지
-                                    <input
-                                        type="text"
-                                        value={busticket.destination.value}
-                                        onChange={(e) => handleChange('destination', e.target.value)}
-                                        placeholder="도착지를 입력하세요"
-                                        id="destination"
-                                        onClick={openPopup()}
-                                        style={{ width: '100%', marginLeft: '10px' }}
-                                    />
-                                    <input
-                                        type="hidden"
-                                        value={busticket.endStationID.value}
-                                        onChange={handleEndStationIDChange}
-                                        id="destination_stationID"
-                                        ref={inputRef}
-                                    />
-                                </label>
-                            </div>
-                            <div className='button-container column2'>
-                                <button type="button" className="exchange-button" style={{ backgroundColor: 'orange', marginLeft: "50px", marginTop: '50px', height: "100px", width: '100px' }}  onClick={changeDepartureDestination}><ExchangeIcon /></button>
-                            </div>
-
+                        <div> {/* 출발지 */}
+                            <StartStationList stationTypeId={'1'} onStationSelect={handleStartStationIdChange} />
                         </div>
-                        <br />
-
-                        <label>
-                            가는 날
-
-                            <input type="date" value={busticket.departureDate} onChange={(e) => handleChange('departureDate', e.target.value)
-                            } style={{ width: '50%', marginLeft: '10px' }} />
-                        </label>
-                        <br />
-                        <label>
-                            <input type="checkbox" checked={busticket.isRoundTrip} onChange={() => handleChange('isRoundTrip', !busticket.isRoundTrip)} />
-                            왕복 여행<br></br>
-                        </label>
-                        <br />
-                        {busticket.isRoundTrip && (
-                            <label>
-                                <input
-                                    type="date"
-                                    value={busticket.returnDate}
-                                    onChange={(e) => handleChange('returnDate', e.target.value)}
-                                    min={busticket.departureDate}
-                                    style={{ width: '50%', marginLeft: '10px' }}
-                                />
-                            </label>
-                        )}
-                        {!busticket.isRoundTrip && (
-                            <label>
-                                오는 날
-                                <input
-                                    type="date"
-                                    value={busticket.returnDate}
-                                    onChange={(e) => handleChange('returnDate', e.target.value)}
-                                    min={busticket.departureDate}
-                                    disabled
-                                    style={{ width: '50%', marginLeft: '10px' }}
-                                />
-                            </label>
-                        )}
-                        <br />
-                        버스등급
-                        <select style={{ width: '50%', marginLeft: '10px' }} value={busticket.Busclass} onChange={(e) => handleChange('busclass', e.target.value)}>
-                            <option value="">전체</option>
-                            <option value="1">일반</option>
-                            <option value="2">우등</option>
-                            <option value="3">심야고속</option>
-                            <option value="4">시외우등</option>
-                            <option value="5">심야우등</option>
-                            <option value="6">프리미엄우등</option>
-                            <option value="7">프리미엄심야우등</option>
-                            <option value="8">프리미엄우등(주말)</option>
-                        </select>
-                        <br />
-                        {/* 선택 좌석: <input type="text" id="seatResult" value={busticket.seats.value} onChange={handleSeatResultChange} readOnly/> */}
-                        <div style={{ display: 'flex', alignItems: 'center', marginTop: '85px', marginRight: '10px', marginBottom: '35px' }}>
-                            <button type="submit" style={{ marginTop: '0px', marginRight: '40px' }}>조회하기</button>
-                            <button type="button" style={{ backgroundColor: 'green' }} className='fee-check-button' onClick={handleChargeClick}>수수료확인</button>
+                        <div> {/* 도착지 */}
+                            <EndStationList startStationId={bus.startStationId} onStationSelect={handleEndStationIdChange} />
                         </div>
-                    </div>
-                    {/* <div className='col2'>
-                        <button type="button" className="exchange-button" style={{ backgroundColor: 'orange', marginTop: '15px', marginLeft: "-150px", height: "100px", width: '100px' }} onClick={changeDepartureDestination}><ExchangeIcon /></button>
-                    </div> */}
+                   
+
+                    <label>
+                        가는 날<br></br>
+                        <input type="date" value={bus.departureDate} onChange={(e) => handleChange('departureDate', e.target.value)} style={{ width: '50%', marginLeft: '10px' }} />
+                    </label>
                     <br />
-
-
-                    {busticket.isDepartureModalOpen &&
+                    <label>
+                        <input type="checkbox" checked={bus.isRoundTrip} onChange={() => handleChange('isRoundTrip', !bus.isRoundTrip)} />
+                        왕복 여행<br></br>
+                    </label>
+                    <br />
+                    {bus.isRoundTrip && (
+                        <label>
+                            <input
+                                type="date"
+                                value={bus.returnDate}
+                                onChange={(e) => handleChange('returnDate', e.target.value)}
+                                min={bus.departureDate}
+                                style={{ width: '50%', marginLeft: '10px' }}
+                            />
+                        </label>
+                    )}
+                    {!bus.isRoundTrip && (
+                        <label>
+                            오는 날<br></br>
+                            <input
+                                type="date"
+                                value={bus.returnDate}
+                                onChange={(e) => handleChange('returnDate', e.target.value)}
+                                min={bus.departureDate}
+                                disabled
+                                style={{ width: '50%', marginLeft: '10px' }}
+                            />
+                        </label>
+                    )}
+                    <br />
+                    버스등급<br></br>
+                    <select style={{ width: '50%', marginLeft: '10px' }} value={bus.gradeCarrier} onChange={(e) => handleChange('gradeCarrier', e.target.value)}>
+                        <option value="전체">전체</option>
+                        <option value="일반">일반</option>
+                        <option value="우등">우등</option>
+                        <option value="심야 일반">심야 일반</option>
+                        <option value="심야 우등">심야 우등</option>
+                        <option value="프리미엄">프리미엄</option>
+                        <option value="심야 프리미엄">심야 프리미엄</option>
+                    </select>
+                    <br />
+                    <br/>
+                    <div>
+                        <label>
+                            시간<br></br>
+                            <select style={{ width: '50%', marginLeft: '10px' }} value={bus.departureTime} onChange={handleDepartureTimeChange}>
+                                <option value="">시간을 선택하세요</option>
+                                <option value="00">00:00</option>
+                                <option value="01">01:00</option>
+                                <option value="02">02:00</option>
+                                <option value="03">03:00</option>
+                                <option value="04">04:00</option>
+                                <option value="05">05:00</option>
+                                <option value="06">06:00</option>
+                                <option value="07">07:00</option>
+                                <option value="08">08:00</option>
+                                <option value="09">09:00</option>
+                                <option value="10">10:00</option>
+                                <option value="11">11:00</option>
+                                <option value="12">12:00</option>
+                                <option value="13">13:00</option>
+                                <option value="14">14:00</option>
+                                <option value="15">15:00</option>
+                                <option value="16">16:00</option>
+                                <option value="17">17:00</option>
+                                <option value="18">18:00</option>
+                                <option value="19">19:00</option>
+                                <option value="20">20:00</option>
+                                <option value="21">21:00</option>
+                                <option value="22">22:00</option>
+                                <option value="23">23:00</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', marginTop: '85px', marginRight: '10px', marginBottom: '35px' }}>
+                        <button type="submit" style={{ marginTop: '0px', marginRight: '40px' }}>조회하기</button>
+                        <button type="button" style={{ backgroundColor: 'green' }} className='fee-check-button' onClick={handleChargeClick}>수수료확인</button>
+                    </div>
+                    </div>
+                    {bus.isDepartureModalOpen &&
                         <BusList
-                            startStationID={busticket.startStationID}
-                            endStationID={busticket.endStationID}
-                            busticket={busticket}
-                            busclass={busticket.busclass}
+                            startStationId={bus.startStationId}
+                            endStationId={bus.endStationId}
+                            gradeCarrier={bus.gradeCarrier}
+                            departureTime={bus.departureTime}
+                            departure={bus.departure}
+                            destination={bus.destination}
+                            isRoundTrip={bus.isRoundTrip}
+                            departureDate={bus.departureDate}
+                            passengerCount={bus.passengerCount}
+                            bus ={bus}
                         />
                     }
                 </form>
-
-
             </div>
         </Layout>
     );
