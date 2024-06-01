@@ -32,7 +32,7 @@ public class PaymentDto {
                 .amount(amount)
                 .userEmail(userEmail)
                 .orderName(orderName)
-                .order(UUID.randomUUID().toString())
+                .orderId(UUID.randomUUID().toString())
                 .paySuccessYN(false)
                 .build();
     }
