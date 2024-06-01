@@ -37,7 +37,7 @@ const Pay = () => {
             // 서버 응답을 사용하여 토스 결제 창 띄우기
             const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb'; // 실제 클라이언트 키로 대체
 
-            const tossPayments = TossPayments(clientKey);
+            const tossPayments = tossPayments(clientKey);
             tossPayments.requestPayment(paymentData.payType, {
                 amount: paymentData.amount,
                 orderId: paymentData.orderId,
