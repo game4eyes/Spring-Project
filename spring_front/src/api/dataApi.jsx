@@ -214,3 +214,14 @@ export const getPlaneSchedule = async (startStationId, endStationId, weekdayCarr
     });
     return res.data;
 }
+
+// 남은 좌석 정보
+export const getSeatAvailability = async (scheduleId, date) => {
+    const res = await axios.get(`${searchSeatPrefix}`, {
+        params : {
+            SeatScheduleId : scheduleId,
+            date : date
+        }
+    })
+    return res.data;
+}
