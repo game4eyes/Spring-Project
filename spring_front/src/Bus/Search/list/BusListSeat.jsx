@@ -12,7 +12,7 @@ const BusListSeat = ({id,date}) => {
     }, []);
     return (
         <td>
-            40/{seat}
+            {seat}/40
         </td>
     );
 };
