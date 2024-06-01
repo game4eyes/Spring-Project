@@ -3,6 +3,7 @@ package com.travel.booking.domain.booking.entity;
 import com.travel.booking.domain.payment.entity.Payment;
 import com.travel.booking.domain.user.entity.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -18,9 +19,8 @@ import java.util.List;
 @Table(name = "orders")
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private String id;
 
     // 주문을 한 사용자와의 관계 설정 (N:1)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,4 +44,11 @@ public class Order {
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Payment payment;
 
+    public Order() {}
+
+    public Order(User user, LocalDate orderDate, String orderStatus) {
+        this.user = user;
+        this.orderDate = orderDate;
+        this.orderStatus = orderStatus;
+    }
 }

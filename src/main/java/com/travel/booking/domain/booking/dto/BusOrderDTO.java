@@ -18,4 +18,6 @@ public class BusOrderDTO {
     private LocalDate date;
     // 좌석 번호 (리스트로)
     private List<String> seatMapKey;
+    // 프론트에서 생성한 오더 id
+    private String orderId;
 }

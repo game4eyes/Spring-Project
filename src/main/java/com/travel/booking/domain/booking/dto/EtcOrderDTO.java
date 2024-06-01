@@ -19,4 +19,6 @@ public class EtcOrderDTO {
     private String seatType;
     // 몇자리 인지
     private Long quantity;
+    // 프론트에서 생성한 오더 id
+    private String orderId;
 }
