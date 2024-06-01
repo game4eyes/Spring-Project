@@ -1,12 +1,9 @@
 package com.travel.booking.domain.searchdb;
 
+import com.travel.booking.domain.booking.entity.SeatAvailability;
 import com.travel.booking.domain.booking.repo.SeatAvailabilityRepository;
-import com.travel.booking.domain.booking.repo.SeatReservationRepository;
 import com.travel.booking.domain.payment.repository.JpaPaymentRepository;
-import com.travel.booking.domain.searchdb.dto.BusScheduleDTO;
-import com.travel.booking.domain.searchdb.dto.ScheduleDTO;
-import com.travel.booking.domain.searchdb.dto.StationInfoDTO;
-import com.travel.booking.domain.searchdb.dto.TrainPriceDTO;
+import com.travel.booking.domain.searchdb.dto.*;
 import com.travel.booking.domain.searchdb.entity.Schedule;
 import com.travel.booking.domain.searchdb.entity.Stationinfo;
 import com.travel.booking.domain.searchdb.entity.Stationtype;
@@ -17,10 +14,13 @@ import com.travel.booking.domain.searchdb.repo.*;
 import com.travel.booking.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -33,7 +33,6 @@ public class SearchDBService {
     private final TrainpriceRepository trainpriceRepository;
     private final UserRepository userRepository;
     private final JpaPaymentRepository jpaPaymentRepository;
-    private final SeatReservationRepository seatReservationRepository;
     private final SeatAvailabilityRepository seatAvailabilityRepository;
 
     // 각 정차지의 시작 지점을 찾는 메서드
@@ -132,5 +131,45 @@ public class SearchDBService {
                 ));
 
         return ResponseEntity.ok(new TrainPriceDTO(trainprice));
+    }
+    // 예약 날짜의 좌석 데이터가 없으면 생성하는 로직
+    private SeatAvailability getOrCreateSeatAvailability(Schedule schedule, LocalDate date, Long type) {
+        Optional<SeatAvailability> seatAvailabilityOpt = seatAvailabilityRepository.findByScheduleAndDate(schedule,date);
+        if (seatAvailabilityOpt.isPresent()) {
+            return seatAvailabilityOpt.get();
+        } else {
+            SeatAvailability seatAvailability = new SeatAvailability();
+            seatAvailability.setSchedule(schedule);
+            seatAvailability.setDate(date);
+            if (type == 1) {
+                seatAvailability.setBusSeat(40);
+            } else if (type == 2) {
+                seatAvailability.setAirBusiness(100);
+                seatAvailability.setAirEconomy(100);
+                seatAvailability.setAirFirst(100);
+            } else if (type == 3) {
+                seatAvailability.setTrainGeneral(100);
+                seatAvailability.setTrainStandingFreeSeating(100);
+                seatAvailability.setTrainSpecial(100);
+            }
+            seatAvailabilityRepository.save(seatAvailability);
+            return seatAvailability;
+        }
+    }
+
+    // 남은 좌석의 상태 확인
+    public ResponseEntity<?> getSeatAvailability(Long scheduleId, LocalDate date) {
+        Schedule schedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(
+                        () -> new SearchException(HttpStatus.BAD_REQUEST, SearchExceptionCode.SEARCH_FIND_SCHEDULE_FAILED)
+                );
+        Stationinfo stationinfo = stationinfoRepository.findById(schedule.getStartStation().getId())
+                .orElseThrow(
+                        ()-> new SearchException(HttpStatus.BAD_REQUEST,SearchExceptionCode.SEARCH_START_STATION_INFO_FIND_FAILED)
+                );
+        Long stationType = stationinfo.getStationType().getId();
+        SeatAvailability seat = getOrCreateSeatAvailability(schedule, date,stationType);
+
+        return ResponseEntity.ok(new resultDTO(stationType,seat));
     }
 }

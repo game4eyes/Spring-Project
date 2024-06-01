@@ -1,8 +1,12 @@
 package com.travel.booking.domain.searchdb;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,5 +39,11 @@ public class SearchDBController {
     @GetMapping("/train/price")
     public ResponseEntity<?> getTrainPriceDefault(@RequestParam("TrainScheduleId") Long trainScheduleId) {
         return searchDBService.getTrainPrice(trainScheduleId);
+    }
+
+    @GetMapping("/seat/availability")
+    public ResponseEntity<?> getSeatAvailability(@RequestParam("SeatScheduleId") Long scheduleId,
+                                                 @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate selectDate) {
+        return searchDBService.getSeatAvailability(scheduleId, selectDate);
     }
 }
