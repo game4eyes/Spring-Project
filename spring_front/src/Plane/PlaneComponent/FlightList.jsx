@@ -8,7 +8,7 @@ import '@/css/Popup.css';
 import LoginModal from '@/components/LoginModal';
 import BookResultModal from '@/components/BookResultModal';
 import { useCookies } from 'react-cookie';
-import TossPay from '../../pay/TossPay';
+// import TossPay from '../../pay/TossPay';
 
 
 
