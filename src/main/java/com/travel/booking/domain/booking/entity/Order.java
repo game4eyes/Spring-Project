@@ -1,6 +1,7 @@
 package com.travel.booking.domain.booking.entity;
 
 import com.travel.booking.domain.payment.entity.Payment;
+import com.travel.booking.domain.searchdb.entity.Schedule;
 import com.travel.booking.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -36,9 +37,17 @@ public class Order {
     @Column(name = "orderStatus", nullable = false)
     private String orderStatus;
 
-    // 주문과 관련된 좌석 예약 정보와의 관계 설정 (1:N)
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<SeatReservation> seatReservations;
+    //  주문 스케쥴
+    @JoinColumn(name = "scheduleId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Schedule schedule;
+
+    // 좌석 등급
+    @Column(name = "orderGrade", nullable = false)
+    private String grade;
+    // 예약한 좌석의 수
+    @Column(name = "orderSeatNum", nullable = false)
+    private Integer orderSeatNum;
 
     // 주문과 관련된 결제 정보와의 관계 설정 (1:1)
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
