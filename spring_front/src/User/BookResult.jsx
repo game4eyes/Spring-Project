@@ -304,7 +304,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     </div>
                     <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
-                    <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_train(e, selectedTrain, seatPrice, train)}>결제</button>
+                    <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_train(e, selectedTrain, train, train)}>결제</button>
 
 
                         <button type="button" onClick={bookingCancel}>취소</button>
