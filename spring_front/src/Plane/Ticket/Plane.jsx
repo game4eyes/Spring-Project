@@ -8,6 +8,8 @@ import AirportsData from '../PlaneComponent/AirportsData';
 import Layout from '../../components/Layout';
 import { getAirInfo } from '../../api/dataApi';
 import FlightList from '../PlaneComponent/FlightList';
+import StartStationList from '../../components/StartStationList';
+import EndStationList from '../../components/EndStationList';
 
 
 const Plane = () => {
@@ -59,11 +61,35 @@ const Plane = () => {
         "3500002": ["3500004"],
     };
 
+    
+    const handleStartStationIdChange = (Id, name) => {
+        setFlights(prevState => ({
+            ...prevState,
+            startStationId: Id,
+            departure: name, // Update departure stationName
+            endStationId: '', // Reset end station when start station changes
+            endStations: [], // Reset end stations list
+        }));
+    };
+
+    const handleEndStationIdChange = (Id, name) => {
+        setFlights(prevState => ({
+            ...prevState,
+            endStationId: Id,
+            destination: name, // Update destination stationName
+        }));
+    };
+
+
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const days = ['일', '월', '화', '수', '목', '금', '토'];
         const dayOfWeek = days[new Date(ticketInfo.date).getDay()];
         const formattedHour = ticketInfo.time.split(':')[0];
+
+  
 
         if (!ticketInfo.departure) {
             alert('출발지를 선택해주세요.');
@@ -74,6 +100,7 @@ const Plane = () => {
             alert('도착지를 선택해주세요.');
             return;
         }
+        
 
         if (ticketInfo.seatType == '') {
             alert('좌석 유형을 선택해주세요.');
@@ -155,6 +182,10 @@ const Plane = () => {
             <div className="plane_book">
                 <form onSubmit={handleSubmit}>
                     <h2 style={{ textAlign: 'left', marginBottom: '50px' }}>공항 예약</h2>
+
+                    {/* <StartStationList stationTypeId={'2'}  onStationSelect={handleStartStationIdChange} />
+                     <EndStationList startStationId={flights.startStationId} onStationSelect={handleEndStationIdChange} /> */}
+
                     <SelectInput label="출발지" value={ticketInfo.departure} onChange={e => setTicketInfo({...ticketInfo, departure: e.target.value})} options={getValidDepartureOptions()} /><br/>
                     <SelectInput label="도착지" value={ticketInfo.destination} onChange={e => setTicketInfo({...ticketInfo, destination: e.target.value})} options={getDestinationOptions()} disabled={!ticketInfo.departure} /><br/>
                     <DateInput label="출발일" value={ticketInfo.date} onChange={e => setTicketInfo({...ticketInfo, date: e.target.value})} /><br/>

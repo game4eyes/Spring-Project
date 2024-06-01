@@ -6,91 +6,52 @@ import Layout from '../components/Layout';
 import { socialLogin } from '../api/todoApi';
 import '@/css/form/loginform.css';
 import { ReactComponent as GoogleLogoIcon } from '@/icon/google_logo2.svg'
-import { useCookies } from 'react-cookie';
 import Logo_black from '@/components/Logo_black';
 
-
 const Login = ({ handleClose }) => {
-  const { isLoggedIn, setIsLoggedIn, setUser } = useContext(AuthContext);  // isLoggedIn 추가
+  const { isLoggedIn, setIsLoggedIn, setUser } = useContext(AuthContext);  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies(['userEmail']);
-
-
-  const currenturl = window.location.href;
-
-
-
+  const location = useLocation();
+  
   useEffect(() => {
     if (isLoggedIn) {
-      if (currenturl.includes('/ticketbook/train')) {      //기차 예약 페이지에서 로그인할 경우
+      if (location.pathname.includes('/ticketbook/train') || 
+          location.pathname.includes('/ticketbook/plane') || 
+          location.pathname.includes('/ticketbook/bus')) {
         handleClose(); // Close the modal after successful login
-      } 
-     else if (currenturl.includes('/ticketbook/plane')) {      //공항 예약 페이지에서 로그인할 경우
-        handleClose(); // Close the modal after successful login
-      } 
-      
-      else if (currenturl.includes('/ticketbook/bus')) {      //버스 예약 페이지에서 로그인할 경우
-        handleClose(); // Close the modal after successful login
-      } 
-      
-      
-      else {        //그 이외의 경우에 대한 로그인
+      } else {        
         navigate('/');
       }
     }
-  }, [isLoggedIn, navigate, currenturl, handleClose]);
-
+  }, [isLoggedIn, navigate, location.pathname, handleClose]);
 
   const loginData = {
     email,
     password,
   };
 
-  // const handleGoogleLogin = async () => {
-  //   try {
-  //     const data = await socialLogin();
-  //     // 추가적인 로그인 결과 처리
-  //   } catch (error) {
-  //     console.error('소셜 로그인 중 오류가 발생했습니다.', error);
-  //   }
-  // };
-
-  // const handleGoogleLogin = () => {
-  //   window.location.href = 'http://localhost:9090/api/user/social-google';
-  // };
-
   const handleGoogleLogin = () => {
     window.location.href = 'http://localhost:9090/oauth2/authorization/google';
   };
-  
-  let sessionStorage = window.sessionStorage;
-  
-
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await userLogin(loginData);
       alert('환영합니다!');
-   
-
-      sessionStorage.setItem("userEmail", email);
+      sessionStorage.setItem("email", email);
       setIsLoggedIn(true);
-      //sessionStorage.getItem("userEmail");
-
-      // setCookie("userEmail", loginData.email);
-      // setUser(response.data.user);
-      // setCookie("userEmail", response.data.user.email, {path: '/'});
-      // setCookie("username", response.data.user.username, {path: '/'});
-
-      document.cookie = `sessionId=${response.data.sessionId}; path=/; SameSite=Lax`;
-      navigate('/');
       handleClose(); // Close the modal after successful login
 
+      if (!(location.pathname.includes('/ticketbook/train') || 
+            location.pathname.includes('/ticketbook/plane') || 
+            location.pathname.includes('/ticketbook/bus'))) {
+        navigate('/');
+      }
     } catch (error) {
       let errorMessage = '로그인 중 오류가 발생했습니다. 다시 시도해주세요.';
       if (error.response && error.response.status === 400) {

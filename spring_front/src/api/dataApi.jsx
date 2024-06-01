@@ -199,3 +199,18 @@ export const getTrainPrice = async (TrainScheduleId) => {
     });
     return res.data;
 }
+
+
+//기차 스케줄 리스트 (출발지,도착지,출발시간,등급)
+//http://ec2-3-34-129-44.ap-northeast-2.compute.amazonaws.com:9090/search/db/schedule/info?startStationId=7&endStationId=3&weekdayCarrier=%EC%9B%94&departureTime=06
+export const getPlaneSchedule = async (startStationId, endStationId, weekdayCarrier, departureTime) => {
+    const res = await axios.get(`${searchPrefix}/schedule/info`, {
+        params: {
+            startStationId: startStationId,
+            endStationId: endStationId,
+            weekdayCarrier: weekdayCarrier,
+            departureTime: departureTime
+        }
+    });
+    return res.data;
+}
