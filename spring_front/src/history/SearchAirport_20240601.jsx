@@ -10,39 +10,20 @@ const SearchAirport = () => {
         setInput(event.target.value);
     };
 
-    // // 검색 실행
-    // const handleSearch = async () => {
-    //     if (input.trim() === '') {
-    //         alert('검색어를 입력해주세요.');
-    //         return;
-    //     }
-    //     try {
-    //         const results = await getAirInfo(input); // API 호출
-    //         setAirports(results); // 결과 상태 업데이트
-    //     } catch (error) {
-    //         console.error('Error fetching airports:', error);
-    //         alert('공항 정보를 가져오는데 실패했습니다.');
-    //     }
-    // };
-
-
-
-        // 검색 실행
-        const handleSearch = async () => {
-            if (input.trim() === '') {
-                alert('검색어를 입력해주세요.');
-                return;
-            }
-            try {
-                const results = await getPlaneSchedule (input); // API 호출
-                setAirports(results); // 결과 상태 업데이트
-            } catch (error) {
-                console.error('Error fetching airports:', error);
-                alert('공항 정보를 가져오는데 실패했습니다.');
-            }
-        };
-
-        
+    // 검색 실행
+    const handleSearch = async () => {
+        if (input.trim() === '') {
+            alert('검색어를 입력해주세요.');
+            return;
+        }
+        try {
+            const results = await getAirInfo(input); // API 호출
+            setAirports(results); // 결과 상태 업데이트
+        } catch (error) {
+            console.error('Error fetching airports:', error);
+            alert('공항 정보를 가져오는데 실패했습니다.');
+        }
+    };
 
     return (
         <div>

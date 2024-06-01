@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
+// import { useCookies } from 'react-cookie';
 import '@/css/form/bookresult.css';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import LoginModal from '@/components/LoginModal';
@@ -11,7 +11,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
     const location = useLocation();
     const navigate = useNavigate();
-    const [cookies, setCookie] = useCookies(['userEmail', 'bookingInfo']);
+    // const [cookies, setCookie] = useCookies(['userEmail', 'bookingInfo']);
 
     const [selectedBus, setSelectedBus] = useState(null);
     const [bus, setBus] = useState(null);
@@ -86,15 +86,15 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     };
     let sessionStorage = window.sessionStorage;
 
-    const handlePayment = async (amount, orderId, orderName) => {
+    const handlePayment = async (amount, orderId, orderName,email) => {
         if (!isLoggedIn) {
             setShowLoginModal(true);
             return;
         }
 
-        const userEmail = sessionStorage.getItem('userEmail'); // Retrieve userEmail from sessionStorage
+        // const userEmail = sessionStorage.getItem('userEmail'); // Retrieve userEmail from sessionStorage
 
-        if (!userEmail) {
+        if (!sessionStorage.getItem("email")) {
             // Handle case when userEmail is not available in sessionStorage
             console.error('User email not found in sessionStorage');
             return;
@@ -107,7 +107,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     amount,
                     orderId,
                     orderName,
-                    userEmail, // Include userEmail in the payment request payload
+                    customerEmail: sessionStorage.getItem("email"),
                     successUrl: 'http://localhost:9090/api/user/toss/success',
                     failUrl: 'http://localhost:9090/api/user/toss/fail',
                 }).then(response => {
@@ -123,7 +123,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     };
 
 
-    const handleBook_bus = async (e, bus, fare) => {
+    const handleBook_bus = async (e, bus, fare,email) => {
         e.preventDefault();
         console.log('handleBook_bus called with:', bus, fare); // 디버그용 로그
         await handlePayment(fare, `order_${selectedBus.id}_${Date.now()}`, `${selectedBus.carrier} - ${bus.departure} to ${bus.destination} 버스 티켓`);
@@ -162,7 +162,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     <h2 style={{ marginBottom: '30px' }}>프로필</h2>
                     <div className="form-group">
                         <label>이메일</label>
-                        <span>{cookies.userEmail}</span>
+                        <span>{sessionStorage.userEmail}</span>
                     </div>
                     <div className="form-group">
                         <label>닉네임</label>
@@ -203,7 +203,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     </div>
                     <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
-                        <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_bus(e, bus, selectedBus.price)}>결제</button>
+                        <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_bus(e, bus, selectedBus.price,sessionStorage.email)}>결제</button>
                         <button type="button" onClick={bookingCancel}>취소</button>
                     </div>
                     {showBookingResultModal && (
@@ -224,7 +224,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     <h2 style={{ marginBottom: '30px' }}>프로필</h2>
                     <div className="form-group">
                         <label>이메일</label>
-                        <span>{cookies.userEmail}</span>
+                        <span>{sessionStorage.userEmail}</span>
                     </div>
                     <div className="form-group">
                         <label>닉네임</label>
@@ -292,7 +292,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     <h2 style={{ marginBottom: '30px' }}>프로필</h2>
                     <div className="form-group">
                         <label>이메일</label>
-                        <span>{cookies.userEmail}</span>
+                        <span>{sessionStorage.userEmail}</span>
                     </div>
                     <div className="form-group">
                         <label>닉네임</label>
@@ -307,7 +307,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                                 <p>출발 시간: {selectedPlane.departureTime}</p>
                                 <p>도착 시간: {selectedPlane.arrivalTime || '정보 없음'}</p>
                                 <p>날짜: {selectedPlane.date}</p>
-                                <p>이메일: {cookies.userEmail}</p>
+                                <p>이메일: {sessionStorage.userEmail}</p>
                                 <p>출발지: {selectedPlane.startStationName}</p>
                                 <p>도착지: {selectedPlane.endStationName}</p>
                                 <p>등급: {selectedPlane.grade}</p>
