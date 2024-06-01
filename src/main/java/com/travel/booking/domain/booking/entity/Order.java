@@ -20,7 +20,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private String id;
 
     // 주문을 한 사용자와의 관계 설정 (N:1)
     @ManyToOne(fetch = FetchType.LAZY)
