@@ -10,9 +10,9 @@ import BookResultModal from '@/components/BookResultModal';
 import { useCookies } from 'react-cookie';
 // import TossPay from '../../pay/TossPay';
 
-// -------------->하다 말았습니다
 
-const FlightList = ({ flights, onSelectFareAndBook, departure, destination, departureTime, weekdayCarrier,updatebookingData }) => {
+
+const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationName, selectedDepartureTime,updatebookingData }) => {
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
     const flightData = useMemo(() => flights.station || [], [flights.station]);
 
@@ -101,31 +101,31 @@ const FlightList = ({ flights, onSelectFareAndBook, departure, destination, depa
         // }
     };
 
-    // const handleBook = async (e, flight, fare) => {
-    //     e.preventDefault();
-    //     try {
-    //         <TossPay
-    //         amount={fares[flight.id]}
-    //         orderId={`order_${flight.id}_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`}
-    //         orderName={`${flight.airline} - ${departureName} to ${destinationName}`}
-    //         userName={userName}
-    //         successUrl="http://ec2-3-37-87-73.ap-northeast-2.compute.amazonaws.com:9090/pay/paysuccess"
-    //         failUrl="http://ec2-3-37-87-73.ap-northeast-2.compute.amazonaws.com/pay/payfail"
-    //         onSelectFareAndBook={() => onSelectFareAndBook(flight, fares[flight.id], flight.departureTime, flight.arrivalTime)}
-    //     />
-    //     } catch (error) {
-    //         console.error('토스 결제 로드 에러:', error);
-    //     }
-    //     onSelectFareAndBook(flight, fare, flight.departureTime);
-    // };
+    const handleBook = async (e, flight, fare) => {
+        e.preventDefault();
+        try {
+            <TossPay
+            amount={fares[flight.id]}
+            orderId={`order_${flight.id}_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`}
+            orderName={`${flight.airline} - ${departureName} to ${destinationName}`}
+            userName={userName}
+            successUrl="http://ec2-3-37-87-73.ap-northeast-2.compute.amazonaws.com:9090/pay/paysuccess"
+            failUrl="http://ec2-3-37-87-73.ap-northeast-2.compute.amazonaws.com/pay/payfail"
+            onSelectFareAndBook={() => onSelectFareAndBook(flight, fares[flight.id], flight.departureTime, flight.arrivalTime)}
+        />
+        } catch (error) {
+            console.error('토스 결제 로드 에러:', error);
+        }
+        onSelectFareAndBook(flight, fare, flight.departureTime);
+    };
 
     const filteredFlights = useMemo(() => {
-        const selectedTime = new Date(`1970-01-01T${departureTime}:00`).getTime();
+        const selectedTime = new Date(`1970-01-01T${selectedDepartureTime}:00`).getTime();
         return flightData.filter(flight => {
             const flightTime = new Date(`1970-01-01T${flight.departureTime}:00`).getTime();
             return flightTime >= selectedTime;
         });
-    }, [flightData, departureTime]);
+    }, [flightData, selectedDepartureTime]);
 
     return (
         <div>
@@ -148,8 +148,8 @@ const FlightList = ({ flights, onSelectFareAndBook, departure, destination, depa
                         {filteredFlights.map((flight, index) => (
                             <tr key={index}>
                                 <td>{flight.airline}</td>
-                                <td>{departure}</td>
-                                <td>{destination}</td>
+                                <td>{departureName}</td>
+                                <td>{destinationName}</td>
                                 <td>{flight.departureTime}</td>
                                 <td>{flight.arrivalTime}</td>
                                 <td>{flight.runDay}</td>

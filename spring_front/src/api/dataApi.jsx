@@ -73,15 +73,15 @@ export const getTrainInfo = async (startStationID, endStationID, hour, dayz) => 
     return res.data;
 }
 // 항공 정보
-export const getAirInfo = async (startStationID, endStationID, hour, dayz) => {
-    const res = await axios.get(`${airPrefix}/${startStationID}/${endStationID}`, {
-        params: {
-            hour: hour,
-            dayz: dayz
-        }
-    });
-    return res.data;
-}
+// export const getAirInfo = async (startStationID, endStationID, hour, dayz) => {
+//     const res = await axios.get(`${airPrefix}/${startStationID}/${endStationID}`, {
+//         params: {
+//             hour: hour,
+//             dayz: dayz
+//         }
+//     });
+//     return res.data;
+// }
 
 /**
  * 버스 종류와 도시 코드를 가지고 해당 도시의 정류소 정보와 그 정류소의 도착지 리스트를 알려주는 함수
@@ -201,9 +201,9 @@ export const getTrainPrice = async (TrainScheduleId) => {
 }
 
 
-//기차 스케줄 리스트 (출발지,도착지,출발시간,등급)
+//공항 스케줄 리스트 (출발지,도착지,출발시간,등급)
 //http://ec2-3-34-129-44.ap-northeast-2.compute.amazonaws.com:9090/search/db/schedule/info?startStationId=7&endStationId=3&weekdayCarrier=%EC%9B%94&departureTime=06
-export const getPlaneSchedule = async (startStationId, endStationId, weekdayCarrier, departureTime) => {
+export const getAirInfo = async (startStationId, endStationId, weekdayCarrier, departureTime) => {
     const res = await axios.get(`${searchPrefix}/schedule/info`, {
         params: {
             startStationId: startStationId,
@@ -215,7 +215,7 @@ export const getPlaneSchedule = async (startStationId, endStationId, weekdayCarr
     return res.data;
 }
 
-// 남은 좌석 정보
+// 남은 좌석 정보 (스케줄불러올떄)
 export const getSeatAvailability = async (scheduleId, date) => {
     const res = await axios.get(`${searchSeatPrefix}`, {
         params : {
