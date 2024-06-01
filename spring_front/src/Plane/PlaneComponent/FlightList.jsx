@@ -101,6 +101,24 @@ const FlightList = ({ flights, onSelectFareAndBook, departureName, destinationNa
         // }
     };
 
+    const handleBook = async (e, flight, fare) => {
+        e.preventDefault();
+        try {
+            <TossPay
+            amount={fares[flight.id]}
+            orderId={`order_${flight.id}_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`}
+            orderName={`${flight.airline} - ${departureName} to ${destinationName}`}
+            userName={userName}
+            successUrl="http://ec2-3-37-87-73.ap-northeast-2.compute.amazonaws.com:9090/pay/paysuccess"
+            failUrl="http://ec2-3-37-87-73.ap-northeast-2.compute.amazonaws.com/pay/payfail"
+            onSelectFareAndBook={() => onSelectFareAndBook(flight, fares[flight.id], flight.departureTime, flight.arrivalTime)}
+        />
+        } catch (error) {
+            console.error('토스 결제 로드 에러:', error);
+        }
+        onSelectFareAndBook(flight, fare, flight.departureTime);
+    };
+
     const filteredFlights = useMemo(() => {
         const selectedTime = new Date(`1970-01-01T${selectedDepartureTime}:00`).getTime();
         return flightData.filter(flight => {
