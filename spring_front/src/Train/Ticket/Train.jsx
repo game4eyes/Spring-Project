@@ -258,6 +258,7 @@ const Train = () => {
                                 endStationId={train.endStationId}
                                 weekdayCarrier={train.weekdayCarrier}
                                 departureTime={train.departureTime}
+                                date={train.date}
                                 // weekdayCarrier={train.weekdayCarrier}
                                 // departureTime={train.departureTime}
                                 train={train}

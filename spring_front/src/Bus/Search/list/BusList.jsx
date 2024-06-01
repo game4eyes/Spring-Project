@@ -7,6 +7,7 @@ import '@/css/Popup.css';
 import '@/css/List.css'; // CSS 파일 임포트
 import LoginModal from '@components/LoginModal';
 import BookResultModal from '@components/BookResultModal';
+import BusListSeat from "@/Bus/Search/list/BusListSeat.jsx";
 
 const BusList = ({ startStationId, endStationId, gradeCarrier, bus, departureTime, returnDate, passengerCount, departure, destination, isRoundTrip, departureDate }) => {
     const [busInfo, setBusInfo] = useState([]);
@@ -152,7 +153,7 @@ const BusList = ({ startStationId, endStationId, gradeCarrier, bus, departureTim
                                         <th>운행 빈도</th>
                                         <th>가격</th>
                                         <th>등급</th>
-                                        <th>좌석 선택</th>
+                                        <th>남은 좌석</th>
                                         <th>결제</th>
                                     </tr>
                                 </thead>
@@ -165,7 +166,7 @@ const BusList = ({ startStationId, endStationId, gradeCarrier, bus, departureTim
                                             <td>{selectedBus.frequency}</td>
                                             <td>{selectedBus.price}</td>
                                             <td>{selectedBus.carrier}</td>
-                                            <td><button className="button" onClick={seatSelect}>좌석 선택</button></td>
+                                            <BusListSeat id={selectedBus.id} date={departureDate}/>
                                             <td><button className="button" onClick={() => handleItemClick(searchURLObject(location.pathname), selectedBus, bus)}>결제</button></td>
                                         </tr>
                                     ))}
