@@ -7,8 +7,9 @@ import { AuthContext } from '../../../global/AuthContext';
 import '@/css/Popup.css';
 import LoginModal from '@/components/LoginModal';
 import BookResultModal from '@/components/BookResultModal';
+import TrainListSeat from "@/Train/Search/list/TrainListSeat.jsx";
 
-const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier, train }) => {
+const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier, train,date }) => {
     const [trainInfo, setTrainInfo] = useState([]);
     const [trainPrices, setTrainPrices] = useState({}); // State to store train prices      //좌석에 대한 티켓 가격
     const [currentPage, setCurrentPage] = useState(1);
@@ -199,7 +200,7 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
                                                 특석 ({trainPrices[selectedTrain.id]?.special || 'N/A'})
                                             </label>
                                         </td>
-                                        <td><button className="button" onClick={payment}>좌석선택</button></td>
+                                        <td><TrainListSeat Id={selectedTrain.id} Date={date}/></td>
                                         <button
                                             className="button"
                                             style = {{marginTop:'25px'}}

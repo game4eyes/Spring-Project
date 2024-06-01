@@ -1,8 +1,8 @@
 // 서버 호스트 설정
 import axios from "axios";
 
-export const API_SERVER_HOST = 'http://localhost:9090'; // 서버 주소
-//export const API_SERVER_HOST = 'http://ec2-3-34-129-44.ap-northeast-2.compute.amazonaws.com:9090'; // 서버 주소
+// export const API_SERVER_HOST = 'http://localhost:9090'; // 서버 주소
+export const API_SERVER_HOST = 'http://ec2-3-34-129-44.ap-northeast-2.compute.amazonaws.com:9090'; // 서버 주소
 
 
 // 기본 주소 설정
@@ -33,6 +33,9 @@ const startStationPrefix = `${searchPrefix}/start/station/info`;
 
 //도착지 조회
 const endStationPrefix = `${searchPrefix}/end/station/info`;
+
+// 남은 좌석 조회
+const searchSeatPrefix = `${searchPrefix}/seat/availability`
 
 
 
@@ -217,7 +220,7 @@ export const getAirInfo = async (startStationId, endStationId, weekdayCarrier, d
 
 // 남은 좌석 정보 (스케줄불러올떄)
 export const getSeatAvailability = async (scheduleId, date) => {
-    const res = await axios.get(`${searchSeatPrefix}`, {
+    const res = await axios.get(`${searchPrefix}/seat/availability`, {
         params : {
             SeatScheduleId : scheduleId,
             date : date

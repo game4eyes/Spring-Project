@@ -46,11 +46,11 @@ export const bookingComplete = async (data) => {
     return await axios.post(`${bookingPrefix}/payment/complete`, data);
 }
 
-// 결제 실패시 주소
+// 결제 실패 및 취소시 주소
 /**
  * @params
  *   @userEmail 사용자 이메일
- *   @orderId 실패한 예약 아이디
+ *   @orderId 실패 및 취소 한 예약 아이디
  * @return true/false
  * */
 export const bookinFail = async (data) => {
