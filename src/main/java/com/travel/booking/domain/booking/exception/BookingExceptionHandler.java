@@ -15,10 +15,4 @@ public class BookingExceptionHandler {
         response.put("errorMessage", ex.getDetail());
         return new ResponseEntity<>(response, ex.getStatus());
     }
-
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleGeneralException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
-    }
 }
