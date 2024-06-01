@@ -6,6 +6,7 @@ import { loadTossPayments } from '@tosspayments/payment-sdk';
 import LoginModal from '@/components/LoginModal';
 import BookResultModal from '@/components/BookResultModal';
 import { AuthContext } from '@/global/AuthContext';
+import {getUserInfo} from "@/api/todoApi.jsx";
 
 const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
@@ -152,7 +153,12 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
         }
     }, [transportationtype]);
 
-    
+    // 유저 이메일로 사용자 정보를 가지고 오는 로직이 필요?
+    // useEffect(() => {
+    //     const userInfo = getUserInfo()
+    // }, []);
+
+
     return (
         <>
             {transportationtype === 'bus' && (
@@ -162,7 +168,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     <h2 style={{ marginBottom: '30px' }}>프로필</h2>
                     <div className="form-group">
                         <label>이메일</label>
-                        <span>{sessionStorage.userEmail}</span>
+                        <span>{sessionStorage.email}</span>
                     </div>
                     <div className="form-group">
                         <label>닉네임</label>
@@ -224,7 +230,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     <h2 style={{ marginBottom: '30px' }}>프로필</h2>
                     <div className="form-group">
                         <label>이메일</label>
-                        <span>{sessionStorage.userEmail}</span>
+                        <span>{sessionStorage.email}</span>
                     </div>
                     <div className="form-group">
                         <label>닉네임</label>
@@ -292,7 +298,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     <h2 style={{ marginBottom: '30px' }}>프로필</h2>
                     <div className="form-group">
                         <label>이메일</label>
-                        <span>{sessionStorage.userEmail}</span>
+                        <span>{sessionStorage.email}</span>
                     </div>
                     <div className="form-group">
                         <label>닉네임</label>
