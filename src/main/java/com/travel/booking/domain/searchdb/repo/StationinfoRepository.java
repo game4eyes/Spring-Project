@@ -2,18 +2,12 @@ package com.travel.booking.domain.searchdb.repo;
 
 import com.travel.booking.domain.searchdb.entity.Stationinfo;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StationinfoRepository extends JpaRepository<Stationinfo, Long> {
+    List<Stationinfo> findByStationType_IdOrderById(Long id);
 
-    @Query(value = "SELECT * FROM stationinfo WHERE stationId IN (" +
-            "SELECT startStationId FROM schedule WHERE startStationId IN (" +
-            "SELECT stationId FROM stationinfo WHERE stationType = :stationTypeId))",
-            nativeQuery = true)
-    List<Stationinfo> findBusStartListByStationTypeId(@Param("stationTypeId") Long stationTypeId);
-
-
+    Optional<Stationinfo> findFirstByIdOrderByIdDesc(Long id);
 }

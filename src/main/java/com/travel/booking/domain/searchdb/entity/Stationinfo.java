@@ -13,6 +13,7 @@ import lombok.Setter;
 public class Stationinfo {
     @Id
     @Column(name = "stationId", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Size(max = 255)

@@ -1,5 +1,6 @@
 package com.travel.booking.domain.payment.entity;
 
+import com.travel.booking.domain.booking.entity.Order;
 import com.travel.booking.domain.payment.PayType;
 import com.travel.booking.domain.payment.dto.PaymentResDto;
 import com.travel.booking.domain.user.entity.User;
@@ -37,8 +38,9 @@ public class Payment  {
     @Column(nullable = false , name = "pay_name")
     private String orderName;
 
-    @Column(nullable = false , name = "order_id")
-    private String orderId;
+    @OneToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -71,7 +73,7 @@ public class Payment  {
                 .payType(payType.getDescription())
                 .amount(amount)
                 .orderName(orderName)
-                .orderId(orderId)
+                .orderId(order.getId())
                 .userEmail(customer.getEmail())
                 .userName(customer.getUsername())
                 .createdAt(String.valueOf(getCreatedAt()))
