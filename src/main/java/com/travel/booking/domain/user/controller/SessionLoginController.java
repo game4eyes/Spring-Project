@@ -3,6 +3,7 @@ package com.travel.booking.domain.user.controller;
 import com.travel.booking.domain.user.Role;
 import com.travel.booking.domain.user.dto.JoinReq;
 import com.travel.booking.domain.user.dto.LoginReq;
+import com.travel.booking.domain.user.dto.UpdateReq;
 import com.travel.booking.domain.user.entity.User;
 import com.travel.booking.domain.user.service.UserService;
 import jakarta.servlet.http.Cookie;
@@ -92,47 +93,33 @@ public class SessionLoginController {
         return "login"; // 로그인 페이지의 뷰 이름
     }
 
-    @GetMapping("/social-google")
-    public RedirectView redirectToGoogle() {
-        return new RedirectView("/oauth2/authorization/google");
-    }
+    @PostMapping("/update")
+    public String updateUserInfo(@Valid UpdateReq updateReq, Model model, Error error){
 
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            sessionList.remove(session.getId());
-            session.invalidate();
-        }
-        return "redirect:/api/user/login";
-    }
+        userService.update(updateReq);
 
-    @GetMapping("/info")
-    public String userInfo(@SessionAttribute(name = "email", required = false) String email, Model model) {
-        User loginUser = userService.getLoginUserByEmail(email);
-
-        if (loginUser == null) {
-            return "redirect:/api/user/login";
-        }
-
-        model.addAttribute("email", loginUser);
         return "info";
     }
 
-    @GetMapping("/admin")
-    public String adminPage(@SessionAttribute(name = "userId", required = false) String email) {
-        User loginUser = userService.getLoginUserByEmail(email);
 
-        if (loginUser == null) {
-            return "redirect:/api/user/login";
-        }
 
-        if (!loginUser.getRole().equals(Role.ADMIN)) {
-            return "redirect:/api/user/login";
-        }
 
-        return "admin";
-    }
+
+//    @GetMapping("/info")
+//    public String userInfo(@SessionAttribute(name = "email", required = false) String email, Model model) {
+//        User loginUser = userService.getLoginUserByEmail(email);
+//
+//        if (loginUser == null) {
+//            return "redirect:/api/user/login";
+//        }
+//
+//        model.addAttribute("email", loginUser);
+//        return "info";
+//    }
+
+//    @GetMapping("/info")
+//    public String userInfo(@Valid)
+
 
     public static Hashtable<String, HttpSession> sessionList = new Hashtable<>();
 
@@ -147,4 +134,11 @@ public class SessionLoginController {
         }
         return lists;
     }
+
+
+
+
+
+
+
 }
