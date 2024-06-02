@@ -19,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -41,10 +43,10 @@ public class BookingService {
                 );
         Optional<Order> checkOrderDate = orderRepository.findById(orderDto.getOrderId());
         if(checkOrderDate.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(false);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 해당 예약 건이 있습니다. 추가로 예약 할 것인지?");
         } else {
             Order order = new Order();
-            order.setOrderId(orderDto.getOrderId());
+            order.setId(orderDto.getOrderId());
             order.setOrderDate(orderDto.getOrderDate());
             order.setUser(user);
             order.setSchedule(schedule);
@@ -110,7 +112,7 @@ public class BookingService {
                 .orElseThrow(
                         () -> new BookingException(HttpStatus.BAD_REQUEST, BookingErrorCode.BOOKING_USER_FAILED)
                 );
-        Order order = orderRepository.findByOrderIdAndUser(paySuccessOrFailDTO.getOrderId(), user)
+        Order order = orderRepository.findByIdAndUser(paySuccessOrFailDTO.getOrderId(), user)
                 .orElseThrow(
                         () -> new BookingException(HttpStatus.NOT_FOUND, BookingErrorCode.UNKNOWN)
                 );
@@ -125,7 +127,7 @@ public class BookingService {
                 .orElseThrow(
                         () -> new BookingException(HttpStatus.BAD_REQUEST, BookingErrorCode.BOOKING_USER_FAILED)
                 );
-        Order order = orderRepository.findByOrderIdAndUser(paySuccessOrFailDTO.getOrderId(), user)
+        Order order = orderRepository.findByIdAndUser(paySuccessOrFailDTO.getOrderId(), user)
                 .orElseThrow(
                         () -> new BookingException(HttpStatus.NOT_FOUND, BookingErrorCode.UNKNOWN)
                 );
@@ -181,7 +183,8 @@ public class BookingService {
                 seatAvailabilityRepository.save(seat);
             }
         }
-        orderRepository.deleteById(order.getOrderId());
+        orderRepository.delete(order);
         return ResponseEntity.ok().body(true);
     }
+
 }
