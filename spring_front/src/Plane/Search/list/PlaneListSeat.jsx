@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {getSeatAvailability} from "@/api/dataApi.jsx";
 
-const TrainListSeat = ({Id,Date}) => {
+const PlaneListSeat = ({Id,Date}) => {
     const [seat, setSeat] = useState({})
     useEffect(() => {
         const seatDate = getSeatAvailability(Id,Date)
@@ -12,11 +12,11 @@ const TrainListSeat = ({Id,Date}) => {
     }, []);
     return (
         <label>
-            비즈니스 : {seat.trainStandingFreeSeating}
-            이코노미 : {seat.trainGeneral}
-            퍼스트 : {seat.trainSpecial}
+            비즈니스 : {seat.airBusiness}
+            이코노미 : {seat.airEconomy}
+            퍼스트 : {seat.airFirst}
         </label>
     );
 };
 
-export default TrainListSeat;
+export default PlaneListSeat;

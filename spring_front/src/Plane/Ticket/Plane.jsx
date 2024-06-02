@@ -174,10 +174,10 @@ const Plane = () => {
     // };
 
     return (
-        <Layout title="공항 승차권 예매" body="정보 입력">
-            <div className="plane_book" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Layout title="항공권 예매" body="정보 입력">
+            <div className="train_book" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <form onSubmit={handleSubmit}>
-                    <h2 style={{ marginBottom: '50px' }}>항공 예약</h2>
+                    <h2 style={{ marginBottom: '50px' }}>항공권 예매</h2>
                     <div className="col1">
                         <div>
                             <StartStationList stationTypeId={'2'} onStationSelect={handleStartStationIdChange} />
@@ -260,6 +260,7 @@ const Plane = () => {
                                 departureTime={plane.departureTime}
                                 // weekdayCarrier={plane.weekdayCarrier}
                                 // departureTime={plane.departureTime}
+                                date ={plane.date}
                                 plane={plane}
                             />
                         }

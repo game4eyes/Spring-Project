@@ -6,8 +6,8 @@ import { loadTossPayments } from '@tosspayments/payment-sdk';
 import LoginModal from '@/components/LoginModal';
 import BookResultModal from '@/components/BookResultModal';
 import { AuthContext } from '@/global/AuthContext';
-import {getUserInfo} from "@/api/todoApi.jsx";
-import {bookinFail, booking} from "@/api/booking.jsx";
+import { getUserInfo } from "@/api/todoApi.jsx";
+import { bookinFail, booking } from "@/api/booking.jsx";
 import { tossPayment } from '../api/todoApi';
 
 const BookResult = ({ transportationtype, trainprice, handleClose }) => {
@@ -52,7 +52,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
             const selectedPlane = JSON.parse(localStorage.getItem('selectedPlane'));
             const plane = JSON.parse(localStorage.getItem('plane'));
             const selectedSeatType_plane = JSON.parse(localStorage.getItem('selectedSeatType_plane'));
-            // const seatPrice_plane = JSON.parse(localStorage.getItem('seatPrice_plane'));
+             const seatPrice_plane = JSON.parse(localStorage.getItem('seatPrice_plane'));
 
             // const plane_departureName = JSON.parse(localStorage.getItem('plane_departureName'));
             // const plane_destinationName = JSON.parse(localStorage.getItem('plane_destinationName'));
@@ -60,6 +60,8 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
             console.log('Loaded selectedPlane:', selectedPlane); // 디버그용 로그
             setSelectedPlane(selectedPlane);
             setFlight(plane);
+            setSelectedSeatType_plane(selectedSeatType_plane);
+            setSeatPrice_plane(seatPrice_plane);
             // setFlight_departureName(plane_departureName);
             // setFlight_destinationName(plane_destinationName);
         }
@@ -95,8 +97,8 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
         }
     };
     let sessionStorage = window.sessionStorage;
-    
-    const handlePayment = async (amount, orderId, orderName,email) => {
+
+    const handlePayment = async (amount, orderId, orderName, email) => {
         console.log(orderId)
         if (!isLoggedIn) {
             setShowLoginModal(true);
@@ -110,7 +112,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
             console.error('User email not found in sessionStorage');
             return;
         }
-        const requestPayment ={
+        const requestPayment = {
             amount,
             orderId,
             orderName,
@@ -155,7 +157,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     };
 
 
-    const handleBook_bus = async (e, bus, selectedBus,email) => {
+    const handleBook_bus = async (e, bus, selectedBus, email) => {
         const orderId = `order_${selectedBus.id}_${Date.now()}`;
         e.preventDefault();
         console.log('handleBook_bus called with:', bus, selectedBus.price); // 디버그용 로그
@@ -164,13 +166,13 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
             scheduleId: selectedBus.id,
             orderId: orderId,
             orderDate: bus.departureDate,
-            grade:"Bus",
-            seatOrderNum:1
+            grade: "Bus",
+            seatOrderNum: 1
         }
         const bookingResult = booking(data)
-        if(bookingResult) {
+        if (bookingResult) {
             console.log("결제 전 으로 데이터 삽입 완료")
-            await handlePayment(selectedBus.price, data.orderId, `${selectedBus.carrier} - ${bus.departure} to ${bus.destination} 버스 티켓`,email);
+            await handlePayment(selectedBus.price, data.orderId, `${selectedBus.carrier} - ${bus.departure} to ${bus.destination} 버스 티켓`, email);
         } else {
             return false;
         }
@@ -263,7 +265,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     </div>
                     <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
-                        <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_bus(e, bus, selectedBus,sessionStorage.email)}>결제</button>
+                        <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_bus(e, bus, selectedBus, sessionStorage.email)}>결제</button>
                         <button type="button" onClick={bookingCancel}>취소</button>
                     </div>
                     {showBookingResultModal && (
@@ -368,9 +370,9 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                                 <p>열차 종류 : {selectedPlane.lineName}</p>
                                 <p>출발 시간 : {selectedPlane.departureTime}</p>
                                 <p>도착 시간: {selectedPlane.arrivalTime}</p>
-                                {/* <p>가격 : {selectedTrainSeats}</p> */}
+
                                 <p>좌석 유형: {selectedSeatType_plane}</p> {/* 선택한 좌석의 유형 출력 */}
-                                {/* <p>가격: {seatPrice_plane}</p> 선택한 좌석의 가격 출력  */}
+                                <p>가격: {seatPrice_plane}</p>     {/* 선택한 좌석의 가격 출력  */}
                             </>
                         )}
                         {plane && (

@@ -43,9 +43,14 @@ const Header = () => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem('lastActiveTime');
-    removeCookie('userEmail'); // 로그아웃 시 이메일 쿠키 제거
+    // removeCookie('userEmail'); // 로그아웃 시 이메일 쿠키 제거
+    sessionStorage.removeItem('email');
     navigate('/');
   };
+
+
+
+
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -65,7 +70,8 @@ const Header = () => {
     const receiveMessage = (event) => {
       if (event.data.type === 'LOGIN_SUCCESS') {
         // 사용자의 이메일 쿠키 값을 설정
-        setCookie('userEmail', event.data.userEmail, { path: '/', sameSite: 'lax' });
+        // setCookie('userEmail', event.data.userEmail, { path: '/', sameSite: 'lax' });
+        sessionStorage.setItem("email", email);
         // 로그인 상태를 설정
         setIsLoggedIn(true);
       }
@@ -77,7 +83,8 @@ const Header = () => {
       // 이벤트 리스너 제거
       window.removeEventListener('message', receiveMessage);
     };
-  }, [setIsLoggedIn, setCookie]);
+  // }, [setIsLoggedIn, setCookie]);
+}, [setIsLoggedIn, sessionStorage]);
 
   return (
     <div className='fixedheader'>

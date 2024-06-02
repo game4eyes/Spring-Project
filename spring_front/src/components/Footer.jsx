@@ -23,8 +23,8 @@ const Footer = () => {
 
 const styles = {
   footer: {
-    backgroundColor: '#f4f4f4',
-    color: '#333',
+    backgroundColor: 'black',
+    color: 'white',
     padding: '20px 0',
     textAlign: 'center',
     borderTop: '1px solid #ddd',
@@ -35,29 +35,35 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    
   },
   info: {
-    textAlign: 'left' // 좌측 정렬
+    textAlign: 'left', // 좌측 정렬
+    color :'white'
   },
   companyInfo: {
     margin: 0,
-    fontSize: '16px' // 폰트 사이즈 조정
+    fontSize: '16px', // 폰트 사이즈 조정
+    color :'white'
   },
   address: {
     margin: '5px 0', // 주소와 다른 텍스트 사이의 간격 조정
-    fontSize: '14px' // 폰트 사이즈 조정
+    fontSize: '14px', // 폰트 사이즈 조정
+    color :'white'
   },
   nav: {
     listStyle: 'none',
     padding: 0,
     display: 'flex',
     margin: 0,
+ 
   },
   navItem: {
     marginRight: '20px',
+    
   },
   link: {
-    color: '#007BFF',
+    color: 'white',
     textDecoration: 'none',
   }
 }

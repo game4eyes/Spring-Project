@@ -260,6 +260,7 @@ const Train = () => {
                                 departureTime={train.departureTime}
                                 // weekdayCarrier={train.weekdayCarrier}
                                 // departureTime={train.departureTime}
+                                date ={train.date}
                                 train={train}
                             />
                         }
