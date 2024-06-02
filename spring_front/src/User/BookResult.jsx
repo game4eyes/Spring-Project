@@ -6,6 +6,8 @@ import { loadTossPayments } from '@tosspayments/payment-sdk';
 import LoginModal from '@/components/LoginModal';
 import BookResultModal from '@/components/BookResultModal';
 import { AuthContext } from '@/global/AuthContext';
+import {getUserInfo} from "@/api/todoApi.jsx";
+import {bookinFail, booking} from "@/api/booking.jsx";
 
 const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
@@ -93,7 +95,8 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     };
     let sessionStorage = window.sessionStorage;
 
-    const handlePayment = async (amount, orderId, orderName, email) => {
+    const handlePayment = async (amount, orderId, orderName,email) => {
+        console.log(orderId)
         if (!isLoggedIn) {
             setShowLoginModal(true);
             return;
@@ -126,14 +129,41 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
             } catch (error) {
                 console.error('Failed to load Toss Payments SDK:', error);
             }
+        } else {
+            const data = {
+                userEmail: email,
+                orderId: orderId
+            };
+            const orderCalcelFail = bookinFail(data);
+            if (orderCalcelFail) {
+                return ("결제 취소 성공");
+            } else {
+                return ("결제 취소 실패 관리자에게 문의 바람")
+            }
         }
     };
 
 
-    const handleBook_bus = async (e, bus, fare, email) => {
+    const handleBook_bus = async (e, bus, selectedBus,email) => {
+        const orderId = `order_${selectedBus.id}_${Date.now()}`;
         e.preventDefault();
-        console.log('handleBook_bus called with:', bus, fare); // 디버그용 로그
-        await handlePayment(fare, `order_${selectedBus.id}_${Date.now()}`, `${selectedBus.carrier} - ${bus.departure} to ${bus.destination} 버스 티켓`);
+        console.log('handleBook_bus called with:', bus, selectedBus.price); // 디버그용 로그
+        const data = {
+            userEmail: email,
+            scheduleId: selectedBus.id,
+            orderId: orderId,
+            orderDate: bus.departureDate,
+            grade:"Bus",
+            seatOrderNum:1
+        }
+        const bookingResult = booking(data)
+        if(bookingResult) {
+            console.log("결제 전 으로 데이터 삽입 완료")
+            await handlePayment(selectedBus.price, data.orderId, `${selectedBus.carrier} - ${bus.departure} to ${bus.destination} 버스 티켓`,email);
+        } else {
+            return false;
+        }
+
     };
 
     const handleBook_train = async (e, selectedTrain, fare, train) => {
@@ -165,6 +195,11 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
             // setSeatPrice(price_plane);
         }
     }, [transportationtype]);
+
+    // 유저 이메일로 사용자 정보를 가지고 오는 로직이 필요?
+    // useEffect(() => {
+    //     const userInfo = getUserInfo()
+    // }, []);
 
 
     return (
@@ -217,7 +252,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     </div>
                     <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
-                        <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_bus(e, bus, selectedBus.price, sessionStorage.email)}>결제</button>
+                        <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_bus(e, bus, selectedBus,sessionStorage.email)}>결제</button>
                         <button type="button" onClick={bookingCancel}>취소</button>
                     </div>
                     {showBookingResultModal && (
@@ -283,7 +318,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     </div>
                     <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
-                        <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_train(e, selectedTrain, seatPrice_train, train)}>결제</button>
+                    <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_train(e, selectedTrain, train, train)}>결제</button>
 
 
                         <button type="button" onClick={bookingCancel}>취소</button>

@@ -22,7 +22,7 @@ public class PaymentDto {
     @NotNull
     private String orderName;
 
-    private Order order;
+    private Order orderId;
 
     private String userEmail;
 
@@ -35,7 +35,7 @@ public class PaymentDto {
                 .amount(amount)
                 .userEmail(userEmail)
                 .orderName(orderName)
-                .order(order)
+                .order(orderId)
                 .paySuccessYN(false)
                 .build();
     }
