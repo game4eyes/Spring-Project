@@ -4,7 +4,7 @@ import { AuthContext } from '../global/AuthContext';
 import SessionTimer from './SessionTimer';
 import NavBar from './NavBar';
 
-import { useCookies } from 'react-cookie';
+// import { useCookies } from 'react-cookie';
 
 import { ReactComponent as MemberIcon } from '@/icon/member.svg';
 
@@ -12,10 +12,14 @@ const Header = () => {
   const { isLoggedIn, setIsLoggedIn, setLastActiveTime } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies(['userEmail']);
+  // const [cookies, setCookie, removeCookie] = useCookies(['userEmail']);
 
   // 사용자의 이메일 쿠키값 가져오기
-  const userEmail = cookies.userEmail || '';
+  // const userEmail = cookies.userEmail || '';
+
+  let sessionStorage = window.sessionStorage;
+  const email = sessionStorage.getItem('email');
+
 
   useEffect(() => {
     const handleHistoryChange = () => {
@@ -80,7 +84,7 @@ const Header = () => {
       {isLoggedIn && (
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
           <Link to='/api/user/mypage'><MemberIcon style={{ width: '24px', height: '24px' }} /></Link>
-          <p style={{ margin: 0, marginTop: '8px', marginBottom: '8px', marginRight: '15px' }}><Link to='/api/user/mypage'>{userEmail}</Link>님 안녕하세요!</p>
+          <p style={{ margin: 0, marginTop: '8px', marginBottom: '8px', marginRight: '15px' }}><Link to='/api/user/mypage'>{sessionStorage.email}</Link>님 안녕하세요!</p>
           <SessionTimer sessionTimeout={30 * 60 * 1000} handleLogout={handleLogout} />
         </div>
       )}
