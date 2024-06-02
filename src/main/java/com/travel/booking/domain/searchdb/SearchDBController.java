@@ -1,12 +1,19 @@
 package com.travel.booking.domain.searchdb;
 
+import com.travel.booking.domain.booking.entity.Order;
+import com.travel.booking.domain.booking.repo.OrderRepository;
+import com.travel.booking.domain.searchdb.dto.OrderInfoResultDTO;
+import com.travel.booking.domain.searchdb.entity.Schedule;
+import com.travel.booking.domain.searchdb.repo.ScheduleRepository;
+import com.travel.booking.domain.user.entity.User;
+import com.travel.booking.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,5 +52,10 @@ public class SearchDBController {
     public ResponseEntity<?> getSeatAvailability(@RequestParam("SeatScheduleId") Long scheduleId,
                                                  @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate selectDate) {
         return searchDBService.getSeatAvailability(scheduleId, selectDate);
+    }
+
+    @GetMapping("/user/order/info")
+    public ResponseEntity<?> getOrderInfo(@RequestParam("userEmail") String userEmail) {
+        return searchDBService.getUserOrderList(userEmail);
     }
 }

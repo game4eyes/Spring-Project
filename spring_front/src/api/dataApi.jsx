@@ -19,7 +19,6 @@ const trainPrefix = `${apiPrefix}/train`
 const airPrefix = `${apiPrefix}/air`
 
 
-
 // 출발지 리스트
 // http://localhost:9090/search/db/start/station/info?stationTypeId=3
 // 도착지 리스트
@@ -240,6 +239,29 @@ export const getSeatAvailability = async (scheduleId, date) => {
         params : {
             SeatScheduleId : scheduleId,
             date : date
+        }
+    })
+    return res.data;
+}
+
+/**
+ * 사용자의 주문 내역을 조회 합니다.
+ *
+ * @param {string} `userEmail` 세션에 저장 되어 있는 사용자 이메일
+ * @return{string} `startName` 출발지 이름
+ * @return {string} `endName` 도착지 이름
+ * @return {string} `departureTime` 출발 시각
+ * @return {string} `arrivalTime` 도착 예정 시각
+ * @return {string} `grade` 버스일 경우 버스의 등급, 항공 및 기차의 경우 좌석의 등급
+ * @return {string} `operatorName` 버스 일 경우 '버스'로 출력, 항공의 경우 항공사 이름, 기차의 경우 기차 종류
+ * @return {string} `railName` 버스의 경우 '출발지 -> 도착지', 항공의 경우 항공편 명, 기차의 경우 기차 번호
+ * @return {`yyyy-MM-dd`} `orderDate` 예약 날짜
+ * @returns {Map<String,Object>}
+ * */
+export const getUserOrderInfo = async (userEmail) => {
+    const res = await axios.get(`${searchPrefix}/user/order/info`, {
+        params: {
+            userEmail:userEmail
         }
     })
     return res.data;

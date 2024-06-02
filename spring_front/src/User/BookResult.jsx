@@ -7,7 +7,7 @@ import LoginModal from '@/components/LoginModal';
 import BookResultModal from '@/components/BookResultModal';
 import { AuthContext } from '@/global/AuthContext';
 import { getUserInfo } from "@/api/todoApi.jsx";
-import { bookinFail, booking } from "@/api/booking.jsx";
+import {bookinFail, booking, bookingComplete} from "@/api/booking.jsx";
 import { tossPayment } from '../api/todoApi';
 
 const BookResult = ({ transportationtype, trainprice, handleClose }) => {
@@ -135,6 +135,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     failUrl: 'http://localhost:9090/api/user/toss/fail',
                 }).then(response => {
                     console.log('Payment successful:', response);
+                    const successful = bookingComplete({email,orderId})
                     setShowBookResultModal(true);  // 결제 성공 후 결과 모달 표시
                 }).catch(error => {
                     console.error('Payment error:', error);
