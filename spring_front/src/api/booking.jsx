@@ -1,7 +1,8 @@
 // 서버 호스트 설정
 import axios from "axios";
 
-export const API_SERVER_HOST = 'http://ec2-3-34-129-44.ap-northeast-2.compute.amazonaws.com:9090'; // 서버 주소
+export const API_SERVER_HOST = 'http://localhost:9090'; // 서버 주소
+// export const API_SERVER_HOST = 'http://ec2-3-34-129-44.ap-northeast-2.compute.amazonaws.com:9090'; // 서버 주소
 
 // 예약관련 기본 주소
 const bookingPrefix = `${API_SERVER_HOST}/insert/db`;
@@ -28,7 +29,9 @@ export const bookingInfo = async (BookingInfo) => {
  *       Bus
  *   }
  *   @seatOrderNum 예약한 좌석 수
- *   @return true, false 예약 테이블에 추가시
+ *   @return true/false
+ *   false 시 이미 데이결제 진행 중인 건이 있음
+ *   true 시 성공적으로 데이터 넣음
  *
 * */
 export const booking = async (OrderDTO) => {
@@ -43,7 +46,7 @@ export const booking = async (OrderDTO) => {
  * @return true/false
  * */
 export const bookingComplete = async (data) => {
-    return await axios.post(`${bookingPrefix}/payment/complete`, data);
+    return await axios.post(`${bookingPrefix}/order/payment/complete`, data);
 }
 
 // 결제 실패 및 취소시 주소
@@ -54,5 +57,5 @@ export const bookingComplete = async (data) => {
  * @return true/false
  * */
 export const bookinFail = async (data) => {
-    return await axios.post(`${bookingPrefix}/payment/fail`, data);
+    return await axios.post(`${bookingPrefix}/order/payment/fail`, data);
 }
