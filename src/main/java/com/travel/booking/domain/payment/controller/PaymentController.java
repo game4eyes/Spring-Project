@@ -1,11 +1,14 @@
 package com.travel.booking.domain.payment.controller;
 
+import com.travel.booking.domain.booking.entity.Order;
+import com.travel.booking.domain.booking.repo.OrderRepository;
 import com.travel.booking.domain.payment.config.TossPaymentConfig;
 import com.travel.booking.domain.payment.dto.*;
 import com.travel.booking.domain.payment.Response.SingleResponse;
 import com.travel.booking.domain.payment.entity.Payment;
 import com.travel.booking.domain.payment.mapper.PaymentMapper;
 import com.travel.booking.domain.payment.service.PaymentService;
+import com.travel.booking.domain.searchdb.exception.SearchException;
 import com.travel.booking.domain.user.entity.User;
 import com.travel.booking.domain.user.service.UserService;
 import jakarta.validation.Valid;
@@ -27,11 +30,17 @@ public class PaymentController {
     private final PaymentService paymentService;
     private final TossPaymentConfig paymentConfig;
     private final UserService userService;
+    private final OrderRepository orderRepository;
 
     @PostMapping(value = "/toss", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> requestPayment(@RequestBody @Valid PaymentDto paymentReqDTO) {
         try {
+            Order order = orderRepository.findById(paymentReqDTO.getOrderId())
+                    .orElseThrow(()-> {
+                        throw new RuntimeException("Order not found");
+                    });
             Payment payment = paymentReqDTO.toEntity();
+            payment.setOrder(order);
             String userEmail = paymentReqDTO.getUserEmail();
             PaymentResDto paymentResDTO = paymentService.requestPayment(payment, userEmail).toPaymentResDto();
             paymentResDTO.setSuccessUrl(paymentReqDTO.getSuccessUrl() == null ? paymentConfig.getSuccessUrl() : paymentReqDTO.getSuccessUrl());

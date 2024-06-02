@@ -8,6 +8,7 @@ import BookResultModal from '@/components/BookResultModal';
 import { AuthContext } from '@/global/AuthContext';
 import {getUserInfo} from "@/api/todoApi.jsx";
 import {bookinFail, booking} from "@/api/booking.jsx";
+import { tossPayment } from '../api/todoApi';
 
 const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
@@ -44,7 +45,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
             // const selectedTrainSeats = JSON.parse(localStorage.getItem('selectedTrainSeats'));
             setSelectedTrain(selectedTrain);
             setTrain(train);
-        
+
 
         } else if (transportationtype === 'plane') {
             const selectedPlane = JSON.parse(localStorage.getItem('bookingData'));
@@ -62,11 +63,11 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
 
 
 
-   // 선택한 좌석 유형과 가격을 state로 설정
-   const [selectedSeatType, setSelectedSeatType] = useState('');
-   const [seatPrice, setSeatPrice] = useState('');
+    // 선택한 좌석 유형과 가격을 state로 설정
+    const [selectedSeatType, setSelectedSeatType] = useState('');
+    const [seatPrice, setSeatPrice] = useState('');
 
-   // 선택한 좌석 유형과 가격을 state에 할당
+    // 선택한 좌석 유형과 가격을 state에 할당
 //    useEffect(() => {
 //        const seatType = JSON.parse(localStorage.getItem('selectedSeatType'));
 //        const price = JSON.parse(localStorage.getItem('seatPrice'));
@@ -102,9 +103,19 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
             console.error('User email not found in sessionStorage');
             return;
         }
+        const requestPayment ={
+            amount,
+            orderId,
+            orderName,
+            userEmail: sessionStorage.getItem("email"),
+            successUrl: 'http://localhost:9090/api/user/toss/success',
+            failUrl: 'http://localhost:9090/api/user/toss/fail',
+            payType: "CASH"
+        }
 
         if (window.confirm('예약 정보를 확인하셨습니까? 결제를 진행합니다.')) {
             try {
+                const payments = tossPayment(requestPayment);
                 const tossPayments = await loadTossPayments(clientKey);
                 tossPayments.requestPayment(paymentType, {
                     amount,
@@ -288,7 +299,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                                 <p>날짜 : {train.date}</p>
                                 {/* <p>시간: {train.hour}</p> */}
                                 <p>요일 : {train.weekdayCarrier}</p>
-                            
+
                             </>
                         )}
                     </div>
@@ -304,7 +315,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     </div>
                     <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
-                    <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_train(e, selectedTrain, train, train)}>결제</button>
+                        <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_train(e, selectedTrain, train, train)}>결제</button>
 
 
                         <button type="button" onClick={bookingCancel}>취소</button>
