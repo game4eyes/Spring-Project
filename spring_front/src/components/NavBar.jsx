@@ -188,7 +188,7 @@ const NavBar = () => {
               <h1 style={{ color: 'gray', marginLeft: '25px', marginRight: '25px' }}>|</h1>
 
 
-              {sessionStorage.email && isLoggedIn ? (
+              {sessionStorage.email ? (
                 <>
 
                   <Nav.Item>

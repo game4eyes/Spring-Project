@@ -47,7 +47,7 @@ const OffCanvasButton = () => {
             <div className="offcanvas-header">
               {/* <LoginIcon className="custom-link" style={{ width: '24px', height: '24px', marginTop: '5px' }} /> */}
               <h5 className="offcanvas-title" style={{ marginTop: '10px', marginLeft: '15px' }} onClick={() =>setShowLoginModal(true)} id="offcanvasNavbarDarkLabel">
-                {isLoggedIn ?  `${sessionStorage.email}` : ('로그인이 필요합니다')}
+                {sessionStorage.email ?  `${sessionStorage.email}` : ('로그인이 필요합니다')}
               </h5>
               <button type="button" className="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
@@ -61,7 +61,7 @@ const OffCanvasButton = () => {
                   </button>
                   <div className="collapse show" id="account-collapse">
                     <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small" style={{ display: 'flex', flexDirection: 'column' }}>
-                      {isLoggedIn ? (
+                      {sessionStorage.email  ? (
                         <>
                           <li><Link to="/api/user/mypage" id="train" className="link-body-emphasis d-inline-flex text-decoration-none rounded">마이페이지</Link></li>
                           <li><Link to="#" id="plane" className="link-body-emphasis d-inline-flex text-decoration-none rounded" onClick={handleLogout}>로그아웃</Link></li>
