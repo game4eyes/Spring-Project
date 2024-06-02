@@ -18,10 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -67,7 +64,6 @@ public class SessionLoginController {
             sessionCookie.setMaxAge(-1);
             sessionCookie.setPath("/");
             response.addCookie(sessionCookie);
-
             Cookie emailCookie = new Cookie("email", user.getEmail());
             emailCookie.setMaxAge(1800);
             emailCookie.setPath("/");
@@ -101,7 +97,11 @@ public class SessionLoginController {
         return "info";
     }
 
-
+    @PostMapping("/update/password")
+    public void updatePassword(@Valid @RequestBody UpdateReq updateReq){
+        String email = updateReq.getEmail();
+        userService.updatePassword(email, updateReq.getCurrentPassword(), updateReq.getNewPassword());
+    }
 
 
 
