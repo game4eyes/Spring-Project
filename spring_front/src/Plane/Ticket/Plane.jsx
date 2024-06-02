@@ -1,311 +1,269 @@
-import React, { useState } from 'react';
-import { useCookies } from 'react-cookie';
-import DateInput from '../PlaneComponent/DateInput';
-import SelectInput from '../PlaneComponent/SelectInput';
-import Checkbox from '../PlaneComponent/Checkbox';
-import TimeInput from '../PlaneComponent/TimeInput';
-import AirportsData from '../PlaneComponent/AirportsData';
+import React, { useEffect, useRef, useState } from 'react';
+import Header from '../../components/Header';
+import Article from '../../components/Article';
+import Ad from '../../components/Ad';
+import Footer from '../../components/Footer';
+import Charge from '../../components/Charge';
+import PlaneList from '../Search/list/PlaneList';
+// import { getPlaneSchedule } from '../../api/dataApi';
 import Layout from '../../components/Layout';
-import { getAirInfo } from '../../api/dataApi';
-import FlightList from '../PlaneComponent/FlightList';
+import { ReactComponent as ExchangeIcon } from '@/icon/exchange.svg';
 import StartStationList from '../../components/StartStationList';
 import EndStationList from '../../components/EndStationList';
 
 const Plane = () => {
-    const today = new Date().toISOString().split('T')[0];
-    const [cookies] = useCookies(['userEmail']);
-    const userEmail = cookies.userEmail || '';
-    const [ticketInfo, setTicketInfo] = useState({
+    const initialTicketInfo = {
         departure: '',
         destination: '',
-        date: today,
-        // time: '06:00',
+        date: new Date().toISOString().slice(0, 10),
         departureTime: '06',
         weekdayCarrier: '',
-        dayz: '',
-        passengerCount: '1',
-        seatType: '',
-        disability: false,
-        legroom: false,
-        window: false,
-        fare: 0,
-        operator: '',
-        userEmail: userEmail,
-        startStationName: '',
-        endStationName: ''
-    });
-
-    const [flights, setFlights] = useState([]);
-    const [selectedDepartureTime, setSelectedDepartureTime] = useState(ticketInfo.departureTime);
-
-    // const getValidDepartureOptions = () => {
-    //     return AirportsData.filter(airport => Object.keys(routes).includes(airport.stationID.toString()))
-    //                        .map(airport => ({
-    //                            value: airport.stationID,
-    //                            label: airport.stationName
-    //                        }));
-    // };
-
-    const getDestinationOptions = () => {
-        return routes[ticketInfo.departure] ?
-            AirportsData.filter(airport => routes[ticketInfo.departure].includes(airport.stationID.toString()))
-                .map(airport => ({
-                    value: airport.stationID,
-                    label: airport.stationName
-                }))
-            : [];
+        selectedPlane: null,
+        isDepartureModalOpen: false,
+        startStationId: '',
+        endStationId: '',
     };
 
-    const routes = {
-        "3500001": ["3500003", "3500004", "3500013", "3500012", "3500008"],
-        "3500004": ["3500003"],
-        "3500003": ["3500005", "3500006", "3500008"],
-        "3500002": ["3500004"],
-    };
+    const [plane, setPlane] = useState(initialTicketInfo);
+    const [result, setResult] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10));
+    const inputRef = useRef(null);
+    const [popupWindow, setPopupWindow] = useState(null);
 
-    const handleStartStationIdChange = (Id, name) => {
-        setTicketInfo(prevState => ({
-            ...prevState,
-            departure: Id,
-            startStationName: name,
-            destination: '',
+    // useEffect(() => {
+    //     if (plane.startStationId && plane.endStationId && plane.departureTime && plane.weekdayCarrier) {
+    //         getPlaneInfo(plane.startStationId, plane.endStationId, plane.departureTime, plane.weekdayCarrier)
+    //             .then(data => {
+    //                 setResult(data);
+    //             });
+    //     }
+    // }, [plane.startStationId, plane.endStationId, plane.departureTime, plane.weekdayCarrier]);
+
+    useEffect(() => {
+        // const departure_ID = document.getElementById("departure_stationID").value;
+        // const destination_ID = document.getElementById("destination_stationID").value;
+        const days = ['일', '월', '화', '수', '목', '금', '토'];
+        const today = new Date();
+        const todayweekdayCarrier = days[today.getDay()];
+
+        setPlane(prevPlane => ({
+            ...prevPlane,
+            // startStationId: departure_ID,
+            // endStationId: destination_ID,
+            weekdayCarrier: todayweekdayCarrier
         }));
-    };
-
-    const handleEndStationIdChange = (Id, name) => {
-        setTicketInfo(prevState => ({
-            ...prevState,
-            destination: Id,
-            endStationName: name,
-        }));
-    };
-
+    }, []);
 
     const handleHourChange = (e) => {
-        setTicketInfo(prevTicketInfo => ({
-            ...prevTicketInfo,
+        setPlane(prevPlane => ({
+            ...prevPlane,
             departureTime: e.target.value
         }));
     };
 
+    const handleweekdayCarrierChange = (e) => {
+        setPlane(prevPlane => ({
+            ...prevPlane,
+            weekdayCarrier: e.target.value
+        }));
+    };
 
+    const handleDateChange = (e) => {
+        const selectedDate = e.target.value;
+        const currentDate = new Date().toISOString().slice(0, 10);
+
+        if (selectedDate < currentDate) {
+            alert("지난 날짜를 선택할 수 없습니다.");
+            return;
+        }
+
+        const days = ['일', '월', '화', '수', '목', '금', '토'];
+        const selectedweekdayCarrier = days[new Date(selectedDate).getDay()];
+
+        setPlane(prevState => ({
+            ...prevState,
+            weekdayCarrier: selectedweekdayCarrier,
+            date: selectedDate
+        }));
+    };
+
+    const handleStartStationIdChange = (Id, name) => {
+        setPlane(prevState => ({
+            ...prevState,
+            startStationId: Id,
+            departure: name, // Update departure stationName
+            endStationId: '', // Reset end station when start station changes
+            endStations: [], // Reset end stations list
+        }));
+    };
+
+    const handleEndStationIdChange = (Id, name) => {
+        setPlane(prevState => ({
+            ...prevState,
+            endStationId: Id,
+            destination: name, // Update destination stationName
+        }));
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const days = ['일', '월', '화', '수', '목', '금', '토'];
-        const dayOfWeek = days[new Date(ticketInfo.date).getDay()];
-        const formattedHour = selectedDepartureTime.split(':')[0];
-
-        if (!ticketInfo.departure) {
-            alert('출발지를 선택해주세요.');
-            return;
-        }
-
-        if (!ticketInfo.destination) {
-            alert('도착지를 선택해주세요.');
-            return;
-        }
-
-        if (!ticketInfo.seatType) {
-            alert('좌석 유형을 선택해주세요.');
-            return;
-        }
-
-        // getAirInfo(ticketInfo.departure, ticketInfo.destination, formattedHour, dayOfWeek)
-        //     .then(data => {
-        //         console.log("API Data Received:", data);
-        //         setFlights(data);
-        //     })
-        //     .catch(err => {
-        //         console.error('Failed to fetch flights:', err);
-        //         setFlights([]);
-        //     });
-
-        // setTicketInfo(prev => ({ ...prev, dayz: dayOfWeek }));
-
-         getAirInfo(ticketInfo.departure, ticketInfo.destination, ticketInfo.weekdayCarrier,ticketInfo.departureTime)
-            .then(data => {
-                console.log("API Data Received:", data);
-                setFlights(data);
-            })
-            .catch(err => {
-                console.error('Failed to fetch flights:', err);
-                setFlights([]);
-            });
-
-        setTicketInfo(prev => ({ ...prev, dayz: dayOfWeek }));
+        // console.log(plane);
+        setPlane(prevState => ({
+            ...prevState,
+            isDepartureModalOpen: true
+        }));
     };
 
-    const onSelectFareAndBook = (flight, fare, departureTime) => {
-        setTicketInfo(prev => {
-            const updatedTicketInfo = { ...prev, fare, operator: flight.airline, departureTime: flight.departureTime, arrivalTime: flight.arrivalTime };
+    const changeDepartureDestination = () => {
+        let tmp = document.getElementById("departure").value;
+        document.getElementById("departure").value = document.getElementById("destination").value;
+        document.getElementById("destination").value = tmp;
 
-            const bookingData = {
-                email: userEmail,
-                startStationId: parseInt(updatedTicketInfo.departure),
-                endStationId: parseInt(updatedTicketInfo.destination),
-                startStationName: AirportsData.find(airport => airport.stationID === parseInt(updatedTicketInfo.departure)).stationName,
-                endStationName: AirportsData.find(airport => airport.stationID === parseInt(updatedTicketInfo.destination)).stationName,
-                stationClass: null,
-                operator: updatedTicketInfo.operator,
-                grade: updatedTicketInfo.seatType,
-                seatNum: parseInt(updatedTicketInfo.passengerCount),
-                busSeatNum: null,
-                date: updatedTicketInfo.date,
-                departureTime: updatedTicketInfo.departureTime,
-                arrivalTime: updatedTicketInfo.arrivalTime,
-                amount: updatedTicketInfo.fare
-            };
-
-            console.log('보내야 하는 데이터임!!!!! : ', bookingData);
-
-            localStorage.setItem('bookingData', JSON.stringify(bookingData));
-            localStorage.setItem('flight', JSON.stringify(flight));
-            localStorage.setItem('flight_departureName', JSON.stringify(bookingData.startStationName));
-            localStorage.setItem('flight_destinationName', JSON.stringify(bookingData.endStationName));
-
-            return updatedTicketInfo;
-        });
+        tmp = document.getElementById("departure_stationID").value;
+        document.getElementById("departure_stationID").value = document.getElementById("destination_stationID").value;
+        document.getElementById("destination_stationID").value = tmp;
     };
 
-    console.log('이게 티켓정보임 : ', ticketInfo);
+    const setPlaneAndUpdate = (stationName, inputId) => {
+        setPlane(prevState => ({
+            ...prevState,
+            [inputId]: stationName
+        }));
+        document.getElementById(inputId).value = stationName;
+    };
 
-    const [popupWindow, setPopupWindow] = useState(null);
+    // const setStationCodeAndUpdate = () => {
+    //     const departure_stationID = document.getElementById("departure_stationID").value;
+    //     const destination_stationID = document.getElementById("destination_stationID").value;
+
+    //     setPlane(prevState => ({
+    //         ...prevState,
+    //         startStationId: departure_stationID,
+    //         endStationId: destination_stationID
+    //     }));
+    // };
+
+    // useEffect(() => {
+    //     setStationCodeAndUpdate();
+    // }, [plane.departure, plane.destination]);
+
+    // useEffect(() => {
+    //     setStationCodeAndUpdate();
+    // }, [plane.isDepartureModalOpen]);
 
     const handleChargeClick = () => {
         const newPopup = window.open('http://localhost:5173/pay/chargeinfo/plane', '_blank', 'width=600,height=400');
         setPopupWindow(newPopup);
     };
 
-    const handleweekdayCarrierChange = (e) => {
-        setTicketInfo(prevTicketInfo => ({
-            ...prevTicketInfo,
-            weekdayCarrier: e.target.value
-        }));
-    };
+    // const handlePayment = async (amount, orderId, orderName) => {
+    //     const userEmail = sessionStorage.getItem('userEmail'); // Retrieve userEmail from sessionStorage
 
-    const departureName = AirportsData.find(airport => airport.stationID === parseInt(ticketInfo.departure))?.stationName || '';
-    const destinationName = AirportsData.find(airport => airport.stationID === parseInt(ticketInfo.destination))?.stationName || '';
+    //     if (!userEmail) {
+    //         console.error('User email not found in sessionStorage');
+    //         return;
+    //     }
+
+    //     try {
+    //         // Redirect to Toss Payments sandbox environment with userEmail included in the URL
+    //         const tossPaymentsUrl = `https://payment-gateway-sandbox.tosspayments.com?userEmail=${encodeURIComponent(userEmail)}&amount=${amount}&orderId=${orderId}&orderName=${orderName}`;
+    //         window.location.href = tossPaymentsUrl;
+    //     } catch (error) {
+    //         console.error('Failed to redirect to Toss Payments:', error);
+    //     }
+    // };
 
     return (
         <Layout title="공항 승차권 예매" body="정보 입력">
-            <div className="plane_book">
+            <div className="plane_book" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <form onSubmit={handleSubmit}>
-                    <h2 style={{ textAlign: 'left', marginBottom: '50px' }}>공항 예약</h2>
-                    <StartStationList
-                        stationTypeId={'2'}
-                        onStationSelect={handleStartStationIdChange}
-                    // options={getValidDepartureOptions()}
-                    />
-                    <EndStationList
-                        startStationId={ticketInfo.departure}
-                        onStationSelect={handleEndStationIdChange}
-                        // options={getDestinationOptions()} 
-                        disabled={!ticketInfo.departure}
-                    />
-                    <DateInput
-                        label="출발일"
-                        value={ticketInfo.date}
-                        onChange={e => setTicketInfo({ ...ticketInfo, date: e.target.value })}
-                    /><br />
-                    {/* <TimeInput 
-                        label="출발 시간" 
-                        value={selectedDepartureTime} 
-                        onChange={e => setSelectedDepartureTime(e.target.value)} 
-                    /><br/> */}
+                    <h2 style={{ marginBottom: '50px' }}>항공 예약</h2>
+                    <div className="col1">
+                        <div>
+                            <StartStationList stationTypeId={'2'} onStationSelect={handleStartStationIdChange} />
+                        </div>
+                        <div>
+                            <EndStationList startStationId={plane.startStationId} onStationSelect={handleEndStationIdChange} />
+                        </div>
+                        {/* <div className="column1_2" style={{ display: 'flex' }}>
+                            <div className="column1" style={{ width: '600px' }}>
+                                <br />
+                            </div>
+                            <div className='button-container column2'>
+                                <button type="button" className="exchange-button" style={{ backgroundColor: 'orange', marginTop: '50px', marginLeft: '-150px', height: "100px", width: '100px' }} onClick={changeDepartureDestination}><ExchangeIcon /></button>
+                            </div>
+                        </div> */}
+                        <div style={{ display: 'flex' }}>
+                            <label style={{ marginRight: '30px' }}>
+                                출발일<br></br>
+                                <input type="date" value={plane.date} onChange={handleDateChange} min={new Date().toISOString().slice(0, 10)} />
+                            </label>
+                            <label>
+                                요일 <br></br>
+                                <select value={plane.weekdayCarrier} onChange={handleweekdayCarrierChange} disabled>
+                                    <option value="">시간을 선택하세요</option>
+                                    <option value="일">일</option>
+                                    <option value="월">월</option>
+                                    <option value="화">화</option>
+                                    <option value="수">수</option>
+                                    <option value="목">목</option>
+                                    <option value="금">금</option>
+                                    <option value="토">토</option>
+                                </select>
+                            </label>
+                        </div>
+                        <br />
+                        <div>
+                            <label>
+                                시간
+                                <select style={{ width: '50%', marginLeft: '10px' }} value={plane.departureTime} onChange={handleHourChange}>
+                                    <option value="">시간을 선택하세요</option>
+                                    <option value="00">00:00</option>
+                                    <option value="01">01:00</option>
+                                    <option value="02">02:00</option>
+                                    <option value="03">03:00</option>
+                                    <option value="04">04:00</option>
+                                    <option value="05">05:00</option>
+                                    <option value="06">06:00</option>
+                                    <option value="07">07:00</option>
+                                    <option value="08">08:00</option>
+                                    <option value="09">09:00</option>
+                                    <option value="10">10:00</option>
+                                    <option value="11">11:00</option>
+                                    <option value="12">12:00</option>
+                                    <option value="13">13:00</option>
+                                    <option value="14">14:00</option>
+                                    <option value="15">15:00</option>
+                                    <option value="16">16:00</option>
+                                    <option value="17">17:00</option>
+                                    <option value="18">18:00</option>
+                                    <option value="19">19:00</option>
+                                    <option value="20">20:00</option>
+                                    <option value="21">21:00</option>
+                                    <option value="22">22:00</option>
+                                    <option value="23">23:00</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', marginTop: '85px', marginRight: '10px', marginBottom: '35px' }}>
+                            <button type="submit" style={{ marginTop: '0px', marginRight: '40px' }}>조회하기</button>
+                            <button type="button" style={{ backgroundColor: 'green' }} className='fee-check-button' onClick={handleChargeClick}>수수료확인</button>
+                        </div>
+                    </div>
+                    <br />
                     <div>
-                    <label>
-                        요일 <br></br>
-                        <select value={ticketInfo.weekdayCarrier} onChange={handleweekdayCarrierChange}>
-                            <option value="">시간을 선택하세요</option>
-                            <option value="일">일</option>
-                            <option value="월">월</option>
-                            <option value="화">화</option>
-                            <option value="수">수</option>
-                            <option value="목">목</option>
-                            <option value="금">금</option>
-                            <option value="토">토</option>
-                        </select>
-                    </label>
+                        {plane.isDepartureModalOpen &&
+                            <PlaneList
+                                startStationId={plane.startStationId}
+                                endStationId={plane.endStationId}
+                                weekdayCarrier={plane.weekdayCarrier}
+                                departureTime={plane.departureTime}
+                                // weekdayCarrier={plane.weekdayCarrier}
+                                // departureTime={plane.departureTime}
+                                plane={plane}
+                            />
+                        }
                     </div>
-                    <div>
-                        <label>
-                            시간
-                            <select style={{ width: '50%', marginLeft: '10px' }} value={ticketInfo.departureTime} onChange={handleHourChange}>
-                                <option value="">시간을 선택하세요</option>
-                                <option value="00">00:00</option>
-                                <option value="01">01:00</option>
-                                <option value="02">02:00</option>
-                                <option value="03">03:00</option>
-                                <option value="04">04:00</option>
-                                <option value="05">05:00</option>
-                                <option value="06">06:00</option>
-                                <option value="07">07:00</option>
-                                <option value="08">08:00</option>
-                                <option value="09">09:00</option>
-                                <option value="10">10:00</option>
-                                <option value="11">11:00</option>
-                                <option value="12">12:00</option>
-                                <option value="13">13:00</option>
-                                <option value="14">14:00</option>
-                                <option value="15">15:00</option>
-                                <option value="16">16:00</option>
-                                <option value="17">17:00</option>
-                                <option value="18">18:00</option>
-                                <option value="19">19:00</option>
-                                <option value="20">20:00</option>
-                                <option value="21">21:00</option>
-                                <option value="22">22:00</option>
-                                <option value="23">23:00</option>
-                            </select>
-                        </label>
-                    </div>
-
-                    <SelectInput
-                        label="인원"
-                        value={ticketInfo.passengerCount}
-                        onChange={e => setTicketInfo({ ...ticketInfo, passengerCount: e.target.value })}
-                        options={Array.from({ length: 10 }, (_, i) => ({ value: i + 1, label: `${i + 1}명` }))}
-                    /><br />
-                    <SelectInput
-                        label="좌석 유형"
-                        value={ticketInfo.seatType}
-                        onChange={e => setTicketInfo({ ...ticketInfo, seatType: e.target.value })}
-                        options={[{ value: 'economy', label: '이코노미' }, { value: 'business', label: '비즈니스' }, { value: 'first', label: '퍼스트' }]}
-                        required
-                    />
-                    <Checkbox
-                        checked={ticketInfo.disability}
-                        onChange={() => setTicketInfo({ ...ticketInfo, disability: !ticketInfo.disability })}
-                        label="장애가 있습니다"
-                    />
-                    <Checkbox
-                        checked={ticketInfo.legroom}
-                        onChange={() => setTicketInfo({ ...ticketInfo, legroom: !ticketInfo.legroom })}
-                        label="Legroom"
-                    />
-                    <Checkbox
-                        checked={ticketInfo.window}
-                        onChange={() => setTicketInfo({ ...ticketInfo, window: !ticketInfo.window })}
-                        label="Window Seat"
-                    />
-                    <div style={{ display: 'flex', alignItems: 'center', marginTop: '40px', marginRight: '10px', marginBottom: '35px' }}>
-                        <button type="submit">조회하기</button>
-                        <button type="button" style={{ backgroundColor: 'green' }} onClick={handleChargeClick} className="fee-check-button">수수료확인</button>
-                    </div>
-                    <FlightList
-                        flights={flights}
-                        onSelectFareAndBook={onSelectFareAndBook}
-                        startStationName={ticketInfo.startStationName}
-                        endStationName={ticketInfo.endStationName}
-                        departure={ticketInfo.departure}
-                        destination={ticketInfo.destination}
-                         departureName={ticketInfo.departureName} 
-                        // destinationName={destinationName} 
-                        // selectedDepartureTime={selectedDepartureTime}
-                        weekdayCarrier ={ticketInfo.weekdayCarrier}
-
-                    />
                 </form>
             </div>
         </Layout>
@@ -313,3 +271,4 @@ const Plane = () => {
 };
 
 export default Plane;
+ 

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { getTrainSchedule, getTrainPrice } from '../../../api/dataApi';
+import { getPlaneSchedule, getPlanePrice } from '../../../api/dataApi';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Pagination from '../../../common/page/Pagination';
 import '@/css/List.css';
@@ -7,20 +7,22 @@ import { AuthContext } from '../../../global/AuthContext';
 import '@/css/Popup.css';
 import LoginModal from '@/components/LoginModal';
 import BookResultModal from '@/components/BookResultModal';
+import PlaneListSeat from './PlaneListSeat';
+// import PlaneListSeat from "@/Plane/Search/list/PlaneListSeat.jsx";
 
-const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier, train }) => {
-    const [trainInfo, setTrainInfo] = useState([]);
-    const [trainPrices, setTrainPrices] = useState({}); // State to store train prices      //좌석에 대한 티켓 가격
+const PlaneList = ({ startStationId, endStationId, departureTime, weekdayCarrier, plane, date }) => {
+    const [planeInfo, setPlaneInfo] = useState([]);
+    // const [planePrices, setPlanePrices] = useState({}); // State to store plane prices      //좌석에 대한 티켓 가격
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5);
     const [loading, setLoading] = useState(true);
     const [timeoutReached, setTimeoutReached] = useState(false);
     const { isLoggedIn } = useContext(AuthContext);
     const [showUserGuestPopup, setShowUserGuestPopup] = useState(false);
-    const [selectedTrain, setSelectedTrain] = useState(null);
+    const [selectedPlane, setSelectedPlane] = useState(null);
     const [showBookResultModal, setShowBookResultModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
-    const [selectedTrainSeats, setSelectedSeats] = useState({});
+    const [selectedPlaneSeats, setSelectedSeats] = useState({});
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -32,14 +34,32 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
         }
     };
 
+    const [planePrices, setPlanePrices] = useState([
+        {
+            seatType: 'business',
+            price: 60000
+        },
+        {
+            seatType: 'economy',
+            price: 70000
+        },
+        {
+            seatType: 'first',
+            price: 80000
+        },
+    ]);
+    
+
+
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await getTrainSchedule(startStationId, endStationId, weekdayCarrier, departureTime);
-                setTrainInfo(res && res.result ? res.result : []);
+                const res = await getPlaneSchedule(startStationId, endStationId, weekdayCarrier, departureTime);
+                setPlaneInfo(res && res.result ? res.result : []);
                 setLoading(false);
             } catch (error) {
-                console.error('Error fetching train info:', error);
+                console.error('Error fetching plane info:', error);
                 setLoading(false);
             }
         };
@@ -57,17 +77,17 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
 
 
     useEffect(() => {
-        const fetchTrainPrices = async () => {
+        const fetchPlanePrices = async () => {
             const prices = {};
-            for (const selectedTrain of trainInfo) {
-                const priceData = await getTrainPrice(selectedTrain.id);
-                prices[selectedTrain.id] = priceData;
+            for (const selectedPlane of planeInfo) {
+                const priceData = await getPlanePrice(selectedPlane.id);
+                prices[selectedPlane.id] = priceData;
             }
-            setTrainPrices(prices);
+            setPlanePrices(prices);
         };
 
-        fetchTrainPrices();
-    }, [trainInfo]);
+        fetchPlanePrices();
+    }, [planeInfo]);
 
 
 
@@ -81,17 +101,17 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
         return null;
     };
 
-    const handleItemClick = (transportation, selectedTrainItem, train, seatType, price) => {
-        setSelectedTrain(selectedTrainItem);
-        localStorage.setItem('selectedTrain', JSON.stringify(selectedTrainItem));
-        localStorage.setItem('train', JSON.stringify(train));
-        localStorage.setItem('selectedSeatType', JSON.stringify(seatType)); // 선택한 좌석 유형 저장
-        localStorage.setItem('seatPrice', JSON.stringify(price)); // 선택한 좌석 가격 저장
+    const handleItemClick = (transportation, selectedPlaneItem, plane, seatType, price) => {
+        setSelectedPlane(selectedPlaneItem);
+        localStorage.setItem('selectedPlane', JSON.stringify(selectedPlaneItem));
+        localStorage.setItem('plane', JSON.stringify(plane));
+        localStorage.setItem('selectedSeatType_plane', JSON.stringify(seatType)); // 선택한 좌석 유형 저장
+        localStorage.setItem('seatPrice_plane', JSON.stringify(price)); // 선택한 좌석 가격 저장
         if (isLoggedIn) {
             setShowBookResultModal(true);
             console.log(seatType);
-            console.log(selectedTrain);
-            console.log(train);
+            console.log(selectedPlane);
+            console.log(plane);
             console.log(price);
         } else {
             setShowUserGuestPopup(true);
@@ -114,7 +134,7 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
     };
 
     const handleCheckboxChange = (scheduleId, seatType) => {
-        const selectedPrice = trainPrices[scheduleId]?.[seatType] || 'N/A';
+        const selectedPrice = planePrices[scheduleId]?.[seatType] || 'N/A';
         setSelectedSeats(prevState => ({
             ...prevState,
             [scheduleId]: { seatType, price: selectedPrice }
@@ -140,97 +160,104 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
         return <p>데이터를 불러오는 중입니다...</p>;
     }
 
-    if (timeoutReached && trainInfo.length === 0) {
+    if (timeoutReached && planeInfo.length === 0) {
         return <p>조회값이 없습니다</p>;
     }
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = trainInfo.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = planeInfo.slice(indexOfFirstItem, indexOfLastItem);
 
     const paginate = pageNumber => setCurrentPage(pageNumber);
 
     return (
         <div className="table-container">
-            {trainInfo.length > 0 ? (
-                <>
-                    <div>
-                        <div style={{ marginTop: '600px' }}>
-                            <h2>출발지: {train.departure}</h2>
-                            <h2>도착지: {train.destination}</h2>
-                        </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>열차 ID</th>
-                                    <th>열차 번호</th>
-                                    <th>열차 이름</th>
-                                    <th>출발 시간</th>
-                                    <th>도착 시간</th>
-                                    <th>요금</th>
-                                    <th>좌석 선택</th>
-                                    <th>예매</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {currentItems.map((selectedTrain, index) => (
-                                    <tr key={index}>
-                                        <td>{selectedTrain.id}</td>
-                                        <td>{selectedTrain.frequency}</td>
-                                        <td>{selectedTrain.lineName}</td>
-                                        <td>{selectedTrain.departureTime}</td>
-                                        <td>{selectedTrain.arrivalTime}</td>
-                                        {/* <td>{selectedTrain.price}</td> */}
-                                        <td>
-                                            <label>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={selectedTrainSeats[selectedTrain.id]?.seatType === 'general'}
-                                                    onChange={() => handleCheckboxChange(selectedTrain.id, 'general')}
-                                                />
-                                                일반석 ({trainPrices[selectedTrain.id]?.general || 'N/A'})
-                                            </label>
-                                            <label>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={selectedTrainSeats[selectedTrain.id]?.seatType === 'special'}
-                                                    onChange={() => handleCheckboxChange(selectedTrain.id, 'special')}
-                                                />
-                                                특석 ({trainPrices[selectedTrain.id]?.special || 'N/A'})
-                                            </label>
-                                        </td>
-                                        <td><button className="button" onClick={payment}>좌석선택</button></td>
-                                        <button
-                                            className="button"
-                                            style = {{marginTop:'25px'}}
-                                            onClick={() => {
-                                                const seatType = selectedTrainSeats[selectedTrain.id]?.seatType;
-                                                const price = trainPrices[selectedTrain.id]?.special;
-                                                if (seatType === 'special') {
-                                                    handleItemClick(searchURLObject(location.pathname), selectedTrain, train, seatType, price);
-                                                } else {
-                                                    handleItemClick(searchURLObject(location.pathname), selectedTrain, train, 'general', trainPrices[selectedTrain.id]?.general);
-                                                }
-                                            }}
-                                        >
-                                            결제
-                                        </button>
+       {planeInfo.length > 0 ? (
+    <>
+        <div>
+            <div style={{ marginTop: '600px' }}>
+                <h2>출발지: {plane.departure}</h2>
+                <h2>도착지: {plane.destination}</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>열차 ID</th>
+                        <th>열차 번호</th>
+                        <th>열차 이름</th>
+                        <th>출발 시간</th>
+                        <th>도착 시간</th>
+                        <th>요금</th>
+                        <th>좌석 선택</th>
+                        <th>예매</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {currentItems.map((selectedPlane, index) => (
+                        <tr key={index}>
+                            <td>{selectedPlane.id}</td>
+                            <td>{selectedPlane.frequency}</td>
+                            <td>{selectedPlane.lineName}</td>
+                            <td>{selectedPlane.departureTime}</td>
+                            <td>{selectedPlane.arrivalTime}</td>
+                            {/* <td>{selectedPlane.price}</td> */}
+                            <td>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedPlaneSeats[selectedPlane.id]?.seatType === 'business'}
+                                        onChange={() => handleCheckboxChange(selectedPlane.id, 'business')}
+                                    />
+                                    비지니스 ({planePrices['business'] ? planePrices['business'].price : 'N/A'})
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedPlaneSeats[selectedPlane.id]?.seatType === 'economy'}
+                                        onChange={() => handleCheckboxChange(selectedPlane.id, 'economy')}
+                                    />
+                                    이코노미 ({planePrices['economy'] ? planePrices['economy'].price : 'N/A'})
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedPlaneSeats[selectedPlane.id]?.seatType === 'first'}
+                                        onChange={() => handleCheckboxChange(selectedPlane.id, 'first')}
+                                    />
+                                    퍼스트 ({planePrices['first'] ? Math.round(planePrices['first'].price * 0.9) : 'N/A'})
+                                </label>
+                            </td>
+                            <td><PlaneListSeat Id={selectedPlane.id} Date={date} /></td>
+                            <button
+                                className="button"
+                                style={{ marginTop: '25px' }}
+                                onClick={() => {
+                                    const seatType = selectedPlaneSeats[selectedPlane.id]?.seatType;
+                                    const price = seatType === 'freeseat'
+                                        ? Math.round(planePrices[selectedPlane.id]?.general * 0.9)
+                                        : planePrices[selectedPlane.id]?.[seatType];
+                                    handleItemClick(searchURLObject(location.pathname), selectedPlane, plane, seatType, price);
+                                }}
+                            >
+                                결제
+                            </button>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <Pagination itemsPerPage={itemsPerPage} totalItems={planeInfo.length} paginate={paginate} />
+        </div>
+    </>
+) : (
+    <p>조회값이 없습니다</p>
+)}
 
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        <Pagination itemsPerPage={itemsPerPage} totalItems={trainInfo.length} paginate={paginate} />
-                    </div>
-                </>
-            ) : (
-                <p>조회값이 없습니다</p>
-            )}
+
             {showUserGuestPopup && <UserGuestPopup onClose={handleCloseUserGuestPopup} onOptionSelect={handleOptionSelect} />}
             {showLoginModal && <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} />}
-            {showBookResultModal && isLoggedIn && <BookResultModal transportationtype={'train'} selectedTrainSeats={selectedTrainSeats} selectedTrain={selectedTrain} train={train} handleClose={() => setShowBookResultModal(false)} />}
+            {showBookResultModal && isLoggedIn && <BookResultModal transportationtype={'plane'} selectedPlaneSeats={selectedPlaneSeats} selectedPlane={selectedPlane} plane={plane} handleClose={() => setShowBookResultModal(false)} />}
         </div>
     );
 };
 
-export default TrainList;
+export default PlaneList;

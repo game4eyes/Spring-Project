@@ -30,14 +30,14 @@ const Train = () => {
     const inputRef = useRef(null);
     const [popupWindow, setPopupWindow] = useState(null);
 
-    useEffect(() => {
-        if (train.startStationId && train.endStationId && train.departureTime && train.weekdayCarrier) {
-            getTrainInfo(train.startStationId, train.endStationId, train.departureTime, train.weekdayCarrier)
-                .then(data => {
-                    setResult(data);
-                });
-        }
-    }, [train.startStationId, train.endStationId, train.departureTime, train.weekdayCarrier]);
+    // useEffect(() => {
+    //     if (train.startStationId && train.endStationId && train.departureTime && train.weekdayCarrier) {
+    //         getTrainInfo(train.startStationId, train.endStationId, train.departureTime, train.weekdayCarrier)
+    //             .then(data => {
+    //                 setResult(data);
+    //             });
+    //     }
+    // }, [train.startStationId, train.endStationId, train.departureTime, train.weekdayCarrier]);
 
     useEffect(() => {
         // const departure_ID = document.getElementById("departure_stationID").value;
@@ -258,7 +258,6 @@ const Train = () => {
                                 endStationId={train.endStationId}
                                 weekdayCarrier={train.weekdayCarrier}
                                 departureTime={train.departureTime}
-                                date={train.date}
                                 // weekdayCarrier={train.weekdayCarrier}
                                 // departureTime={train.departureTime}
                                 train={train}
@@ -272,3 +271,4 @@ const Train = () => {
 };
 
 export default Train;
+ 

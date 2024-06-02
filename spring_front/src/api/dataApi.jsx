@@ -206,7 +206,7 @@ export const getTrainPrice = async (TrainScheduleId) => {
 
 //공항 스케줄 리스트 (출발지,도착지,출발시간,등급)
 //http://ec2-3-34-129-44.ap-northeast-2.compute.amazonaws.com:9090/search/db/schedule/info?startStationId=7&endStationId=3&weekdayCarrier=%EC%9B%94&departureTime=06
-export const getAirInfo = async (startStationId, endStationId, weekdayCarrier, departureTime) => {
+export const getPlaneSchedule = async (startStationId, endStationId, weekdayCarrier, departureTime) => {
     const res = await axios.get(`${searchPrefix}/schedule/info`, {
         params: {
             startStationId: startStationId,
@@ -217,6 +217,22 @@ export const getAirInfo = async (startStationId, endStationId, weekdayCarrier, d
     });
     return res.data;
 }
+
+
+//공항 가격 리스트 (열차 아이디를 받아서 계산하는 방식)
+//http://localhost:9090/search/db/train/price?TrainScheduleId=4678
+
+export const getPlanePrice = async (PlaneScheduleId) => {
+    const res = await axios.get(`${searchPrefix}/train/price`, {
+        params: {
+            PlaneScheduleId:PlaneScheduleId
+        }
+    });
+    return res.data;
+}
+
+
+
 
 // 남은 좌석 정보 (스케줄불러올떄)
 export const getSeatAvailability = async (scheduleId, date) => {

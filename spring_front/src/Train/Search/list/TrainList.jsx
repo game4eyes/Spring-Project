@@ -9,9 +9,9 @@ import LoginModal from '@/components/LoginModal';
 import BookResultModal from '@/components/BookResultModal';
 import TrainListSeat from "@/Train/Search/list/TrainListSeat.jsx";
 
-const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier, train,date }) => {
+const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier, train, date }) => {
     const [trainInfo, setTrainInfo] = useState([]);
-    const [trainPrices, setTrainPrices] = useState({}); // State to store train prices      //좌석에 대한 티켓 가격
+    const [trainPrices, setTrainPrices] = useState({}); // State to store train prices
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5);
     const [loading, setLoading] = useState(true);
@@ -55,8 +55,6 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
         return () => clearTimeout(timeout);
     }, [startStationId, endStationId, departureTime, weekdayCarrier]);
 
-
-
     useEffect(() => {
         const fetchTrainPrices = async () => {
             const prices = {};
@@ -70,11 +68,6 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
         fetchTrainPrices();
     }, [trainInfo]);
 
-
-
-
-
-
     const searchURLObject = (pathname) => {
         if (pathname.includes('bus')) return 'bus';
         if (pathname.includes('train')) return 'train';
@@ -86,8 +79,8 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
         setSelectedTrain(selectedTrainItem);
         localStorage.setItem('selectedTrain', JSON.stringify(selectedTrainItem));
         localStorage.setItem('train', JSON.stringify(train));
-        localStorage.setItem('selectedSeatType', JSON.stringify(seatType)); // 선택한 좌석 유형 저장
-        localStorage.setItem('seatPrice', JSON.stringify(price)); // 선택한 좌석 가격 저장
+        localStorage.setItem('selectedSeatType_train', JSON.stringify(seatType)); // 선택한 좌석 유형 저장
+        localStorage.setItem('seatPrice_train', JSON.stringify(price)); // 선택한 좌석 가격 저장
         if (isLoggedIn) {
             setShowBookResultModal(true);
             console.log(seatType);
@@ -98,8 +91,6 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
             setShowUserGuestPopup(true);
         }
     };
-
-
 
     const handleCloseUserGuestPopup = () => {
         setShowUserGuestPopup(false);
@@ -115,7 +106,9 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
     };
 
     const handleCheckboxChange = (scheduleId, seatType) => {
-        const selectedPrice = trainPrices[scheduleId]?.[seatType] || 'N/A';
+        const selectedPrice = seatType === 'freeseat' 
+            ? Math.round(trainPrices[scheduleId]?.general * 0.9) || 'N/A'
+            : trainPrices[scheduleId]?.[seatType] || 'N/A';
         setSelectedSeats(prevState => ({
             ...prevState,
             [scheduleId]: { seatType, price: selectedPrice }
@@ -199,24 +192,31 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
                                                 />
                                                 특석 ({trainPrices[selectedTrain.id]?.special || 'N/A'})
                                             </label>
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedTrainSeats[selectedTrain.id]?.seatType === 'freeseat'}
+                                                    onChange={() => handleCheckboxChange(selectedTrain.id, 'freeseat')}
+                                                />
+                                                입석 (자유석) ({trainPrices[selectedTrain.id]?.general ? Math.round(trainPrices[selectedTrain.id]?.general * 0.9) : 'N/A'})
+                                            </label>
                                         </td>
                                         <td><TrainListSeat Id={selectedTrain.id} Date={date}/></td>
-                                        <button
-                                            className="button"
-                                            style = {{marginTop:'25px'}}
-                                            onClick={() => {
-                                                const seatType = selectedTrainSeats[selectedTrain.id]?.seatType;
-                                                const price = trainPrices[selectedTrain.id]?.special;
-                                                if (seatType === 'special') {
+                                        <td>
+                                            <button
+                                                className="button"
+                                                style={{ marginTop: '25px' }}
+                                                onClick={() => {
+                                                    const seatType = selectedTrainSeats[selectedTrain.id]?.seatType;
+                                                    const price = seatType === 'freeseat'
+                                                        ? Math.round(trainPrices[selectedTrain.id]?.general * 0.9)
+                                                        : trainPrices[selectedTrain.id]?.[seatType];
                                                     handleItemClick(searchURLObject(location.pathname), selectedTrain, train, seatType, price);
-                                                } else {
-                                                    handleItemClick(searchURLObject(location.pathname), selectedTrain, train, 'general', trainPrices[selectedTrain.id]?.general);
-                                                }
-                                            }}
-                                        >
-                                            결제
-                                        </button>
-
+                                                }}
+                                            >
+                                                결제
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>

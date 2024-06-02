@@ -17,10 +17,10 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     const [bus, setBus] = useState(null);
     const [selectedTrain, setSelectedTrain] = useState(null);
     const [train, setTrain] = useState(null);
-    const [plane, setFlight] = useState(null);
+    const [flight, setFlight] = useState(null);
     const [selectedPlane, setSelectedPlane] = useState(null);
-    const [plane_departureName, setFlight_departureName] = useState(null);
-    const [plane_destinationName, setFlight_destinationName] = useState(null);
+    const [flight_departureName, setFlight_departureName] = useState(null);
+    const [flight_destinationName, setFlight_destinationName] = useState(null);
 
     const { isLoggedIn, setShowLoginModal } = useContext(AuthContext);
     const [paymentType, setPaymentType] = useState('카드');  // 결제 유형 상태
@@ -34,50 +34,43 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
             const bus = JSON.parse(localStorage.getItem('bus'));
             setSelectedBus(selectedBus);
             setBus(bus);
-
         } else if (transportationtype === 'train') {
             const selectedTrain = JSON.parse(localStorage.getItem('selectedTrain'));
             const train = JSON.parse(localStorage.getItem('train'));
-            const selectedSeatType_train = JSON.parse(localStorage.getItem('selectedSeatType_train'));
-            const seatPrice_train = JSON.parse(localStorage.getItem('seatPrice_train'));
+            const selectedSeatType = JSON.parse(localStorage.getItem('selectedSeatType'));
+            const seatPrice = JSON.parse(localStorage.getItem('seatPrice'));
             // const selectedTrainSeats = JSON.parse(localStorage.getItem('selectedTrainSeats'));
             setSelectedTrain(selectedTrain);
             setTrain(train);
-
+        
 
         } else if (transportationtype === 'plane') {
-            const selectedPlane = JSON.parse(localStorage.getItem('selectedPlane'));
-            const plane = JSON.parse(localStorage.getItem('plane'));
-            const selectedSeatType_plane = JSON.parse(localStorage.getItem('selectedSeatType_plane'));
-            // const seatPrice_plane = JSON.parse(localStorage.getItem('seatPrice_plane'));
-
-            // const plane_departureName = JSON.parse(localStorage.getItem('plane_departureName'));
-            // const plane_destinationName = JSON.parse(localStorage.getItem('plane_destinationName'));
+            const selectedPlane = JSON.parse(localStorage.getItem('bookingData'));
+            const flight = JSON.parse(localStorage.getItem('flight'));
+            const flight_departureName = JSON.parse(localStorage.getItem('flight_departureName'));
+            const flight_destinationName = JSON.parse(localStorage.getItem('flight_destinationName'));
 
             console.log('Loaded selectedPlane:', selectedPlane); // 디버그용 로그
             setSelectedPlane(selectedPlane);
-            setFlight(plane);
-            // setFlight_departureName(plane_departureName);
-            // setFlight_destinationName(plane_destinationName);
+            setFlight(flight);
+            setFlight_departureName(flight_departureName);
+            setFlight_destinationName(flight_destinationName);
         }
     }, [transportationtype]);
 
 
 
-    // 선택한 좌석 유형과 가격을 state로 설정
-    const [selectedSeatType_train, setSelectedSeatType_train] = useState('');
-    const [seatPrice_train, setSeatPrice_train] = useState('');
+   // 선택한 좌석 유형과 가격을 state로 설정
+   const [selectedSeatType, setSelectedSeatType] = useState('');
+   const [seatPrice, setSeatPrice] = useState('');
 
-    const [selectedSeatType_plane, setSelectedSeatType_plane] = useState('');
-    const [seatPrice_plane, setSeatPrice_plane] = useState('');
-
-    // 선택한 좌석 유형과 가격을 state에 할당
-    //    useEffect(() => {
-    //        const seatType = JSON.parse(localStorage.getItem('selectedSeatType'));
-    //        const price = JSON.parse(localStorage.getItem('seatPrice'));
-    //        setSelectedSeatType(seatType);
-    //        setSeatPrice(price);
-    //    }, []);
+   // 선택한 좌석 유형과 가격을 state에 할당
+//    useEffect(() => {
+//        const seatType = JSON.parse(localStorage.getItem('selectedSeatType'));
+//        const price = JSON.parse(localStorage.getItem('seatPrice'));
+//        setSelectedSeatType(seatType);
+//        setSeatPrice(price);
+//    }, []);
 
 
 
@@ -93,7 +86,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     };
     let sessionStorage = window.sessionStorage;
 
-    const handlePayment = async (amount, orderId, orderName, email) => {
+    const handlePayment = async (amount, orderId, orderName,email) => {
         if (!isLoggedIn) {
             setShowLoginModal(true);
             return;
@@ -130,7 +123,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     };
 
 
-    const handleBook_bus = async (e, bus, fare, email) => {
+    const handleBook_bus = async (e, bus, fare,email) => {
         e.preventDefault();
         console.log('handleBook_bus called with:', bus, fare); // 디버그용 로그
         await handlePayment(fare, `order_${selectedBus.id}_${Date.now()}`, `${selectedBus.carrier} - ${bus.departure} to ${bus.destination} 버스 티켓`);
@@ -143,30 +136,23 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
         await handlePayment(fare, `order_${selectedTrain.id}_${Date.now()}`, `${selectedTrain.lineName} -   ${train.departure} to ${train.destination} 기차 티켓`);
     };
 
-    const handleBook_plane = async (e, selectedPlane, fare, plane) => {
+    const handleBook_plane = async (e, flight, fare, flight_departureName, flight_destinationName) => {
         e.preventDefault();
-        console.log('handleBook_plane called with:', selectedPlane, fare); // 디버그용 로그
-        // await handlePayment(fare, `order_${selectedTrain.id}_${Date.now()}`, `${selectedTrain.lineName} 기차 티켓`);
-        await handlePayment(fare, `order_${selectedPlane.id}_${Date.now()}`, `${selectedPlane.lineName} -   ${plane.departure} to ${plane.destination} 공항 티켓`);
+        console.log('handleBook_plane called with:', flight, fare); // 디버그용 로그
+        await handlePayment(fare, `order_${flight.id}`, `${flight.airline} - ${flight_departureName} to ${flight_destinationName}`);
     };
 
 
     useEffect(() => {
         if (transportationtype === 'train') {
-            const selectedSeatType_train = JSON.parse(localStorage.getItem('selectedSeatType_train'));
-            const price_train = JSON.parse(localStorage.getItem('seatPrice_train'));
-            setSelectedSeatType_train(selectedSeatType_train);
-            setSeatPrice_train(price_train);
-        }
-        else if (transportationtype === 'plane') {
-            const selectedSeatType_plane = JSON.parse(localStorage.getItem('selectedSeatType_plane'));
-            // const price_plane = JSON.parse(localStorage.getItem('seatPrice_plane'));
-            setSelectedSeatType_plane(selectedSeatType_plane);
-            // setSeatPrice(price_plane);
+            const selectedSeatType = JSON.parse(localStorage.getItem('selectedSeatType'));
+            const price = JSON.parse(localStorage.getItem('seatPrice'));
+            setSelectedSeatType(selectedSeatType);
+            setSeatPrice(price);
         }
     }, [transportationtype]);
 
-
+    
     return (
         <>
             {transportationtype === 'bus' && (
@@ -176,7 +162,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     <h2 style={{ marginBottom: '30px' }}>프로필</h2>
                     <div className="form-group">
                         <label>이메일</label>
-                        <span>{sessionStorage.email}</span>
+                        <span>{sessionStorage.userEmail}</span>
                     </div>
                     <div className="form-group">
                         <label>닉네임</label>
@@ -217,7 +203,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     </div>
                     <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
-                        <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_bus(e, bus, selectedBus.price, sessionStorage.email)}>결제</button>
+                        <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_bus(e, bus, selectedBus.price,sessionStorage.email)}>결제</button>
                         <button type="button" onClick={bookingCancel}>취소</button>
                     </div>
                     {showBookingResultModal && (
@@ -238,7 +224,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     <h2 style={{ marginBottom: '30px' }}>프로필</h2>
                     <div className="form-group">
                         <label>이메일</label>
-                        <span>{sessionStorage.email}</span>
+                        <span>{sessionStorage.userEmail}</span>
                     </div>
                     <div className="form-group">
                         <label>닉네임</label>
@@ -255,8 +241,8 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                                 <p>출발 시간 : {selectedTrain.departureTime}</p>
                                 <p>도착 시간: {selectedTrain.arrivalTime}</p>
                                 {/* <p>가격 : {selectedTrainSeats}</p> */}
-                                <p>좌석 유형: {selectedSeatType_train}</p> {/* 선택한 좌석의 유형 출력 */}
-                                <p>가격: {seatPrice_train}</p> {/*선택한 좌석의 가격 출력  */}
+                                <p>좌석 유형: {selectedSeatType}</p> {/* 선택한 좌석의 유형 출력 */}
+                                <p>가격: {seatPrice}</p> {/*선택한 좌석의 가격 출력  */}
                             </>
                         )}
                         {train && (
@@ -267,7 +253,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                                 <p>날짜 : {train.date}</p>
                                 {/* <p>시간: {train.hour}</p> */}
                                 <p>요일 : {train.weekdayCarrier}</p>
-
+                            
                             </>
                         )}
                     </div>
@@ -283,7 +269,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     </div>
                     <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
-                        <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_train(e, selectedTrain, seatPrice_train, train)}>결제</button>
+                    <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_train(e, selectedTrain, seatPrice, train)}>결제</button>
 
 
                         <button type="button" onClick={bookingCancel}>취소</button>
@@ -301,41 +287,32 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
 
             {transportationtype === 'plane' && (
                 <div className="bookresultcontainer">
-                    <h2 style={{ marginBottom: '30px' }}>예약 내용이 다음과 같습니까? (공항)</h2>
+                    <h2 style={{ marginBottom: '30px' }}>예약 내용이 다음과 같습니까? (항공)</h2>
                     <hr />
                     <h2 style={{ marginBottom: '30px' }}>프로필</h2>
                     <div className="form-group">
                         <label>이메일</label>
-                        <span>{sessionStorage.email}</span>
+                        <span>{sessionStorage.userEmail}</span>
                     </div>
                     <div className="form-group">
                         <label>닉네임</label>
                         <span>닉네임 정보 입력(하드코딩)</span>
                     </div>
                     <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
-                    <h2 style={{ marginBottom: '30px' }}>열차 정보</h2>
+                    <h2 style={{ marginBottom: '30px' }}>항공 정보</h2>
                     <div>
                         {selectedPlane && (
                             <>
-                                <p>공항 ID : {selectedPlane.id}</p>
-                                <p>기차 번호 : {selectedPlane.frequency}</p>
-                                <p>열차 종류 : {selectedPlane.lineName}</p>
-                                <p>출발 시간 : {selectedPlane.departureTime}</p>
-                                <p>도착 시간: {selectedPlane.arrivalTime}</p>
-                                {/* <p>가격 : {selectedTrainSeats}</p> */}
-                                <p>좌석 유형: {selectedSeatType_plane}</p> {/* 선택한 좌석의 유형 출력 */}
-                                {/* <p>가격: {seatPrice_plane}</p> 선택한 좌석의 가격 출력  */}
-                            </>
-                        )}
-                        {plane && (
-                            <>
-                                <p>출발지 : {plane.departure}</p>
-                                <p>도착지 : {plane.destination}</p>
-                                {/* <p>가격 : {trainprice}</p> */}
-                                <p>날짜 : {plane.date}</p>
-                                {/* <p>시간: {train.hour}</p> */}
-                                <p>요일 : {plane.weekdayCarrier}</p>
-
+                                <p>금액: ₩{selectedPlane.amount}</p>
+                                <p>출발 시간: {selectedPlane.departureTime}</p>
+                                <p>도착 시간: {selectedPlane.arrivalTime || '정보 없음'}</p>
+                                <p>날짜: {selectedPlane.date}</p>
+                                <p>이메일: {sessionStorage.userEmail}</p>
+                                <p>출발지: {selectedPlane.startStationName}</p>
+                                <p>도착지: {selectedPlane.endStationName}</p>
+                                <p>등급: {selectedPlane.grade}</p>
+                                <p>운영자: {selectedPlane.operator}</p>
+                                <p>좌석 번호: {selectedPlane.seatNum}</p>
                             </>
                         )}
                     </div>
@@ -351,9 +328,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     </div>
                     <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
-                        <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_plane(e, selectedPlane, seatPrice_plane, plane)}>결제</button>
-
-
+                        <button type="button" onClick={(e) => handleBook_plane(e, flight, selectedPlane.amount, flight_departureName, flight_destinationName)}>결제</button>
                         <button type="button" onClick={bookingCancel}>취소</button>
                     </div>
                     {showBookingResultModal && (
@@ -366,7 +341,6 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     )}
                 </div>
             )}
-
             {showBookResultModal && <BookResultModal />}
             {!isLoggedIn && <LoginModal />}
         </>
