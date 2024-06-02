@@ -1,5 +1,7 @@
 package com.travel.booking.domain.payment.service;
 
+import com.travel.booking.domain.booking.entity.Order;
+import com.travel.booking.domain.booking.repo.OrderRepository;
 import com.travel.booking.domain.payment.config.TossPaymentConfig;
 import com.travel.booking.domain.payment.dto.PaymentSuccessDto;
 import com.travel.booking.domain.payment.entity.Payment;
@@ -34,6 +36,7 @@ public class PaymentService {
     private final JpaPaymentRepository paymentRepository;
     private final UserService userService;
     private final TossPaymentConfig tossPaymentConfig;
+    private final OrderRepository orderRepository;
 
 
     @Transactional
@@ -68,6 +71,36 @@ public class PaymentService {
         }
         return payment;
     }
+
+//    @Transactional
+//    public Payment verifyPayment(String orderId, Long amount) {
+//        System.out.println(orderId);
+//        Order order = orderRepository.findById(orderId).orElseThrow(() -> {
+//            throw new CustomLogicException(ErrorCode.PAYMENT_NOT_FOUND); // 주문이 없는 경우 예외 발생
+//        });
+//
+//        Payment payment = paymentRepository.findByOrderId(orderId).orElseThrow(() -> {
+//            throw new CustomLogicException(ErrorCode.PAYMENT_NOT_FOUND); // 결제 내역이 없는 경우 예외 발생
+//        });
+//
+//        if (!payment.getAmount().equals(amount)) {
+//            throw new CustomLogicException(ErrorCode.PAYMENT_AMOUNT_EXP); // 결제 금액이 일치하지 않는 경우 예외 발생
+//        }
+//
+//        return payment;
+//    }
+
+//    @Transactional
+//    public Payment verifyPayment(String orderId, Long amount){
+//        Payment payment = null;
+//        Order order = (Order) orderRepository.findById(orderId).orElseThrow(() -> {
+//            throw new CustomLogicException(ErrorCode.PAYMENT_NOT_FOUND);
+//        });
+//        if(!payment.getAmount().equals(amount)){
+//            throw new CustomLogicException(ErrorCode.PAYMENT_AMOUNT_EXP);
+//        }
+//        return payment;
+//    }
 
     @Transactional
     public PaymentSuccessDto requestPaymentAccept(String paymentKey, String orderId, Long amount){
