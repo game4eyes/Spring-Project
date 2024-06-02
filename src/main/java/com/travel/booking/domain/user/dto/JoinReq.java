@@ -23,6 +23,7 @@ public class JoinReq {
                 .password(encodedPassword)
                 .username(this.username)
                 .email(this.email)
+                .point(0L)
                 .role(Role.USER)
                 .build();
     }
