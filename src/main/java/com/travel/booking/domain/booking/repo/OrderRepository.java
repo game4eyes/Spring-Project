@@ -11,7 +11,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
     @Override
     Optional<Order> findById(String s);
 
-    Optional<Order> findByIdAndUser(String id, User user);
+    Optional<Order> findByOrderIdAndUser(String id, User user);
 
     long deleteByIdAndUser(String id, User user);
 }

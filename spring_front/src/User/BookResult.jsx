@@ -8,6 +8,7 @@ import BookResultModal from '@/components/BookResultModal';
 import { AuthContext } from '@/global/AuthContext';
 import {getUserInfo} from "@/api/todoApi.jsx";
 import {bookinFail, booking} from "@/api/booking.jsx";
+import { tossPayment } from '../api/todoApi';
 
 const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
@@ -105,6 +106,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
 
         if (window.confirm('예약 정보를 확인하셨습니까? 결제를 진행합니다.')) {
             try {
+                const payments = tossPayment(requestPayment);
                 const tossPayments = await loadTossPayments(clientKey);
                 tossPayments.requestPayment(paymentType, {
                     amount,

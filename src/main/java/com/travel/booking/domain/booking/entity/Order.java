@@ -19,9 +19,14 @@ import java.util.List;
 @Log4j2
 @Table(name = "orders")
 public class Order {
+
     @Id
-    @Column(name = "id", nullable = false)
-    private String id;
+    @GeneratedValue
+    @Column
+    private Long id;
+
+    @Column(name = "orderId", nullable = false)
+    private String orderId;
 
     // 주문을 한 사용자와의 관계 설정 (N:1)
     @ManyToOne(fetch = FetchType.LAZY)

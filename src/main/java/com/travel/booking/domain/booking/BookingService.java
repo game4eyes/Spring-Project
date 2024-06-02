@@ -44,7 +44,7 @@ public class BookingService {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(false);
         } else {
             Order order = new Order();
-            order.setId(orderDto.getOrderId());
+            order.setOrderId(orderDto.getOrderId());
             order.setOrderDate(orderDto.getOrderDate());
             order.setUser(user);
             order.setSchedule(schedule);
@@ -110,7 +110,7 @@ public class BookingService {
                 .orElseThrow(
                         () -> new BookingException(HttpStatus.BAD_REQUEST, BookingErrorCode.BOOKING_USER_FAILED)
                 );
-        Order order = orderRepository.findByIdAndUser(paySuccessOrFailDTO.getOrderId(), user)
+        Order order = orderRepository.findByOrderIdAndUser(paySuccessOrFailDTO.getOrderId(), user)
                 .orElseThrow(
                         () -> new BookingException(HttpStatus.NOT_FOUND, BookingErrorCode.UNKNOWN)
                 );
@@ -125,7 +125,7 @@ public class BookingService {
                 .orElseThrow(
                         () -> new BookingException(HttpStatus.BAD_REQUEST, BookingErrorCode.BOOKING_USER_FAILED)
                 );
-        Order order = orderRepository.findByIdAndUser(paySuccessOrFailDTO.getOrderId(), user)
+        Order order = orderRepository.findByOrderIdAndUser(paySuccessOrFailDTO.getOrderId(), user)
                 .orElseThrow(
                         () -> new BookingException(HttpStatus.NOT_FOUND, BookingErrorCode.UNKNOWN)
                 );
@@ -181,7 +181,7 @@ public class BookingService {
                 seatAvailabilityRepository.save(seat);
             }
         }
-        orderRepository.deleteById(order.getId());
+        orderRepository.deleteById(order.getOrderId());
         return ResponseEntity.ok().body(true);
     }
 }

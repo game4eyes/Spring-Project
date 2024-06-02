@@ -73,7 +73,7 @@ public class Payment  {
                 .payType(payType.getDescription())
                 .amount(amount)
                 .orderName(orderName)
-                .orderId(order.getId())
+                .orderId(order.getOrderId())
                 .userEmail(customer.getEmail())
                 .userName(customer.getUsername())
                 .createdAt(String.valueOf(getCreatedAt()))
