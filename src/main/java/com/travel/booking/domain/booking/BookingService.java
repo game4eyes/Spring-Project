@@ -19,8 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -43,7 +41,7 @@ public class BookingService {
                 );
         Optional<Order> checkOrderDate = orderRepository.findById(orderDto.getOrderId());
         if(checkOrderDate.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 해당 예약 건이 있습니다. 추가로 예약 할 것인지?");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(false);
         } else {
             Order order = new Order();
             order.setId(orderDto.getOrderId());
@@ -183,8 +181,7 @@ public class BookingService {
                 seatAvailabilityRepository.save(seat);
             }
         }
-        orderRepository.delete(order);
+        orderRepository.deleteById(order.getId());
         return ResponseEntity.ok().body(true);
     }
-
 }

@@ -34,6 +34,9 @@ const startStationPrefix = `${searchPrefix}/start/station/info`;
 //도착지 조회
 const endStationPrefix = `${searchPrefix}/end/station/info`;
 
+// 남은 좌석 조회
+const searchSeatPrefix = `${searchPrefix}/seat/availability`
+
 
 
 
@@ -212,5 +215,16 @@ export const getPlaneSchedule = async (startStationId, endStationId, weekdayCarr
             departureTime: departureTime
         }
     });
+    return res.data;
+}
+
+// 남은 좌석 정보
+export const getSeatAvailability = async (scheduleId, date) => {
+    const res = await axios.get(`${searchPrefix}/seat/availability`, {
+        params : {
+            SeatScheduleId : scheduleId,
+            date : date
+        }
+    })
     return res.data;
 }
