@@ -1,6 +1,8 @@
 package com.travel.booking.domain.searchdb;
 
+import com.travel.booking.domain.booking.entity.Order;
 import com.travel.booking.domain.booking.entity.SeatAvailability;
+import com.travel.booking.domain.booking.repo.OrderRepository;
 import com.travel.booking.domain.booking.repo.SeatAvailabilityRepository;
 import com.travel.booking.domain.payment.repository.JpaPaymentRepository;
 import com.travel.booking.domain.searchdb.dto.*;
@@ -11,6 +13,7 @@ import com.travel.booking.domain.searchdb.entity.Trainprice;
 import com.travel.booking.domain.searchdb.exception.SearchException;
 import com.travel.booking.domain.searchdb.exception.SearchExceptionCode;
 import com.travel.booking.domain.searchdb.repo.*;
+import com.travel.booking.domain.user.entity.User;
 import com.travel.booking.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +37,7 @@ public class SearchDBService {
     private final UserRepository userRepository;
     private final JpaPaymentRepository jpaPaymentRepository;
     private final SeatAvailabilityRepository seatAvailabilityRepository;
+    private final OrderRepository orderRepository;
 
     // 각 정차지의 시작 지점을 찾는 메서드
     public ResponseEntity<?> getStationStartList(Long stationTypeId) {
@@ -171,5 +175,47 @@ public class SearchDBService {
         SeatAvailability seat = getOrCreateSeatAvailability(schedule, date,stationType);
 
         return ResponseEntity.ok(new resultDTO(stationType,seat));
+    }
+
+    // 예약 정보 확인
+    // 결제 완료된 건에 대해서만 반환
+    public ResponseEntity<?> getUserOrderList(String userEmail) {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new RuntimeException("User Not Found"));
+        List<Order> userOrderList = orderRepository.findByUser(user);
+        if (userOrderList.isEmpty()) {
+            String message = "주문 내역이 없숭둥...";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+        } else {
+            List<OrderInfoResultDTO> orderInfoResultDTOList = new ArrayList<>();
+            for (Order order : userOrderList) {
+                if (!"결제 완료".equals(order.getOrderStatus())) {
+                    continue;
+                }
+                Schedule schedule = scheduleRepository.findById(order.getSchedule().getId())
+                        .orElseThrow(
+                                () -> new SearchException(HttpStatus.BAD_REQUEST, SearchExceptionCode.SEARCH_FIND_SCHEDULE_FAILED)
+                        );
+                Stationinfo startStation = stationinfoRepository.findById(schedule.getStartStation().getId())
+                        .orElseThrow(
+                                () -> new SearchException(HttpStatus.NOT_FOUND, SearchExceptionCode.SEARCH_START_STATION_INFO_FIND_FAILED)
+                        );
+                Stationinfo endStation = stationinfoRepository.findById(schedule.getEndStation().getId())
+                        .orElseThrow(
+                                () -> new SearchException(HttpStatus.NOT_FOUND, SearchExceptionCode.SEARCH_START_STATION_INFO_FIND_FAILED)
+                        );
+                OrderInfoResultDTO orderInfoResultDTO = OrderInfoResultDTO.fromOrderAndSchedule(order, schedule, startStation, endStation);
+                orderInfoResultDTOList.add(orderInfoResultDTO);
+            }
+            // 결제 완료된 주문 내역이 없는 경우 처리
+            if (orderInfoResultDTOList.isEmpty()) {
+                String message = "결제 완료된 주문 내역이 없습니다.";
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+            }
+            Map<String,Object> result = new HashMap<>();
+            result.put("count", orderInfoResultDTOList.size());
+            result.put("OrderList", orderInfoResultDTOList);
+            return ResponseEntity.ok(result);
+        }
     }
 }
