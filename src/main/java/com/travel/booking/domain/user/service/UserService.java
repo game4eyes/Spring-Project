@@ -1,11 +1,12 @@
 package com.travel.booking.domain.user.service;
 
+import com.travel.booking.domain.user.dto.UpdateReq;
 import com.travel.booking.domain.user.entity.User;
-import com.travel.booking.domain.user.Role;
 import com.travel.booking.domain.user.dto.JoinReq;
 import com.travel.booking.domain.user.dto.LoginReq;
 import com.travel.booking.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,8 +94,6 @@ public class UserService {
             return null;
         }
 
-        System.out.println("Finding user with email: " + email);
-
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if(optionalUser.isEmpty()) {
             System.out.println("User not found for email: " + email);
@@ -113,5 +112,19 @@ public class UserService {
             throw new RuntimeException("사용자를 찾을 수 없습니다" + username);
         }
     }
+
+    @Transactional
+    public void update(UpdateReq updateReq){
+        User user = userRepository.findByEmail(updateReq.getEmail()).orElseThrow(() -> new UsernameNotFoundException("이메일이 존재하지 않습니다."));
+
+        user.updateUserInfo(updateReq.getUsername(), updateReq.getEmail());
+        userRepository.save(user);
+    }
+
+
+
+
+
+
 
 }
