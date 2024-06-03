@@ -90,33 +90,49 @@ const Mypage = () => {
 
 
 
-                <div>
-                    {/* <h2>Order List for {sessionStorage.email}</h2> */}
-                    {orders.length > 0 ? (
-                       <ul className="order-list">
-                       {orders.map((order, index) => (
-                           <li key={index} className="order-item">
-                          
-                               <div className="order-detail"><strong>출발지 :</strong> {order.startName}</div>
-                               <div className="order-detail"><strong>도착지 :</strong> {order.endName}</div>
-                               <div className="order-detail"><strong>출발 시간 :</strong> {order.departureTime}</div>
-                               <div className="order-detail"><strong>도착 시간 :</strong> {order.arrivalTime}</div>
-                               <div className="order-detail"><strong>등급 :</strong> {order.grade}</div>
-                               <div className="order-detail"><strong>버스 종류 :</strong> {order.operatorName}</div>
-                               <div className="order-detail"><strong>경로 :</strong> {order.railName}</div>
-                               <div className="order-detail"><strong>예약 날짜 :</strong> {order.orderDate}</div>
-                               <div className="button-container">
-                            <button type="button" className="cancel-button" style={{ backgroundColor: '#f44336' }} onClick={bookingcancel}>취소</button>
-                        </div>
-                     
-                           </li>
-                         
-                       ))}
-                   </ul>
-                    ) : (
-                        <div>예약 정보가 없습니다</div>
+               <div>
+    {orders.length > 0 ? (
+        <ul className="order-list">
+            {orders.map((order, index) => (
+                <li key={index} className="order-item">
+                    <div className="order-detail"><strong>출발지 :</strong> {order.startName}</div>
+                    <div className="order-detail"><strong>도착지 :</strong> {order.endName}</div>
+                    <div className="order-detail"><strong>출발 시간 :</strong> {order.departureTime}</div>
+                    <div className="order-detail"><strong>도착 시간 :</strong> {order.arrivalTime}</div>
+                    <div className="order-detail"><strong>등급 :</strong> {order.grade}</div>
+
+                    {/* Conditional rendering based on order.grade */}
+                    {order.grade === 'Bus' && (
+                        <>
+                            <div className="order-detail"><strong>버스 종류 :</strong> {order.operatorName}</div>
+                            <div className="order-detail"><strong>경로 :</strong> {order.railName}</div>
+                        </>
                     )}
-                </div>
+                    {['general', 'special', 'standingFreeSeating'].includes(order.grade) && (
+                        <>
+                            <div className="order-detail"><strong>기차 종류 :</strong> {order.operatorName}</div>
+                            <div className="order-detail"><strong>경로 :</strong> {order.railName}</div>
+                        </>
+                    )}
+                    {['first', 'economy', 'business'].includes(order.grade) && (
+                        <>
+                            <div className="order-detail"><strong>운행사 :</strong> {order.operatorName}</div>
+                            <div className="order-detail"><strong>경로 :</strong> {order.railName}</div>
+                        </>
+                    )}
+
+                    <div className="order-detail"><strong>예약 날짜 :</strong> {order.orderDate}</div>
+                    <div className="button-container">
+                        <button type="button" className="cancel-button" style={{ backgroundColor: '#f44336' }} onClick={bookingcancel}>취소</button>
+                    </div>
+                </li>
+            ))}
+        </ul>
+    ) : (
+        <div>예약 정보가 없습니다</div>
+    )}
+</div>
+
              
 
 

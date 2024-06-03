@@ -16,12 +16,12 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
     const [itemsPerPage] = useState(5);
     const [loading, setLoading] = useState(true);
     const [timeoutReached, setTimeoutReached] = useState(false);
-    // const { sessionStorage.email } = useContext(AuthContext);
     const [showUserGuestPopup, setShowUserGuestPopup] = useState(false);
     const [selectedTrain, setSelectedTrain] = useState(null);
     const [showBookResultModal, setShowBookResultModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [selectedTrainSeats, setSelectedSeats] = useState({});
+    const [soldoutStatus, setSoldoutStatus] = useState({}); // State to track soldout status for each train
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -33,11 +33,16 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
         }
     };
 
-
     let sessionStorage = window.sessionStorage;
     const email = sessionStorage.getItem('email');
 
-    
+    const handleSoldOutChange = (trainId, isSoldOut) => {
+        setSoldoutStatus(prevState => ({
+            ...prevState,
+            [trainId]: isSoldOut
+        }));
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -88,10 +93,6 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
         localStorage.setItem('seatPrice_train', JSON.stringify(price)); // 선택한 좌석 가격 저장
         if (sessionStorage.email) {
             setShowBookResultModal(true);
-            console.log(seatType);
-            console.log(selectedTrain);
-            console.log(train);
-            console.log(price);
         } else {
             setShowUserGuestPopup(true);
         }
@@ -206,21 +207,33 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
                                                 입석 (자유석) ({trainPrices[selectedTrain.id]?.general ? Math.round(trainPrices[selectedTrain.id]?.general * 0.9) : 'N/A'})
                                             </label>
                                         </td>
-                                        <td><TrainListSeat Id={selectedTrain.id} Date={date}/></td>
                                         <td>
-                                            <button
-                                                className="button"
-                                                style={{ marginTop: '25px' }}
-                                                onClick={() => {
-                                                    const seatType = selectedTrainSeats[selectedTrain.id]?.seatType;
-                                                    const price = seatType === 'standingFreeSeating'
-                                                        ? Math.round(trainPrices[selectedTrain.id]?.general * 0.9)
-                                                        : trainPrices[selectedTrain.id]?.[seatType];
-                                                    handleItemClick(searchURLObject(location.pathname), selectedTrain, train, seatType, price);
-                                                }}
-                                            >
-                                                결제
-                                            </button>
+                                            <TrainListSeat Id={selectedTrain.id} Date={date} onSoldOutChange={handleSoldOutChange} />
+                                        </td>
+                                        <td>
+                                            {soldoutStatus[selectedTrain.id] ? (
+                                                <button
+                                                    className="button sold-out-button"
+                                                    style={{ marginTop: '25px' }}
+                                                    onClick={() => alert('예약을 할 수 없습니다')}
+                                                >
+                                                    매진
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    className="button"
+                                                    style={{ marginTop: '25px' }}
+                                                    onClick={() => {
+                                                        const seatType = selectedTrainSeats[selectedTrain.id]?.seatType;
+                                                        const price = seatType === 'standingFreeSeating'
+                                                            ? Math.round(trainPrices[selectedTrain.id]?.general * 0.9)
+                                                            : trainPrices[selectedTrain.id]?.[seatType];
+                                                        handleItemClick(searchURLObject(location.pathname), selectedTrain, train, seatType, price);
+                                                    }}
+                                                >
+                                                    결제
+                                                </button>
+                                            )}
                                         </td>
                                     </tr>
                                 ))}

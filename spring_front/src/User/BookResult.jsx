@@ -10,7 +10,7 @@ import { getUserInfo } from "@/api/todoApi.jsx";
 import { bookinFail, booking, bookingComplete } from "@/api/booking.jsx";
 import { tossPayment } from '../api/todoApi';
 
-const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
+const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
     const location = useLocation();
     const navigate = useNavigate();
@@ -37,9 +37,25 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
     let sessionStorage = window.sessionStorage;
     const email = sessionStorage.getItem('email');
 
+   
 
 
+    if(location.pathname.includes('http://localhost:9090/api/user/toss/success')){
+        navigate('/');
+    }
 
+
+    useEffect(() => {
+        if (isLoggedIn) {
+          if (location.pathname.includes('/api/user/toss/success') || 
+              location.pathname.includes('/ticketbook/plane') || 
+              location.pathname.includes('/ticketbook/bus')) {
+            handleClose(); // Close the modal after successful login
+          } else {        
+            navigate('/');
+          }
+        }
+      }, [isLoggedIn, navigate, location.pathname, handleClose]);
 
 
 
@@ -328,7 +344,7 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
                                 <p>도착지: {bus.destination}</p>
                                 <p>날짜 : {bus.departureDate}</p>
                                 <p>왕복 : {bus.isRoundTrip}</p>
-                                <p>요일: {bus.dayz}</p>
+                                {/* <p>요일: {bus.dayz}</p> */}
                             </>
                         )}
                     </div>
@@ -500,4 +516,4 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
     );
 };
 
-export default BookResult_bak;
+export default BookResult;

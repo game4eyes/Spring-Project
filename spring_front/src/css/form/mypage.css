@@ -136,8 +136,9 @@
 }
 
 .order-detail {
-  margin-bottom: 10px; /* Adjust spacing between details */
+  margin: 10px 0; /* Adjust the spacing (top and bottom) between each detail */
 }
+
 
 .button-container {
   margin-top: 10px; /* Adjust spacing between details and button */
