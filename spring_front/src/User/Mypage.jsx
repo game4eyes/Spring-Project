@@ -3,23 +3,43 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import Layout from "../components/Layout";
 import '@/css/form/mypage.css';
+import { getUserOrderInfo } from '@/api/dataApi';
 
 const Mypage = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const navigate = useNavigate();
 
-    const [cookies, setCookie] = useCookies(['userEmail', 'bookingInfo']);
+    // const [cookies, setCookie] = useCookies(['email', 'bookingInfo']);
     const [bookingInfo, setBookingInfo] = useState(null);
+    const [orders, setOrders] = useState([]);
+    // useEffect(() => {
+    //     if (cookies.bookingInfo) {
+    //         setBookingInfo(cookies.bookingInfo);
+    //     }
+    // }, [cookies.bookingInfo]);
+
+    // console.log('User Email:', cookies.email);
+    // console.log('Booking Info:', cookies.bookingInfo);
+
 
     useEffect(() => {
-        if (cookies.bookingInfo) {
-            setBookingInfo(cookies.bookingInfo);
-        }
-    }, [cookies.bookingInfo]);
+        const fetchOrders = async () => {
+            try {
+                const data = await getUserOrderInfo(sessionStorage.email);
+                setOrders(data.OrderList);  // Assuming your API returns a similar structure as the provided JSON
+                console(data.OrderList);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    console.log('User Email:', cookies.userEmail);
-    console.log('Booking Info:', cookies.bookingInfo);
+        fetchOrders();
+    }, [sessionStorage.email]);
+
+
 
 
     const handleProfileEdit = () => {
@@ -40,7 +60,7 @@ const Mypage = () => {
         const isConfirmed = window.confirm('예약을 취소하시겠습니까?');
         if (isConfirmed) {
             alert('예약이 취소되었습니다');
-            setCookie('bookingInfo', null, { path: '/' }); // bookingInfo 쿠키 삭제
+            // setCookie('bookingInfo', null, { path: '/' }); // bookingInfo 쿠키 삭제
             navigate('/');
         }
     };
@@ -55,7 +75,7 @@ const Mypage = () => {
                 <h2 style={{ marginBottom: '40px' }}>프로필</h2>
                 <div className="form-group">
                     <label>이메일</label>
-                    <span>{cookies.userEmail}</span>
+                    <span>{sessionStorage.email}</span>
                 </div>
                 <div className="form-group">
                     <label>닉네임</label>
@@ -66,8 +86,50 @@ const Mypage = () => {
                     <button type="button" style={{ backgroundColor: '#f44336' }} onClick={handleAccountDelete}>회원탈퇴</button>
                 </div>
                 <hr style={{ marginTop: '20px', marginBottom: '50px' }} />
-                <h2 style={{ marginBottom: '40px' }}>열차 정보</h2>
-                {bookingInfo ? (
+                <h2 style={{ marginBottom: '40px' }}>예약 정보</h2>
+
+
+
+                <div>
+                    {/* <h2>Order List for {sessionStorage.email}</h2> */}
+                    {orders.length > 0 ? (
+                       <ul className="order-list">
+                       {orders.map((order, index) => (
+                           <li key={index} className="order-item">
+                          
+                               <div className="order-detail"><strong>출발지 :</strong> {order.startName}</div>
+                               <div className="order-detail"><strong>도착지 :</strong> {order.endName}</div>
+                               <div className="order-detail"><strong>출발 시간 :</strong> {order.departureTime}</div>
+                               <div className="order-detail"><strong>도착 시간 :</strong> {order.arrivalTime}</div>
+                               <div className="order-detail"><strong>등급 :</strong> {order.grade}</div>
+                               <div className="order-detail"><strong>버스 종류 :</strong> {order.operatorName}</div>
+                               <div className="order-detail"><strong>경로 :</strong> {order.railName}</div>
+                               <div className="order-detail"><strong>예약 날짜 :</strong> {order.orderDate}</div>
+                               <div className="button-container">
+                            <button type="button" className="cancel-button" style={{ backgroundColor: '#f44336' }} onClick={bookingcancel}>취소</button>
+                        </div>
+                     
+                           </li>
+                         
+                       ))}
+                   </ul>
+                    ) : (
+                        <div>예약 정보가 없습니다</div>
+                    )}
+                </div>
+             
+
+
+            </div>
+        </Layout>
+    );
+};
+
+export default Mypage;
+
+
+
+   {/* {bookingInfo ? (
                     <div>
                         <h3>버스 정보</h3>
                         <p>출발지: {bookingInfo.departure}</p>
@@ -113,12 +175,4 @@ const Mypage = () => {
                     </div>
                 ) : (
                     <p>예약된 열차 정보가 없습니다.</p>
-                )}
-
-
-            </div>
-        </Layout>
-    );
-};
-
-export default Mypage;
+                )} */}
