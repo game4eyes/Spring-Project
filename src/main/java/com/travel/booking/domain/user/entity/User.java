@@ -43,4 +43,8 @@ public class User {
         this.email = email;
     }
 
+    public void updatePassword(String newPassword){
+        this.password = newPassword;
+    }
+
 }

@@ -5,6 +5,8 @@ import com.travel.booking.domain.user.entity.User;
 import com.travel.booking.domain.user.dto.JoinReq;
 import com.travel.booking.domain.user.dto.LoginReq;
 import com.travel.booking.domain.user.repository.UserRepository;
+import com.travel.booking.exception.CustomLogicException;
+import com.travel.booking.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -121,10 +123,20 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
+    public void updatePassword(String email, String currentPassword, String newPassword){
+        User user = vaildatePassword(email, currentPassword);
+        user.updatePassword(encoder.encode(newPassword));
+    }
 
-
-
-
+    public User vaildatePassword(String email, String password){
+        User user = userRepository.findByEmail(email)
+                .orElseThrow();
+        if(!encoder.matches(password, user.getPassword())){
+            throw new CustomLogicException(ErrorCode.PASSWORD_NOT_MATCH);
+        }
+        return user;
+    }
 
 
 }

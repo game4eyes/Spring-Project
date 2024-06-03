@@ -11,4 +11,8 @@ public class UpdateReq {
     private String email;
     private String username;
 
+
+    // 비밀번호 변경용
+    private String currentPassword;
+    private String newPassword;
 }
