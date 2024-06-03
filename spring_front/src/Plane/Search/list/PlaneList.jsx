@@ -21,19 +21,23 @@ const PlaneList = ({ startStationId, endStationId, departureTime, weekdayCarrier
     const [itemsPerPage] = useState(5);
     const [loading, setLoading] = useState(true);
     const [timeoutReached, setTimeoutReached] = useState(false);
-    const { isLoggedIn } = useContext(AuthContext);
+    // const { sessionStorage.email } = useContext(AuthContext);
     const [showUserGuestPopup, setShowUserGuestPopup] = useState(false);
     const [selectedPlane, setSelectedPlane] = useState(null);
     const [showBookResultModal, setShowBookResultModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [selectedPlaneSeats, setSelectedSeats] = useState({});
 
+    let sessionStorage = window.sessionStorage;
+    const email = sessionStorage.getItem('email');
+    
+
     const location = useLocation();
     const navigate = useNavigate();
 
     const handleCloseLoginModal = () => {
         setShowLoginModal(false);
-        if (isLoggedIn) {
+        if (sessionStorage.email) {
             setShowBookResultModal(true);
         }
     };
@@ -73,7 +77,7 @@ const PlaneList = ({ startStationId, endStationId, departureTime, weekdayCarrier
         localStorage.setItem('plane', JSON.stringify(plane));
         localStorage.setItem('selectedSeatType_plane', JSON.stringify(seatType)); // 선택한 좌석 유형 저장
         localStorage.setItem('seatPrice_plane', JSON.stringify(price)); // 선택한 좌석 가격 저장
-        if (isLoggedIn) {
+        if (sessionStorage.email) {
             setShowBookResultModal(true);
             console.log(seatType);
             console.log(selectedPlane);
@@ -222,7 +226,7 @@ const PlaneList = ({ startStationId, endStationId, departureTime, weekdayCarrier
 
             {showUserGuestPopup && <UserGuestPopup onClose={handleCloseUserGuestPopup} onOptionSelect={handleOptionSelect} />}
             {showLoginModal && <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} />}
-            {showBookResultModal && isLoggedIn && <BookResultModal transportationtype={'plane'} selectedPlaneSeats={selectedPlaneSeats} selectedPlane={selectedPlane} plane={plane} handleClose={() => setShowBookResultModal(false)} />}
+            {showBookResultModal && sessionStorage.email && <BookResultModal transportationtype={'plane'} selectedPlaneSeats={selectedPlaneSeats} selectedPlane={selectedPlane} plane={plane} handleClose={() => setShowBookResultModal(false)} />}
         </div>
     );
 };
