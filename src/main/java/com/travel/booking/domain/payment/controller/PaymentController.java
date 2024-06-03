@@ -1,5 +1,6 @@
 package com.travel.booking.domain.payment.controller;
 
+import com.sun.net.httpserver.Headers;
 import com.travel.booking.domain.booking.entity.Order;
 import com.travel.booking.domain.booking.repo.OrderRepository;
 import com.travel.booking.domain.payment.config.TossPaymentConfig;
@@ -15,11 +16,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -70,8 +74,10 @@ public class PaymentController {
             @RequestParam("orderId") String orderId,
             @RequestParam("amount") Long amount
     ){
-        return ResponseEntity.ok()
-                .body(new SingleResponse<>(paymentService.tossPaymentSuccess(paymentKey, orderId, amount)));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("/success-page"));
+        paymentService.tossPaymentSuccess(paymentKey, orderId, amount);
+        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
 
     @PostMapping("/toss/fail")

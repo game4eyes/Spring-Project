@@ -10,7 +10,7 @@ import { getUserInfo } from "@/api/todoApi.jsx";
 import { bookinFail, booking, bookingComplete } from "@/api/booking.jsx";
 import { tossPayment } from '../api/todoApi';
 
-const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
+const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
     const location = useLocation();
     const navigate = useNavigate();
@@ -154,6 +154,9 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
                     console.log('Payment successful:', response);
                     const successful = bookingComplete({ email, orderId })
 
+                    if(response.status >= 200 && response.status < 300){
+                        navigate('/success-page');  // 결제 성공이면 여기로 이동
+                    }
                     setShowBookResultModal(true);  // 결제 성공 후 결과 모달 표시
                 }).catch(error => {
                     console.error('Payment error:', error);
@@ -496,4 +499,4 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
     );
 };
 
-export default BookResult_bak;
+export default BookResult;
