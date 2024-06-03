@@ -17,7 +17,10 @@ const BusList = ({ startStationId, endStationId, gradeCarrier, bus, departureTim
     const [isLoading, setIsLoading] = useState(true);
     const location = useLocation();
     const navigate = useNavigate();
-    const { isLoggedIn, setRedirectUrl, setGuestRedirectUrl } = useContext(AuthContext);
+    // const { sessionStorage.email, setRedirectUrl, setGuestRedirectUrl } = useContext(AuthContext);
+
+    let sessionStorage = window.sessionStorage;
+    const email = sessionStorage.getItem('email');
 
     const [showUserGuestPopup, setShowUserGuestPopup] = useState(false);
     const [selectedTransportation, setSelectedTransportation] = useState(null);
@@ -29,7 +32,7 @@ const BusList = ({ startStationId, endStationId, gradeCarrier, bus, departureTim
     const handleCloseLoginModal = () => {
         setShowLoginModal(false);
         // Check if user is logged in and then open BookResult modal
-        if (isLoggedIn) {
+        if (sessionStorage.email) {
             setShowBookResultModal(true);
         }
     };
@@ -98,7 +101,7 @@ const BusList = ({ startStationId, endStationId, gradeCarrier, bus, departureTim
     
         localStorage.setItem('bus', JSON.stringify(busInfoData));
     
-        if (isLoggedIn) {
+        if (sessionStorage.email) {
             setShowBookResultModal(true); // Show BookResultModal if logged in
         } else {
             setShowUserGuestPopup(true);
@@ -182,7 +185,7 @@ const BusList = ({ startStationId, endStationId, gradeCarrier, bus, departureTim
 
             {showUserGuestPopup && <UserGuestPopup onClose={handleCloseUserGuestPopup} onOptionSelect={handleOptionSelect} />}
             {showLoginModal && <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} />}
-            {showBookResultModal && isLoggedIn && <BookResultModal transportationtype={'bus'} handleClose={() => setShowBookResultModal(false)} />}
+            {showBookResultModal && sessionStorage.email && <BookResultModal transportationtype={'bus'} handleClose={() => setShowBookResultModal(false)} />}
         </div>
     );
 };

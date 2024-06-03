@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, euseContext, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 // import { useCookies } from 'react-cookie';
 import '@/css/form/bookresult.css';
@@ -25,12 +25,19 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     const [plane_departureName, setFlight_departureName] = useState(null);
     const [plane_destinationName, setFlight_destinationName] = useState(null);
 
-    const { isLoggedIn, setShowLoginModal } = useContext(AuthContext);
+    const {setShowLoginModal } = useContext(AuthContext);
     const [paymentType, setPaymentType] = useState('카드');  // 결제 유형 상태
     const [showBookResultModal, setShowBookResultModal] = useState(false);
     const [showBookingResultModal, setShowBookingResultModal] = useState(false);
 
     const [selectedTrainSeats, setSelectedTrainSeats] = useState([]);
+
+
+    
+    let sessionStorage = window.sessionStorage;
+    const email = sessionStorage.getItem('email');
+
+
     useEffect(() => {
         if (transportationtype === 'bus') {
             const selectedBus = JSON.parse(localStorage.getItem('selectedbus'));
@@ -96,11 +103,11 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
             handleClose();
         }
     };
-    let sessionStorage = window.sessionStorage;
+    // let sessionStorage = window.sessionStorage;
 
     const handlePayment = async (amount, orderId, orderName, email) => {
         console.log(orderId)
-        if (!isLoggedIn) {
+        if (!sessionStorage.email) {
             setShowLoginModal(true);
             return;
         }
@@ -119,6 +126,8 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
             userEmail: sessionStorage.getItem("email"),
             successUrl: 'http://www.trable.kro.kr:9090/api/user/toss/success',
             failUrl: 'http://www.trable.kro.kr:9090/api/user/toss/fail',
+            // successUrl: 'http://localhost:9090/api/user/toss/success',
+            // failUrl: 'http://localhost:9090/api/user/toss/fail',
             payType: "CASH"
         }
 
@@ -133,6 +142,8 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     customerEmail: sessionStorage.getItem("email"),
                     successUrl: 'http://www.trable.kro.kr:9090/api/user/toss/success',
                     failUrl: 'http://www.trable.kro.kr:9090/api/user/toss/fail',
+                    // successUrl: 'http://localhost:9090/api/user/toss/success',
+                    // failUrl: 'http://localhost:9090/api/user/toss/fail',
                 }).then(response => {
                     console.log('Payment successful:', response);
                     const successful = bookingComplete({email,orderId})
@@ -417,7 +428,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
             )}
 
             {showBookResultModal && <BookResultModal />}
-            {!isLoggedIn && <LoginModal />}
+            {!sessionStorage.email && <LoginModal />}
         </>
     );
 };

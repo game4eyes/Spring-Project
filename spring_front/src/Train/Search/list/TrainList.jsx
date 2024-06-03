@@ -16,7 +16,7 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
     const [itemsPerPage] = useState(5);
     const [loading, setLoading] = useState(true);
     const [timeoutReached, setTimeoutReached] = useState(false);
-    const { isLoggedIn } = useContext(AuthContext);
+    // const { sessionStorage.email } = useContext(AuthContext);
     const [showUserGuestPopup, setShowUserGuestPopup] = useState(false);
     const [selectedTrain, setSelectedTrain] = useState(null);
     const [showBookResultModal, setShowBookResultModal] = useState(false);
@@ -28,11 +28,16 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
 
     const handleCloseLoginModal = () => {
         setShowLoginModal(false);
-        if (isLoggedIn) {
+        if (sessionStorage.email) {
             setShowBookResultModal(true);
         }
     };
 
+
+    let sessionStorage = window.sessionStorage;
+    const email = sessionStorage.getItem('email');
+
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -81,7 +86,7 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
         localStorage.setItem('train', JSON.stringify(train));
         localStorage.setItem('selectedSeatType_train', JSON.stringify(seatType)); // 선택한 좌석 유형 저장
         localStorage.setItem('seatPrice_train', JSON.stringify(price)); // 선택한 좌석 가격 저장
-        if (isLoggedIn) {
+        if (sessionStorage.email) {
             setShowBookResultModal(true);
             console.log(seatType);
             console.log(selectedTrain);
@@ -229,7 +234,7 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
             )}
             {showUserGuestPopup && <UserGuestPopup onClose={handleCloseUserGuestPopup} onOptionSelect={handleOptionSelect} />}
             {showLoginModal && <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} />}
-            {showBookResultModal && isLoggedIn && <BookResultModal transportationtype={'train'} selectedTrainSeats={selectedTrainSeats} selectedTrain={selectedTrain} train={train} handleClose={() => setShowBookResultModal(false)} />}
+            {showBookResultModal && sessionStorage.email && <BookResultModal transportationtype={'train'} selectedTrainSeats={selectedTrainSeats} selectedTrain={selectedTrain} train={train} handleClose={() => setShowBookResultModal(false)} />}
         </div>
     );
 };

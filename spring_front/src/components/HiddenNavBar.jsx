@@ -30,6 +30,8 @@ import OffCanvasButton from '@/components/OffCanvasButton';
 import LoginModal from './LoginModal';
 import { useEffect } from 'react';
 
+import { userLogout } from '@/api/todoApi';
+
 
 const HiddenNavBar = () => {
 
@@ -70,10 +72,36 @@ const HiddenNavBar = () => {
 
 
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    localStorage.removeItem('lastActiveTime');
-    navigate('/');
+  // const handleLogout = () => {
+  //   setIsLoggedIn(false);
+  //   localStorage.removeItem('lastActiveTime');
+  //   navigate('/');
+  // };
+
+
+    
+  const handleLogout = async () => {        //수정한 로그아웃 (세션 삭제 기능 확인됨)
+    try {
+
+       const response = await userLogout();
+
+    //  const response = await fetch(`{userPrefix}/logout`, {
+    //     // const response = await fetch(`http://ec2-3-34-129-44.ap-northeast-2.compute.amazonaws.com:9090/api/user/logout`, {
+    //      method: 'GET',
+    //      credentials: 'include', // Include credentials (cookies, sessions) in the request
+    //    });
+  
+      if (response) {
+        setIsLoggedIn(false);
+        localStorage.removeItem('lastActiveTime'); 
+        sessionStorage.removeItem('email');
+        navigate('/');
+      } else {
+        console.error('Logout failed');
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
   };
 
 
@@ -85,7 +113,7 @@ const HiddenNavBar = () => {
   const [hidden, setHidden] = useState(true);
 
   useEffect(() => {
-    if(isLoggedIn){
+    if(sessionStorage.email ){
     const handleScroll = () => {
       const scrollPercentage =
         (window.scrollY / (document.documentElement.scrollHeight - document.documentElement.clientHeight)) * 100;
@@ -118,7 +146,7 @@ const HiddenNavBar = () => {
 
 
   return (
-    <hiddennavbar style={{ display: hidden ? 'none' : 'block', marginTop: isLoggedIn ? '-190px' : '-140px' }}>
+    <hiddennavbar style={{ display: hidden ? 'none' : 'block', marginTop: sessionStorage.email ? '-190px' : '-140px' }}>
 
 <div className="px-3 py-2 text-bg-dark">
         <Container>
@@ -199,7 +227,7 @@ const HiddenNavBar = () => {
               <h1 style={{ color: 'gray', marginLeft: '25px', marginRight: '25px' }}>|</h1>
 
 
-              {isLoggedIn ? (
+              {sessionStorage.email  ? (
                 <>
 
                   <Nav.Item>

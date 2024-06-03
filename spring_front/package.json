@@ -28,6 +28,7 @@
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.23.1",
     "react-slick": "^0.30.2",
+    "redux-persist": "^6.0.0",
     "router-dom": "^2.2.11",
     "slick-carousel": "^1.8.1"
   },
