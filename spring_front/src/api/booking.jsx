@@ -20,10 +20,10 @@ export const bookingInfo = async (BookingInfo) => {
  *   @orderDate 예약 날짜
  *   @grade 등급
  *   항공 : {
- *      First, Economy, Business
+ *      first, economy, business
  *   }
  *   기차 : {
- *      StandingFreeSeating, General, Special
+ *      standingFreeSeating, general, special
  *   }
  *   버스 : {
  *       Bus

@@ -1,6 +1,6 @@
 /* mypage.css */
 
-.mypage-container {
+ .mypage-container {
     padding: 20px;
   }
   
@@ -81,6 +81,64 @@
     display: flex;
     justify-content: flex-end;
     margin-bottom: 30px;
+} */
+
+
+.mypage-container {
+  padding: 20px;
+}
+
+.order-table-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.order-item {
+    flex: 1 0 calc(50% - 20px); /* Two columns with a gap of 20px */
+}
+
+.order-detail {
+    margin-bottom: 10px;
+}
+
+.order-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.order-item {
+  margin-bottom: 20px; /* Adds space between list items */
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  margin-right: 50px
+}
+
+.order-detail {
+  margin-bottom: 5px; /* Adds spacing between each detail */
 }
 
 
+.order-details-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Adjust as needed */
+}
+
+.order-details {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px; /* Adjust spacing between rows */
+}
+
+.order-detail {
+  margin-bottom: 10px; /* Adjust spacing between details */
+}
+
+.button-container {
+  margin-top: 10px; /* Adjust spacing between details and button */
+}

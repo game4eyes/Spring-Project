@@ -111,7 +111,7 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
     };
 
     const handleCheckboxChange = (scheduleId, seatType) => {
-        const selectedPrice = seatType === 'freeseat' 
+        const selectedPrice = seatType === 'standingFreeSeating' 
             ? Math.round(trainPrices[scheduleId]?.general * 0.9) || 'N/A'
             : trainPrices[scheduleId]?.[seatType] || 'N/A';
         setSelectedSeats(prevState => ({
@@ -200,8 +200,8 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
                                             <label>
                                                 <input
                                                     type="checkbox"
-                                                    checked={selectedTrainSeats[selectedTrain.id]?.seatType === 'freeseat'}
-                                                    onChange={() => handleCheckboxChange(selectedTrain.id, 'freeseat')}
+                                                    checked={selectedTrainSeats[selectedTrain.id]?.seatType === 'standingFreeSeating'}
+                                                    onChange={() => handleCheckboxChange(selectedTrain.id, 'standingFreeSeating')}
                                                 />
                                                 입석 (자유석) ({trainPrices[selectedTrain.id]?.general ? Math.round(trainPrices[selectedTrain.id]?.general * 0.9) : 'N/A'})
                                             </label>
@@ -213,7 +213,7 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
                                                 style={{ marginTop: '25px' }}
                                                 onClick={() => {
                                                     const seatType = selectedTrainSeats[selectedTrain.id]?.seatType;
-                                                    const price = seatType === 'freeseat'
+                                                    const price = seatType === 'standingFreeSeating'
                                                         ? Math.round(trainPrices[selectedTrain.id]?.general * 0.9)
                                                         : trainPrices[selectedTrain.id]?.[seatType];
                                                     handleItemClick(searchURLObject(location.pathname), selectedTrain, train, seatType, price);
