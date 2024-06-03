@@ -28,7 +28,8 @@ import { useContext, useState } from 'react';
 import { AuthContext } from '../global/AuthContext';
 import OffCanvasButton from '@/components/OffCanvasButton';
 import LoginModal from './LoginModal';
-
+//  import { userPrefix } from '@/api/dataApi';
+import { userLogout } from '@/api/todoApi';
 const NavBar = () => {
 
 
@@ -66,11 +67,39 @@ const NavBar = () => {
 
   ];
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    localStorage.removeItem('lastActiveTime'); 
-    navigate('/');
+
+
+
+  // const handleLogout = () => {             //기존 로그아웃 (로그아웃,새로고침해도 세션 안 없어짐)
+  //   localStorage.removeItem('lastActiveTime'); 
+  //   navigate('/');
+  // };
+
+  
+  const handleLogout = async () => {        //수정한 로그아웃 (세션 삭제 기능 확인됨)
+    try {
+
+       const response = await userLogout();
+
+    //  const response = await fetch(`{userPrefix}/logout`, {
+    //     // const response = await fetch(`http://ec2-3-34-129-44.ap-northeast-2.compute.amazonaws.com:9090/api/user/logout`, {
+    //      method: 'GET',
+    //      credentials: 'include', // Include credentials (cookies, sessions) in the request
+    //    });
+  
+      if (response) {
+        setIsLoggedIn(false);
+        localStorage.removeItem('lastActiveTime'); 
+        sessionStorage.removeItem('email');
+        navigate('/');
+      } else {
+        console.error('Logout failed');
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
   };
+  
 
 
   const navbarStyle = {
@@ -159,7 +188,7 @@ const NavBar = () => {
               <h1 style={{ color: 'gray', marginLeft: '25px', marginRight: '25px' }}>|</h1>
 
 
-              {isLoggedIn ? (
+              {sessionStorage.email ? (
                 <>
 
                   <Nav.Item>
@@ -193,7 +222,7 @@ const NavBar = () => {
                 <>
 
                   <Nav.Item>
-                    <button type="button" className="nav-link d-flex flex-column align-items-center" onClick={() => setShowLoginModal(true)}>
+                    <button type="button" className="nav-link d-flex flex-column align-items-center" onClick={() =>setShowLoginModal(true)} >
                       <LoginIcon className="custom-link" style={{ width: '24px', height: '24px' }} />
                       <span className="custom-link">로그인</span>
                     </button>

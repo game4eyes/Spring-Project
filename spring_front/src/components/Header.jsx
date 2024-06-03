@@ -88,7 +88,7 @@ const Header = () => {
 
   return (
     <div className='fixedheader'>
-      {isLoggedIn && (
+      {sessionStorage.email && (
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
           <Link to='/api/user/mypage'><MemberIcon style={{ width: '24px', height: '24px' }} /></Link>
           <p style={{ margin: 0, marginTop: '8px', marginBottom: '8px', marginRight: '15px' }}><Link to='/api/user/mypage'>{sessionStorage.email}</Link>님 안녕하세요!</p>

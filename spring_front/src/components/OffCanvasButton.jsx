@@ -1,20 +1,40 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import { Navbar, Container, Nav, Offcanvas, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
 import '@/bootstrap_css/bootstrap.min.css';
 import '@/bootstrap_js/bootstrap.bundle.min.js';
 import '@/css/navbars-offcanvas.css';
-
 import { ReactComponent as LoginIcon } from '@/icon/user/login.svg';
+import { AuthContext } from '../global/AuthContext';
+import LoginModal from '@/components/LoginModal';
 
 const OffCanvasButton = () => {
-
-
   const [isOpen, setIsOpen] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 여부
+  const [userEmail, setUserEmail] = useState(""); // 사용자 이메일
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+
+  let sessionStorage = window.sessionStorage;
+  const email = sessionStorage.getItem('email');
+  
+  const { isLoggedIn, setIsLoggedIn, lastActiveTime, setLastActiveTime, loginId } = useContext(AuthContext);
+
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    sessionStorage.removeItem("email");
+  };
+
+
+
+  const handleCloseLoginModal = () => {
+    setShowLoginModal(false);
+  };
 
   return (
     <main>
@@ -25,8 +45,10 @@ const OffCanvasButton = () => {
           </button>
           <div className="offcanvas offcanvas-end text-bg-dark" tabIndex="-1" id="offcanvasNavbarDark" aria-labelledby="offcanvasNavbarDarkLabel">
             <div className="offcanvas-header">
-            <LoginIcon className="custom-link" style={{ width: '24px', height: '24px' , marginTop:'5px' }} />
-              <h5 className="offcanvas-title" style={{ marginTop: '10px', marginLeft: '15px' }} id="offcanvasNavbarDarkLabel">로그인</h5>
+              {/* <LoginIcon className="custom-link" style={{ width: '24px', height: '24px', marginTop: '5px' }} /> */}
+              <h5 className="offcanvas-title" style={{ marginTop: '10px', marginLeft: '15px' }} onClick={() =>setShowLoginModal(true)} id="offcanvasNavbarDarkLabel">
+                {sessionStorage.email ?  `${sessionStorage.email}` : ('로그인이 필요합니다')}
+              </h5>
               <button type="button" className="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <li className="border-top my-3"></li>
@@ -39,9 +61,18 @@ const OffCanvasButton = () => {
                   </button>
                   <div className="collapse show" id="account-collapse">
                     <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small" style={{ display: 'flex', flexDirection: 'column' }}>
-                      <li><a href="#" id="bus" className="link-body-emphasis d-inline-flex text-decoration-none rounded">로그인</a></li>
-                      <li><a href="#" id="train" className="link-body-emphasis d-inline-flex text-decoration-none rounded">마이페이지</a></li>
-                      <li><a href="#" id="plane" className="link-body-emphasis d-inline-flex text-decoration-none rounded">로그아웃</a></li>
+                      {sessionStorage.email  ? (
+                        <>
+                          <li><Link to="/api/user/mypage" id="train" className="link-body-emphasis d-inline-flex text-decoration-none rounded">마이페이지</Link></li>
+                          <li><Link to="#" id="plane" className="link-body-emphasis d-inline-flex text-decoration-none rounded" onClick={handleLogout}>로그아웃</Link></li>
+                        </>
+                      ) : (
+                        <>
+                          <li><Link to="#" onClick={() =>setShowLoginModal(true)} id="bus" className="link-body-emphasis d-inline-flex text-decoration-none rounded">로그인</Link></li>
+                          <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} />
+                          <li><Link to={"/api/user/join"} id="train" className="link-body-emphasis d-inline-flex text-decoration-none rounded">회원가입</Link></li>
+                        </>
+                      )}
                     </ul>
                   </div>
                 </li>
@@ -51,86 +82,41 @@ const OffCanvasButton = () => {
 
 
                 <li className="nav-item">
-                  <a className="nav-link active" style={{ backgroundColor: 'white!important', marginLeft: '15px' }} aria-current="page" href="#">홈</a>
+                  <Link to={"/"} className="nav-link active" style={{ backgroundColor: 'white!important', marginLeft: '15px' }}>홈</Link>
                 </li>
 
                 <ul className="list-unstyled ps-0 flex-column" style={{ display: 'flex', flexDirection: 'column' }}>
                   <li className="mb-1" style={{ marginBottom: '0' }}>
                     <button className="btn" style={{ backgroundColor: 'white!important', marginLeft: '5px', padding: '10px 10px' }} data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
-                      승차권 예매 <span style={{ marginLeft: '10px',fontSize: '12px' }}>▼</span>
+                      승차권 예매 <span style={{ marginLeft: '10px', fontSize: '12px' }}>▼</span>
                     </button>
                     <div className="collapse show" id="home-collapse">
                       <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small" style={{ display: 'flex', flexDirection: 'column' }}>
-                        <li><a href="#" id="bus" className="link-body-emphasis d-inline-flex text-decoration-none rounded">버스</a></li>
-                        <li><a href="#" id="train" className="link-body-emphasis d-inline-flex text-decoration-none rounded">기차</a></li>
-                        <li><a href="#" id="plane" className="link-body-emphasis d-inline-flex text-decoration-none rounded">항공</a></li>
+                        <li><Link to={"/ticketbook/bus"} id="bus" className="link-body-emphasis d-inline-flex text-decoration-none rounded">버스</Link></li>
+                        <li><Link to={"/ticketbook/train"} id="train" className="link-body-emphasis d-inline-flex text-decoration-none rounded">기차</Link></li>
+                        <li><Link to={"/ticketbook/plane"} id="plane" className="link-body-emphasis d-inline-flex text-decoration-none rounded">항공</Link></li>
                       </ul>
                     </div>
                   </li>
-
-
-
-                  {/* <li className="mb-1">
-        <button className="btn" style={{marginLeft:'5px'}}  data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-          조회 / 취소 <span style={{marginLeft:'10px', fontSize: '12px' }}>▼</span>
-          </button>
-          <div className="collapse show" id="dashboard-collapse">
-            <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small" style={{ display: 'flex', flexDirection: 'column' }}>
-              <li><a href="#" id = "check"className="link-body-emphasis d-inline-flex text-decoration-none rounded">예약 조회</a></li>
-              <li><a href="#" id = "cancel" className="link-body-emphasis d-inline-flex text-decoration-none rounded">예약 취소</a></li>
-          
-            </ul>
-          </div>
-        </li> */}
                 </ul>
 
 
                 <li className="nav-item">
-                  <a className="nav-link active" style={{ backgroundColor: 'white!important', marginLeft: '15px' }} aria-current="page" href="#">버스 터미널 정보</a>
+                  <Link to={"/nav/navlink2"} className="nav-link active" style={{ backgroundColor: 'white!important', marginLeft: '15px' }}>버스 터미널 정보</Link>
                 </li>
 
 
                 <li className="nav-item">
-                  <a className="nav-link active" style={{ backgroundColor: 'white!important', marginLeft: '15px' }} aria-current="page" href="#">기차역정보/노선도</a>
+                  <Link to={"/nav/navlink3"} className="nav-link active" style={{ backgroundColor: 'white!important', marginLeft: '15px' }}>기차역정보/노선도</Link>
                 </li>
 
 
                 <li className="nav-item">
-                  <a className="nav-link active" style={{ backgroundColor: 'white!important', marginLeft: '15px' }} aria-current="page" href="#">안내 공항 서비스</a>
+                  <Link to={"/nav/navlink4"}  className="nav-link active" style={{ backgroundColor: 'white!important', marginLeft: '15px' }}>안내 공항 서비스</Link>
                 </li>
 
+              </ul>
 
-
-                {/* <li className="nav-item">
-                  <a className="nav-link" style={{ backgroundColor: 'white!important', marginLeft: '15px' }} href="#">버스 터미널정보</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" style={{ backgroundColor: 'white!important', marginLeft: '15px' }} href="#">기차역정보/노선도</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" style={{ backgroundColor: 'white!important', marginLeft: '15px' }} href="#">안내 공항 서비스</a>
-                </li> */}
-                
-
-                {/* <li className="nav-item dropdown">
-                  <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Dropdown
-                  </a>
-                  <ul className="dropdown-menu">
-                    <li><a className="dropdown-item" href="#">Action</a></li>
-                    <li><a className="dropdown-item" href="#">Another action</a></li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li><a className="dropdown-item" href="#">Something else here</a></li>
-                  </ul>
-                </li>*/}
-              </ul> 
-
-              {/* <form className="d-flex mt-3" role="search">
-                <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                <button className="btn btn-outline-success" type="submit">Search</button>
-              </form> */}
             </div>
           </div>
         </div>
