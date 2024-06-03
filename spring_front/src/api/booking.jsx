@@ -2,7 +2,7 @@
 import axios from "axios";
 
 // export const API_SERVER_HOST = 'http://localhost:9090'; // 서버 주소
-export const API_SERVER_HOST = 'http://www.trable.kro.kr:9090/'; // 서버 주소
+export const API_SERVER_HOST = 'http://www.trable.kro.kr:9090'; // 서버 주소
 
 // 예약관련 기본 주소
 const bookingPrefix = `${API_SERVER_HOST}/insert/db`;
