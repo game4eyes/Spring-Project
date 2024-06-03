@@ -31,6 +31,7 @@ import ApiRouter from './ApiRouter';
 import PayRouter from './PayRouter';
 import FooterRouter from './FooterRouter';
 import '../css/Loading.css';
+import SuccessPage from '../User/SuccessPage';
 
 
 
@@ -49,6 +50,11 @@ const RootRouter = createBrowserRouter([
       element : <Suspense fallback={Loading}><Home/></Suspense>
       
   },
+  {
+    path    : '/success-page',
+    element : <Suspense fallback={Loading}><SuccessPage/></Suspense>
+    
+},
 
   // {
   //     path    : 'todo',

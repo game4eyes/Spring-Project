@@ -6,7 +6,7 @@ const Footer = () => {
     <footer style={styles.footer}>
       <div style={styles.container}>
         <div style={styles.info}>
-          <p style={styles.companyInfo}>대표이름: 김윤기 | 대표번호: 010-1234-5678</p>
+          <p style={styles.companyInfo}>대표이름: 김윤기 | 대표번호: 010-4593-2863</p>
           <p style={styles.address}>주소: 서울특별시 강남구 테헤란로 123-45</p>
           <p>&copy; 2024 MyWebsite. All rights reserved.</p>
         </div>
