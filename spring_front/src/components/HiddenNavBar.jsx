@@ -30,6 +30,8 @@ import OffCanvasButton from '@/components/OffCanvasButton';
 import LoginModal from './LoginModal';
 import { useEffect } from 'react';
 
+import { userLogout } from '@/api/todoApi';
+
 
 const HiddenNavBar = () => {
 
