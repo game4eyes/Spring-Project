@@ -37,6 +37,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     let sessionStorage = window.sessionStorage;
     const email = sessionStorage.getItem('email');
 
+    
 
     useEffect(() => {
         if (transportationtype === 'bus') {
@@ -45,6 +46,8 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
             setSelectedBus(selectedBus);
             setBus(bus);
 
+
+            setPaymentType("카드");
         } else if (transportationtype === 'train') {
             const selectedTrain = JSON.parse(localStorage.getItem('selectedTrain'));
             const train = JSON.parse(localStorage.getItem('train'));
@@ -54,6 +57,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
             setSelectedTrain(selectedTrain);
             setTrain(train);
 
+            setPaymentType("카드");
 
         } else if (transportationtype === 'plane') {
             const selectedPlane = JSON.parse(localStorage.getItem('selectedPlane'));
@@ -71,6 +75,8 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
             setSeatPrice_plane(seatPrice_plane);
             // setFlight_departureName(plane_departureName);
             // setFlight_destinationName(plane_destinationName);
+
+            setPaymentType("카드");
         }
     }, [transportationtype]);
 
@@ -267,7 +273,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                             </>
                         )}
                     </div>
-                    <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
+                    {/* <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <h2 style={{ marginBottom: '30px' }}>결제수단 선택</h2>
                     <div>
                         <select value={paymentType} onChange={e => setPaymentType(e.target.value)}>
@@ -276,7 +282,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                             <option value="계좌이체">계좌이체</option>
                             <option value="휴대폰">휴대폰</option>
                         </select>
-                    </div>
+                    </div> */}
                     <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
                         <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_bus(e, bus, selectedBus, sessionStorage.email)}>결제</button>
@@ -333,7 +339,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                             </>
                         )}
                     </div>
-                    <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
+                    {/* <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <h2 style={{ marginBottom: '30px' }}>결제수단 선택</h2>
                     <div>
                         <select value={paymentType} onChange={e => setPaymentType(e.target.value)}>
@@ -349,7 +355,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
 
 
                         <button type="button" onClick={bookingCancel}>취소</button>
-                    </div>
+                    </div> */}
                     {showBookingResultModal && (
                         <div className="modal">
                             <div className="modal-content">
@@ -401,7 +407,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                             </>
                         )}
                     </div>
-                    <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
+                    {/* <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <h2 style={{ marginBottom: '30px' }}>결제수단 선택</h2>
                     <div>
                         <select value={paymentType} onChange={e => setPaymentType(e.target.value)}>
@@ -410,7 +416,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                             <option value="계좌이체">계좌이체</option>
                             <option value="휴대폰">휴대폰</option>
                         </select>
-                    </div>
+                    </div> */}
                     <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
                         <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_plane(e, selectedPlane, seatPrice_plane, plane)}>결제</button>
