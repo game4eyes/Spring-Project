@@ -7,7 +7,7 @@ import LoginModal from '@/components/LoginModal';
 import BookResultModal from '@/components/BookResultModal';
 import { AuthContext } from '@/global/AuthContext';
 
-const BookResult = ({ transportationtype, trainprice, handleClose }) => {
+const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
     const location = useLocation();
     const navigate = useNavigate();
@@ -347,4 +347,4 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     );
 };
 
-export default BookResult;
+export default BookResult_bak;
