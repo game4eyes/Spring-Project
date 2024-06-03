@@ -7,10 +7,10 @@ import LoginModal from '@/components/LoginModal';
 import BookResultModal from '@/components/BookResultModal';
 import { AuthContext } from '@/global/AuthContext';
 import { getUserInfo } from "@/api/todoApi.jsx";
-import { bookinFail, booking, bookingComplete } from "@/api/booking.jsx";
+import {bookinFail, booking, bookingComplete} from "@/api/booking.jsx";
 import { tossPayment } from '../api/todoApi';
 
-const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
+const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
     const location = useLocation();
     const navigate = useNavigate();
@@ -25,7 +25,7 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
     const [plane_departureName, setFlight_departureName] = useState(null);
     const [plane_destinationName, setFlight_destinationName] = useState(null);
 
-    const { setShowLoginModal } = useContext(AuthContext);
+    const {setShowLoginModal } = useContext(AuthContext);
     const [paymentType, setPaymentType] = useState('카드');  // 결제 유형 상태
     const [showBookResultModal, setShowBookResultModal] = useState(false);
     const [showBookingResultModal, setShowBookingResultModal] = useState(false);
@@ -33,15 +33,11 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
     const [selectedTrainSeats, setSelectedTrainSeats] = useState([]);
 
 
-
+    
     let sessionStorage = window.sessionStorage;
     const email = sessionStorage.getItem('email');
 
-
-
-
-
-
+    
 
     useEffect(() => {
         if (transportationtype === 'bus') {
@@ -67,7 +63,7 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
             const selectedPlane = JSON.parse(localStorage.getItem('selectedPlane'));
             const plane = JSON.parse(localStorage.getItem('plane'));
             const selectedSeatType_plane = JSON.parse(localStorage.getItem('selectedSeatType_plane'));
-            const seatPrice_plane = JSON.parse(localStorage.getItem('seatPrice_plane'));
+             const seatPrice_plane = JSON.parse(localStorage.getItem('seatPrice_plane'));
 
             // const plane_departureName = JSON.parse(localStorage.getItem('plane_departureName'));
             // const plane_destinationName = JSON.parse(localStorage.getItem('plane_destinationName'));
@@ -136,11 +132,8 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
             userEmail: sessionStorage.getItem("email"),
             successUrl: 'http://www.trable.kro.kr:9090/api/user/toss/success',
             failUrl: 'http://www.trable.kro.kr:9090/api/user/toss/fail',
-
-
             // successUrl: 'http://localhost:9090/api/user/toss/success',
             // failUrl: 'http://localhost:9090/api/user/toss/fail',
-
             payType: "CASH"
         }
 
@@ -155,19 +148,11 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
                     customerEmail: sessionStorage.getItem("email"),
                     successUrl: 'http://www.trable.kro.kr:9090/api/user/toss/success',
                     failUrl: 'http://www.trable.kro.kr:9090/api/user/toss/fail',
-
                     // successUrl: 'http://localhost:9090/api/user/toss/success',
                     // failUrl: 'http://localhost:9090/api/user/toss/fail',
-
                 }).then(response => {
                     console.log('Payment successful:', response);
-                    const successful = bookingComplete({ email, orderId })
-
-
-                    if(response.status >= 200 && response.status < 300){
-                        navigate('/success-page');  // 결제 성공이면 여기로 이동
-                    }
-
+                    const successful = bookingComplete({email,orderId})
                     setShowBookResultModal(true);  // 결제 성공 후 결과 모달 표시
                 }).catch(error => {
                     console.error('Payment error:', error);
@@ -188,8 +173,6 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
             }
         }
     };
-
-
 
 
     const handleBook_bus = async (e, bus, selectedBus, email) => {
@@ -214,73 +197,19 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
 
     };
 
-    const handleBook_train = async (e, selectedTrain, fare, train, email, selectedSeatType_train) => {
-
-        const orderId = `order_${selectedTrain.id}_${Date.now()}`;
+    const handleBook_train = async (e, selectedTrain, fare, train) => {
         e.preventDefault();
-
         console.log('handleBook_train called with:', selectedTrain, fare); // 디버그용 로그
-
-        const data = {
-            userEmail: email,
-            scheduleId: selectedTrain.id,
-            orderId: orderId,
-            orderDate: train.date,
-            grade: selectedSeatType_train,
-            seatOrderNum: 1
-        }
-        const bookingResult = booking(data)
-
-
-
         // await handlePayment(fare, `order_${selectedTrain.id}_${Date.now()}`, `${selectedTrain.lineName} 기차 티켓`);
-        await handlePayment(seatPrice_train, data.orderId, `${selectedTrain.lineName} -   ${train.departure} to ${train.destination} 기차 티켓`);
+        await handlePayment(fare, `order_${selectedTrain.id}_${Date.now()}`, `${selectedTrain.lineName} -   ${train.departure} to ${train.destination} 기차 티켓`);
     };
 
-    const handleBook_plane = async (e, selectedPlane, fare, plane, email, selectedSeatType_plane) => {
+    const handleBook_plane = async (e, selectedPlane, fare, plane) => {
         e.preventDefault();
-        const orderId = `order_${selectedPlane.id}_${Date.now()}`
         console.log('handleBook_plane called with:', selectedPlane, fare); // 디버그용 로그
-        const data = {
-            userEmail: email,
-            scheduleId: selectedPlane.id,
-            orderId: orderId,
-            orderDate: plane.date,
-            grade: selectedSeatType_plane,
-            seatOrderNum: 1
-        }
-        const bookingResult = booking(data)
-
-
         // await handlePayment(fare, `order_${selectedTrain.id}_${Date.now()}`, `${selectedTrain.lineName} 기차 티켓`);
-        await handlePayment(seatPrice_plane, data.orderId, `${selectedPlane.lineName} -   ${plane.departure} to ${plane.destination} 공항 티켓`);
+        await handlePayment(fare, `order_${selectedPlane.id}_${Date.now()}`, `${selectedPlane.lineName} -   ${plane.departure} to ${plane.destination} 공항 티켓`);
     };
-
-
-
-
-    const handleBook_test = async (e, bus, selectedBus, email) => {     //돈 쓸 기분 내고 싶은 분은 쓰세요 (199,9999원 청구됨)
-        const orderId = `order_${selectedBus.id}_${Date.now()}`;
-        e.preventDefault();
-        console.log('handleBook_bus called with:', bus, selectedBus.price); // 디버그용 로그
-        const data = {
-            userEmail: email,
-            scheduleId: selectedBus.id,
-            orderId: orderId,
-            orderDate: bus.departureDate,
-            grade: "Bus",
-            seatOrderNum: 1
-        }
-        const bookingResult = booking(data)
-        if (bookingResult) {
-            console.log("결제 전 으로 데이터 삽입 완료")
-            await handlePayment('19999999', data.orderId, `${selectedBus.carrier} - ${bus.departure} to ${bus.destination} 버스 티켓`, email);
-        } else {
-            return false;
-        }
-
-    };
-
 
 
     useEffect(() => {
@@ -417,14 +346,14 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
                             <option value="계좌이체">계좌이체</option>
                             <option value="휴대폰">휴대폰</option>
                         </select>
-                        </div>*/}
+                    </div>
                     <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
-                        <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_train(e, selectedTrain, seatPrice_train, train, email, selectedSeatType_train)}>결제</button>
+                        <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_train(e, selectedTrain, train, train)}>결제</button>
 
 
                         <button type="button" onClick={bookingCancel}>취소</button>
-                    </div>
+                    </div> */}
                     {showBookingResultModal && (
                         <div className="modal">
                             <div className="modal-content">
@@ -488,7 +417,7 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
                     </div> */}
                     <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <div style={{ display: 'flex', marginBottom: '30px' }}>
-                        <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_plane(e, selectedPlane, seatPrice_plane, plane, email, selectedSeatType_plane)}>결제</button>
+                        <button type="button" style={{ marginRight: '40px' }} onClick={(e) => handleBook_plane(e, selectedPlane, seatPrice_plane, plane)}>결제</button>
 
 
                         <button type="button" onClick={bookingCancel}>취소</button>
@@ -510,4 +439,4 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
     );
 };
 
-export default BookResult_bak;
+export default BookResult;
