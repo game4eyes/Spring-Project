@@ -130,12 +130,8 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
             orderId,
             orderName,
             userEmail: sessionStorage.getItem("email"),
-
             successUrl: 'http://www.trable.kro.kr:9090/api/user/toss/success',
             failUrl: 'http://www.trable.kro.kr:9090/api/user/toss/fail',
-            // successUrl: 'http://localhost:9090/api/user/toss/success',
-            // failUrl: 'http://localhost:9090/api/user/toss/fail',
-            
             payType: "CASH"
         }
 
@@ -150,8 +146,6 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     customerEmail: sessionStorage.getItem("email"),
                     successUrl: 'http://www.trable.kro.kr:9090/api/user/toss/success',
                     failUrl: 'http://www.trable.kro.kr:9090/api/user/toss/fail',
-                    // successUrl: 'http://localhost:9090/api/user/toss/success',
-                    // failUrl: 'http://localhost:9090/api/user/toss/fail',
                 }).then(response => {
                     console.log('Payment successful:', response);
                     const successful = bookingComplete({email,orderId})
