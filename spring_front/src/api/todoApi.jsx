@@ -85,7 +85,7 @@ export const socialLogin = async () => {
 // Toss 결제 함수
 export const tossPayment = async (paymentData) => {
     try {
-        const res = await axios.post(`${tossEndpoint}/toss`, paymentData, axoisConfig, 
+        const res = await axios.post(`${userPrefix}/toss`, paymentData, axoisConfig,
         {withCredentials: true}
     );
         return res.data;
