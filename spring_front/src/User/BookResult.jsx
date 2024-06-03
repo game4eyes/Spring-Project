@@ -136,8 +136,11 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
             userEmail: sessionStorage.getItem("email"),
             successUrl: 'http://www.trable.kro.kr:9090/api/user/toss/success',
             failUrl: 'http://www.trable.kro.kr:9090/api/user/toss/fail',
+
+
             // successUrl: 'http://localhost:9090/api/user/toss/success',
             // failUrl: 'http://localhost:9090/api/user/toss/fail',
+
             payType: "CASH"
         }
 
@@ -152,11 +155,18 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
                     customerEmail: sessionStorage.getItem("email"),
                     successUrl: 'http://www.trable.kro.kr:9090/api/user/toss/success',
                     failUrl: 'http://www.trable.kro.kr:9090/api/user/toss/fail',
+
                     // successUrl: 'http://localhost:9090/api/user/toss/success',
                     // failUrl: 'http://localhost:9090/api/user/toss/fail',
+
                 }).then(response => {
                     console.log('Payment successful:', response);
                     const successful = bookingComplete({ email, orderId })
+
+
+                    if(response.status >= 200 && response.status < 300){
+                        navigate('/success-page');  // 결제 성공이면 여기로 이동
+                    }
 
                     setShowBookResultModal(true);  // 결제 성공 후 결과 모달 표시
                 }).catch(error => {
