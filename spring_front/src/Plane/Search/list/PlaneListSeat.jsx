@@ -12,9 +12,9 @@ const PlaneListSeat = ({Id,Date}) => {
     }, []);
     return (
         <label>
-            비즈니스 : {seat.airBusiness}
-            이코노미 : {seat.airEconomy}
-            퍼스트 : {seat.airFirst}
+            비즈니스 : {seat.airBusiness} <br></br>
+            이코노미 : {seat.airEconomy}    <br></br>
+            퍼스트 : {seat.airFirst}    <br></br>
         </label>
     );
 };

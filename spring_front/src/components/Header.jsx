@@ -21,24 +21,24 @@ const Header = () => {
   const email = sessionStorage.getItem('email');
 
 
-  useEffect(() => {
-    const handleHistoryChange = () => {
-      if (isLoggedIn && (location.pathname === '/' || location.pathname === '/api/user/login')) {
-        alert('로그인한 상태입니다.');
-        navigate('/');
-        window.history.pushState(null, null, window.location.href);
-      } else if (!isLoggedIn && location.pathname !== '/api/user/login' && location.pathname === '/') {
-        alert('로그인이 필요합니다.');
-        navigate('/api/user/login');
-      }
-    };
+  // useEffect(() => {
+  //   const handleHistoryChange = () => {
+  //     if (isLoggedIn && (location.pathname === '/' || location.pathname === '/api/user/login')) {
+  //       alert('로그인한 상태입니다.');
+  //       navigate('/');
+  //       window.history.pushState(null, null, window.location.href);
+  //     } else if (!isLoggedIn && location.pathname !== '/api/user/login' && location.pathname === '/') {
+  //       alert('로그인이 필요합니다.');
+  //       navigate('/api/user/login');
+  //     }
+  //   };
 
-    window.addEventListener('popstate', handleHistoryChange);
+  //   window.addEventListener('popstate', handleHistoryChange);
 
-    return () => {
-      window.removeEventListener('popstate', handleHistoryChange);
-    };
-  }, [isLoggedIn, location, navigate]);
+  //   return () => {
+  //     window.removeEventListener('popstate', handleHistoryChange);
+  //   };
+  // }, [isLoggedIn, location, navigate]);
 
   const handleLogout = () => {
     setIsLoggedIn(false);

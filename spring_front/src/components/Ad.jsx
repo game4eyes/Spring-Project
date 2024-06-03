@@ -21,7 +21,7 @@ const Ad = () => {
 
   // 팝업창으로 URL 열기
   const openUrlInNewWindow = (url) => {
-    window.open(url, '_blank');
+    window.open(url, '_blank', 'width=800,height=800');
   };
 
   return (
@@ -33,15 +33,15 @@ const Ad = () => {
         {AdList.map(ad => (
           typeof ad !== 'number' && (
             <li key={ad.id} className="ad-item" onClick={() => openUrlInNewWindow(ad.url)}>
-              <img
+              <a href ="#"><img
                 src={ad.src}
                 alt={ad.title}
                 className="ad-image"
-              />
-              <div className="ad-description">
-                {/* <Link to={'/' + ad.id}>{ad.title}</Link> */}
-                {/* <p>{ad.explain}</p> */}
-              </div>
+              /></a>
+               {/* <div className="ad-description">
+                 <Link to={'/' + ad.id}>{ad.title}</Link>
+                 <p>{ad.explain}</p> 
+              </div>  */}
             </li>
           )
         ))}

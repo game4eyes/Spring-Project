@@ -8,6 +8,7 @@ import '@/css/List.css'; // CSS 파일 임포트
 import LoginModal from '@components/LoginModal';
 import BookResultModal from '@components/BookResultModal';
 import BusListSeat from "@/Bus/Search/list/BusListSeat.jsx";
+import Join from '../../../User/Join';
 
 const BusList = ({ startStationId, endStationId, gradeCarrier, bus, departureTime, returnDate, passengerCount, departure, destination, isRoundTrip, departureDate }) => {
     const [busInfo, setBusInfo] = useState([]);
@@ -64,10 +65,10 @@ const BusList = ({ startStationId, endStationId, gradeCarrier, bus, departureTim
             setShowUserGuestPopup(false); // 기존 팝업 닫기
             setShowLoginModal(true); // 로그인 모달 열기
         } else {
-            const url = `/api/user/join?payjoin&railName=${encodeURIComponent(selectedBus.railName)}&trainClass=${encodeURIComponent(selectedBus.trainClass)}&trainNo=${encodeURIComponent(selectedBus.trainNo)}&departureTime=${encodeURIComponent(selectedBus.departureTime)}
-            &departure=${encodeURIComponent(selectedBus.departure)}&destination=${encodeURIComponent(selectedBus.destination)}&hour=${encodeURIComponent(selectedBus.hour)}&date=${encodeURIComponent(selectedBus.date)}&dayz=${encodeURIComponent(selectedBus.dayz)}&price=${encodeURIComponent(selectedBus.price)}`;
-            setGuestRedirectUrl(url);
-            navigate(url);
+            // const url = `/api/user/join?payjoin&railName=${encodeURIComponent(selectedBus.railName)}&trainClass=${encodeURIComponent(selectedBus.trainClass)}&trainNo=${encodeURIComponent(selectedBus.trainNo)}&departureTime=${encodeURIComponent(selectedBus.departureTime)}
+            // &departure=${encodeURIComponent(selectedBus.departure)}&destination=${encodeURIComponent(selectedBus.destination)}&hour=${encodeURIComponent(selectedBus.hour)}&date=${encodeURIComponent(selectedBus.date)}&dayz=${encodeURIComponent(selectedBus.dayz)}&price=${encodeURIComponent(selectedBus.price)}`;
+            // setGuestRedirectUrl(url);
+            navigate('/api/user/join');
         }
     };
 

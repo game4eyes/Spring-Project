@@ -143,3 +143,31 @@
 .button-container {
   margin-top: 10px; /* Adjust spacing between details and button */
 }
+
+
+.mypage-container {
+  padding: 20px;
+}
+
+.order-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns */
+  gap: 20px; /* Space between items */
+  list-style: none;
+  padding: 0;
+}
+
+.order-item {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.order-detail {
+  margin-bottom: 10px;
+}
+
+.button-container {
+  text-align: right;
+}
