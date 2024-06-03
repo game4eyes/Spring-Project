@@ -3,9 +3,8 @@ import axios from "axios";
 // 서버 호스트 설정
 
 
-//export const API_SERVER_HOST = 'http://localhost:9090'; // 서버 주소
-
-   export const API_SERVER_HOST = 'http://ec2-3-34-129-44.ap-northeast-2.compute.amazonaws.com:9090'; // 서버 주소
+// export const API_SERVER_HOST = 'http://localhost:9090'; // 서버 주소
+  export const API_SERVER_HOST = 'http://www.trable.kro.kr:9090'; // 서버 주소
 
 
 // 사용자 관련 엔드포인트S
@@ -85,7 +84,7 @@ export const socialLogin = async () => {
 // Toss 결제 함수
 export const tossPayment = async (paymentData) => {
     try {
-        const res = await axios.post(`${tossEndpoint}/toss`, paymentData, axoisConfig, 
+        const res = await axios.post(`${userPrefix}/toss`, paymentData, axoisConfig,
         {withCredentials: true}
     );
         return res.data;
