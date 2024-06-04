@@ -11,7 +11,7 @@ const Ad = () => {
     { id: "ad1", title: "김윤기 github", explain: '김윤기 github', src: AD1_image, url: 'https://github.com/developer4eyes'},
     { id: "ad2", title: "이상준 github", explain: '이상준 github', src: AD2_image, url: 'https://github.com/namung08'},
     { id: "ad3", title: "장연태 github", explain: '장연태 github', src: AD3_image, url: 'https://github.com/Jelliiiii' },
-    { id: "ad4", title: "이진욱 github", explain: '이진욱 github', src: AD4_image, url: 'https://github.com/Jinwook93/study_home' },
+    { id: "ad4", title: "이진욱 github", explain: '이진욱 github', src: AD4_image, url: 'https://github.com/Jinwook93' },
   ];
 
   // x 버튼 클릭 시 광고 리스트의 가시성을 토글하는 함수
