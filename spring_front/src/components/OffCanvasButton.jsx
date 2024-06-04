@@ -87,10 +87,10 @@ const OffCanvasButton = () => {
 
                 <ul className="list-unstyled ps-0 flex-column" style={{ display: 'flex', flexDirection: 'column' }}>
                   <li className="mb-1" style={{ marginBottom: '0' }}>
-                    <button className="btn" style={{ backgroundColor: 'white!important', marginLeft: '5px', padding: '10px 10px' }} data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                    <button className="btn" style={{ backgroundColor: 'white!important', marginLeft: '5px', padding: '10px 10px' }} data-bs-toggle="collapse" data-bs-target="#booking" aria-expanded="true">
                       승차권 예매 <span style={{ marginLeft: '10px', fontSize: '12px' }}>▼</span>
                     </button>
-                    <div className="collapse show" id="home-collapse">
+                    <div className="collapse show" id="booking">
                       <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small" style={{ display: 'flex', flexDirection: 'column' }}>
                         <li><Link to={"/ticketbook/bus"} id="bus" className="link-body-emphasis d-inline-flex text-decoration-none rounded">버스</Link></li>
                         <li><Link to={"/ticketbook/train"} id="train" className="link-body-emphasis d-inline-flex text-decoration-none rounded">기차</Link></li>

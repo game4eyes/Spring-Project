@@ -1,42 +1,62 @@
-import React, { useEffect, useState } from 'react';
-import { getSeatAvailability } from "@/api/dataApi.jsx";
+import React, {useEffect, useState} from 'react';
+import {getSeatAvailability} from "@/api/dataApi.jsx";
 
-const TrainListSeat = ({ Id, Date, onSoldOutChange }) => {
+const TrainListSeat = ({Id, Date, selectedTrainSeats, selectedTrain, handleCheckboxChange, trainPrices}) => {
     const [seat, setSeat] = useState({});
-    const [soldout, setSoldout] = useState(false); // 매진 상태
 
     useEffect(() => {
-        const fetchSeatData = async () => {
-            try {
-                const data = await getSeatAvailability(Id, Date);
+        getSeatAvailability(Id, Date)
+            .then((data) => {
                 setSeat(data);
-
-                // Determine if all seats are sold out
-                const isSoldOut = data.trainStandingFreeSeating === 0 && data.trainGeneral === 0 && data.trainSpecial === 0;
-                setSoldout(isSoldOut);
-
-                // Send the soldout status to the parent component
-                onSoldOutChange(isSoldOut);
-            } catch (error) {
-                console.error('Error fetching seat availability:', error);
-            }
-        };
-
-        fetchSeatData();
-    }, [Id, Date, onSoldOutChange]);
+                // Store seat data in local storage
+                localStorage.setItem(`trainseatData_${Id}`, JSON.stringify(data));
+            });
+    }, [Id, Date]);
 
     return (
-        <div>
-            <label>
-                입석(자유석): {seat.trainStandingFreeSeating || 0}
-                <br />
-                일반: {seat.trainGeneral || 0}
-                <br />
-                특석: {seat.trainSpecial || 0}
-                <br />
-                {soldout && <span style={{ color: 'red' }}>매진</span>}
-            </label>
-        </div>
+        <>
+            <td>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={selectedTrainSeats[selectedTrain.id]?.seatType === 'standingFreeSeating'}
+                        onChange={() => handleCheckboxChange(selectedTrain.id, 'standingFreeSeating')}
+                        disabled={seat.trainStandingFreeSeating === 0}
+                    />
+                    입석 (자유석)
+                    ({trainPrices[selectedTrain.id]?.general ? Math.round(trainPrices[selectedTrain.id]?.general * 0.9) : 'N/A'})
+                </label>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={selectedTrainSeats[selectedTrain.id]?.seatType === 'general'}
+                        onChange={() => handleCheckboxChange(selectedTrain.id, 'general')}
+                        disabled={seat.trainGeneral === 0}
+                    />
+                    일반석 ({trainPrices[selectedTrain.id]?.general || 'N/A'})
+                </label>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={selectedTrainSeats[selectedTrain.id]?.seatType === 'special'}
+                        onChange={() => handleCheckboxChange(selectedTrain.id, 'special')}
+                        disabled={seat.trainSpecial === 0}
+                    />
+                    특석 ({trainPrices[selectedTrain.id]?.special || 'N/A'})
+                </label>
+            </td>
+            <td>
+                <label>
+                    입석(자유석) : {seat.trainStandingFreeSeating}
+                </label>
+                <label>
+                    일반 : {seat.trainGeneral}
+                </label>
+                <label>
+                    특석 : {seat.trainSpecial}
+                </label>
+            </td>
+        </>
     );
 };
 

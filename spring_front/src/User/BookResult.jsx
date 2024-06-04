@@ -402,7 +402,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     <div>
                         {selectedTrain && (
                             <>
-                                <p>기차 ID : {selectedTrain.id}</p>
+                                {/* <p>기차 ID : {selectedTrain.id}</p> */}
                                 <p>기차 번호 : {selectedTrain.frequency}</p>
                                 <p>열차 종류 : {selectedTrain.lineName}</p>
                                 <p>출발 시간 : {selectedTrain.departureTime}</p>
@@ -470,7 +470,7 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
                     <div>
                         {selectedPlane && (
                             <>
-                                <p>공항 ID : {selectedPlane.id}</p>
+                                {/* <p>공항 ID : {selectedPlane.id}</p> */}
                                 <p>기차 번호 : {selectedPlane.frequency}</p>
                                 <p>열차 종류 : {selectedPlane.lineName}</p>
                                 <p>출발 시간 : {selectedPlane.departureTime}</p>

@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getTrainSchedule, getTrainPrice } from '../../../api/dataApi';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Pagination from '../../../common/page/Pagination';
 import '@/css/List.css';
-import { AuthContext } from '../../../global/AuthContext';
 import '@/css/Popup.css';
 import LoginModal from '@/components/LoginModal';
 import BookResultModal from '@/components/BookResultModal';
@@ -11,7 +10,7 @@ import TrainListSeat from "@/Train/Search/list/TrainListSeat.jsx";
 
 const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier, train, date }) => {
     const [trainInfo, setTrainInfo] = useState([]);
-    const [trainPrices, setTrainPrices] = useState({}); // State to store train prices
+    const [trainPrices, setTrainPrices] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5);
     const [loading, setLoading] = useState(true);
@@ -21,10 +20,9 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
     const [showBookResultModal, setShowBookResultModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [selectedTrainSeats, setSelectedSeats] = useState({});
-    const [soldoutStatus, setSoldoutStatus] = useState({}); // State to track soldout status for each train
+    const [soldoutStatus, setSoldoutStatus] = useState({});
 
     const location = useLocation();
-    const navigate = useNavigate();
 
     const handleCloseLoginModal = () => {
         setShowLoginModal(false);
@@ -89,8 +87,8 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
         setSelectedTrain(selectedTrainItem);
         localStorage.setItem('selectedTrain', JSON.stringify(selectedTrainItem));
         localStorage.setItem('train', JSON.stringify(train));
-        localStorage.setItem('selectedSeatType_train', JSON.stringify(seatType)); // 선택한 좌석 유형 저장
-        localStorage.setItem('seatPrice_train', JSON.stringify(price)); // 선택한 좌석 가격 저장
+        localStorage.setItem('selectedSeatType_train', JSON.stringify(seatType));
+        localStorage.setItem('seatPrice_train', JSON.stringify(price));
         if (sessionStorage.email) {
             setShowBookResultModal(true);
         } else {
@@ -106,8 +104,6 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
         if (option === 'login') {
             setShowUserGuestPopup(false);
             setShowLoginModal(true);
-        } else {
-            // Handle other options
         }
     };
 
@@ -162,7 +158,7 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
                         <table>
                             <thead>
                                 <tr>
-                                    <th>열차 ID</th>
+                                    {/* <th>열차 ID</th> */}
                                     <th>열차 번호</th>
                                     <th>열차 이름</th>
                                     <th>출발 시간</th>
@@ -173,70 +169,59 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
                                 </tr>
                             </thead>
                             <tbody>
-                                {currentItems.map((selectedTrain, index) => (
-                                    <tr key={index}>
-                                        <td>{selectedTrain.id}</td>
-                                        <td>{selectedTrain.frequency}</td>
-                                        <td>{selectedTrain.lineName}</td>
-                                        <td>{selectedTrain.departureTime}</td>
-                                        <td>{selectedTrain.arrivalTime}</td>
-                                        {/* <td>{selectedTrain.price}</td> */}
-                                        <td>
-                                            <label>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={selectedTrainSeats[selectedTrain.id]?.seatType === 'general'}
-                                                    onChange={() => handleCheckboxChange(selectedTrain.id, 'general')}
-                                                />
-                                                일반석 ({trainPrices[selectedTrain.id]?.general || 'N/A'})
-                                            </label>
-                                            <label>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={selectedTrainSeats[selectedTrain.id]?.seatType === 'special'}
-                                                    onChange={() => handleCheckboxChange(selectedTrain.id, 'special')}
-                                                />
-                                                특석 ({trainPrices[selectedTrain.id]?.special || 'N/A'})
-                                            </label>
-                                            <label>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={selectedTrainSeats[selectedTrain.id]?.seatType === 'standingFreeSeating'}
-                                                    onChange={() => handleCheckboxChange(selectedTrain.id, 'standingFreeSeating')}
-                                                />
-                                                입석 (자유석) ({trainPrices[selectedTrain.id]?.general ? Math.round(trainPrices[selectedTrain.id]?.general * 0.9) : 'N/A'})
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <TrainListSeat Id={selectedTrain.id} Date={date} onSoldOutChange={handleSoldOutChange} />
-                                        </td>
-                                        <td>
-                                            {soldoutStatus[selectedTrain.id] ? (
-                                                <button
-                                                    className="button sold-out-button"
-                                                    style={{ marginTop: '25px' }}
-                                                    onClick={() => alert('예약을 할 수 없습니다')}
-                                                >
-                                                    매진
-                                                </button>
-                                            ) : (
-                                                <button
-                                                    className="button"
-                                                    style={{ marginTop: '25px' }}
-                                                    onClick={() => {
-                                                        const seatType = selectedTrainSeats[selectedTrain.id]?.seatType;
-                                                        const price = seatType === 'standingFreeSeating'
-                                                            ? Math.round(trainPrices[selectedTrain.id]?.general * 0.9)
-                                                            : trainPrices[selectedTrain.id]?.[seatType];
-                                                        handleItemClick(searchURLObject(location.pathname), selectedTrain, train, seatType, price);
-                                                    }}
-                                                >
-                                                    결제
-                                                </button>
-                                            )}
-                                        </td>
-                                    </tr>
-                                ))}
+                                {currentItems.map((selectedTrain, index) => {
+                                    // Retrieve seat data from local storage
+                                    const trainseatData = JSON.parse(localStorage.getItem(`trainseatData_${selectedTrain.id}`));
+                                    const isSoldOut = trainseatData && trainseatData.trainStandingFreeSeating === 0 &&
+                                        trainseatData.trainGeneral === 0 &&
+                                        trainseatData.trainSpecial === 0;
+                                    
+                                    return (
+                                        <tr key={index}>
+                                            {/* <td>{selectedTrain.id}</td> */}
+                                            <td>{selectedTrain.frequency}</td>
+                                            <td>{selectedTrain.lineName}</td>
+                                            <td>{selectedTrain.departureTime}</td>
+                                            <td>{selectedTrain.arrivalTime}</td>
+                                            
+                                            <TrainListSeat
+                                                Id={selectedTrain.id}
+                                                Date={date}
+                                                selectedTrainSeats={selectedTrainSeats}
+                                                selectedTrain={selectedTrain}
+                                                handleCheckboxChange={handleCheckboxChange}
+                                                trainPrices={trainPrices}
+                                                onSoldOutChange={handleSoldOutChange}
+                                            />
+                                            
+                                            <td>
+                                                {isSoldOut ? (
+                                                    <button
+                                                        className="button sold-out-button"
+                                                        style={{ marginTop: '25px',backgroundColor: 'red', color:'white' }}
+                                                        onClick={() => alert('예약을 할 수 없습니다')}
+                                                    >
+                                                        매진
+                                                    </button>
+                                                ) : (
+                                                    <button
+                                                        className="button"
+                                                        style={{ marginTop: '25px' }}
+                                                        onClick={() => {
+                                                            const seatType = selectedTrainSeats[selectedTrain.id]?.seatType;
+                                                            const price = seatType === 'standingFreeSeating'
+                                                                ? Math.round(trainPrices[selectedTrain.id]?.general * 0.9)
+                                                                : trainPrices[selectedTrain.id]?.[seatType];
+                                                            handleItemClick(searchURLObject(location.pathname), selectedTrain, train, seatType, price);
+                                                        }}
+                                                    >
+                                                        결제
+                                                    </button>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </table>
                         <Pagination itemsPerPage={itemsPerPage} totalItems={trainInfo.length} paginate={paginate} />
@@ -247,7 +232,15 @@ const TrainList = ({ startStationId, endStationId, departureTime, weekdayCarrier
             )}
             {showUserGuestPopup && <UserGuestPopup onClose={handleCloseUserGuestPopup} onOptionSelect={handleOptionSelect} />}
             {showLoginModal && <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} />}
-            {showBookResultModal && sessionStorage.email && <BookResultModal transportationtype={'train'} selectedTrainSeats={selectedTrainSeats} selectedTrain={selectedTrain} train={train} handleClose={() => setShowBookResultModal(false)} />}
+            {showBookResultModal && sessionStorage.email && (
+                <BookResultModal
+                    transportationtype={'train'}
+                    selectedTrainSeats={selectedTrainSeats}
+                    selectedTrain={selectedTrain}
+                    train={train}
+                    handleClose={() => setShowBookResultModal(false)}
+                />
+            )}
         </div>
     );
 };

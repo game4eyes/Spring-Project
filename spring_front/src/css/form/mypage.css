@@ -171,3 +171,33 @@
 .button-container {
   text-align: right;
 }
+
+
+.mypage-container .email-popup {
+  position: fixed;
+  top: 40%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.mypage-container .email-popup p {
+  margin-bottom: 10px;
+}
+
+.mypage-container .email-popup button {
+  background-color: red;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  align: right;
+}
+
+.mypage-container s.email-popup button:hover {
+  background-color: darkorange;
+}

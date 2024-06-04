@@ -12,10 +12,19 @@ import StartStationList from '../../components/StartStationList';
 import EndStationList from '../../components/EndStationList';
 
 const Train = () => {
+    const addDays = (date, days) => {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result.toISOString().slice(0, 10);
+    };
+
+    const today = new Date();
+    const tomorrow = addDays(today, 1);
+
     const initialTicketInfo = {
         departure: '',
         destination: '',
-        date: new Date().toISOString().slice(0, 10),
+        date: tomorrow,
         departureTime: '06',
         weekdayCarrier: '',
         selectedTrain: null,
@@ -26,30 +35,17 @@ const Train = () => {
 
     const [train, setTrain] = useState(initialTicketInfo);
     const [result, setResult] = useState(null);
-    const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10));
+    const [selectedDate, setSelectedDate] = useState(tomorrow);
     const inputRef = useRef(null);
     const [popupWindow, setPopupWindow] = useState(null);
 
-    // useEffect(() => {
-    //     if (train.startStationId && train.endStationId && train.departureTime && train.weekdayCarrier) {
-    //         getTrainInfo(train.startStationId, train.endStationId, train.departureTime, train.weekdayCarrier)
-    //             .then(data => {
-    //                 setResult(data);
-    //             });
-    //     }
-    // }, [train.startStationId, train.endStationId, train.departureTime, train.weekdayCarrier]);
-
     useEffect(() => {
-        // const departure_ID = document.getElementById("departure_stationID").value;
-        // const destination_ID = document.getElementById("destination_stationID").value;
         const days = ['일', '월', '화', '수', '목', '금', '토'];
         const today = new Date();
         const todayweekdayCarrier = days[today.getDay()];
 
         setTrain(prevTrain => ({
             ...prevTrain,
-            // startStationId: departure_ID,
-            // endStationId: destination_ID,
             weekdayCarrier: todayweekdayCarrier
         }));
     }, []);
@@ -70,10 +66,9 @@ const Train = () => {
 
     const handleDateChange = (e) => {
         const selectedDate = e.target.value;
-        const currentDate = new Date().toISOString().slice(0, 10);
 
-        if (selectedDate < currentDate) {
-            alert("지난 날짜를 선택할 수 없습니다.");
+        if (selectedDate < tomorrow) {
+            alert("오늘 이후의 날짜를 선택해주세요.");
             return;
         }
 
@@ -107,7 +102,6 @@ const Train = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.log(train);
         setTrain(prevState => ({
             ...prevState,
             isDepartureModalOpen: true
@@ -132,46 +126,10 @@ const Train = () => {
         document.getElementById(inputId).value = stationName;
     };
 
-    // const setStationCodeAndUpdate = () => {
-    //     const departure_stationID = document.getElementById("departure_stationID").value;
-    //     const destination_stationID = document.getElementById("destination_stationID").value;
-
-    //     setTrain(prevState => ({
-    //         ...prevState,
-    //         startStationId: departure_stationID,
-    //         endStationId: destination_stationID
-    //     }));
-    // };
-
-    // useEffect(() => {
-    //     setStationCodeAndUpdate();
-    // }, [train.departure, train.destination]);
-
-    // useEffect(() => {
-    //     setStationCodeAndUpdate();
-    // }, [train.isDepartureModalOpen]);
-
     const handleChargeClick = () => {
         const newPopup = window.open('http://localhost:5173/pay/chargeinfo/train', '_blank', 'width=600,height=400');
         setPopupWindow(newPopup);
     };
-
-    // const handlePayment = async (amount, orderId, orderName) => {
-    //     const userEmail = sessionStorage.getItem('userEmail'); // Retrieve userEmail from sessionStorage
-
-    //     if (!userEmail) {
-    //         console.error('User email not found in sessionStorage');
-    //         return;
-    //     }
-
-    //     try {
-    //         // Redirect to Toss Payments sandbox environment with userEmail included in the URL
-    //         const tossPaymentsUrl = `https://payment-gateway-sandbox.tosspayments.com?userEmail=${encodeURIComponent(userEmail)}&amount=${amount}&orderId=${orderId}&orderName=${orderName}`;
-    //         window.location.href = tossPaymentsUrl;
-    //     } catch (error) {
-    //         console.error('Failed to redirect to Toss Payments:', error);
-    //     }
-    // };
 
     return (
         <Layout title="기차 승차권 예매" body="정보 입력">
@@ -185,18 +143,10 @@ const Train = () => {
                         <div>
                             <EndStationList startStationId={train.startStationId} onStationSelect={handleEndStationIdChange} />
                         </div>
-                        {/* <div className="column1_2" style={{ display: 'flex' }}>
-                            <div className="column1" style={{ width: '600px' }}>
-                                <br />
-                            </div>
-                            <div className='button-container column2'>
-                                <button type="button" className="exchange-button" style={{ backgroundColor: 'orange', marginTop: '50px', marginLeft: '-150px', height: "100px", width: '100px' }} onClick={changeDepartureDestination}><ExchangeIcon /></button>
-                            </div>
-                        </div> */}
                         <div style={{ display: 'flex' }}>
                             <label style={{ marginRight: '30px' }}>
                                 출발일<br></br>
-                                <input type="date" value={train.date} onChange={handleDateChange} min={new Date().toISOString().slice(0, 10)} />
+                                <input type="date" value={train.date} onChange={handleDateChange} min={tomorrow} />
                             </label>
                             <label>
                                 요일 <br></br>
@@ -258,9 +208,7 @@ const Train = () => {
                                 endStationId={train.endStationId}
                                 weekdayCarrier={train.weekdayCarrier}
                                 departureTime={train.departureTime}
-                                // weekdayCarrier={train.weekdayCarrier}
-                                // departureTime={train.departureTime}
-                                date ={train.date}
+                                date={train.date}
                                 train={train}
                             />
                         }
@@ -272,4 +220,3 @@ const Train = () => {
 };
 
 export default Train;
- 
