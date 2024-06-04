@@ -107,23 +107,27 @@ const Login = ({ handleClose }) => {
             </div>
           </div>
 
-          <div className="login-actions" style={{ alignItems: 'center' }}>
+          <div className="login-actions" style={{ alignItems: 'center', width:'100%', marginTop:'30px' }}>
             <button type="submit" className="btn-primary">로그인</button>
           </div>
         </form>
         <br></br>
 
-        <div className="col2" style={{ display: 'flex', alignItems: 'center', marginLeft: '-20px', marginTop: '-30px', marginBottom: '15px' }}>
-          <div className="join-button" style={{ marginRight: '10px' }}>
+        {/* <div className="col2" style={{ display: 'flex', alignItems: 'center', marginLeft: '-20px', marginTop: '-30px', marginBottom: '15px' }}> */}
+          {/* <div className="join-button" style={{ marginRight: '10px' }}>
             <Link to="/api/user/join"><button type="button" className="btn-primary" style={{ backgroundColor: 'green' }}>회원가입</button></Link>
-          </div>
-          <h4 style={{ marginTop: '30px', marginRight: '30px', fontWeight: 'normal', color: '#888888' }}>|</h4>
-          <div className="social-login-buttons">
+          </div> */}
+
+          
+          {/* <h4 style={{ marginTop: '30px', marginRight: '30px', fontWeight: 'normal', color: '#888888' }}>|</h4> */}
+          {/* <div className="social-login-buttons">
             <button className="social-button google-login" onClick={handleGoogleLogin}>
               <GoogleLogoIcon style={{ fill: 'white', width: '22px', height: '22px' }} />구글 로그인
-            </button>
-          </div>
-        </div>
+            </button> 
+          </div>*/}
+
+
+        {/* </div> */}
       </div>
     </div>
   );

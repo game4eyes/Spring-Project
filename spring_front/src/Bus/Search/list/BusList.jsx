@@ -8,6 +8,7 @@ import '@/css/List.css'; // CSS 파일 임포트
 import LoginModal from '@components/LoginModal';
 import BookResultModal from '@components/BookResultModal';
 import BusListSeat from "@/Bus/Search/list/BusListSeat.jsx";
+import Join from '../../../User/Join';
 
 const BusList = ({ startStationId, endStationId, gradeCarrier, bus, departureTime, returnDate, passengerCount, departure, destination, isRoundTrip, departureDate }) => {
     const [busInfo, setBusInfo] = useState([]);
@@ -17,7 +18,6 @@ const BusList = ({ startStationId, endStationId, gradeCarrier, bus, departureTim
     const [isLoading, setIsLoading] = useState(true);
     const location = useLocation();
     const navigate = useNavigate();
-    // const { sessionStorage.email, setRedirectUrl, setGuestRedirectUrl } = useContext(AuthContext);
 
     let sessionStorage = window.sessionStorage;
     const email = sessionStorage.getItem('email');
@@ -28,6 +28,7 @@ const BusList = ({ startStationId, endStationId, gradeCarrier, bus, departureTim
     const [showBookResultModal, setShowBookResultModal] = useState(false); // State for BookResult modal
 
     const [showLoginModal, setShowLoginModal] = useState(false); // Login 모달 상태 추가
+    const [seatData, setSeatData] = useState({}); // State to track seat data
 
     const handleCloseLoginModal = () => {
         setShowLoginModal(false);
@@ -64,10 +65,7 @@ const BusList = ({ startStationId, endStationId, gradeCarrier, bus, departureTim
             setShowUserGuestPopup(false); // 기존 팝업 닫기
             setShowLoginModal(true); // 로그인 모달 열기
         } else {
-            const url = `/api/user/join?payjoin&railName=${encodeURIComponent(selectedBus.railName)}&trainClass=${encodeURIComponent(selectedBus.trainClass)}&trainNo=${encodeURIComponent(selectedBus.trainNo)}&departureTime=${encodeURIComponent(selectedBus.departureTime)}
-            &departure=${encodeURIComponent(selectedBus.departure)}&destination=${encodeURIComponent(selectedBus.destination)}&hour=${encodeURIComponent(selectedBus.hour)}&date=${encodeURIComponent(selectedBus.date)}&dayz=${encodeURIComponent(selectedBus.dayz)}&price=${encodeURIComponent(selectedBus.price)}`;
-            setGuestRedirectUrl(url);
-            navigate(url);
+            navigate('/api/user/join');
         }
     };
 
@@ -129,6 +127,10 @@ const BusList = ({ startStationId, endStationId, gradeCarrier, bus, departureTim
         }
     }, [startStationId, endStationId, gradeCarrier, departureTime]);
 
+    const handleSeatChange = (busId, seatCount) => {
+        setSeatData(prevData => ({ ...prevData, [busId]: seatCount }));
+    };
+
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -150,7 +152,7 @@ const BusList = ({ startStationId, endStationId, gradeCarrier, bus, departureTim
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Id</th>
+                                        <th>버스 번호</th>
                                         <th>출발 시간</th>
                                         <th>도착 시간</th>
                                         <th>운행 빈도</th>
@@ -161,18 +163,33 @@ const BusList = ({ startStationId, endStationId, gradeCarrier, bus, departureTim
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {currentItems.map((selectedBus) => (
-                                        <tr key={selectedBus.id}>
-                                            <td>{selectedBus.id}</td>
-                                            <td>{selectedBus.departureTime}</td>
-                                            <td>{selectedBus.arrivalTime}</td>
-                                            <td>{selectedBus.frequency}</td>
-                                            <td>{selectedBus.price}</td>
-                                            <td>{selectedBus.carrier}</td>
-                                            <BusListSeat id={selectedBus.id} date={departureDate}/>
-                                            <td><button className="button" onClick={() => handleItemClick(searchURLObject(location.pathname), selectedBus, bus)}>결제</button></td>
-                                        </tr>
-                                    ))}
+                                    {currentItems.map((selectedBus) => {
+                                        const seatCount = seatData[selectedBus.id] !== undefined ? seatData[selectedBus.id] : JSON.parse(localStorage.getItem(`busSeatData_${selectedBus.id}`)) || null;
+                                        const isSoldOut = seatCount <= 0;
+                                        
+                                        return (
+                                            <tr key={selectedBus.id}>
+                                                <td>{selectedBus.id}</td>
+                                                <td>{selectedBus.departureTime}</td>
+                                                <td>{selectedBus.arrivalTime}</td>
+                                                <td>{selectedBus.frequency}</td>
+                                                <td>{selectedBus.price}</td>
+                                                <td>{selectedBus.carrier}</td>
+                                                <BusListSeat id={selectedBus.id} date={departureDate} onSeatChange={handleSeatChange} />
+                                                <td>
+                                                    {isSoldOut ?  (
+                                                        <button className="button sold-out-button"  onClick={() => alert('예약을 할 수 없습니다')} style={{color:'white', backgroundColor:'red' }}>
+                                                            매진
+                                                        </button>
+                                                    ) :(
+                                                        <button className="button" onClick={() => handleItemClick(searchURLObject(location.pathname), selectedBus, bus)}>
+                                                            결제
+                                                        </button>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
                                 </tbody>
                             </table>
                             <Pagination itemsPerPage={itemsPerPage} totalItems={busInfo.length} paginate={paginate} />

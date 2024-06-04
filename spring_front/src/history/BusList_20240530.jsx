@@ -22,7 +22,7 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, busticket }) => {
 
     const [showLoginModal, setShowLoginModal] = useState(false); // Login 모달 상태 추가
 
-    
+
     const handleCloseLoginModal = () => {
         setShowLoginModal(false);
         // Check if user is logged in and then open BookResult modal
@@ -235,10 +235,10 @@ const BusList = ({ startStationID, endStationID, onUpdateSeat, busticket }) => {
             ) : (
                 <p>해당 버스 등급의 데이터를 불러오는 중입니다...</p>
             )}
-             {showUserGuestPopup && <UserGuestPopup onClose={handleCloseUserGuestPopup} onOptionSelect={handleOptionSelect} />}
+            {showUserGuestPopup && <UserGuestPopup onClose={handleCloseUserGuestPopup} onOptionSelect={handleOptionSelect} />}
             {showLoginModal && <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} />}
             {showBookResultModal && isLoggedIn && <BookResultModal transportationtype={'bus'} handleClose={() => setShowBookResultModal(false)} />}
-                                                         {/* //transportationtype : bus(버스), train (기차), plane(비행기)*/}
+            {/* //transportationtype : bus(버스), train (기차), plane(비행기)*/}
         </div>
     );
 };

@@ -300,18 +300,18 @@ function TransportationList_test(props) {
     setShowPopup(false);
   };
 
-  const handleOptionSelect = (option) => {
-    setShowPopup(false);
-    //const url = `/ticketbook/${selectedTransportation.id}?type=${option}`;
-    const url = `/bookresult/${selectedTransportation.id}?type=${option}`;
-    if (option === '회원') {
-      setRedirectUrl(url);
-      navigate('/api/user/login');
-    } else {
-      setGuestRedirectUrl(url);
-      navigate('/api/user/guest-booking');
-    }
-  };
+  // const handleOptionSelect = (option) => {
+  //   setShowPopup(false);
+  //   //const url = `/ticketbook/${selectedTransportation.id}?type=${option}`;
+  //   const url = `/bookresult/${selectedTransportation.id}?type=${option}`;
+  //   if (option === '회원') {
+  //     setRedirectUrl(url);
+  //     navigate('/api/user/login');
+  //   } else {
+  //     setGuestRedirectUrl(url);
+  //     navigate('/api/user/guest-booking');
+  //   }
+  // };
 
   return (
     <div>
@@ -594,7 +594,7 @@ const Home = () => {
 
 
 
-
+{/* 
       <div>
         <h3>기능 (테스트)</h3> <br /><br />
         <KakaoMapComponent />
@@ -602,7 +602,7 @@ const Home = () => {
         <Link to={"/BusSeat"}>버스 좌석</Link>
       </div>
       <br />
-      <br />
+      <br /> */}
 
 
       {/* 테스트용 마이페이지 */}

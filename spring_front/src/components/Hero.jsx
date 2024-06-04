@@ -4,9 +4,9 @@ import DaeguImage from '@components/img/region_img/daegu.jpg';
 import BusanImage from '@components/img/region_img/busan.jpeg';
 
 const travelListData = [
-    { id: 'seoul', imgSrc: SeoulImage, title: '서울', explain: 'Some description about Seoul' },
-    { id: 'daegu', imgSrc: DaeguImage, title: '대구', explain: 'Some description about Daegu' },
-    { id: 'busan', imgSrc: BusanImage, title: '부산', explain: 'Some description about Busan' }
+    { id: 'seoul', imgSrc: SeoulImage, title: '서울', explain: '남산서울타워' },
+    { id: 'daegu', imgSrc: DaeguImage, title: '대구', explain: '달성대구현대미술제' },
+    { id: 'busan', imgSrc: BusanImage, title: '부산', explain: '부산항대교' }
 ];
 
 const Hero = () => {

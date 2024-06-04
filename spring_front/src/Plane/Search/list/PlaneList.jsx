@@ -8,7 +8,6 @@ import '@/css/Popup.css';
 import LoginModal from '@/components/LoginModal';
 import BookResultModal from '@/components/BookResultModal';
 import PlaneListSeat from './PlaneListSeat';
-// import PlaneListSeat from "@/Plane/Search/list/PlaneListSeat.jsx";
 
 const PlaneList = ({ startStationId, endStationId, departureTime, weekdayCarrier, plane, date }) => {
     const [planeInfo, setPlaneInfo] = useState([]);
@@ -21,16 +20,15 @@ const PlaneList = ({ startStationId, endStationId, departureTime, weekdayCarrier
     const [itemsPerPage] = useState(5);
     const [loading, setLoading] = useState(true);
     const [timeoutReached, setTimeoutReached] = useState(false);
-    // const { sessionStorage.email } = useContext(AuthContext);
     const [showUserGuestPopup, setShowUserGuestPopup] = useState(false);
     const [selectedPlane, setSelectedPlane] = useState(null);
     const [showBookResultModal, setShowBookResultModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [selectedPlaneSeats, setSelectedSeats] = useState({});
+    const [soldoutStatus, setSoldoutStatus] = useState({});
 
     let sessionStorage = window.sessionStorage;
     const email = sessionStorage.getItem('email');
-    
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -40,6 +38,13 @@ const PlaneList = ({ startStationId, endStationId, departureTime, weekdayCarrier
         if (sessionStorage.email) {
             setShowBookResultModal(true);
         }
+    };
+
+    const handleSoldOutChange = (planeId, isSoldOut) => {
+        setSoldoutStatus(prevState => ({
+            ...prevState,
+            [planeId]: isSoldOut
+        }));
     };
 
     useEffect(() => {
@@ -66,7 +71,7 @@ const PlaneList = ({ startStationId, endStationId, departureTime, weekdayCarrier
 
     const searchURLObject = (pathname) => {
         if (pathname.includes('bus')) return 'bus';
-        if (pathname.includes('train')) return 'train';
+        if (pathname.includes('plane')) return 'plane';
         if (pathname.includes('plane')) return 'plane';
         return null;
     };
@@ -75,8 +80,8 @@ const PlaneList = ({ startStationId, endStationId, departureTime, weekdayCarrier
         setSelectedPlane(selectedPlaneItem);
         localStorage.setItem('selectedPlane', JSON.stringify(selectedPlaneItem));
         localStorage.setItem('plane', JSON.stringify(plane));
-        localStorage.setItem('selectedSeatType_plane', JSON.stringify(seatType)); // 선택한 좌석 유형 저장
-        localStorage.setItem('seatPrice_plane', JSON.stringify(price)); // 선택한 좌석 가격 저장
+        localStorage.setItem('selectedSeatType_plane', JSON.stringify(seatType));
+        localStorage.setItem('seatPrice_plane', JSON.stringify(price));
         if (sessionStorage.email) {
             setShowBookResultModal(true);
             console.log(seatType);
@@ -96,8 +101,6 @@ const PlaneList = ({ startStationId, endStationId, departureTime, weekdayCarrier
         if (option === 'login') {
             setShowUserGuestPopup(false);
             setShowLoginModal(true);
-        } else {
-            // Handle other options
         }
     };
 
@@ -108,10 +111,8 @@ const PlaneList = ({ startStationId, endStationId, departureTime, weekdayCarrier
             [scheduleId]: { seatType, price: selectedPrice }
         };
         setSelectedSeats(updatedSeats);
-        // localStorage.setItem('selectedPlaneSeats', JSON.stringify(updatedSeats)); // 좌석 정보를 로컬스토리지에 저장
-
-        localStorage.setItem('selectedSeatType_plane', JSON.stringify(seatType)); // 선택한 좌석 유형 저장
-        localStorage.setItem('seatPrice_plane', JSON.stringify(price)); // 선택한 좌석 가격 저장
+        localStorage.setItem('selectedSeatType_plane', JSON.stringify(seatType));
+        localStorage.setItem('seatPrice_plane', JSON.stringify(selectedPrice));
     };
 
     const UserGuestPopup = ({ onClose, onOptionSelect }) => (
@@ -155,9 +156,9 @@ const PlaneList = ({ startStationId, endStationId, departureTime, weekdayCarrier
                         <table>
                             <thead>
                                 <tr>
-                                    <th>열차 ID</th>
-                                    <th>열차 번호</th>
-                                    <th>열차 이름</th>
+                                    {/* <th>항공기 ID</th> */}
+                                    <th>항공기 번호</th>
+                                    <th>항공기 이름</th>
                                     <th>출발 시간</th>
                                     <th>도착 시간</th>
                                     <th>요금</th>
@@ -166,55 +167,55 @@ const PlaneList = ({ startStationId, endStationId, departureTime, weekdayCarrier
                                 </tr>
                             </thead>
                             <tbody>
-                                {currentItems.map((selectedPlane, index) => (
-                                    <tr key={index}>
-                                        <td>{selectedPlane.id}</td>
-                                        <td>{selectedPlane.frequency}</td>
-                                        <td>{selectedPlane.lineName}</td>
-                                        <td>{selectedPlane.departureTime}</td>
-                                        <td>{selectedPlane.arrivalTime}</td>
-                                        <td>
-                                            <label>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={selectedPlaneSeats[selectedPlane.id]?.seatType === 'business'}
-                                                    onChange={() => handleCheckboxChange(selectedPlane.id, 'business')}
-                                                />
-                                                비지니스 ({planePrices['business'] ? planePrices['business'] : 'N/A'})
-                                            </label>
-                                            <label>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={selectedPlaneSeats[selectedPlane.id]?.seatType === 'economy'}
-                                                    onChange={() => handleCheckboxChange(selectedPlane.id, 'economy')}
-                                                />
-                                                이코노미 ({planePrices['economy'] ? planePrices['economy'] : 'N/A'})
-                                            </label>
-                                            <label>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={selectedPlaneSeats[selectedPlane.id]?.seatType === 'first'}
-                                                    onChange={() => handleCheckboxChange(selectedPlane.id, 'first')}
-                                                />
-                                                퍼스트 ({planePrices['first'] ? planePrices['first'] : 'N/A'})
-                                            </label>
-                                        </td>
-                                        <td><PlaneListSeat Id={selectedPlane.id} Date={date} /></td>
-                                        <td>
-                                            <button
-                                                className="button"
-                                                style={{ marginTop: '25px' }}
-                                                onClick={() => {
-                                                    const seatType = selectedPlaneSeats[selectedPlane.id]?.seatType;
-                                                    const price = planePrices[seatType]; // 좌석 가격을 planePrices에서 가져옴
-                                                    handleItemClick(searchURLObject(location.pathname), selectedPlane, plane, seatType, price);
-                                                }}
-                                            >
-                                                결제
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
+                                {currentItems.map((selectedPlane, index) => {
+                                    const planeseatData = JSON.parse(localStorage.getItem(`planeseatData_${selectedPlane.id}`));
+                                    const isSoldOut = planeseatData && planeseatData.airBusiness === 0 &&
+                                        planeseatData.airFirst === 0 &&
+                                        planeseatData.airEconomy === 0;
+
+                                    return (
+                                        <tr key={index}>
+                                            {/* <td>{selectedPlane.id}</td> */}
+                                            <td>{selectedPlane.frequency}</td>
+                                            <td>{selectedPlane.lineName}</td>
+                                            <td>{selectedPlane.departureTime}</td>
+                                            <td>{selectedPlane.arrivalTime}</td>
+                                            
+                                            <PlaneListSeat
+                                                Id={selectedPlane.id}
+                                                Date={date}
+                                                selectedPlaneSeats={selectedPlaneSeats}
+                                                selectedPlane={selectedPlane}
+                                                handleCheckboxChange={handleCheckboxChange}
+                                                planePrices={planePrices}
+                                                onSoldOutChange={handleSoldOutChange}
+                                            />
+                                            <td>
+                                                {isSoldOut ? (
+                                                    <button
+                                                        className="button sold-out-button"
+                                                        style={{ marginTop: '25px',color :'white',backgroundColor:'red' }}
+                                                        onClick={() => alert('예약을 할 수 없습니다')}
+                                                    >
+                                                        매진
+                                                    </button>
+                                                ) : (
+                                                    <button
+                                                        className="button"
+                                                        style={{ marginTop: '25px' }}
+                                                        onClick={() => {
+                                                            const seatType = selectedPlaneSeats[selectedPlane.id]?.seatType;
+                                                            const price = planePrices[seatType];
+                                                            handleItemClick(searchURLObject(location.pathname), selectedPlane, plane, seatType, price);
+                                                        }}
+                                                    >
+                                                        결제
+                                                    </button>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </table>
                         <Pagination itemsPerPage={itemsPerPage} totalItems={planeInfo.length} paginate={paginate} />
@@ -226,7 +227,15 @@ const PlaneList = ({ startStationId, endStationId, departureTime, weekdayCarrier
 
             {showUserGuestPopup && <UserGuestPopup onClose={handleCloseUserGuestPopup} onOptionSelect={handleOptionSelect} />}
             {showLoginModal && <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} />}
-            {showBookResultModal && sessionStorage.email && <BookResultModal transportationtype={'plane'} selectedPlaneSeats={selectedPlaneSeats} selectedPlane={selectedPlane} plane={plane} handleClose={() => setShowBookResultModal(false)} />}
+            {showBookResultModal && sessionStorage.email && (
+                <BookResultModal
+                    transportationtype={'plane'}
+                    selectedPlaneSeats={selectedPlaneSeats}
+                    selectedPlane={selectedPlane}
+                    plane={plane}
+                    handleClose={() => setShowBookResultModal(false)}
+                />
+            )}
         </div>
     );
 };

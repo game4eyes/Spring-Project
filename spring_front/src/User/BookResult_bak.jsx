@@ -10,7 +10,7 @@ import { getUserInfo } from "@/api/todoApi.jsx";
 import {bookinFail, booking, bookingComplete} from "@/api/booking.jsx";
 import { tossPayment } from '../api/todoApi';
 
-const BookResult = ({ transportationtype, trainprice, handleClose }) => {
+const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
     const location = useLocation();
     const navigate = useNavigate();
@@ -439,4 +439,4 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     );
 };
 
-export default BookResult;
+export default BookResult_bak;

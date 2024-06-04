@@ -12,10 +12,21 @@ import StartStationList from '../../components/StartStationList';
 import EndStationList from '../../components/EndStationList';
 
 const Plane = () => {
+
+    const addDays = (date, days) => {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result.toISOString().slice(0, 10);
+    };
+
+    const today = new Date();
+    const tomorrow = addDays(today, 1);
+
+
     const initialTicketInfo = {
         departure: '',
         destination: '',
-        date: new Date().toISOString().slice(0, 10),
+        date: tomorrow,
         departureTime: '06',
         weekdayCarrier: '',
         selectedPlane: null,
@@ -68,24 +79,26 @@ const Plane = () => {
         }));
     };
 
-    const handleDateChange = (e) => {
-        const selectedDate = e.target.value;
-        const currentDate = new Date().toISOString().slice(0, 10);
+const handleDateChange = (e) => {
+    const selectedDate = e.target.value;
+    const currentDate = new Date().toISOString().slice(0, 10);
+    const tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10); // 내일 날짜
 
-        if (selectedDate < currentDate) {
-            alert("지난 날짜를 선택할 수 없습니다.");
-            return;
-        }
+    if (selectedDate < tomorrow) {
+        alert("내일 이후 날짜만 선택할 수 있습니다.");
+        return;
+    }
 
-        const days = ['일', '월', '화', '수', '목', '금', '토'];
-        const selectedweekdayCarrier = days[new Date(selectedDate).getDay()];
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    const selectedweekdayCarrier = days[new Date(selectedDate).getDay()];
 
-        setPlane(prevState => ({
-            ...prevState,
-            weekdayCarrier: selectedweekdayCarrier,
-            date: selectedDate
-        }));
-    };
+    setPlane(prevState => ({
+        ...prevState,
+        weekdayCarrier: selectedweekdayCarrier,
+        date: selectedDate
+    }));
+};
+
 
     const handleStartStationIdChange = (Id, name) => {
         setPlane(prevState => ({

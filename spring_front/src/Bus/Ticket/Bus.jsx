@@ -7,11 +7,21 @@ import '@/css/form/bookingform.css';
 import StartStationList from '../../components/StartStationList';
 import EndStationList from '../../components/EndStationList';
 import '@/css/List.css';
+
 const Bus = () => {
+    const addDays = (date, days) => {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result.toISOString().slice(0, 10);
+    };
+
+    const today = new Date();
+    const tomorrow = addDays(today, 1);
+
     const ticketInfo = {
         departure: '',
         destination: '',
-        departureDate: new Date().toISOString().slice(0, 10),
+        departureDate: tomorrow,
         returnDate: '',
         passengerCount: '',
         isRoundTrip: false,
@@ -21,10 +31,10 @@ const Bus = () => {
         endStationId: '',
         departureTime: '06',
         dayz: '',
-       
     };
 
     const [bus, setBus] = useState(ticketInfo);
+    const [popupWindow, setPopupWindow] = useState(null);
 
     useEffect(() => {
         if (bus.startStationId) {
@@ -72,7 +82,6 @@ const Bus = () => {
         }));
     };
 
- 
     const handleDepartureTimeChange = (e) => {
         setBus(prevState => ({
             ...prevState,
@@ -84,7 +93,6 @@ const Bus = () => {
         const newPopup = window.open('http://localhost:5173/pay/chargeinfo/bus', '_blank', 'width=600,height=400');
         setPopupWindow(newPopup);
     };
-
 
     return (
         <Layout title="버스 승차권 예매" body="정보 입력">
@@ -98,11 +106,16 @@ const Bus = () => {
                         <div> {/* 도착지 */}
                             <EndStationList startStationId={bus.startStationId} onStationSelect={handleEndStationIdChange} />
                         </div>
-                   
 
                     <label>
                         가는 날<br></br>
-                        <input type="date" value={bus.departureDate} onChange={(e) => handleChange('departureDate', e.target.value)} style={{ width: '50%', marginLeft: '10px' }} />
+                        <input 
+                            type="date" 
+                            value={bus.departureDate} 
+                            min={tomorrow} 
+                            onChange={(e) => handleChange('departureDate', e.target.value)} 
+                            style={{ width: '50%', marginLeft: '10px' }} 
+                        />
                     </label>
                     <br />
                     <label>

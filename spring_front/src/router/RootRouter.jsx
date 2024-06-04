@@ -1,25 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-//import { BrowserRouter, Route, Routes, createBrowserRouter } from 'react-router-dom';
-//import Home from '../Home';
-import Login from '../User/Login';
-import Join from '../User/Join';
-import FindUserId from '../User/FindUserId';
-import MyPage from '../User/Mypage';
 
-import BusSeat from '../Bus/Seat/BusSeat';
-
-import ResetPassword from '../User/ResetPassword';
-import Ticket_Detail from '../Ticket/Ticket_Detail';
-import Ticket_Modify from '../Ticket/Ticket_Modify';
-import Ticket_Cancel from '../Ticket/Ticket_Cancel';
-import Bus from '../Bus/Ticket//Bus';
-import Train from '../Train/Ticket//Train';
-import Plane from '../Plane/Ticket/Plane';
-import NavLink1 from '../components/API/NavLink/NavLink1';
-import NavLink2 from '../components/API/NavLink/NavLink2';
-import NavLink3 from '../components/API/NavLink/NavLink3';
-import NavLink4 from '../components/API/NavLink/NavLink4';
-// import NavLink5 from '../components/API/NavLink/NavLink5';
 import { Outlet, createBrowserRouter } from 'react-router-dom';
 import TicketBookRouter from './TicketBookRouter';
 import TicketRouter from './TicketRouter';

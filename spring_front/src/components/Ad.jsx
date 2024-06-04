@@ -1,23 +1,27 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import AD1_image from './img/Ad_img/ad1.jpeg';
-import AD2_image from './img/Ad_img/ad2.jpeg';
-import AD3_image from './img/Ad_img/ad3.jpeg';
-import AD4_image from './img/Ad_img/ad4.jpeg';
+import AD1_image from './img/Ad_img/ad1.jpg';
+import AD2_image from './img/Ad_img/ad2.png';
+import AD3_image from './img/Ad_img/ad3.jpg';
+import AD4_image from './img/Ad_img/ad4.png';
 
 const Ad = () => {
   const [adVisible, setAdVisible] = useState(true); // 광고 리스트의 가시성을 관리하는 상태
 
   const AdList = [
-    { id: "ad1", title: "광고1", explain: '광고1', src: AD1_image },
-    { id: "ad2", title: "광고2", explain: '광고2', src: AD2_image },
-    { id: "ad3", title: "광고3", explain: '광고3', src: AD3_image },
-    { id: "ad4", title: "광고3", explain: '광고4', src: AD4_image },
+    { id: "ad1", title: "김윤기 github", explain: '김윤기 github', src: AD1_image, url: 'https://github.com/developer4eyes'},
+    { id: "ad2", title: "이상준 github", explain: '이상준 github', src: AD2_image, url: 'https://github.com/namung08'},
+    { id: "ad3", title: "장연태 github", explain: '장연태 github', src: AD3_image, url: 'https://github.com/Jelliiiii' },
+    { id: "ad4", title: "이진욱 github", explain: '이진욱 github', src: AD4_image, url: 'https://github.com/Jinwook93/study_home' },
   ];
 
   // x 버튼 클릭 시 광고 리스트의 가시성을 토글하는 함수
   const toggleAdList = () => {
     setAdVisible(!adVisible);
+  };
+
+  // 팝업창으로 URL 열기
+  const openUrlInNewWindow = (url) => {
+    window.open(url, '_blank', 'width=800,height=800');
   };
 
   return (
@@ -28,18 +32,16 @@ const Ad = () => {
       <ul className="ad-list" style={{ display: adVisible ? "block" : "none" }}>
         {AdList.map(ad => (
           typeof ad !== 'number' && (
-            <li key={ad.id} className="ad-item">
-              <Link to={'/ad/' + ad.id}>
-                <img
-                  src={ad.src}
-                  alt={ad.title}
-                  className="ad-image"
-                />
-              </Link>
-              <div className="ad-description">
-                {/* <Link to={'/' + ad.id}>{ad.title}</Link> */}
-                {/* <p>{ad.explain}</p> */}
-              </div>
+            <li key={ad.id} className="ad-item" onClick={() => openUrlInNewWindow(ad.url)}>
+              <a href ="#"><img
+                src={ad.src}
+                alt={ad.title}
+                className="ad-image"
+              /></a>
+               {/* <div className="ad-description">
+                 <Link to={'/' + ad.id}>{ad.title}</Link>
+                 <p>{ad.explain}</p> 
+              </div>  */}
             </li>
           )
         ))}

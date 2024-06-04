@@ -136,9 +136,68 @@
 }
 
 .order-detail {
-  margin-bottom: 10px; /* Adjust spacing between details */
+  margin: 10px 0; /* Adjust the spacing (top and bottom) between each detail */
 }
+
 
 .button-container {
   margin-top: 10px; /* Adjust spacing between details and button */
+}
+
+
+.mypage-container {
+  padding: 20px;
+}
+
+.order-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns */
+  gap: 20px; /* Space between items */
+  list-style: none;
+  padding: 0;
+}
+
+.order-item {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.order-detail {
+  margin-bottom: 10px;
+}
+
+.button-container {
+  text-align: right;
+}
+
+
+.mypage-container .email-popup {
+  position: fixed;
+  top: 40%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.mypage-container .email-popup p {
+  margin-bottom: 10px;
+}
+
+.mypage-container .email-popup button {
+  background-color: red;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  align: right;
+}
+
+.mypage-container s.email-popup button:hover {
+  background-color: darkorange;
 }

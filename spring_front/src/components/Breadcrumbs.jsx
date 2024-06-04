@@ -31,15 +31,31 @@ function Breadcrumb() {
           path1Text = '공항';
           break;
 
-          // case '/ticketbook/plane':
-          //   dataText = '예약';
-          //   path1Text = '비행기';
-          //   break;
+          case '/nav/navlink1':
+            dataText = '버스 터미널 정보';
+            path1Text = '서울고속버스터미널';
+            break;
 
-          //   case '/ticketbook/plane':
-          //     dataText = '예약';
-          //     path1Text = '비행기';
-          //     break;
+          case '/nav/navlink2':
+            dataText = '버스 터미널 정보';
+            path1Text = '센트럴시티터미널';
+            break;
+
+            case '/nav/navlink3':
+              dataText = '기차역정보 노선도';
+              path1Text = 'KTX 경부선 노선도';
+              break;
+
+              case '/nav/navlink4':
+                dataText = '안내공항서비스';
+                path1Text = '김해국제공항';
+                break;
+    
+
+            case '/api/user/mypage':
+              dataText = '사용자';
+              path1Text = '마이페이지';
+              break;
 
           //     case '/ticketbook/plane':
           //       dataText = '예약';
@@ -63,10 +79,10 @@ function Breadcrumb() {
             </li>
 
             <li className="breadcrumb-item">
-              <a className="link-body-emphasis text-decoration-none" style={{marginTop:'15px'}} href="#">{dataText}</a>
+              <a className="link-body-emphasis text-decoration-none" style={{marginTop:'15px',marginRight:'5px'}} href="#" >{dataText}</a>
             </li>
            
-            <li className="breadcrumb-item">
+            <li className="breadcrumb-item" style={{marginLeft:'-10px'}}>
 
               {path1Text === '버스' &&
               <Link to = {'/ticketbook/bus'} className="link-body-emphasis fw-semibold text-decoration-none">{path1Text}</Link>
@@ -75,8 +91,25 @@ function Breadcrumb() {
               <Link to = {'/ticketbook/train'} className="link-body-emphasis fw-semibold text-decoration-none">{path1Text}</Link>
               }
                {path1Text === '공항' &&
-              <Link to = {'/ticketbook/plane'} className="link-body-emphasis fw-semibold text-decoration-none">{path1Text}</Link>
+              <Link to = {'/ticketbook/plane'} className="link-body-emphasis fw-semibold text-decoration-none" >{path1Text}</Link>
               }
+                {path1Text === '서울고속버스터미널' &&
+              <Link to = {'/nav/navlink1'} className="link-body-emphasis fw-semibold text-decoration-none">{path1Text}</Link>
+              }
+                {path1Text === '센트럴시티터미널' &&
+              <Link to = {'/nav/navlink2'} className="link-body-emphasis fw-semibold text-decoration-none">{path1Text}</Link>
+              }
+                {path1Text === 'KTX 경부선 노선도' &&
+              <Link to = {'/nav/navlink3'} className="link-body-emphasis fw-semibold text-decoration-none">{path1Text}</Link>
+              }
+                {path1Text === '김해국제공항' &&
+              <Link to = {'/nav/navlink4'} className="link-body-emphasis fw-semibold text-decoration-none">{path1Text}</Link>
+              }
+
+                {path1Text === '마이페이지' &&
+              <Link to = {'/api/user/mypage'} className="link-body-emphasis fw-semibold text-decoration-none">{path1Text}</Link>
+              }
+
             </li>
            
           </ol>

@@ -10,7 +10,7 @@ import { getUserInfo } from "@/api/todoApi.jsx";
 import { bookinFail, booking, bookingComplete } from "@/api/booking.jsx";
 import { tossPayment } from '../api/todoApi';
 
-const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
+const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     const clientKey = 'test_ck_ex6BJGQOVDb1xavAXnNR8W4w2zNb';
     const location = useLocation();
     const navigate = useNavigate();
@@ -37,9 +37,25 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
     let sessionStorage = window.sessionStorage;
     const email = sessionStorage.getItem('email');
 
+   
 
 
+    if(location.pathname.includes('http://localhost:9090/api/user/toss/success')){
+        navigate('/');
+    }
 
+
+    // useEffect(() => {
+    //     if (sessionStorage.email) {
+    //       if (location.pathname.includes('/api/user/toss/success') || 
+    //           location.pathname.includes('/ticketbook/plane') || 
+    //           location.pathname.includes('/ticketbook/bus')) {
+    //         handleClose(); // Close the modal after successful login
+    //       } else {        
+    //         navigate('/');
+    //       }
+    //     }
+    //   }, [sessionStorage.email, navigate, location.pathname, handleClose]);
 
 
 
@@ -309,7 +325,7 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
             {transportationtype === 'bus' && (
                 <div className="bookresultcontainer">
                     <h2 style={{ marginBottom: '30px' }}>예약 내용이 다음과 같습니까? (버스)</h2>
-                    <hr />
+                    {/* <hr />
                     <h2 style={{ marginBottom: '30px' }}>프로필</h2>
                     <div className="form-group">
                         <label>이메일</label>
@@ -318,7 +334,7 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
                     <div className="form-group">
                         <label>닉네임</label>
                         <span>닉네임 정보 입력(하드코딩)</span>
-                    </div>
+                    </div> */}
                     <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <h2 style={{ marginBottom: '30px' }}>버스 정보</h2>
                     <div>
@@ -338,7 +354,7 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
                                 <p>도착지: {bus.destination}</p>
                                 <p>날짜 : {bus.departureDate}</p>
                                 <p>왕복 : {bus.isRoundTrip}</p>
-                                <p>요일: {bus.dayz}</p>
+                                {/* <p>요일: {bus.dayz}</p> */}
                             </>
                         )}
                     </div>
@@ -371,7 +387,7 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
             {transportationtype === 'train' && (
                 <div className="bookresultcontainer">
                     <h2 style={{ marginBottom: '30px' }}>예약 내용이 다음과 같습니까? (기차)</h2>
-                    <hr />
+                    {/* <hr />
                     <h2 style={{ marginBottom: '30px' }}>프로필</h2>
                     <div className="form-group">
                         <label>이메일</label>
@@ -380,13 +396,13 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
                     <div className="form-group">
                         <label>닉네임</label>
                         <span>닉네임 정보 입력(하드코딩)</span>
-                    </div>
+                    </div> */}
                     <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <h2 style={{ marginBottom: '30px' }}>열차 정보</h2>
                     <div>
                         {selectedTrain && (
                             <>
-                                <p>기차 ID : {selectedTrain.id}</p>
+                                {/* <p>기차 ID : {selectedTrain.id}</p> */}
                                 <p>기차 번호 : {selectedTrain.frequency}</p>
                                 <p>열차 종류 : {selectedTrain.lineName}</p>
                                 <p>출발 시간 : {selectedTrain.departureTime}</p>
@@ -439,7 +455,7 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
             {transportationtype === 'plane' && (
                 <div className="bookresultcontainer">
                     <h2 style={{ marginBottom: '30px' }}>예약 내용이 다음과 같습니까? (공항)</h2>
-                    <hr />
+                    {/* <hr />
                     <h2 style={{ marginBottom: '30px' }}>프로필</h2>
                     <div className="form-group">
                         <label>이메일</label>
@@ -448,13 +464,13 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
                     <div className="form-group">
                         <label>닉네임</label>
                         <span>닉네임 정보 입력(하드코딩)</span>
-                    </div>
+                    </div> */}
                     <hr style={{ marginTop: '20px', marginBottom: '30px' }} />
                     <h2 style={{ marginBottom: '30px' }}>열차 정보</h2>
                     <div>
                         {selectedPlane && (
                             <>
-                                <p>공항 ID : {selectedPlane.id}</p>
+                                {/* <p>공항 ID : {selectedPlane.id}</p> */}
                                 <p>기차 번호 : {selectedPlane.frequency}</p>
                                 <p>열차 종류 : {selectedPlane.lineName}</p>
                                 <p>출발 시간 : {selectedPlane.departureTime}</p>
@@ -510,4 +526,4 @@ const BookResult_bak = ({ transportationtype, trainprice, handleClose }) => {
     );
 };
 
-export default BookResult_bak;
+export default BookResult;
