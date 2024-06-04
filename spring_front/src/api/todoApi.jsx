@@ -8,7 +8,7 @@ import axios from "axios";
 
 
 
-  export const API_SERVER_HOST = 'http://www.trable.kro.kr:9090'; // 서버 주소
+export const API_SERVER_HOST = 'http://www.trable.kro.kr:9090'; // 서버 주소
 
 
 // 사용자 관련 엔드포인트S
@@ -78,7 +78,7 @@ export const updateUserInfo = async() =>{
 // 소셜 로그인 (구글)
 export const socialLogin = async () => {
     try {
-      const res = await axios.get(`${userPrefix}/social-google`, axoisConfig); // 소셜 로그인 엔드포인트
+        const res = await axios.get(`${userPrefix}/social-google`, axoisConfig); // 소셜 로그인 엔드포인트
         return res.data;
     } catch (error) {
       throw new Error('소셜 로그인 중 오류가 발생했습니다.'); // 오류 발생 시 에러 처리
