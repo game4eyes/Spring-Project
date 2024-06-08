@@ -12,10 +12,18 @@ import DaeguImage from './components/img/region_img/daegu.jpg';
 import BusanImage from './components/img/region_img/busan.jpeg';
 
 
-import BusImage from './components/img/Transportation_img/bus_image.png';
-import TrainImage from './components/img/Transportation_img/train_image.png';
-import AirportImage from './components/img/Transportation_img/airport_image.png';
+// import BusImage from './components/img/Transportation_img/bus_image.png';
+// import TrainImage from './components/img/Transportation_img/train_image.png';
+// import AirportImage from './components/img/Transportation_img/airport_image.png';
+
+import BusImage from './components/img/Transportation_img/bus_image.jpg';
+import TrainImage from './components/img/Transportation_img/train_image.jpg';
+ import AirportImage from './components/img/Transportation_img/airport_image.jpg';
+
+
 //import Article from '@components/Article';
+
+
 import KakaoMapComponent from './components/KakaoMapComponent';
 import './css/Popup.css'
 import { AuthContext } from './global/AuthContext';

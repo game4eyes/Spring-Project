@@ -38,11 +38,14 @@ const BookResult = ({ transportationtype, trainprice, handleClose }) => {
     const email = sessionStorage.getItem('email');
 
    
+    // if(location.pathname.includes('/api/user/toss/success')){
+    //     navigate('/');
+    // }
 
 
-    if(location.pathname.includes('http://localhost:9090/api/user/toss/success')){
-        navigate('/');
-    }
+    // if(location.pathname.includes('http://localhost:9090/api/user/toss/success')){
+    //     navigate('/');
+    // }
 
 
     // useEffect(() => {

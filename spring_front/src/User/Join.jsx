@@ -181,7 +181,7 @@ const Join = () => {
         <br></br>
         <form onSubmit={handleSubmit} style={{marginTop:'-80px',width:'100%', textAlign:'left'}}>
           <div className="form-group">
-            <label htmlFor="email">이메일</label>
+            <label htmlFor="email" style={{display:'flex'}}>이메일 <h3 style={{marginLeft:'20px',marginTop:'7px',color:'red',fontSize:'10px'}}>실제 사용하는 이메일이 아닐 시에는, 결제가 안될 수 있습니다</h3></label>
             {/* <button type="button" onclick={checkEmail}>이메일 확인</button> */}
             <input
               type="email"

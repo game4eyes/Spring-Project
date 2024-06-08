@@ -57,11 +57,16 @@ function Breadcrumb() {
               path1Text = '마이페이지';
               break;
 
-          //     case '/ticketbook/plane':
-          //       dataText = '예약';
-          //       path1Text = '비행기';
-          //       break;
-      
+              case '/footer/TravelTermsandConditions':
+                dataText = '국내여행 이용약관';
+                path1Text = '';
+                break;
+
+                case '/footer/TermsofUse':
+                  dataText = '이용약관';
+                  path1Text = '';
+                  break;
+              
     default:
       break;
   }

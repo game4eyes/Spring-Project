@@ -6,7 +6,7 @@ import TicketRouter from './TicketRouter';
 import NavBarRouter from './NavBarRouter';
 import UserRouter from './ApiRouter';
 import AdRouter from './AdRouter';
-import SearchRouter from './SearchRouter';
+// import SearchRouter from './SearchRouter';
 import ApiRouter from './ApiRouter';
 import PayRouter from './PayRouter';
 import FooterRouter from './FooterRouter';
@@ -179,10 +179,10 @@ children: TicketBookRouter()
 },
 
 
-{
-  path    : 'search',     //  /search
-  children : SearchRouter()
-},
+// {
+//   path    : 'search',     //  /search
+//   children : SearchRouter()
+// },
 
 
 {

@@ -4,10 +4,19 @@ import DaeguImage from '@components/img/region_img/daegu.jpg';
 import BusanImage from '@components/img/region_img/busan.jpeg';
 
 const travelListData = [
-    { id: 'seoul', imgSrc: SeoulImage, title: '서울', explain: '남산서울타워' },
-    { id: 'daegu', imgSrc: DaeguImage, title: '대구', explain: '달성대구현대미술제' },
-    { id: 'busan', imgSrc: BusanImage, title: '부산', explain: '부산항대교' }
+    { id: 'seoul', imgSrc: SeoulImage, title: '서울', explain: '남산서울타워', url: 'https://geulgu.com/dinosaur-game/birthday/' },
+    { id: 'daegu', imgSrc: DaeguImage, title: '대구', explain: '달성대구현대미술제', url: 'https://halloflegends.leagueoflegends.com/ko-kr/' },
+    { id: 'busan', imgSrc: BusanImage, title: '부산', explain: '부산항대교', url: 'https://luvcocktail.site/' }
 ];
+
+
+
+  // 팝업창으로 URL 열기
+  const openUrlInNewWindow = (url) => {
+    window.open(url, '_blank', 'width=800,height=800');
+  };
+
+
 
 const Hero = () => {
     return (
@@ -33,7 +42,8 @@ const Hero = () => {
                             <div className={`carousel-caption ${index === 0 ? 'text-start' : index === 1 ? '' : 'text-end'}`}>
                                 <h1>{item.title}</h1>
                                 <p style ={{color:'white'}}>{item.explain}</p>
-                                <p><a className="btn btn-lg btn-primary" href={`#${item.id}`}>이동하기</a></p>
+                                <p><a className="btn btn-lg btn-primary"
+                                onClick={() => openUrlInNewWindow(item.url)} >이동하기</a></p>
                             </div>
                         </div>
                     </div>

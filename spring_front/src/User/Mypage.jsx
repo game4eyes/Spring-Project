@@ -11,8 +11,10 @@ const Mypage = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [showEmailPopup, setShowEmailPopup] = useState(false);
 
+
+
+    const [showEmailPopup, setShowEmailPopup] = useState(false);
     useEffect(() => {
         const fetchOrders = async () => {
             try {
@@ -49,10 +51,6 @@ const Mypage = () => {
         }
     };
 
-    const handlePriceCheck = () => {
-        setShowEmailPopup(true);
-    };
-
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -60,7 +58,11 @@ const Mypage = () => {
     if (error) {
         return <div>Error: {error}</div>;
     }
+    const handlePriceCheck = () => {
+        setShowEmailPopup(true);
+    };
 
+  
     return (
         <Layout title="마이페이지">
             <div className="mypage-container">
@@ -86,7 +88,30 @@ const Mypage = () => {
                                     <div className="order-detail"><strong>출발 시간 :</strong> {order.departureTime}</div>
                                     <div className="order-detail"><strong>도착 시간 :</strong> {order.arrivalTime}</div>
                                     <div className="order-detail"><strong>등급 :</strong> {order.grade}</div>
+
+                                    {/* Conditional rendering based on order.grade */}
+                                    {['general', 'special', 'standingFreeSeating'].includes(order.grade) ? (
+                                        <>
+                                            <div className="order-detail"><strong>기차 종류 :</strong> {order.operatorName}</div>
+                                            <div className="order-detail"><strong>경로 :</strong> {order.railName}</div>
+                                        </>
+                                    ) : ['first', 'economy', 'business'].includes(order.grade) ? (
+                                        <>
+                                            <div className="order-detail"><strong>운행사 :</strong> {order.operatorName}</div>
+                                            <div className="order-detail"><strong>경로 :</strong> {order.railName}</div>
+                                        </>
+                                    ) : (
+                                        // Else case for bus
+                                        <>
+                                            <div className="order-detail"><strong>버스 종류 :</strong> {order.operatorName}</div>
+                                            <div className="order-detail"><strong>경로 :</strong> {order.railName}</div>
+                                        </>
+                                    )}
+
                                     <div className="order-detail"><strong>예약 날짜 :</strong> {order.orderDate}</div>
+                                    {/* <div className="button-container">
+                                        <button type="button" className="cancel-button" style={{ backgroundColor: '#f44336' }} onClick={() => bookingCancel(order)}>취소</button>
+                                    </div> */}
                                 </li>
                             ))}
                         </ul>
@@ -95,9 +120,60 @@ const Mypage = () => {
                     )}
                 </div>
             </div>
-
         </Layout>
     );
 };
 
 export default Mypage;
+
+
+
+
+
+{/* {bookingInfo ? (
+                    <div>
+                        <h3>버스 정보</h3>
+                        <p>출발지: {bookingInfo.departure}</p>
+                        <p>도착지: {bookingInfo.destination}</p>
+                        <p>가격 : {bookingInfo.trainprice}</p>
+                        <p>날짜 : {bookingInfo.date}</p>
+                        <p>시간: {bookingInfo.hour}</p>
+                        <p>요일: {bookingInfo.dayz}</p>
+                        <p>열차 이름: {bookingInfo.railName}</p>
+                        <p>열차 종류: {bookingInfo.trainClass}</p>
+                        <p>열차 번호: {bookingInfo.trainNo}</p>
+                        <p>출발 시간: {bookingInfo.departureTime}</p>
+
+
+                        <hr/> 
+                        <h3>기차 정보</h3>
+                        <p>출발지: {bookingInfo.departure}</p>
+                        <p>도착지: {bookingInfo.destination}</p>
+                        <p>가격 : {bookingInfo.trainprice}</p>
+                        <p>날짜 : {bookingInfo.date}</p>
+                        <p>시간: {bookingInfo.hour}</p>
+                        <p>요일: {bookingInfo.dayz}</p>
+                        <p>열차 이름: {bookingInfo.railName}</p>
+                        <p>열차 종류: {bookingInfo.trainClass}</p>
+                        <p>열차 번호: {bookingInfo.trainNo}</p>
+                        <p>출발 시간: {bookingInfo.departureTime}</p>
+
+                        <hr/> 
+                        <h3>공항 정보</h3>
+                        <p>금액: ₩{bookingInfo.amount}</p>
+                        <p>출발 시간: {bookingInfo.departureTime}</p>
+                        <p>도착 시간: {bookingInfo.arrivalTime || '정보 없음'}</p>
+                        <p>날짜: {bookingInfo.date}</p>
+                        <p>이메일: {bookingInfo.email}</p>
+                        <p>출발지: {bookingInfo.startStationName}</p>
+                        <p>도착지: {bookingInfo.endStationName}</p>
+                        <p>등급: {bookingInfo.grade}</p>
+                        <p>운영자: {bookingInfo.operator}</p>
+                        <p>좌석 번호: {bookingInfo.seatNum}</p>
+                        <div className="button-container">
+                            <button type="button" className="cancel-button" style={{ backgroundColor: '#f44336' }} onClick={bookingcancel}>취소</button>
+                        </div>
+                    </div>
+                ) : (
+                    <p>예약된 열차 정보가 없습니다.</p>
+                )} */}
