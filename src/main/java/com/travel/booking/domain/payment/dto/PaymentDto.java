@@ -1,6 +1,6 @@
 package com.travel.booking.domain.payment.dto;
 
-import com.travel.booking.domain.booking.entity.BookingEntity;
+import com.travel.booking.domain.booking.entity.Order;
 import com.travel.booking.domain.payment.PayType;
 import com.travel.booking.domain.payment.entity.Payment;
 import jakarta.validation.constraints.NotNull;
@@ -22,6 +22,8 @@ public class PaymentDto {
     @NotNull
     private String orderName;
 
+    private String orderId;
+
     private String userEmail;
 
     private String SuccessUrl;
@@ -33,7 +35,6 @@ public class PaymentDto {
                 .amount(amount)
                 .userEmail(userEmail)
                 .orderName(orderName)
-                .orderId(UUID.randomUUID().toString())
                 .paySuccessYN(false)
                 .build();
     }

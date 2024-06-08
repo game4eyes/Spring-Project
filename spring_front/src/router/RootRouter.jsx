@@ -1,42 +1,28 @@
 import React, { Suspense, lazy } from 'react';
-//import { BrowserRouter, Route, Routes, createBrowserRouter } from 'react-router-dom';
-//import Home from '../Home';
-import Login from '../User/Login';
-import Join from '../User/Join';
-import FindUserId from '../User/FindUserId';
-import MyPage from '../User/Mypage';
 
-import BusSeat from '../Bus/Seat/BusSeat';
-
-import ResetPassword from '../User/ResetPassword';
-import Ticket_Detail from '../Ticket/Ticket_Detail';
-import Ticket_Modify from '../Ticket/Ticket_Modify';
-import Ticket_Cancel from '../Ticket/Ticket_Cancel';
-import Bus from '../Bus/Ticket//Bus';
-import Train from '../Train/Ticket//Train';
-import Plane from '../Plane/Ticket/Plane';
-import NavLink1 from '../components/API/NavLink/NavLink1';
-import NavLink2 from '../components/API/NavLink/NavLink2';
-import NavLink3 from '../components/API/NavLink/NavLink3';
-import NavLink4 from '../components/API/NavLink/NavLink4';
-// import NavLink5 from '../components/API/NavLink/NavLink5';
 import { Outlet, createBrowserRouter } from 'react-router-dom';
 import TicketBookRouter from './TicketBookRouter';
 import TicketRouter from './TicketRouter';
 import NavBarRouter from './NavBarRouter';
 import UserRouter from './ApiRouter';
 import AdRouter from './AdRouter';
-import SearchRouter from './SearchRouter';
+// import SearchRouter from './SearchRouter';
 import ApiRouter from './ApiRouter';
 import PayRouter from './PayRouter';
 import FooterRouter from './FooterRouter';
+import '../css/Loading.css';
+import SuccessPage from '../User/SuccessPage';
 
 
 
 
+const Loading = <div className="loading-container" >
+                    <div className="loading-spinner"></div>
+                    Loading
+                </div>;
 
-const Loading = <div className={'bg-purple-500'}>Loading</div>;
  const Home = lazy(() => import("../Home"));
+ 
 
 const RootRouter = createBrowserRouter([
   {
@@ -44,6 +30,11 @@ const RootRouter = createBrowserRouter([
       element : <Suspense fallback={Loading}><Home/></Suspense>
       
   },
+  {
+    path    : '/success-page',
+    element : <Suspense fallback={Loading}><SuccessPage/></Suspense>
+    
+},
 
   // {
   //     path    : 'todo',
@@ -188,10 +179,10 @@ children: TicketBookRouter()
 },
 
 
-{
-  path    : 'search',     //  /search
-  children : SearchRouter()
-},
+// {
+//   path    : 'search',     //  /search
+//   children : SearchRouter()
+// },
 
 
 {

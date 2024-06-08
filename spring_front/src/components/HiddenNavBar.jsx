@@ -24,9 +24,13 @@ import { ReactComponent as JoinIcon } from '@/icon/user/join.svg';
 import { ReactComponent as InfoIcon } from '@/icon/user/info.svg';
 
 
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from '../global/AuthContext';
 import OffCanvasButton from '@/components/OffCanvasButton';
+import LoginModal from './LoginModal';
+import { useEffect } from 'react';
+
+import { userLogout } from '@/api/todoApi';
 
 
 const HiddenNavBar = () => {
@@ -36,7 +40,15 @@ const HiddenNavBar = () => {
   //const location = useLocation();
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false); // Dropdown 상태 추가
-  const [showDropdown2, setShowDropdown2] = useState(false);
+
+
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+
+  const handleCloseLoginModal = () => {
+    setShowLoginModal(false);
+  };
+
   // nav바 메뉴
   const topics = [
 
@@ -60,10 +72,36 @@ const HiddenNavBar = () => {
 
 
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    localStorage.removeItem('lastActiveTime');
-    navigate('/');
+  // const handleLogout = () => {
+  //   setIsLoggedIn(false);
+  //   localStorage.removeItem('lastActiveTime');
+  //   navigate('/');
+  // };
+
+
+    
+  const handleLogout = async () => {        //수정한 로그아웃 (세션 삭제 기능 확인됨)
+    try {
+
+       const response = await userLogout();
+
+    //  const response = await fetch(`{userPrefix}/logout`, {
+    //     // const response = await fetch(`http://ec2-3-34-129-44.ap-northeast-2.compute.amazonaws.com:9090/api/user/logout`, {
+    //      method: 'GET',
+    //      credentials: 'include', // Include credentials (cookies, sessions) in the request
+    //    });
+  
+      if (response) {
+        setIsLoggedIn(false);
+        localStorage.removeItem('lastActiveTime'); 
+        sessionStorage.removeItem('email');
+        navigate('/');
+      } else {
+        console.error('Logout failed');
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
   };
 
 
@@ -75,7 +113,7 @@ const HiddenNavBar = () => {
   const [hidden, setHidden] = useState(true);
 
   useEffect(() => {
-    if(isLoggedIn){
+    if(sessionStorage.email ){
     const handleScroll = () => {
       const scrollPercentage =
         (window.scrollY / (document.documentElement.scrollHeight - document.documentElement.clientHeight)) * 100;
@@ -108,12 +146,12 @@ const HiddenNavBar = () => {
 
 
   return (
-    <hiddennavbar style={{ display: hidden ? 'none' : 'block', marginTop: isLoggedIn ? '-190px' : '-140px' }}>
+    <hiddennavbar style={{ display: hidden ? 'none' : 'block', marginTop: sessionStorage.email ? '-190px' : '-140px' }}>
 
-      <div className="px-3 py-2 text-bg-dark">
+<div className="px-3 py-2 text-bg-dark">
         <Container>
-          <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start" style={{marginTop:'10px',marginBottom:'-10px'}}>
-            <a href="/" className="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none" >
+          <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" className="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
               <Logo />
             </a>
             <Nav className="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
@@ -155,9 +193,10 @@ const HiddenNavBar = () => {
                 <Dropdown.Menu>
                   <Dropdown.Item><Link to={"/ticket/Ticket_Detail"} className="dropdown-item">예약 조회</Link></Dropdown.Item>
                   {/* <Dropdown.Item><Link to={"/ticket/Ticket_Modify"} className="dropdown-item">예약 수정</Link></Dropdown.Item> */}
-                  {/* <Dropdown.Item><Link to={"/ticket/Ticket_Cancel"} className="dropdown-item">예약 취소</Link></Dropdown.Item>
+              {/* <Dropdown.Item><Link to={"/ticket/Ticket_Cancel"} className="dropdown-item">예약 취소</Link></Dropdown.Item>
                 </Dropdown.Menu>
-              </Dropdown>  */}
+              </Dropdown> */}
+
 
 
 
@@ -188,7 +227,7 @@ const HiddenNavBar = () => {
               <h1 style={{ color: 'gray', marginLeft: '25px', marginRight: '25px' }}>|</h1>
 
 
-              {isLoggedIn ? (
+              {sessionStorage.email  ? (
                 <>
 
                   <Nav.Item>
@@ -210,7 +249,10 @@ const HiddenNavBar = () => {
                     </Link>
                   </Nav.Item> */}
 
-                  <OffCanvasButton/>
+                  <OffCanvasButton />
+
+
+
 
 
 
@@ -219,11 +261,13 @@ const HiddenNavBar = () => {
                 <>
 
                   <Nav.Item>
-                    <Link to={'/api/user/login'} className="nav-link d-flex flex-column align-items-center" >
+                    <button type="button" className="nav-link d-flex flex-column align-items-center" onClick={() => setShowLoginModal(true)}>
                       <LoginIcon className="custom-link" style={{ width: '24px', height: '24px' }} />
                       <span className="custom-link">로그인</span>
-                    </Link>
+                    </button>
                   </Nav.Item>
+                  <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} />
+
                   <Nav.Item>
                     <Link to={'/api/user/join'} className="nav-link d-flex flex-column align-items-center">
                       <JoinIcon className="custom-link" style={{ width: '24px', height: '24px' }} />
@@ -236,8 +280,8 @@ const HiddenNavBar = () => {
                       <span className="custom-link">예약정보</span>
                     </Link>
                   </Nav.Item> */}
+                  <OffCanvasButton />
 
-                  <OffCanvasButton/>
                 </>
               )}
 

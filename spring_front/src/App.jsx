@@ -1,33 +1,46 @@
 
-import React from 'react';
-
+import React, { useState, useEffect } from 'react';
 import {BrowserRouter, Routes, Route, RouterProvider } from 'react-router-dom';
 import RootRouter from './router/RootRouter';
-//import { AuthContext } from './User/AuthContext';
-
-// import HomeRouter from './router/RootRouter';
-// import AccountRouter from './router/AccountRouter';
-// import TicketBookRouter from './router/TicketBookRouter';
-// import TicketRouter from './router/TicketRouter';
-// import NavBarRouter from './router/NavBarRouter';
 
 
+// const App = () => {
+  
+//   return (
+    
+//     <RouterProvider router={RootRouter} />
+
+//   )
+// };
+// export default App;
+
+
+// import React, { useState, useEffect } from 'react';
+import '@/css/Loading.css'; // Adjust the import path
+
+const LoadingOverlay = () => (
+    <div className="loading-container">
+        <div className="loading-spinner"></div>
+    </div>
+);
 
 const App = () => {
-  return (
-    
-   // <AuthContext>          {/* 로그인 상태 전역 context 추가 */}
-    <RouterProvider router={RootRouter} />
-   // <BrowserRouter>
-    //   <Routes>
-    //     <Route path="/" element={<HomeRouter />} />
-    //     <Route path="/account/*" element={<AccountRouter />} />
-    //     <Route path="/transportation/*" element={<TicketBookRouter />} />
-    //     <Route path="/ticket/*" element={<TicketRouter />} />
-    //     <Route path="/navigation/*" element={<NavBarRouter />} />
-    //   </Routes>
-    // </BrowserRouter> */}
-   // </AuthContext>
-  )
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        // Simulate a loading process
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 1200);
+    }, []);
+
+    return (
+        <div>
+            {isLoading && <LoadingOverlay />}
+            <RouterProvider router={RootRouter} />
+        
+        </div>
+    );
 };
+
 export default App;

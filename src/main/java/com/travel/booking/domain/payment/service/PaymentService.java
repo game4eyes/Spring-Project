@@ -1,5 +1,7 @@
 package com.travel.booking.domain.payment.service;
 
+import com.travel.booking.domain.booking.entity.Order;
+import com.travel.booking.domain.booking.repo.OrderRepository;
 import com.travel.booking.domain.payment.config.TossPaymentConfig;
 import com.travel.booking.domain.payment.dto.PaymentSuccessDto;
 import com.travel.booking.domain.payment.entity.Payment;
@@ -34,6 +36,7 @@ public class PaymentService {
     private final JpaPaymentRepository paymentRepository;
     private final UserService userService;
     private final TossPaymentConfig tossPaymentConfig;
+    private final OrderRepository orderRepository;
 
 
     @Transactional
@@ -44,6 +47,7 @@ public class PaymentService {
         }
 
         payment.setCustomer(user);
+        payment.setUserEmail(user.getEmail());
         return paymentRepository.save(payment);
     }
 
@@ -68,6 +72,36 @@ public class PaymentService {
         return payment;
     }
 
+//    @Transactional
+//    public Payment verifyPayment(String orderId, Long amount) {
+//        System.out.println(orderId);
+//        Order order = orderRepository.findById(orderId).orElseThrow(() -> {
+//            throw new CustomLogicException(ErrorCode.PAYMENT_NOT_FOUND); // 주문이 없는 경우 예외 발생
+//        });
+//
+//        Payment payment = paymentRepository.findByOrderId(orderId).orElseThrow(() -> {
+//            throw new CustomLogicException(ErrorCode.PAYMENT_NOT_FOUND); // 결제 내역이 없는 경우 예외 발생
+//        });
+//
+//        if (!payment.getAmount().equals(amount)) {
+//            throw new CustomLogicException(ErrorCode.PAYMENT_AMOUNT_EXP); // 결제 금액이 일치하지 않는 경우 예외 발생
+//        }
+//
+//        return payment;
+//    }
+
+//    @Transactional
+//    public Payment verifyPayment(String orderId, Long amount){
+//        Payment payment = null;
+//        Order order = (Order) orderRepository.findById(orderId).orElseThrow(() -> {
+//            throw new CustomLogicException(ErrorCode.PAYMENT_NOT_FOUND);
+//        });
+//        if(!payment.getAmount().equals(amount)){
+//            throw new CustomLogicException(ErrorCode.PAYMENT_AMOUNT_EXP);
+//        }
+//        return payment;
+//    }
+
     @Transactional
     public PaymentSuccessDto requestPaymentAccept(String paymentKey, String orderId, Long amount){
         RestTemplate restTemplate = new RestTemplate();
@@ -79,8 +113,8 @@ public class PaymentService {
         PaymentSuccessDto result = null;
         try{
             result = restTemplate.postForObject(TossPaymentConfig.URL + paymentKey,
-            // 최종 결제 승인 요청 / 요청 URL = config에 작성한 https://api.tosspayments.com/v1/payments/
-            new HttpEntity<>(params, headers),
+                    // 최종 결제 승인 요청 / 요청 URL = config에 작성한 https://api.tosspayments.com/v1/payments/
+                    new HttpEntity<>(params, headers),
                     PaymentSuccessDto.class);
         } catch (Exception e){
             throw new CustomLogicException(ErrorCode.ALREADY_APPROVED);
@@ -88,6 +122,7 @@ public class PaymentService {
 
         return result;
     }
+
 
     private HttpHeaders getHeaders(){ // 요청 헤더에 꼭 authorization 넣어줘야함. 시크릿 키를 base64로 인코딩
         HttpHeaders headers = new HttpHeaders();

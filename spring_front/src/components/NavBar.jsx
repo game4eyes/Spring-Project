@@ -27,7 +27,9 @@ import { ReactComponent as InfoIcon } from '@/icon/user/info.svg';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../global/AuthContext';
 import OffCanvasButton from '@/components/OffCanvasButton';
-
+import LoginModal from './LoginModal';
+//  import { userPrefix } from '@/api/dataApi';
+import { userLogout } from '@/api/todoApi';
 const NavBar = () => {
 
 
@@ -35,7 +37,15 @@ const NavBar = () => {
   //const location = useLocation();
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false); // Dropdown 상태 추가
-  const [showDropdown2, setShowDropdown2] = useState(false);
+
+
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const handleCloseLoginModal = () => {
+    setShowLoginModal(false);
+  };
+
+
   // nav바 메뉴
   const topics = [
 
@@ -57,11 +67,39 @@ const NavBar = () => {
 
   ];
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    localStorage.removeItem('lastActiveTime');
-    navigate('/');
+
+
+
+  // const handleLogout = () => {             //기존 로그아웃 (로그아웃,새로고침해도 세션 안 없어짐)
+  //   localStorage.removeItem('lastActiveTime'); 
+  //   navigate('/');
+  // };
+
+  
+  const handleLogout = async () => {        //수정한 로그아웃 (세션 삭제 기능 확인됨)
+    try {
+
+       const response = await userLogout();
+
+    //  const response = await fetch(`{userPrefix}/logout`, {
+    //     // const response = await fetch(`http://ec2-3-34-129-44.ap-northeast-2.compute.amazonaws.com:9090/api/user/logout`, {
+    //      method: 'GET',
+    //      credentials: 'include', // Include credentials (cookies, sessions) in the request
+    //    });
+  
+      if (response) {
+        setIsLoggedIn(false);
+        localStorage.removeItem('lastActiveTime'); 
+        sessionStorage.removeItem('email');
+        navigate('/');
+      } else {
+        console.error('Logout failed');
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
   };
+  
 
 
   const navbarStyle = {
@@ -116,9 +154,9 @@ const NavBar = () => {
                 <Dropdown.Menu>
                   <Dropdown.Item><Link to={"/ticket/Ticket_Detail"} className="dropdown-item">예약 조회</Link></Dropdown.Item>
                   {/* <Dropdown.Item><Link to={"/ticket/Ticket_Modify"} className="dropdown-item">예약 수정</Link></Dropdown.Item> */}
-                  {/* <Dropdown.Item><Link to={"/ticket/Ticket_Cancel"} className="dropdown-item">예약 취소</Link></Dropdown.Item>
+              {/* <Dropdown.Item><Link to={"/ticket/Ticket_Cancel"} className="dropdown-item">예약 취소</Link></Dropdown.Item>
                 </Dropdown.Menu>
-              </Dropdown> */} 
+              </Dropdown> */}
 
 
 
@@ -150,7 +188,7 @@ const NavBar = () => {
               <h1 style={{ color: 'gray', marginLeft: '25px', marginRight: '25px' }}>|</h1>
 
 
-              {isLoggedIn ? (
+              {sessionStorage.email ? (
                 <>
 
                   <Nav.Item>
@@ -172,7 +210,7 @@ const NavBar = () => {
                     </Link>
                   </Nav.Item> */}
 
-                  <OffCanvasButton/>
+                  <OffCanvasButton />
 
 
 
@@ -184,11 +222,13 @@ const NavBar = () => {
                 <>
 
                   <Nav.Item>
-                    <Link to={'/api/user/login'} className="nav-link d-flex flex-column align-items-center" >
+                    <button type="button" className="nav-link d-flex flex-column align-items-center" onClick={() =>setShowLoginModal(true)} >
                       <LoginIcon className="custom-link" style={{ width: '24px', height: '24px' }} />
                       <span className="custom-link">로그인</span>
-                    </Link>
+                    </button>
                   </Nav.Item>
+                  <LoginModal show={showLoginModal} handleClose={handleCloseLoginModal} />
+
                   <Nav.Item>
                     <Link to={'/api/user/join'} className="nav-link d-flex flex-column align-items-center">
                       <JoinIcon className="custom-link" style={{ width: '24px', height: '24px' }} />
@@ -201,7 +241,7 @@ const NavBar = () => {
                       <span className="custom-link">예약정보</span>
                     </Link>
                   </Nav.Item> */}
-                  <OffCanvasButton/>
+                  <OffCanvasButton />
 
                 </>
               )}

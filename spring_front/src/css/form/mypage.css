@@ -1,6 +1,6 @@
 /* mypage.css */
 
-.mypage-container {
+ .mypage-container {
     padding: 20px;
   }
   
@@ -81,6 +81,123 @@
     display: flex;
     justify-content: flex-end;
     margin-bottom: 30px;
+} */
+
+
+.mypage-container {
+  padding: 20px;
+}
+
+.order-table-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.order-item {
+    flex: 1 0 calc(50% - 20px); /* Two columns with a gap of 20px */
+}
+
+.order-detail {
+    margin-bottom: 10px;
+}
+
+.order-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.order-item {
+  margin-bottom: 20px; /* Adds space between list items */
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  margin-right: 50px
+}
+
+.order-detail {
+  margin-bottom: 5px; /* Adds spacing between each detail */
 }
 
 
+.order-details-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Adjust as needed */
+}
+
+.order-details {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px; /* Adjust spacing between rows */
+}
+
+.order-detail {
+  margin: 10px 0; /* Adjust the spacing (top and bottom) between each detail */
+}
+
+
+.button-container {
+  margin-top: 10px; /* Adjust spacing between details and button */
+}
+
+
+.mypage-container {
+  padding: 20px;
+}
+
+.order-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns */
+  gap: 20px; /* Space between items */
+  list-style: none;
+  padding: 0;
+}
+
+.order-item {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.order-detail {
+  margin-bottom: 10px;
+}
+
+.button-container {
+  text-align: right;
+}
+
+
+.mypage-container .email-popup {
+  position: fixed;
+  top: 40%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.mypage-container .email-popup p {
+  margin-bottom: 10px;
+}
+
+.mypage-container .email-popup button {
+  background-color: red;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  align: right;
+}
+
+.mypage-container s.email-popup button:hover {
+  background-color: darkorange;
+}

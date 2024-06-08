@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import LogoImage from '@components/img/logo/logo3.png';
+import LogoImage from '@components/img/logo/logo.png';
 
 
 function Logo(){           // 로고

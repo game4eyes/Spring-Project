@@ -41,7 +41,7 @@ const Layout = ({ loginstate, title, body, children }) => {
             </div>
             <div className="content" style={{display:'flex'}}>
                 
-                <SearchNavigateButton />
+                {/* <SearchNavigateButton /> */}
 
                 <div className="main-content">
                     {children}
