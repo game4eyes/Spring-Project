@@ -1,0 +1,24 @@
+.seat-form {
+    text-align: center;
+  }
+  
+  /* .seat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+  }
+   */
+  .seat-button {
+    width: 76px; /* Adjust width as needed */
+    height: 76px; /* Adjust height as needed */
+    border: none;
+    background-color: transparent;
+    background: url('@/img/BusSeat_icon/seat.png'); /* Replace 'path_to_your_seat_icon.png' with the actual path to your seat icon */
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  
+  .seat-button.selected {
+    background-image: url('@/img/BusSeat_icon/seatedseat.png'); /* Replace 'path_to_your_selected_seat_icon.png' with the actual path to your selected seat icon */
+  }
+  

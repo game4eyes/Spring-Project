@@ -7,17 +7,20 @@ server:
       force: true
 
 spring:
-  thymeleaf:
-    cache: false
+  profiles:
+    include: oauth
+  config:
+    import: classpath:application-api.yml, classpath:application-oauth.yml, classpath:application-swagger.yml
   datasource:
-    url: jdbc:mysql://localhost:3306/jpa
+    url: jdbc:mysql://bookingadmin.c3m2kgssw640.ap-northeast-2.rds.amazonaws.com:3306/booking
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: khs04140
-
+    username: bookingadmin
+    password: bookingadmin
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
         format_sql: true

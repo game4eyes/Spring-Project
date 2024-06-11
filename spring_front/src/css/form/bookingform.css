@@ -1,0 +1,399 @@
+/* 버스 */
+
+
+.bus_book form {
+    margin-left: 10%;
+}
+
+.bus_book h1 {
+    text-align: left;
+    margin-bottom: 50px;
+}
+
+.bus_book .col1 {
+    float: left;
+    width: 50%;
+}
+
+.bus_book label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.bus_book input[type="text"]{
+        width: 50%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-top: 5px;
+    
+}
+
+.bus_book input[type="date"] {
+    width: 50%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.bus_book select {
+    width: 50%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.bus_book input[type="checkbox"] {
+    /* margin-right: 5px; */
+}
+
+.bus_book button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 0px;
+    margin-right: 40px;
+}
+
+.bus_book button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.bus_book .col2, .train_book .col2 {
+    float: left;
+    width: 50%;
+}
+
+/* .bus_book .col2 button,.train_book .col2 button{
+    margin-top: 25px;
+    margin-left: 50px;
+    height: 150px;
+    width: 100px;
+} */
+
+
+    .train_book .exchange-button,.train_book .fee-check-button, .bus_book .exchange-button, .bus_book .fee-check-button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 0px;
+        margin-right: 40px;
+    }
+    
+    .bus_book .exchange-button:hover, .bus_book .fee-check-button:hover {
+        background-color: #0056b3;
+    }
+    
+
+
+
+/* 기차 */
+
+.train_book form {
+    margin-left: 10%;
+  
+}
+
+.train_book h1 {
+    text-align: left;
+    margin-bottom: 50px;
+}
+
+.train_book .col1 {
+    float: left;
+    width: 100%;
+}
+
+.train_book label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.train_book input[type="text"]{
+
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.train_book input[type="date"] {
+    width: 50%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.train_book select {
+    width: 45%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.train_book input[type="checkbox"] {
+    /* margin-right: 5px; */
+}
+
+.train_book button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 0px;
+    margin-right: 40px;
+}
+
+.train_book button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.train_book .col2, .train_book .col2 {
+    float: left;
+    width: 50%;
+}
+
+.train_book .column2 button,.train_book .col2 button{
+    margin-top: 25px;
+    margin-left: 50px;
+    height: 150px;
+    width: 100px;
+}
+
+
+    .train_book .exchange-button,.train_book .fee-check-button, .train_book .exchange-button, .train_book .fee-check-button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 0px;
+        margin-right: 40px;
+    }
+    
+    .train_book .exchange-button:hover, .train_book .fee-check-button:hover {
+        background-color: #0056b3;
+    }
+    
+
+/* 공항 */
+
+.train_book form {
+    margin-left: 10%;
+}
+
+.train_book h1 {
+    text-align: left;
+    margin-bottom: 50px;
+}
+
+.train_book .col1 {
+    float: left;
+    width: 50%;
+}
+
+.train_book label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.train_book input[type="text"]{
+
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.train_book input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.train_book select {
+    width: 45%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.train_book input[type="checkbox"] {
+    /* margin-right: 5px; */
+}
+
+.train_book button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 0px;
+    margin-right: 40px;
+}
+
+.train_book button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* .train_book .col2, .train_book .col2 {
+    float: left;
+    width: 50%;
+} */
+
+.train_book .col2 button,.train_book .col2 button{
+    margin-top: 25px;
+    margin-left: 50px;
+    height: 150px;
+    width: 100px;
+}
+
+
+    .train_book .exchange-button,.train_book .fee-check-button, .train_book .exchange-button, .train_book .fee-check-button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 0px;
+        margin-right: 40px;
+    }
+    
+    .train_book .exchange-button:hover, .train_book .fee-check-button:hover {
+        background-color: #0056b3;
+    }
+
+    
+    
+    /* 공항 */
+
+.plane_book form {
+    margin-left: 10%;
+}
+
+.plane_book h1 {
+    text-align: left;
+    margin-bottom: 50px;
+}
+
+.plane_book .col1 {
+    float: left;
+    width: 50%;
+}
+
+.plane_book label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.plane_book input[type="text"]{
+
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.plane_book input[type="date"] {
+    width: 25%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.plane_book select {
+    width: 25%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.plane_book input[type="checkbox"] {
+    /* margin-right: 5px; */
+}
+
+.plane_book button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 0px;
+    margin-right: 40px;
+}
+
+.plane_book button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.plane_book .col2, .plane_book .col2 {
+    float: left;
+    width: 50%;
+}
+
+.plane_book .col2 button,.plane_book .col2 button{
+    margin-top: 25px;
+    margin-left: 50px;
+    height: 150px;
+    width: 100px;
+}
+
+
+    .plane_book .exchange-button,.plane_book .fee-check-button, .plane_book .exchange-button, .plane_book .fee-check-button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 0px;
+        margin-right: 40px;
+    }
+    
+    .plane_book .exchange-button:hover, .plane_book .fee-check-button:hover {
+        background-color: #0056b3;
+    }

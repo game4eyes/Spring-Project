@@ -36,4 +36,12 @@ out/
 ### VS Code ###
 .vscode/
 
+### mac ###
 .DS_Store
+
+### yaml ###
+*.yml
+
+### env ###
+*.env
+/.metadata/

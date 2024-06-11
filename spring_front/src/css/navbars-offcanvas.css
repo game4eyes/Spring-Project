@@ -1,0 +1,49 @@
+body {
+  padding-bottom: 20px;
+}
+
+.navbar {
+  margin-bottom: 20px;
+}
+
+.navbar #bus, #train, #plane, #check, #cancel {
+  color: white !important;
+  background-color: transparent !important;
+}
+
+.navbar .navbar-dark .navbar-nav .nav-link,
+.navbar .navbar-dark .navbar-toggler-icon,
+.navbar .btn,
+.navbar .btn-toggle,
+.navbar .btn-toggle-nav .link-body-emphasis,
+.navbar .collapse.show .btn-toggle-nav .link-body-emphasis,
+.navbar .dropdown-menu .dropdown-item {
+  color: white !important;
+}
+
+.navbar .mb-1 {
+  color: white !important;
+  background-color: transparent !important;
+}
+
+/* Add hover effect */
+.navbar .navbar-dark .navbar-nav .nav-link:hover,.navbar a.nav-link:hover,
+.navbar .navbar-dark .navbar-toggler-icon:hover,
+.navbar .btn:hover,
+.navbar .btn-toggle:hover,
+.navbar .btn-toggle-nav .link-body-emphasis:hover,
+.navbar .collapse.show .btn-toggle-nav .link-body-emphasis:hover,
+.navbar .dropdown-menu .dropdown-item:hover {
+  color: skyblue !important;
+}
+
+/* Add active/click effect */
+.navbar .navbar-dark .navbar-nav .nav-link:active,.navbar a.nav-link:active,
+.navbar .navbar-dark .navbar-toggler-icon:active,
+.navbar .btn:active,
+.navbar .btn-toggle:active,
+.navbar .btn-toggle-nav .link-body-emphasis:active,
+.navbar .collapse.show .btn-toggle-nav .link-body-emphasis:active,
+.navbar .dropdown-menu .dropdown-item:active {
+  color: red !important;
+}
